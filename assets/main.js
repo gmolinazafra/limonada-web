@@ -41,6 +41,40 @@
   const header = document.querySelector('header');
   if (header) addEventListener('scroll', () => header.classList.toggle('nav-scrolled', scrollY > 60), { passive: true });
 
+  // HAMBURGUESA MÓVIL
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const open = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', open);
+      const icon = menuToggle.querySelector('svg');
+      if (icon) {
+        icon.innerHTML = open
+          ? '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>'
+          : '<line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>';
+      }
+    });
+    // Cerrar al hacer click en cualquier link del menú móvil
+    mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        const icon = menuToggle.querySelector('svg');
+        if (icon) icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+      });
+    });
+  }
+
+  // WA BUTTON — ocultar al llegar al footer
+  const waBtn = document.querySelector('.wa-float');
+  const siteFooter = document.querySelector('footer');
+  if (waBtn && siteFooter && 'IntersectionObserver' in window) {
+    const footerObs = new IntersectionObserver(entries => {
+      entries.forEach(e => waBtn.classList.toggle('wa-hidden', e.isIntersecting));
+    }, { threshold: 0.1 });
+    footerObs.observe(siteFooter);
+  }
+
   // SCROLL REVEAL
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
