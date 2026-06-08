@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   LIMONADA WEB · src/styles.css
+   Diseño editorial premium · Navy + Lemon
+   ========================================================= */
+
+@layer base {
+  :root {
+    --navy: #0B1F3A;
+    --navy-deep: #06142A;
+    --navy-soft: #15294A;
+    --lemon: #F4C430;
+    --lemon-bright: #FFD645;
+    --leaf: #67C23A;
+    --leaf-deep: #3F8E26;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--navy);
+    color: #fff;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--lemon);
+    color: var(--navy);
+  }
+
+  /* Headline tracking custom */
+  .h-display {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .h-serif {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* ---------- Botones ---------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-medium tracking-tight transition-all duration-300 will-change-transform;
+  }
+
+  .btn-primary {
+    background-color: var(--lemon);
+    color: var(--navy);
+    box-shadow: 0 0 0 0 rgba(244, 196, 48, 0);
+  }
+  .btn-primary:hover {
+    background-color: var(--lemon-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px -10px rgba(244, 196, 48, 0.55);
+  }
+
+  .btn-ghost {
+    @apply text-white;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(244, 196, 48, 0.45);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- Tarjetas glass ---------- */
+  .glass-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1), border-color .5s, box-shadow .5s;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(244, 196, 48, 0.35);
+    box-shadow: 0 30px 60px -30px rgba(244, 196, 48, 0.18);
+  }
+
+  /* Borde luminoso superior */
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(244,196,48,0.4) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity .5s;
+  }
+  .glass-card:hover::before { opacity: 1; }
+
+  /* ---------- Píldoras ---------- */
+  .pill {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono tracking-wider uppercase;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .pill-lemon {
+    background-color: rgba(244, 196, 48, 0.1);
+    border-color: rgba(244, 196, 48, 0.3);
+    color: var(--lemon);
+  }
+
+  /* ---------- Aurora fondo ---------- */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora::before,
+  .aurora::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: aurora-drift 18s ease-in-out infinite;
+  }
+  .aurora::before {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(244,196,48,0.4) 0%, transparent 70%);
+    top: -15%; right: -10%;
+  }
+  .aurora::after {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(103,194,58,0.18) 0%, transparent 70%);
+    bottom: -25%; left: -15%;
+    animation-delay: -8s;
+  }
+
+  @keyframes aurora-drift {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(40px, -30px) scale(1.1); }
+  }
+
+  /* ---------- Grain overlay ---------- */
+  .grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ---------- Grid lines decorativas ---------- */
+  .grid-lines {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* ---------- Mockup card frame ---------- */
+  .mockup-frame {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 30px 60px -30px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal[data-delay="1"] { transition-delay: .08s; }
+  .reveal[data-delay="2"] { transition-delay: .16s; }
+  .reveal[data-delay="3"] { transition-delay: .24s; }
+  .reveal[data-delay="4"] { transition-delay: .32s; }
+  .reveal[data-delay="5"] { transition-delay: .40s; }
+
+  /* ---------- Marquee ---------- */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---------- Lemon SVG logo ---------- */
+  .lemon-stroke { stroke: var(--lemon); stroke-width: 8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .lemon-leaf { fill: var(--leaf); }
+  .lemon-dot { fill: var(--lemon); }
+
+  /* ---------- Form ---------- */
+  .field {
+    @apply w-full px-5 py-4 rounded-2xl text-white placeholder:text-white/40 transition-all duration-300;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--lemon);
+    background: rgba(255,255,255,0.06);
+    box-shadow: 0 0 0 4px rgba(244,196,48,0.12);
+  }
+  .field-label {
+    @apply block mb-2 text-xs font-mono uppercase tracking-wider text-white/50;
+  }
+
+  /* ---------- WhatsApp Float ---------- */
+  .wa-float {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 12px 30px -8px rgba(37,211,102,0.5);
+    z-index: 50;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .wa-float:hover {
+    transform: scale(1.08) rotate(-6deg);
+    box-shadow: 0 18px 40px -8px rgba(37,211,102,0.7);
+  }
+  .wa-float::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: #25D366;
+    opacity: 0.3;
+    animation: pulse-ring 2.2s ease-out infinite;
+    z-index: -1;
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* ---------- Highlight subrayado limón ---------- */
+  .underline-lemon {
+    background-image: linear-gradient(120deg, var(--lemon) 0%, var(--lemon) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 0.28em;
+    background-position: 0 88%;
+    padding: 0 0.06em;
+    color: var(--navy);
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .bg-mesh-hero {
+    background:
+      radial-gradient(at 80% 10%, rgba(244,196,48,0.18) 0%, transparent 45%),
+      radial-gradient(at 10% 80%, rgba(103,194,58,0.10) 0%, transparent 40%),
+      radial-gradient(at 60% 100%, rgba(244,196,48,0.08) 0%, transparent 50%),
+      var(--navy);
+  }
+
+  .bg-mesh-soft {
+    background:
+      radial-gradient(at 0% 0%, rgba(244,196,48,0.06) 0%, transparent 40%),
+      radial-gradient(at 100% 100%, rgba(103,194,58,0.05) 0%, transparent 40%),
+      var(--navy);
+  }
+
+  .bg-mesh-cta {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(11,31,58,0.3) 0%, transparent 50%),
+      var(--lemon);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* Texto gradiente limón */
+  .text-gradient-lemon {
+    background: linear-gradient(135deg, #FFE07A 0%, #F4C430 50%, #D4A017 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+            color: transparent;
+  }
+
+  /* Sombra textual sutil */
+  .text-shadow-soft {
+    text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
