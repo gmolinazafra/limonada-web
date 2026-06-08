@@ -1,0 +1,13 @@
+{
+  "name": "limonada-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Limonada Web · Exprimimos internet para tu negocio",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/styles.css -o ./assets/styles.css --watch",
+    "build": "tailwindcss -i ./src/styles.css -o ./assets/styles.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
