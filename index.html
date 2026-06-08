@@ -28,6 +28,9 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Limonada Web","description":"Agencia digital especializada en marketplaces, aplicaciones SaaS, webs corporativas, automatizaciones e integraciones con IA.","url":"https://limonadaweb.com","logo":"https://limonadaweb.com/images/logo-limonadaweb.png","telephone":"+34628482475","email":"hola@limonadaweb.com","address":{"@type":"PostalAddress","addressLocality":"Málaga","addressCountry":"ES"},"sameAs":["https://www.instagram.com/limonada_web/"],"slogan":"Exprimimos internet para tu negocio"}</script>
 </head>
 <body class="font-sans bg-navy text-white">
+<div id="scroll-progress"></div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
 <!-- SVG SPRITE -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -107,9 +110,9 @@
       <a href="#proyectos" class="btn btn-ghost text-base">Ver proyectos</a>
     </div>
     <div class="reveal mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/5 rounded-3xl overflow-hidden border border-white/5" data-delay="4">
-      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon">25+</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Años en sector tech</div></div>
-      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon">+10</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Proyectos en producción</div></div>
-      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon">100%</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Diseño a medida</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="25" data-suffix="+">25+</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Años en sector tech</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="10" data-prefix="+">+10</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Proyectos en producción</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="100" data-suffix="%">100%</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Diseño a medida</div></div>
       <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon">24/7</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Despliegue continuo</div></div>
     </div>
   </div>
@@ -137,7 +140,7 @@
 </section>
 
 <!-- SERVICIOS -->
-<section id="servicios" class="relative py-24 sm:py-32 bg-mesh-soft">
+<section id="servicios" class="relative pt-16 pb-24 sm:pt-20 sm:pb-32 bg-mesh-soft">
   <div class="grain opacity-30"></div>
   <div class="relative z-10 max-w-8xl mx-auto px-6">
     <div class="grid lg:grid-cols-12 gap-12 mb-16">
@@ -201,7 +204,7 @@
 <!-- =====================================================
      PROYECTOS · 3 CASOS DESTACADOS (alternados)
      ===================================================== -->
-<section id="proyectos" class="relative py-24 sm:py-32 bg-navy-deep overflow-hidden">
+<section id="proyectos" class="relative pt-16 pb-24 sm:pt-20 sm:pb-32 bg-navy-deep overflow-hidden">
   <div class="aurora opacity-50"></div>
   <div class="relative z-10 max-w-8xl mx-auto px-6">
 
@@ -454,7 +457,7 @@
 </section>
 
 <!-- PROCESO -->
-<section id="proceso" class="relative py-24 sm:py-32 bg-navy-deep overflow-hidden">
+<section id="proceso" class="relative pt-16 pb-24 sm:pt-20 sm:pb-32 bg-navy-deep overflow-hidden">
   <div class="absolute inset-0 grid-lines opacity-20"></div>
   <div class="relative z-10 max-w-8xl mx-auto px-6">
     <div class="grid lg:grid-cols-12 gap-12 mb-16">
