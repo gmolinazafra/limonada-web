@@ -432,41 +432,120 @@
       `).join('')}
     </svg>`,
 
-    /* EL BOQUERÓN BOOKS — Editorial */
-    'boqueron-books': `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="bb0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1828"/><stop offset="100%" stop-color="#1a2842"/></linearGradient>
-        <radialGradient id="bb1" cx="0.5" cy="0"><stop offset="0%" stop-color="#d4a017" stop-opacity="0.3"/><stop offset="100%" stop-color="#d4a017" stop-opacity="0"/></radialGradient>
-      </defs>
-      <rect width="800" height="450" fill="url(#bb0)"/>
-      <rect width="800" height="280" fill="url(#bb1)"/>
-      <rect x="0" y="0" width="800" height="32" fill="#050d18"/>
-      <circle cx="18" cy="16" r="4" fill="#ff5f57"/><circle cx="34" cy="16" r="4" fill="#febc2e"/><circle cx="50" cy="16" r="4" fill="#28c940"/>
-      <text x="100" y="20" font-family="ui-monospace" font-size="10" fill="#3a5070">elboqueronbooks.com</text>
-      <text x="48" y="78" font-family="Georgia,serif" font-style="italic" font-size="38" fill="#d4a017">El Boquerón</text>
-      <text x="48" y="102" font-family="Archivo Black,sans-serif" font-size="16" fill="#fff" letter-spacing="3">— BOOKS —</text>
-      <text x="48" y="124" font-family="ui-sans-serif" font-size="11" fill="#8aa0c0">Pequeña editorial independiente · Málaga · Desde 2023</text>
-      <line x1="48" y1="138" x2="752" y2="138" stroke="#d4a01740"/>
-      ${[
-        ['#1a2842','ChatGPT','para Gerentes','2024'],
-        ['#2a1830','La Ventaja','Invisible','2023'],
-        ['#1a3042','Sana Tu','Cuerpo','2024'],
-        ['#2a2818','NO ME PASA','NADA','2023'],
-        ['#1a1f3a','Próximamente','en 2026','2026']
-      ].map(([c,t1,t2,y], i) => `
-        <g transform="translate(${48+i*148},160)">
-          <rect width="130" height="195" rx="3" fill="${c}" stroke="#d4a01766"/>
-          <rect x="8" y="8" width="114" height="179" rx="2" fill="none" stroke="#d4a01733"/>
-          <text x="65" y="58" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#d4a017" text-anchor="middle">El Boquerón</text>
-          <line x1="35" y1="66" x2="95" y2="66" stroke="#d4a017" stroke-width="0.5"/>
-          <text x="65" y="100" font-family="Archivo Black,sans-serif" font-size="9" fill="#fff" text-anchor="middle">${t1}</text>
-          <text x="65" y="115" font-family="Archivo Black,sans-serif" font-size="9" fill="#fff" text-anchor="middle">${t2}</text>
-          <text x="65" y="175" font-family="ui-monospace" font-size="7" fill="#d4a01799" text-anchor="middle">${y}</text>
-        </g>
-      `).join('')}
-      <text x="48" y="384" font-family="ui-monospace" font-size="9" fill="#5a6878" letter-spacing="2">CATÁLOGO · DISPONIBLE EN AMAZON</text>
-      <rect x="48" y="396" width="140" height="32" rx="16" fill="#d4a017"/>
-      <text x="118" y="416" font-family="ui-sans-serif" font-size="11" fill="#0a1828" text-anchor="middle" font-weight="700">Ver catálogo →</text>
+    /* EL BOQUERÓN BOOKS — Fiel a la web real */
+    'boqueron-books': `<svg viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <rect width="800" height="470" fill="#f5f5f0"/>
+      <rect x="0" y="0" width="800" height="54" fill="#0c1e35"/>
+      <g transform="translate(20,11)"><rect width="32" height="32" rx="6" fill="#2a4a7a"/><path d="M6 22 L16 12 L26 22 L16 26 Z" fill="none" stroke="#7ab0e8" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 22 L24 22" stroke="#7ab0e8" stroke-width="2" stroke-linecap="round"/><path d="M4 26 Q16 30 28 26" fill="none" stroke="#7ab0e8" stroke-width="1.5"/></g>
+      <text x="62" y="32" font-family="Georgia,serif" font-style="italic" font-size="16" fill="#fff">El Boquerón</text>
+      <text x="490" y="30" font-family="ui-sans-serif" font-size="11" fill="#7ab0e8" font-weight="700">Inicio</text>
+      <text x="538" y="30" font-family="ui-sans-serif" font-size="11" fill="#c5d5e8">Categorías ↓</text>
+      <text x="628" y="30" font-family="ui-sans-serif" font-size="11" fill="#c5d5e8">Sobre el autor</text>
+      <text x="718" y="30" font-family="ui-sans-serif" font-size="11" fill="#c5d5e8">Contacto</text>
+      <line x1="40" y1="76" x2="760" y2="76" stroke="#d4a017" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="400" y="100" font-family="Georgia,serif" font-style="italic" font-size="24" fill="#0c1e35" text-anchor="middle">Favoritos del Boquerón</text>
+      <line x1="40" y1="110" x2="760" y2="110" stroke="#d4a017" stroke-opacity="0.25" stroke-width="0.5"/>
+      <!-- Portada 1: La Ventaja Invisible -->
+      <g transform="translate(30,120)">
+        <rect width="132" height="195" rx="3" fill="#111" stroke="#2a2a2a"/>
+        <rect x="7" y="7" width="118" height="181" rx="2" fill="#0a0a0a"/>
+        <text x="66" y="26" font-family="ui-sans-serif" font-size="6" fill="#d4a017" text-anchor="middle" letter-spacing="0.5">EL ÉXITO NO ES SUERTE.</text>
+        <text x="66" y="37" font-family="ui-sans-serif" font-size="6" fill="#d4a017" text-anchor="middle" letter-spacing="0.5">ES UNA DECISIÓN INTERNA.</text>
+        <text x="66" y="58" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">LA</text>
+        <text x="66" y="78" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">VENTAJA</text>
+        <circle cx="66" cy="104" r="16" fill="none" stroke="#d4a017" stroke-width="2"/>
+        <circle cx="66" cy="100" r="7" fill="#d4a017"/>
+        <rect x="62" y="106" width="8" height="11" rx="2" fill="#d4a017"/>
+        <text x="66" y="136" font-family="Archivo Black,sans-serif" font-size="18" fill="#d4a017" text-anchor="middle">INVI◆IBLE</text>
+        <text x="66" y="158" font-family="ui-sans-serif" font-size="5.5" fill="#ffffff70" text-anchor="middle">CÓMO CONSTRUIR UNA MENTE QUE</text>
+        <text x="66" y="167" font-family="ui-sans-serif" font-size="5.5" fill="#ffffff70" text-anchor="middle">GANA ANTES DE QUE EL MUNDO LO NOTE</text>
+        <text x="66" y="182" font-family="ui-sans-serif" font-size="7" fill="#d4a017" text-anchor="middle">GUSTAVO MOLINA ZAFRA</text>
+      </g>
+      <text x="96" y="328" font-family="ui-sans-serif" font-size="7.5" fill="#2a6a9a" text-anchor="middle" font-weight="700">DESARROLLO PERSONAL Y AUTOAYUDA</text>
+      <text x="96" y="343" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">La ventaja invisible: Cómo</text>
+      <text x="96" y="356" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">construir una mente que ga...</text>
+      <text x="96" y="370" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#5a5a6a" text-anchor="middle">Gustavo Molina Zafra</text>
+      <!-- Portada 2: Sana Tu Cuerpo -->
+      <g transform="translate(178,120)">
+        <rect width="132" height="195" rx="3"/>
+        <rect x="0" y="0" width="132" height="195" rx="3" fill="#3a6a3a"/>
+        <ellipse cx="66" cy="100" rx="55" ry="55" fill="#5a8a4a" opacity="0.5"/>
+        <ellipse cx="52" cy="90" rx="22" ry="16" fill="#f5a04a" opacity="0.9"/>
+        <circle cx="78" cy="78" r="20" fill="#2a6a2a"/>
+        <ellipse cx="85" cy="115" rx="16" ry="24" fill="#6ab04a" opacity="0.8"/>
+        <ellipse cx="46" cy="120" rx="13" ry="9" fill="#c8b458" opacity="0.7"/>
+        <circle cx="96" cy="90" rx="12" r="12" fill="#2a8a3a" opacity="0.6"/>
+        <rect x="0" y="0" width="132" height="46" rx="3" fill="#0a1a0a" fill-opacity="0.8"/>
+        <text x="66" y="15" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">SANA TU CUERPO,</text>
+        <text x="66" y="27" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">RECUPERA TU VIDA</text>
+        <text x="66" y="40" font-family="ui-sans-serif" font-size="6" fill="#ffffffaa" text-anchor="middle">De la fatiga crónica a la salud total...</text>
+        <circle cx="66" cy="176" r="12" fill="none" stroke="#ffffffaa" stroke-width="1"/>
+        <text x="66" y="180" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle">✦</text>
+        <text x="66" y="189" font-family="ui-sans-serif" font-size="5.5" fill="#ffffffaa" text-anchor="middle">Plan nutricional antiinflamatorio</text>
+      </g>
+      <text x="244" y="328" font-family="ui-sans-serif" font-size="7.5" fill="#2a6a9a" text-anchor="middle" font-weight="700">MEDICINA ALTERNATIVA</text>
+      <text x="244" y="343" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">Sana Tu Cuerpo, Recupera</text>
+      <text x="244" y="356" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">Tu Vida: La guía...</text>
+      <text x="244" y="370" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#5a5a6a" text-anchor="middle">Gustavo Molina Zafra</text>
+      <!-- Portada 3 (repetida) -->
+      <g transform="translate(326,120)">
+        <rect width="132" height="195" rx="3" fill="#3a6a3a"/>
+        <ellipse cx="66" cy="100" rx="55" ry="55" fill="#5a8a4a" opacity="0.5"/>
+        <ellipse cx="52" cy="90" rx="22" ry="16" fill="#f5a04a" opacity="0.9"/>
+        <circle cx="78" cy="78" r="20" fill="#2a6a2a"/>
+        <ellipse cx="85" cy="115" rx="16" ry="24" fill="#6ab04a" opacity="0.8"/>
+        <rect x="0" y="0" width="132" height="46" rx="3" fill="#0a1a0a" fill-opacity="0.8"/>
+        <text x="66" y="15" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">SANA TU CUERPO,</text>
+        <text x="66" y="27" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">RECUPERA TU VIDA</text>
+        <text x="66" y="40" font-family="ui-sans-serif" font-size="6" fill="#ffffffaa" text-anchor="middle">De la fatiga crónica a la salud total...</text>
+      </g>
+      <text x="392" y="328" font-family="ui-sans-serif" font-size="7.5" fill="#2a6a9a" text-anchor="middle" font-weight="700">MEDICINA ALTERNATIVA</text>
+      <text x="392" y="343" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">Sana Tu Cuerpo, Recupera</text>
+      <text x="392" y="356" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">Tu Vida: La guía...</text>
+      <text x="392" y="370" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#5a5a6a" text-anchor="middle">Gustavo Molina Zafra</text>
+      <!-- Portada 4: ChatGPT para Gerentes de CAT -->
+      <g transform="translate(474,120)">
+        <rect width="132" height="195" rx="3" fill="#0a1830"/>
+        <ellipse cx="66" cy="80" rx="38" ry="32" fill="#1a3a7a" opacity="0.6"/>
+        <path d="M44 70 Q66 50 88 70 Q96 85 88 102 Q66 112 44 102 Q36 85 44 70" fill="none" stroke="#4a9adf" stroke-width="1.5" opacity="0.8"/>
+        <path d="M50 76 L62 82 L74 72 L86 78" fill="none" stroke="#7ab0e8" stroke-width="1" opacity="0.7"/>
+        <path d="M48 88 L60 94 L72 84 L84 90" fill="none" stroke="#7ab0e8" stroke-width="1" opacity="0.7"/>
+        <rect x="26" y="120" width="80" height="38" rx="3" fill="#0a2040" stroke="#2a5a9a" stroke-width="1"/>
+        <rect x="33" y="127" width="10" height="22" rx="2" fill="#3a7ab0"/>
+        <rect x="47" y="127" width="10" height="22" rx="2" fill="#3a7ab0"/>
+        <rect x="61" y="127" width="10" height="22" rx="2" fill="#3a7ab0"/>
+        <rect x="75" y="127" width="10" height="22" rx="2" fill="#3a7ab0"/>
+        <text x="66" y="17" font-family="Archivo Black,sans-serif" font-size="10" fill="#fff" text-anchor="middle">ChatGPT para</text>
+        <text x="66" y="31" font-family="Archivo Black,sans-serif" font-size="10" fill="#fff" text-anchor="middle">Gerentes de CAT</text>
+        <text x="66" y="47" font-family="ui-sans-serif" font-size="6.5" fill="#7ab0e8" text-anchor="middle">Automatización, Ventas</text>
+        <text x="66" y="58" font-family="ui-sans-serif" font-size="6.5" fill="#7ab0e8" text-anchor="middle">Online y Blindaje Legal</text>
+        <text x="66" y="69" font-family="ui-sans-serif" font-size="6.5" fill="#7ab0e8" text-anchor="middle">para el Desguace Moderno</text>
+        <text x="66" y="188" font-family="ui-sans-serif" font-size="6.5" fill="#4a9adf" text-anchor="middle">GUSTAVO MOLINA ZAFRA</text>
+      </g>
+      <text x="540" y="328" font-family="ui-sans-serif" font-size="7.5" fill="#2a6a9a" text-anchor="middle" font-weight="700">ECONOMÍA Y EMPRESA</text>
+      <text x="540" y="343" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">ChatGPT para Gerentes de</text>
+      <text x="540" y="356" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">CAT: Cómo aumentar...</text>
+      <text x="540" y="370" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#5a5a6a" text-anchor="middle">Gustavo Molina Zafra</text>
+      <!-- Portada 5: La Ventaja Invisible bis -->
+      <g transform="translate(622,120)">
+        <rect width="132" height="195" rx="3" fill="#111"/>
+        <rect x="7" y="7" width="118" height="181" rx="2" fill="#0a0a0a"/>
+        <text x="66" y="26" font-family="ui-sans-serif" font-size="6" fill="#d4a017" text-anchor="middle" letter-spacing="0.5">EL ÉXITO NO ES SUERTE.</text>
+        <text x="66" y="58" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">LA</text>
+        <text x="66" y="78" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">VENTAJA</text>
+        <circle cx="66" cy="104" r="16" fill="none" stroke="#d4a017" stroke-width="2"/>
+        <circle cx="66" cy="100" r="7" fill="#d4a017"/>
+        <rect x="62" y="106" width="8" height="11" rx="2" fill="#d4a017"/>
+        <text x="66" y="136" font-family="Archivo Black,sans-serif" font-size="18" fill="#d4a017" text-anchor="middle">INVI◆IBLE</text>
+        <text x="66" y="182" font-family="ui-sans-serif" font-size="7" fill="#d4a017" text-anchor="middle">GUSTAVO MOLINA ZAFRA</text>
+      </g>
+      <text x="688" y="328" font-family="ui-sans-serif" font-size="7.5" fill="#2a6a9a" text-anchor="middle" font-weight="700">DESARROLLO PERSONAL Y AUTOAYUDA</text>
+      <text x="688" y="343" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">La ventaja invisible: Cómo</text>
+      <text x="688" y="356" font-family="ui-sans-serif" font-size="9.5" fill="#1a1a2a" text-anchor="middle" font-weight="700">construir una mente que ga...</text>
+      <text x="688" y="370" font-family="Georgia,serif" font-style="italic" font-size="9" fill="#5a5a6a" text-anchor="middle">Gustavo Molina Zafra</text>
+      <!-- Flecha carrusel -->
+      <circle cx="20" cy="228" r="14" fill="#0c1e35" stroke="#d4a01766"/>
+      <text x="20" y="233" font-family="ui-sans-serif" font-size="14" fill="#d4a017" text-anchor="middle">‹</text>
     </svg>`,
 
   };
