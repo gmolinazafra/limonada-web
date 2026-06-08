@@ -1,5 +1,2 @@
-# www → apex
-https://www.limonadaweb.com/* https://limonadaweb.com/:splat 301!
-
-# 404 SPA fallback (innecesario aquí pero por seguridad)
-/*    /index.html   200
+# www → apex (gestionado desde DonDominio DNS, no necesario aquí)
+# /*    /index.html   200  ← eliminado, causa bucle infinito en Pages
