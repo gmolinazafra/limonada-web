@@ -760,14 +760,34 @@
 
   };
 
-  document.querySelectorAll('[data-mockup-content]').forEach(frame => {
-    const key = frame.getAttribute('data-mockup-content');
-    if (mockups[key]) {
-      frame.innerHTML = mockups[key];
-      const svg = frame.querySelector('svg');
-      if (svg) svg.style.cssText = 'width:100%;height:100%;display:block;';
-    }
-  });
+  // Inyección lazy de mockups — solo cuando entran en el viewport
+  const mockupFrames = document.querySelectorAll('[data-mockup-content]');
+  if ('IntersectionObserver' in window) {
+    const mockupObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const frame = entry.target;
+        const key = frame.getAttribute('data-mockup-content');
+        if (mockups[key] && !frame.dataset.loaded) {
+          frame.innerHTML = mockups[key];
+          const svg = frame.querySelector('svg');
+          if (svg) svg.style.cssText = 'width:100%;height:100%;display:block;';
+          frame.dataset.loaded = '1';
+        }
+        mockupObs.unobserve(frame);
+      });
+    }, { rootMargin: '200px 0px' });
+    mockupFrames.forEach(el => mockupObs.observe(el));
+  } else {
+    mockupFrames.forEach(frame => {
+      const key = frame.getAttribute('data-mockup-content');
+      if (mockups[key]) {
+        frame.innerHTML = mockups[key];
+        const svg = frame.querySelector('svg');
+        if (svg) svg.style.cssText = 'width:100%;height:100%;display:block;';
+      }
+    });
+  }
 
   // FORM
   const form = document.getElementById('contact-form');
