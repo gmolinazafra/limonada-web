@@ -106,123 +106,174 @@
   </div>
 </header>
 
-<!-- HERO NUEVO -->
-<section id="servicios" class="relative overflow-hidden" style="background:linear-gradient(160deg,#050D18 0%,#080F1E 60%,#050D18 100%);min-height:100svh;display:flex;flex-direction:column;justify-content:center;">
-
-  <!-- Grid de fondo -->
-  <div class="absolute inset-0 pointer-events-none" style="background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;"></div>
-
-  <div class="relative z-10 max-w-8xl mx-auto px-6 w-full py-14 sm:py-16">
-
-    <!-- LAYOUT: texto izquierda + limón derecha -->
-    <div class="grid lg:grid-cols-2 gap-10 lg:gap-6 items-center mb-12 sm:mb-14">
-
-      <!-- IZQUIERDA: texto -->
-      <div class="order-2 lg:order-1">
-        <div class="reveal mb-4">
-          <span class="font-mono text-xs sm:text-sm tracking-widest uppercase" style="color:#67C23A;">● Bienvenidos a Limonada Web</span>
-        </div>
-
-        <h1 class="reveal font-wordmark leading-[0.92]" style="font-size:clamp(2.8rem,6.5vw,5rem);color:#ffffff;letter-spacing:-0.03em;" data-delay="1">
-          Webs que <span style="color:#F4C430;">venden.</span><br>
-          <span class="h-serif" style="font-size:clamp(2.2rem,5.5vw,4.2rem);color:#ffffff;">Automatizaciones</span><br>
-          <span class="h-serif" style="font-size:clamp(2.2rem,5.5vw,4.2rem);color:#F4C430;">que trabajan por ti.</span>
-        </h1>
-
-        <p class="reveal mt-6 text-base sm:text-lg leading-relaxed" style="color:rgba(255,255,255,0.65);max-width:500px;" data-delay="2">
-          Diseñamos páginas web modernas, aplicaciones y automatizaciones procesadas con IA para que tu negocio sea más eficiente y rentable.
-        </p>
-
-        <div class="reveal mt-8 flex flex-col sm:flex-row gap-3" data-delay="3">
-          <a href="#contacto" class="btn btn-primary text-base">Solicitar presupuesto <svg class="w-5 h-5"><use href="#arr"/></svg></a>
-          <a href="https://wa.me/34628482475?text=Hola%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Limonada%20Web" target="_blank" rel="noopener"
-            class="btn text-base font-medium" style="background:#25D366;color:#fff;border:none;">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1-1.4-.7-2.7-1.9-3.5-3.3-.1-.3-.1-.4.1-.6.2-.2.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.3 5.3 4.6 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l5-1.3c1.5.8 3.2 1.3 5 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
-            WhatsApp directo
-          </a>
-        </div>
-
-        <!-- Stats rápidos -->
-        <div class="reveal mt-8 flex flex-wrap gap-6" data-delay="4">
-          <div><div class="font-wordmark text-2xl text-lemon" data-counter="25" data-suffix="+">25+</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Años en tech</div></div>
-          <div class="w-px bg-white/10 self-stretch"></div>
-          <div><div class="font-wordmark text-2xl text-lemon" data-counter="7">7</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Proyectos vivos</div></div>
-          <div class="w-px bg-white/10 self-stretch"></div>
-          <div><div class="font-wordmark text-2xl text-lemon" data-counter="100" data-suffix="%">100%</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Código propio</div></div>
-        </div>
-      </div>
-
-      <!-- DERECHA: Limón neón real -->
-      <div class="order-1 lg:order-2 flex items-center justify-center reveal" data-delay="1">
-        <div class="relative" style="width:min(560px,95vw);">
-          <!-- Glow radial amarillo de fondo -->
-          <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(circle at 50% 50%,rgba(244,196,48,0.35) 0%,rgba(244,196,48,0.12) 35%,transparent 65%);transform:scale(1.3);"></div>
-          <img
-            src="/images/limon-neon.png"
-            alt="Limón neón Limonada Web"
-            class="relative z-10 w-full h-auto"
-            style="mix-blend-mode:screen;"
-            loading="eager"
-          >
-        </div>
-      </div>
+<!-- HERO -->
+<section class="relative overflow-hidden bg-mesh-hero pt-6 sm:pt-10 pb-14 sm:pb-20">
+  <div class="aurora"></div><div class="grain"></div>
+  <div class="absolute inset-0 grid-lines opacity-30 mask-fade-x"></div>
+  <div class="relative z-10 max-w-8xl mx-auto px-6">
+    <div class="reveal flex justify-center mb-8">
+      <div class="pill pill-lemon"><svg class="w-3.5 h-3.5"><use href="#limon"/></svg> Málaga · España · Disponible online</div>
     </div>
-
-    <!-- 5 SERVICIOS EN FILA -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      <div class="reveal glass-card p-5 flex flex-col gap-3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-        </div>
-        <div><div class="font-wordmark text-sm text-white mb-1">Diseño Web</div><div class="text-xs text-white/50 leading-relaxed">Páginas modernas, rápidas y optimizadas para convertir.</div></div>
-      </div>
-
-      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="1" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a2 2 0 012 2v2a2 2 0 01-2 2 2 2 0 01-2-2V4a2 2 0 012-2z"/><path d="M6 8h12l1 10H5L6 8z"/><path d="M9 12v4M12 11v5M15 12v4"/></svg>
-        </div>
-        <div><div class="font-wordmark text-sm text-white mb-1">Inteligencia Artificial</div><div class="text-xs text-white/50 leading-relaxed">Chatbots, automatizaciones y agentes inteligentes.</div></div>
-      </div>
-
-      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="2" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
-        </div>
-        <div><div class="font-wordmark text-sm text-white mb-1">Automatización</div><div class="text-xs text-white/50 leading-relaxed">Optimizamos procesos y ahorramos tiempo y dinero.</div></div>
-      </div>
-
-      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,60,0.12);border:1px solid rgba(103,194,60,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div><div class="font-wordmark text-sm text-white mb-1">SEO Local</div><div class="text-xs text-white/50 leading-relaxed">Aparece en Google y atrae más clientes locales.</div></div>
-      </div>
-
-      <div class="reveal glass-card p-5 flex flex-col gap-3 col-span-2 sm:col-span-1" data-delay="4" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
-        </div>
-        <div><div class="font-wordmark text-sm text-white mb-1">Apps Web</div><div class="text-xs text-white/50 leading-relaxed">Aplicaciones a medida para gestionar tu negocio.</div></div>
-      </div>
+    <h1 class="reveal h-display text-center text-5xl sm:text-6xl lg:text-[7rem] text-white leading-[0.92]" data-delay="1">
+      Webs que <span class="text-gradient-lemon">venden.</span><br>
+      <span class="h-serif">Plataformas</span><br>
+      <span class="h-serif">que </span><span class="h-serif italic text-gradient-lemon">trabajan</span><span class="h-serif"> por ti.</span>
+    </h1>
+    <p class="reveal mt-6 max-w-2xl mx-auto text-center text-lg sm:text-xl text-white/65 text-balance leading-relaxed" data-delay="2">
+      Marketplaces, aplicaciones SaaS, webs corporativas, automatizaciones e IA. Soluciones digitales completas para que tu negocio crezca.
+    </p>
+    <div class="reveal mt-6 flex flex-col sm:flex-row items-center justify-center gap-3" data-delay="3">
+      <a href="#contacto" class="btn btn-primary text-base">Solicitar presupuesto <svg class="w-5 h-5"><use href="#arr"/></svg></a>
+      <a href="#proyectos" class="btn btn-ghost text-base">Ver proyectos</a>
     </div>
-
-    <!-- CTA INFERIOR -->
-    <div class="reveal mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl" style="background:rgba(244,196,48,0.06);border:1px solid rgba(244,196,48,0.2);" data-delay="3">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-lemon flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        <span class="font-mono text-sm" style="color:rgba(255,255,255,0.8);">¿Tienes un proyecto? <span class="text-lemon font-bold">HABLEMOS</span></span>
-      </div>
-      <a href="https://wa.me/34628482475?text=Hola%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Limonada%20Web" target="_blank" rel="noopener"
-        class="btn text-sm !py-3 !px-6 w-full sm:w-auto justify-center" style="background:#F4C430;color:#050D18;font-weight:700;">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1-1.4-.7-2.7-1.9-3.5-3.3-.1-.3-.1-.4.1-.6.2-.2.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.3 5.3 4.6 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l5-1.3c1.5.8 3.2 1.3 5 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
-        Escríbenos por WhatsApp y cuéntanos tu idea
-      </a>
+    <div class="reveal mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/5 rounded-3xl overflow-hidden border border-white/5" data-delay="4">
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="25" data-suffix="+">25+</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Años en sector tech</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="7" data-suffix="">7</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Proyectos en vivo</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon stat-number" data-counter="100" data-suffix="%">100%</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Código propio</div></div>
+      <div class="bg-navy/60 p-6 sm:p-8 text-center"><div class="h-display text-4xl sm:text-5xl text-lemon">24/7</div><div class="text-2xs font-mono uppercase tracking-widest text-white/50 mt-2">Despliegue continuo</div></div>
     </div>
-
   </div>
 </section>
 
-<!-- CONFÍAN EN NOSOTROS --><!-- CONFÍAN EN NOSOTROS -->
+<!-- CONFÍAN EN NOSOTROS -->
+<section class="relative border-y border-white/5 py-14 sm:py-16 bg-navy-deep overflow-hidden">
+  <div class="max-w-8xl mx-auto px-6">
+    <div class="flex items-center gap-3 justify-center text-2xs font-mono uppercase tracking-widest text-white/40 mb-10 reveal">
+      <span class="h-px w-16 bg-white/20"></span>
+      Plataformas en producción · Confían en nosotros
+      <span class="h-px w-16 bg-white/20"></span>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 mb-12">
+      <a href="https://reddesguace.com" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-leaf/30 transition">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-leaf/10 border border-leaf/30 mb-3"><svg class="w-5 h-5 text-leaf-soft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M7 14 L12 9 L17 14 M12 9 L12 18"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">Red Desguace</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">Marketplace</div>
+      </a>
+      <a href="https://es.reciclacat.app" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-leaf/30 transition" data-delay="1">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-leaf/10 border border-leaf/30 mb-3"><svg class="w-5 h-5 text-leaf-soft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="18" r="0.5" fill="currentColor"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">ReciclaCAT</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">SaaS</div>
+      </a>
+      <a href="https://medibitacora.es" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-leaf/30 transition" data-delay="2">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-leaf/10 border border-leaf/30 mb-3"><svg class="w-5 h-5 text-leaf-soft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">MediBitácora</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">Salud</div>
+      </a>
+      <a href="https://holaitvmalaga.com" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-lemon/30 transition" data-delay="3">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-lemon/10 border border-lemon/30 mb-3"><svg class="w-5 h-5 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M3 17V8l3-4h12l3 4v9"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">Hola ITV</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">B2B Auto</div>
+      </a>
+      <a href="https://desguacessoliva.com" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-leaf/30 transition" data-delay="4">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-leaf/10 border border-leaf/30 mb-3"><svg class="w-5 h-5 text-leaf-soft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">D. Soliva</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">Catálogo</div>
+      </a>
+      <a href="https://recambios.reciclacat.es" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-leaf/30 transition" data-delay="5">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-leaf/10 border border-leaf/30 mb-3"><svg class="w-5 h-5 text-leaf-soft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">Recambios</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">Plataforma</div>
+      </a>
+      <a href="https://elboqueronbooks.com" target="_blank" rel="noopener" class="reveal group flex flex-col items-center justify-center p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-lemon/30 transition col-span-2 sm:col-span-1" data-delay="6">
+        <div class="w-10 h-10 grid place-items-center rounded-xl bg-lemon/10 border border-lemon/30 mb-3"><svg class="w-5 h-5 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/></svg></div>
+        <div class="font-wordmark text-sm text-white text-center">El Boquerón</div>
+        <div class="text-2xs font-mono text-white/40 mt-1">Editorial</div>
+      </a>
+    </div>
+    <!-- Marquee de tech -->
+    <div class="relative overflow-hidden">
+      <div class="marquee-track gap-10 px-6 items-center">
+        <span class="font-display italic text-2xl text-white/40">Next.js</span>
+        <span class="font-wordmark text-base text-white/40">REACT</span>
+        <span class="font-display italic text-2xl text-white/40">Supabase</span>
+        <span class="font-wordmark text-base text-white/40">TAILWIND</span>
+        <span class="font-display italic text-2xl text-white/40">Cloudflare</span>
+        <span class="font-wordmark text-base text-white/40">POSTGRES</span>
+        <span class="font-display italic text-2xl text-white/40">TypeScript</span>
+        <span class="font-wordmark text-base text-white/40">VERCEL</span>
+        <span class="font-display italic text-2xl text-white/40">Node.js</span>
+        <span class="font-wordmark text-base text-white/40">OPENAI</span>
+        <span class="font-display italic text-2xl text-white/40">Gemini</span>
+        <span class="font-wordmark text-base text-white/40">EXPO</span>
+        <span class="font-display italic text-2xl text-white/40">Next.js</span>
+        <span class="font-wordmark text-base text-white/40">REACT</span>
+        <span class="font-display italic text-2xl text-white/40">Supabase</span>
+        <span class="font-wordmark text-base text-white/40">TAILWIND</span>
+        <span class="font-display italic text-2xl text-white/40">Cloudflare</span>
+        <span class="font-wordmark text-base text-white/40">POSTGRES</span>
+        <span class="font-display italic text-2xl text-white/40">TypeScript</span>
+        <span class="font-wordmark text-base text-white/40">VERCEL</span>
+        <span class="font-display italic text-2xl text-white/40">Node.js</span>
+        <span class="font-wordmark text-base text-white/40">OPENAI</span>
+        <span class="font-display italic text-2xl text-white/40">Gemini</span>
+        <span class="font-wordmark text-base text-white/40">EXPO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="relative pt-4 pb-20 sm:pt-6 sm:pb-28 bg-mesh-soft">
+  <div class="grain opacity-30"></div>
+  <div class="relative z-10 max-w-8xl mx-auto px-6">
+    <div class="grid lg:grid-cols-12 gap-12 mb-16">
+      <div class="lg:col-span-5 reveal">
+        <div class="pill mb-6"><span class="text-lemon">01</span> Servicios</div>
+        <h2 class="h-display text-5xl sm:text-6xl lg:text-7xl leading-[0.95]">Lo que <span class="h-serif italic text-lemon">exprimimos</span><br>para tu negocio.</h2>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 lg:pt-6 reveal" data-delay="1">
+        <p class="text-xl text-white/65 leading-relaxed text-balance">Desarrollamos soluciones digitales completas: marketplaces, aplicaciones SaaS, herramientas empresariales, webs corporativas y automatizaciones.</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <article class="glass-card p-8 sm:p-10 reveal">
+        <div class="flex items-start justify-between mb-8"><div class="w-14 h-14 rounded-2xl bg-lemon/15 border border-lemon/20 grid place-items-center"><svg class="w-7 h-7 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M7 4v5"/></svg></div><span class="font-mono text-2xs text-white/30 uppercase tracking-widest">/ 01</span></div>
+        <h3 class="h-display text-3xl sm:text-4xl mb-3">Diseño Web Profesional</h3>
+        <p class="text-white/60 mb-6 text-pretty">Webs modernas que generan confianza desde el primer scroll. Optimizadas para Core Web Vitals y conversión.</p>
+        <ul class="space-y-2.5 text-white/70 text-sm">
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Web corporativa</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Landing pages de alta conversión</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Catálogos online</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Tiendas online</li>
+        </ul>
+      </article>
+      <article class="glass-card p-8 sm:p-10 reveal" data-delay="1">
+        <div class="flex items-start justify-between mb-8"><div class="w-14 h-14 rounded-2xl bg-lemon/15 border border-lemon/20 grid place-items-center"><svg class="w-7 h-7 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="3"/><path d="M11 18h2"/></svg></div><span class="font-mono text-2xs text-white/30 uppercase tracking-widest">/ 02</span></div>
+        <h3 class="h-display text-3xl sm:text-4xl mb-3">Aplicaciones SaaS</h3>
+        <p class="text-white/60 mb-6 text-pretty">Aplicaciones empresariales a medida que sustituyen Excels por interfaces ágiles y datos en tiempo real.</p>
+        <ul class="space-y-2.5 text-white/70 text-sm">
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Plataformas multi-cliente</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Marketplaces sectoriales</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Sistemas de gestión interna</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Cuadros de mando</li>
+        </ul>
+      </article>
+      <article class="glass-card p-8 sm:p-10 reveal" data-delay="2">
+        <div class="flex items-start justify-between mb-8"><div class="w-14 h-14 rounded-2xl bg-lemon/15 border border-lemon/20 grid place-items-center"><svg class="w-7 h-7 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg></div><span class="font-mono text-2xs text-white/30 uppercase tracking-widest">/ 03</span></div>
+        <h3 class="h-display text-3xl sm:text-4xl mb-3">Inteligencia Artificial</h3>
+        <p class="text-white/60 mb-6 text-pretty">Agentes que contestan, valoran, traducen y procesan 24/7. Conectados a tu negocio, no genéricos.</p>
+        <ul class="space-y-2.5 text-white/70 text-sm">
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Chatbots inteligentes</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Automatizaciones a medida</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>WhatsApp con IA</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Agentes especializados</li>
+        </ul>
+      </article>
+      <article class="glass-card p-8 sm:p-10 reveal" data-delay="3">
+        <div class="flex items-start justify-between mb-8"><div class="w-14 h-14 rounded-2xl bg-lemon/15 border border-lemon/20 grid place-items-center"><svg class="w-7 h-7 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span class="font-mono text-2xs text-white/30 uppercase tracking-widest">/ 04</span></div>
+        <h3 class="h-display text-3xl sm:text-4xl mb-3">Posicionamiento Local</h3>
+        <p class="text-white/60 mb-6 text-pretty">Que te encuentren cuando importa. Google Business, SEO técnico y velocidad real.</p>
+        <ul class="space-y-2.5 text-white/70 text-sm">
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Ficha de Google Business</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>SEO local y técnico</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Optimización Core Web Vitals</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-lemon"></span>Reseñas y reputación</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- =====================================================
      PROYECTOS · 3 CASOS DESTACADOS (alternados)
      ===================================================== -->
