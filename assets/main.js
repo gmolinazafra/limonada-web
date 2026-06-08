@@ -129,81 +129,188 @@
   // =========================================================
   const mockups = {
 
-    /* RED DESGUACE — Recreación fiel de la web real */
+    /* RED DESGUACE — Fiel a la web real con fotos de piezas simuladas */
     'red-desguace': `<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <linearGradient id="rdHero" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2a1a"/><stop offset="100%" stop-color="#0d1d0d"/></linearGradient>
-        <linearGradient id="rdOverlay" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000000" stop-opacity="0.3"/><stop offset="100%" stop-color="#000000" stop-opacity="0.7"/></linearGradient>
-        <pattern id="rdWarehouse" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-          <rect width="60" height="60" fill="#1f2f1f"/>
-          <rect x="2" y="2" width="56" height="56" rx="2" fill="#1a261a" stroke="#2a3a2a" stroke-width="0.5"/>
-          <line x1="0" y1="30" x2="60" y2="30" stroke="#0d1a0d" stroke-width="0.5"/>
-        </pattern>
+        <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="#1a2a1a" stroke-width="0.3"/></pattern>
+        <!-- Texturas fotos piezas -->
+        <linearGradient id="photoMotor" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a3a3a"/><stop offset="50%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient>
+        <linearGradient id="photoAsiento" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c8b89a"/><stop offset="100%" stop-color="#b0a080"/></linearGradient>
+        <linearGradient id="photoMotor2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2a3a4a"/><stop offset="100%" stop-color="#1a2a3a"/></linearGradient>
       </defs>
-      <!-- BG warehouse simulado -->
-      <rect width="800" height="500" fill="url(#rdHero)"/>
-      <rect width="800" height="500" fill="url(#rdWarehouse)" opacity="0.4"/>
+      <!-- Fondo -->
+      <rect width="800" height="500" fill="#0d1d0d"/>
+      <rect width="800" height="500" fill="url(#grid)" opacity="0.3"/>
       <!-- Header blanco -->
-      <rect x="0" y="0" width="800" height="56" fill="#fefdf7"/>
-      <!-- Logo verde reciclaje -->
-      <g transform="translate(28,18)">
-        <circle cx="14" cy="14" r="13" fill="none" stroke="#3f8e26" stroke-width="2"/>
-        <path d="M8 16 L14 10 L20 16 M14 10 L14 20" fill="none" stroke="#3f8e26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </g>
-      <!-- Nav links -->
-      <text x="76" y="34" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="600">Inicio</text>
-      <text x="124" y="34" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="600">Piezas</text>
-      <text x="172" y="34" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="600">Vehículos</text>
-      <text x="232" y="34" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="600">Desguaces</text>
-      <text x="300" y="34" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="600">Talleres</text>
-      <!-- Trust badge -->
-      <text x="560" y="28" font-family="ui-sans-serif" font-size="10" fill="#3f8e26" font-weight="700">✓ Vendedores verificados</text>
-      <text x="560" y="42" font-family="ui-sans-serif" font-size="8" fill="#5a7a5a">Solo centros CAT autorizados</text>
-      <rect x="700" y="14" width="80" height="28" rx="4" fill="none" stroke="#0d2a1f" stroke-width="1"/>
-      <text x="740" y="32" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="600" text-anchor="middle">Acceso CAT</text>
-      <!-- Hero -->
-      <rect x="0" y="56" width="800" height="240" fill="url(#rdOverlay)"/>
-      <text x="400" y="120" font-family="ui-sans-serif" font-size="22" fill="#fff" text-anchor="middle" font-weight="700">Encuentra el <tspan fill="#7fbf3f">recambio</tspan> que necesitas</text>
-      <text x="400" y="142" font-family="ui-sans-serif" font-size="11" fill="#d4e8c8" text-anchor="middle">Stock real de desguaces autorizados. Contacta directamente con el</text>
-      <text x="400" y="155" font-family="ui-sans-serif" font-size="11" fill="#d4e8c8" text-anchor="middle">desguace por WhatsApp.</text>
+      <rect x="0" y="0" width="800" height="52" fill="#fefdf7"/>
+      <g transform="translate(18,14)"><circle cx="12" cy="12" r="11" fill="none" stroke="#3f8e26" stroke-width="2"/><path d="M7 14 L12 9 L17 14 M12 9 L12 18" fill="none" stroke="#3f8e26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <text x="44" y="30" font-family="ui-sans-serif" font-size="13" fill="#0d2a1f" font-weight="700">Red Desguace</text>
+      <text x="110" y="30" font-family="ui-sans-serif" font-size="11" fill="#3a5a3a">Inicio</text>
+      <text x="150" y="30" font-family="ui-sans-serif" font-size="11" fill="#3a5a3a">Piezas</text>
+      <text x="192" y="30" font-family="ui-sans-serif" font-size="11" fill="#3a5a3a">Vehículos</text>
+      <text x="248" y="30" font-family="ui-sans-serif" font-size="11" fill="#3a5a3a">Desguaces</text>
+      <text x="308" y="30" font-family="ui-sans-serif" font-size="11" fill="#3a5a3a">Talleres</text>
+      <text x="548" y="26" font-family="ui-sans-serif" font-size="9.5" fill="#3f8e26" font-weight="700">✓ Vendedores verificados</text>
+      <text x="548" y="40" font-family="ui-sans-serif" font-size="7.5" fill="#5a7a5a">Solo centros CAT autorizados</text>
+      <rect x="696" y="12" width="84" height="28" rx="4" fill="none" stroke="#0d2a1f" stroke-width="1"/>
+      <text x="738" y="30" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="600" text-anchor="middle">Acceso CAT</text>
+      <!-- Hero oscuro con texto -->
+      <rect x="0" y="52" width="800" height="130" fill="#111d11"/>
+      <text x="400" y="96" font-family="ui-sans-serif" font-size="20" fill="#fff" text-anchor="middle" font-weight="700">Encuentra el <tspan fill="#7fbf3f">recambio</tspan> que necesitas</text>
+      <text x="400" y="114" font-family="ui-sans-serif" font-size="10" fill="#c8dcc8" text-anchor="middle">Stock real de desguaces autorizados. Contacta directamente con el desguace por WhatsApp.</text>
       <!-- Buscador -->
-      <rect x="200" y="178" width="320" height="44" rx="4" fill="#fff"/>
-      <text x="216" y="205" font-family="ui-sans-serif" font-size="11" fill="#9aa89a">Marca, modelo, motor, referencia... (ej: bendix golf)</text>
-      <rect x="528" y="178" width="80" height="44" rx="4" fill="#d4a017"/>
-      <text x="568" y="205" font-family="ui-sans-serif" font-size="12" fill="#fff" text-anchor="middle" font-weight="800">BUSCAR</text>
+      <rect x="188" y="126" width="330" height="38" rx="4" fill="#fff"/>
+      <text x="202" y="150" font-family="ui-sans-serif" font-size="10" fill="#9aa89a">Marca, modelo, motor, referencia...</text>
+      <rect x="522" y="126" width="76" height="38" rx="4" fill="#c8a010"/>
+      <text x="560" y="150" font-family="ui-sans-serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="800">BUSCAR</text>
       <!-- Stats -->
-      <text x="300" y="265" font-family="Archivo Black,sans-serif" font-size="22" fill="#fff" text-anchor="middle">+185.000</text>
-      <text x="300" y="280" font-family="ui-sans-serif" font-size="9" fill="#a8c89a" text-anchor="middle" letter-spacing="2">PIEZAS</text>
-      <text x="400" y="265" font-family="Archivo Black,sans-serif" font-size="22" fill="#fff" text-anchor="middle">CAT</text>
-      <text x="400" y="280" font-family="ui-sans-serif" font-size="9" fill="#a8c89a" text-anchor="middle" letter-spacing="2">AUTORIZADOS</text>
-      <text x="500" y="265" font-family="Archivo Black,sans-serif" font-size="22" fill="#fff" text-anchor="middle">+1.200</text>
-      <text x="500" y="280" font-family="ui-sans-serif" font-size="9" fill="#a8c89a" text-anchor="middle" letter-spacing="2">MODELOS</text>
+      <text x="290" y="178" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">+185.000</text>
+      <text x="290" y="192" font-family="ui-sans-serif" font-size="8" fill="#a8c89a" text-anchor="middle" letter-spacing="1.5">PIEZAS</text>
+      <text x="400" y="178" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">CAT</text>
+      <text x="400" y="192" font-family="ui-sans-serif" font-size="8" fill="#a8c89a" text-anchor="middle" letter-spacing="1.5">AUTORIZADOS</text>
+      <text x="510" y="178" font-family="Archivo Black,sans-serif" font-size="18" fill="#fff" text-anchor="middle">+1.200</text>
+      <text x="510" y="192" font-family="ui-sans-serif" font-size="8" fill="#a8c89a" text-anchor="middle" letter-spacing="1.5">MODELOS</text>
       <!-- Sección piezas -->
-      <rect x="0" y="296" width="800" height="204" fill="#f5f3eb"/>
-      <text x="24" y="320" font-family="ui-sans-serif" font-size="14" fill="#0d2a1f" font-weight="700">Últimas piezas añadidas</text>
-      <text x="776" y="320" font-family="ui-sans-serif" font-size="11" fill="#3f8e26" text-anchor="end">Ver todo el catálogo →</text>
-      <!-- 5 cards piezas reales -->
-      ${[
-        ['MANETA EXT.', 'CITROEN XSARA', '11,47 €'],
-        ['ANTENA', 'CITROEN XSARA', '6,96 €'],
-        ['BRAZO LIMPIA', 'CITROEN XSARA', '15,44 €'],
-        ['CERRADURA', 'CITROEN XSARA', '25,05 €'],
-        ['COMPRESOR AIRE', 'CITROEN XSARA', '62,80 €']
-      ].map(([p,m,pr], i) => `
-        <g transform="translate(${24+i*152},338)">
-          <rect width="140" height="148" rx="4" fill="#fff" stroke="#e5e3db"/>
-          <rect width="140" height="78" rx="4" fill="#d8d4c4"/>
-          <rect x="4" y="4" width="40" height="14" rx="2" fill="#fff"/>
-          <text x="24" y="14" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF ${1935059+i}</text>
-          <circle cx="70" cy="42" r="20" fill="none" stroke="#b8b4a8" stroke-width="1.5"/>
-          <text x="8" y="92" font-family="ui-sans-serif" font-size="8" fill="#0d2a1f" font-weight="700">${p}</text>
-          <text x="8" y="104" font-family="ui-sans-serif" font-size="7" fill="#3f8e26" font-weight="600">${m}</text>
-          <text x="8" y="116" font-family="ui-sans-serif" font-size="6" fill="#7a8a7a">1.6 16V · 109 CV</text>
-          <text x="8" y="130" font-family="Archivo Black,sans-serif" font-size="10" fill="#0d2a1f">${pr}</text>
-          <rect x="4" y="132" width="132" height="12" rx="2" fill="#25D366"/>
-          <text x="70" y="141" font-family="ui-sans-serif" font-size="7" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
-        </g>
-      `).join('')}
+      <rect x="0" y="206" width="800" height="294" fill="#f5f3eb"/>
+      <text x="18" y="232" font-family="ui-sans-serif" font-size="13" fill="#0d2a1f" font-weight="700">Últimas piezas añadidas</text>
+      <text x="782" y="232" font-family="ui-sans-serif" font-size="10" fill="#3f8e26" text-anchor="end">Ver todo el catálogo →</text>
+
+      <!-- CARD 1: Motor completo (foto motor gris) -->
+      <g transform="translate(14,244)">
+        <rect width="148" height="236" rx="6" fill="#fff" stroke="#e5e3db"/>
+        <!-- Foto motor: gris texturizado con formas de motor -->
+        <rect width="148" height="116" rx="6" fill="#3a3a3a"/>
+        <rect x="0" y="0" width="148" height="116" rx="6" fill="url(#photoMotor)"/>
+        <!-- Simular motor: bloques rectangulares, tubos, tornillos -->
+        <rect x="24" y="18" width="100" height="42" rx="3" fill="#4a4a4a" stroke="#5a5a5a" stroke-width="0.5"/>
+        <rect x="30" y="24" width="16" height="30" rx="2" fill="#2a2a2a"/>
+        <rect x="50" y="24" width="16" height="30" rx="2" fill="#2a2a2a"/>
+        <rect x="70" y="24" width="16" height="30" rx="2" fill="#2a2a2a"/>
+        <rect x="90" y="24" width="16" height="30" rx="2" fill="#2a2a2a"/>
+        <rect x="18" y="68" width="112" height="14" rx="2" fill="#5a5a5a"/>
+        <circle cx="40" cy="95" r="10" fill="#4a4a4a" stroke="#5a8a5a" stroke-width="2"/>
+        <circle cx="40" cy="95" r="5" fill="#2a2a2a"/>
+        <rect x="60" y="86" width="70" height="8" rx="4" fill="#4a4a4a"/>
+        <rect x="60" y="98" width="50" height="6" rx="3" fill="#3a3a3a"/>
+        <!-- Badge REF -->
+        <rect x="5" y="5" width="62" height="14" rx="2" fill="#fff" stroke="#e5e3db"/>
+        <text x="36" y="15" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF 1845554</text>
+        <!-- Info -->
+        <text x="8" y="134" font-family="ui-sans-serif" font-size="7.5" fill="#3f8e26" font-weight="700">MOTOR / ADMISIÓN / ESCAPE</text>
+        <text x="8" y="150" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="700">Motor completo</text>
+        <text x="8" y="164" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">MAZDA · RX-8 (SE)</text>
+        <text x="8" y="175" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">2003–2009</text>
+        <text x="8" y="202" font-family="ui-sans-serif" font-size="15" fill="#3f8e26" font-weight="700">2.835,00 €</text>
+        <rect x="8" y="218" width="132" height="14" rx="3" fill="#25D366"/>
+        <text x="74" y="228" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+      </g>
+
+      <!-- CARD 2: Asiento delantero (foto tela beige) -->
+      <g transform="translate(172,244)">
+        <rect width="148" height="236" rx="6" fill="#fff" stroke="#e5e3db"/>
+        <rect width="148" height="116" rx="6" fill="url(#photoAsiento)"/>
+        <!-- Simular asiento: forma ergonómica -->
+        <path d="M34 110 Q34 70 50 52 Q74 36 98 52 Q114 70 114 110" fill="#c4b08a" stroke="#b09870" stroke-width="1"/>
+        <path d="M42 110 Q42 78 56 64 Q74 50 92 64 Q106 78 106 110" fill="#d4c09a"/>
+        <!-- respaldo superior -->
+        <ellipse cx="74" cy="46" rx="28" ry="18" fill="#d4c09a" stroke="#b09870" stroke-width="1"/>
+        <!-- Costuras simuladas -->
+        <path d="M58 70 L58 105" fill="none" stroke="#a08860" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <path d="M90 70 L90 105" fill="none" stroke="#a08860" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <rect x="5" y="5" width="62" height="14" rx="2" fill="#fff" stroke="#e5e3db"/>
+        <text x="36" y="15" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF 1893034</text>
+        <text x="8" y="134" font-family="ui-sans-serif" font-size="7.5" fill="#3f8e26" font-weight="700">INTERIOR</text>
+        <text x="8" y="150" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="700">Asiento delantero</text>
+        <text x="8" y="163" font-family="ui-sans-serif" font-size="10.5" fill="#0d2a1f" font-weight="700">izquierdo</text>
+        <text x="8" y="178" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">VOLKSWAGEN · T5 TRANSPORTER</text>
+        <text x="8" y="188" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">BUS · 2003–2007</text>
+        <text x="8" y="212" font-family="ui-sans-serif" font-size="15" fill="#3f8e26" font-weight="700">2.835,00 €</text>
+        <rect x="8" y="218" width="132" height="14" rx="3" fill="#25D366"/>
+        <text x="74" y="228" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+      </g>
+
+      <!-- CARD 3: Motor VW Touareg (azul motor) -->
+      <g transform="translate(330,244)">
+        <rect width="148" height="236" rx="6" fill="#fff" stroke="#e5e3db"/>
+        <rect width="148" height="116" rx="6" fill="url(#photoMotor2)"/>
+        <!-- Motor diferente: con tubo azul prominente -->
+        <rect x="20" y="20" width="108" height="40" rx="3" fill="#3a4a5a" stroke="#4a5a6a" stroke-width="0.5"/>
+        <rect x="26" y="26" width="14" height="28" rx="2" fill="#1a2a3a"/>
+        <rect x="44" y="26" width="14" height="28" rx="2" fill="#1a2a3a"/>
+        <rect x="62" y="26" width="14" height="28" rx="2" fill="#1a2a3a"/>
+        <rect x="80" y="26" width="14" height="28" rx="2" fill="#1a2a3a"/>
+        <rect x="98" y="26" width="14" height="28" rx="2" fill="#1a2a3a"/>
+        <rect x="16" y="68" width="116" height="12" rx="2" fill="#4a5a6a"/>
+        <!-- Tubo azul prominente (como en el VW) -->
+        <path d="M50 82 Q74 75 98 82 L98 96 Q74 103 50 96 Z" fill="#2a5a9a"/>
+        <path d="M60 88 L88 88" stroke="#4a7ab0" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="44" cy="95" r="8" fill="#3a4a5a" stroke="#4a7ab0" stroke-width="1.5"/>
+        <rect x="5" y="5" width="62" height="14" rx="2" fill="#fff" stroke="#e5e3db"/>
+        <text x="36" y="15" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF 1835210</text>
+        <text x="8" y="134" font-family="ui-sans-serif" font-size="7.5" fill="#3f8e26" font-weight="700">MOTOR / ADMISIÓN / ESCAPE</text>
+        <text x="8" y="150" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="700">Motor completo</text>
+        <text x="8" y="164" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">VOLKSWAGEN · TOUAREG</text>
+        <text x="8" y="175" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">2006–2008</text>
+        <text x="8" y="202" font-family="ui-sans-serif" font-size="15" fill="#3f8e26" font-weight="700">2.790,00 €</text>
+        <rect x="8" y="218" width="132" height="14" rx="3" fill="#25D366"/>
+        <text x="74" y="228" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+      </g>
+
+      <!-- CARD 4: Motor Renault (amarillo visible) -->
+      <g transform="translate(488,244)">
+        <rect width="148" height="236" rx="6" fill="#fff" stroke="#e5e3db"/>
+        <rect width="148" height="116" rx="6" fill="#2a2a2a"/>
+        <rect x="20" y="14" width="108" height="46" rx="3" fill="#3a3a3a" stroke="#4a4a4a" stroke-width="0.5"/>
+        <rect x="26" y="20" width="14" height="34" rx="2" fill="#222"/>
+        <rect x="44" y="20" width="14" height="34" rx="2" fill="#222"/>
+        <rect x="62" y="20" width="14" height="34" rx="2" fill="#222"/>
+        <rect x="80" y="20" width="14" height="34" rx="2" fill="#222"/>
+        <!-- Tapa amarilla característica Renault -->
+        <circle cx="110" cy="28" r="14" fill="#e8c800" stroke="#c8a800" stroke-width="1.5"/>
+        <text x="110" y="32" font-family="ui-sans-serif" font-size="8" fill="#5a4a00" text-anchor="middle" font-weight="700">OIL</text>
+        <rect x="16" y="68" width="116" height="10" rx="2" fill="#4a4a4a"/>
+        <rect x="30" y="82" width="88" height="24" rx="3" fill="#3a3a3a"/>
+        <circle cx="55" cy="94" r="8" fill="#2a2a2a" stroke="#4a4a4a" stroke-width="1"/>
+        <circle cx="93" cy="94" r="8" fill="#2a2a2a" stroke="#4a4a4a" stroke-width="1"/>
+        <rect x="5" y="5" width="62" height="14" rx="2" fill="#fff" stroke="#e5e3db"/>
+        <text x="36" y="15" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF 1841512</text>
+        <text x="8" y="134" font-family="ui-sans-serif" font-size="7.5" fill="#3f8e26" font-weight="700">MOTOR / ADMISIÓN / ESCAPE</text>
+        <text x="8" y="150" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="700">Motor completo</text>
+        <text x="8" y="164" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">RENAULT · TALISMAN SPORT</text>
+        <text x="8" y="175" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">2015–2018</text>
+        <text x="8" y="202" font-family="ui-sans-serif" font-size="15" fill="#3f8e26" font-weight="700">2.790,00 €</text>
+        <rect x="8" y="218" width="132" height="14" rx="3" fill="#25D366"/>
+        <text x="74" y="228" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+      </g>
+
+      <!-- CARD 5: Motor Porsche (azul intenso) -->
+      <g transform="translate(646,244)">
+        <rect width="148" height="236" rx="6" fill="#fff" stroke="#e5e3db"/>
+        <rect width="148" height="116" rx="6" fill="#2a3a4a"/>
+        <!-- Motor Porsche Cayenne: más compacto, tubos azul/naranja -->
+        <rect x="18" y="10" width="112" height="50" rx="4" fill="#3a4a5a" stroke="#4a5a6a" stroke-width="0.5"/>
+        <rect x="24" y="16" width="14" height="38" rx="2" fill="#1a2a3a"/>
+        <rect x="42" y="16" width="14" height="38" rx="2" fill="#1a2a3a"/>
+        <rect x="60" y="16" width="14" height="38" rx="2" fill="#1a2a3a"/>
+        <rect x="78" y="16" width="14" height="38" rx="2" fill="#1a2a3a"/>
+        <rect x="96" y="16" width="14" height="38" rx="2" fill="#1a2a3a"/>
+        <rect x="112" y="16" width="10" height="38" rx="2" fill="#1a2a3a"/>
+        <!-- Tubo naranja característica Porsche -->
+        <path d="M30 68 Q74 60 118 68 L118 82 Q74 90 30 82 Z" fill="#c85a10"/>
+        <path d="M40 75 L108 75" stroke="#e87a30" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Tubo azul -->
+        <path d="M22 88 Q74 80 126 88" fill="none" stroke="#3a6ab0" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="36" cy="105" r="7" fill="#3a4a5a" stroke="#4a7ab0" stroke-width="1.5"/>
+        <rect x="5" y="5" width="62" height="14" rx="2" fill="#fff" stroke="#e5e3db"/>
+        <text x="36" y="15" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="600">REF 1378568</text>
+        <text x="8" y="134" font-family="ui-sans-serif" font-size="7.5" fill="#3f8e26" font-weight="700">MOTOR / ADMISIÓN / ESCAPE</text>
+        <text x="8" y="150" font-family="ui-sans-serif" font-size="11" fill="#0d2a1f" font-weight="700">Motor completo</text>
+        <text x="8" y="164" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">PORSCHE · CAYENNE</text>
+        <text x="8" y="175" font-family="ui-sans-serif" font-size="8.5" fill="#4a6a4a">2009–2016</text>
+        <text x="8" y="202" font-family="ui-sans-serif" font-size="15" fill="#3f8e26" font-weight="700">2.700,00 €</text>
+        <rect x="8" y="218" width="132" height="14" rx="3" fill="#25D366"/>
+        <text x="74" y="228" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+      </g>
     </svg>`,
 
     /* RECICLACAT APP — Móvil con wizard de descontaminación */
@@ -347,47 +454,150 @@
       `).join('')}
     </svg>`,
 
-    /* DESGUACES SOLIVA — Catálogo verde */
+    /* DESGUACES SOLIVA — Piezas con fotos simuladas */
     'desguaces-soliva': `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <rect width="800" height="450" fill="#f5f3eb"/>
-      <!-- Nav -->
-      <rect x="0" y="0" width="800" height="60" fill="#1a4a35"/>
-      <text x="32" y="38" font-family="Archivo Black,sans-serif" font-size="16" fill="#c0dd97">DESGUACES SOLIVA</text>
-      <text x="600" y="32" font-family="ui-sans-serif" font-size="11" fill="#fff">Catálogo</text>
-      <text x="660" y="32" font-family="ui-sans-serif" font-size="11" fill="#fff">Vehículos</text>
-      <text x="730" y="32" font-family="ui-sans-serif" font-size="11" fill="#fff">Contacto</text>
-      <!-- Hero -->
-      <text x="32" y="100" font-family="Archivo Black,sans-serif" font-size="22" fill="#0d2a1f">Piezas de ocasión</text>
-      <text x="32" y="122" font-family="ui-sans-serif" font-size="13" fill="#3f8e26" font-weight="600">+12.000 referencias disponibles · Envíos a toda España</text>
-      <!-- Buscador -->
-      <rect x="32" y="140" width="540" height="44" rx="22" fill="#fff" stroke="#1a4a3522"/>
-      <text x="56" y="167" font-family="ui-sans-serif" font-size="12" fill="#7a8a7a">🔍  Pieza, marca, modelo, año...</text>
-      <rect x="584" y="140" width="100" height="44" rx="22" fill="#3f8e26"/>
-      <text x="634" y="167" font-family="ui-sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Buscar</text>
-      <text x="696" y="167" font-family="ui-sans-serif" font-size="11" fill="#3f8e26">Filtros ⚙</text>
-      <!-- Grid 4 piezas -->
-      ${[
-        ['Motor 1.6 TDI', 'VW Golf VII', '2014', '420€', 'DISPONIBLE'],
-        ['Caja DSG-7', 'Audi A3', '2016', '650€', 'DISPONIBLE'],
-        ['Puerta del. der.', 'Seat León III', '2018', '140€', 'BAJO STOCK'],
-        ['Alternador 140A', 'Ford Focus IV', '2020', '95€', 'DISPONIBLE']
-      ].map(([p,m,y,pr,st], i) => `
-        <g transform="translate(${32+i*190},210)">
-          <rect width="175" height="220" rx="8" fill="#fff" stroke="#e8e3d5"/>
-          <rect x="0" y="0" width="175" height="115" rx="8" fill="#3a4a3a"/>
-          <circle cx="87" cy="60" r="30" fill="none" stroke="#67C23A55" stroke-width="2"/>
-          <rect x="6" y="6" width="36" height="14" rx="2" fill="#F4C430"/>
-          <text x="24" y="16" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="700">REF ${1234+i}</text>
-          <text x="12" y="135" font-family="ui-sans-serif" font-size="12" fill="#0d2a1f" font-weight="700">${p}</text>
-          <text x="12" y="150" font-family="ui-sans-serif" font-size="10" fill="#3f8e26" font-weight="600">${m} (${y})</text>
-          <text x="12" y="164" font-family="ui-sans-serif" font-size="9" fill="#7a8a7a">Garantía 30 días</text>
-          <text x="12" y="190" font-family="Archivo Black,sans-serif" font-size="20" fill="#0d2a1f">${pr}</text>
-          <rect x="12" y="198" width="68" height="16" rx="2" fill="#25D366"/>
-          <text x="46" y="208" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
-          <rect x="84" y="198" width="79" height="16" rx="2" fill="${st==='DISPONIBLE'?'#3f8e26':'#F4C430'}" fill-opacity="0.15" stroke="${st==='DISPONIBLE'?'#3f8e26':'#F4C430'}" stroke-width="0.5"/>
-          <text x="123" y="208" font-family="ui-monospace" font-size="6" fill="${st==='DISPONIBLE'?'#3f8e26':'#a87f00'}" text-anchor="middle" font-weight="700">${st}</text>
-        </g>
-      `).join('')}
+      <rect x="0" y="0" width="800" height="56" fill="#1a4a35"/>
+      <text x="28" y="36" font-family="Archivo Black,sans-serif" font-size="15" fill="#c0dd97">DESGUACES SOLIVA</text>
+      <text x="590" y="30" font-family="ui-sans-serif" font-size="11" fill="#fff">Catálogo</text>
+      <text x="652" y="30" font-family="ui-sans-serif" font-size="11" fill="#fff">Vehículos</text>
+      <text x="724" y="30" font-family="ui-sans-serif" font-size="11" fill="#fff">Contacto</text>
+      <!-- Título y buscador -->
+      <text x="28" y="90" font-family="Archivo Black,sans-serif" font-size="20" fill="#0d2a1f">Piezas de ocasión</text>
+      <text x="28" y="108" font-family="ui-sans-serif" font-size="12" fill="#3f8e26" font-weight="600">+12.000 referencias disponibles · Envíos a toda España</text>
+      <rect x="28" y="118" width="520" height="38" rx="19" fill="#fff" stroke="#1a4a3522"/>
+      <text x="52" y="141" font-family="ui-sans-serif" font-size="11" fill="#7a8a7a">🔍  Pieza, marca, modelo, año...</text>
+      <rect x="560" y="118" width="90" height="38" rx="19" fill="#3f8e26"/>
+      <text x="605" y="141" font-family="ui-sans-serif" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">Buscar</text>
+      <text x="662" y="141" font-family="ui-sans-serif" font-size="11" fill="#3f8e26">Filtros ⚙</text>
+
+      <!-- CARD 1: Motor 1.6 TDI -->
+      <g transform="translate(28,170)">
+        <rect width="178" height="258" rx="8" fill="#fff" stroke="#e8e3d5"/>
+        <!-- Foto motor con tapa amarilla -->
+        <rect width="178" height="130" rx="8" fill="#2a3a2a"/>
+        <!-- Badge REF verde -->
+        <rect x="6" y="6" width="60" height="14" rx="3" fill="#d4a010"/>
+        <text x="36" y="16" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="700">REF 1234</text>
+        <!-- Motor -->
+        <rect x="20" y="24" width="138" height="56" rx="3" fill="#3a4a3a" stroke="#4a5a4a" stroke-width="0.5"/>
+        <rect x="26" y="30" width="16" height="44" rx="2" fill="#1a2a1a"/>
+        <rect x="46" y="30" width="16" height="44" rx="2" fill="#1a2a1a"/>
+        <rect x="66" y="30" width="16" height="44" rx="2" fill="#1a2a1a"/>
+        <rect x="86" y="30" width="16" height="44" rx="2" fill="#1a2a1a"/>
+        <!-- tapa amarilla VW TDI -->
+        <circle cx="128" cy="38" r="14" fill="#e8c800" stroke="#c8a800" stroke-width="1.5"/>
+        <text x="128" y="42" font-family="ui-sans-serif" font-size="7.5" fill="#5a4a00" text-anchor="middle" font-weight="700">TDI</text>
+        <rect x="16" y="88" width="146" height="10" rx="2" fill="#4a5a4a"/>
+        <path d="M20 104 Q89 96 158 104" fill="none" stroke="#3a8a3a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="48" cy="118" r="8" fill="#3a4a3a" stroke="#5a8a5a" stroke-width="1.5"/>
+        <!-- Info -->
+        <text x="10" y="152" font-family="ui-sans-serif" font-size="9" fill="#0d2a1f" font-weight="700">Motor 1.6 TDI</text>
+        <text x="10" y="166" font-family="ui-sans-serif" font-size="8.5" fill="#3f8e26" font-weight="600">VW Golf VII (2014)</text>
+        <text x="10" y="179" font-family="ui-sans-serif" font-size="8" fill="#7a8a7a">Garantía 30 días</text>
+        <text x="10" y="210" font-family="Archivo Black,sans-serif" font-size="22" fill="#0d2a1f">420€</text>
+        <rect x="10" y="222" width="78" height="18" rx="4" fill="#25D366"/>
+        <text x="49" y="234" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+        <rect x="94" y="222" width="74" height="18" rx="4" fill="#3f8e26" fill-opacity="0.12" stroke="#3f8e26" stroke-width="0.5"/>
+        <text x="131" y="234" font-family="ui-monospace" font-size="7" fill="#3f8e26" text-anchor="middle" font-weight="700">DISPONIBLE</text>
+      </g>
+
+      <!-- CARD 2: Caja DSG -->
+      <g transform="translate(218,170)">
+        <rect width="178" height="258" rx="8" fill="#fff" stroke="#e8e3d5"/>
+        <rect width="178" height="130" rx="8" fill="#1a2a3a"/>
+        <rect x="6" y="6" width="60" height="14" rx="3" fill="#d4a010"/>
+        <text x="36" y="16" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="700">REF 1235</text>
+        <!-- Caja cambios: forma cilíndrica/rectangular con ejes -->
+        <rect x="26" y="20" width="126" height="68" rx="8" fill="#2a3a4a" stroke="#3a4a5a" stroke-width="1"/>
+        <rect x="32" y="28" width="114" height="52" rx="6" fill="#1a2a3a"/>
+        <!-- Patrón de engranaje -->
+        <circle cx="74" cy="54" r="22" fill="none" stroke="#3a5a7a" stroke-width="2"/>
+        <circle cx="74" cy="54" r="14" fill="#1a2a3a" stroke="#3a5a7a" stroke-width="1.5"/>
+        <circle cx="74" cy="54" r="6" fill="#2a3a4a"/>
+        <!-- radios del engranaje -->
+        <line x1="74" y1="32" x2="74" y2="40" stroke="#3a5a7a" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="74" y1="68" x2="74" y2="76" stroke="#3a5a7a" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="52" y1="54" x2="60" y2="54" stroke="#3a5a7a" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="88" y1="54" x2="96" y2="54" stroke="#3a5a7a" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- texto DSG -->
+        <text x="124" y="58" font-family="ui-monospace" font-size="8" fill="#4a7ab0" font-weight="700">DSG</text>
+        <!-- eje salida -->
+        <rect x="16" y="94" width="28" height="8" rx="4" fill="#3a5a7a"/>
+        <rect x="134" y="94" width="28" height="8" rx="4" fill="#3a5a7a"/>
+        <path d="M28 104 Q89 108 150 104" fill="none" stroke="#3a5a7a" stroke-width="2" stroke-linecap="round"/>
+        <text x="10" y="152" font-family="ui-sans-serif" font-size="9" fill="#0d2a1f" font-weight="700">Caja DSG-7</text>
+        <text x="10" y="166" font-family="ui-sans-serif" font-size="8.5" fill="#3f8e26" font-weight="600">Audi A3 (2016)</text>
+        <text x="10" y="179" font-family="ui-sans-serif" font-size="8" fill="#7a8a7a">Garantía 30 días</text>
+        <text x="10" y="210" font-family="Archivo Black,sans-serif" font-size="22" fill="#0d2a1f">650€</text>
+        <rect x="10" y="222" width="78" height="18" rx="4" fill="#25D366"/>
+        <text x="49" y="234" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+        <rect x="94" y="222" width="74" height="18" rx="4" fill="#3f8e26" fill-opacity="0.12" stroke="#3f8e26" stroke-width="0.5"/>
+        <text x="131" y="234" font-family="ui-monospace" font-size="7" fill="#3f8e26" text-anchor="middle" font-weight="700">DISPONIBLE</text>
+      </g>
+
+      <!-- CARD 3: Puerta delantera -->
+      <g transform="translate(408,170)">
+        <rect width="178" height="258" rx="8" fill="#fff" stroke="#e8e3d5"/>
+        <rect width="178" height="130" rx="8" fill="#c8c0b8"/>
+        <rect x="6" y="6" width="60" height="14" rx="3" fill="#d4a010"/>
+        <text x="36" y="16" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="700">REF 1236</text>
+        <!-- Puerta: panel lateral con ventana -->
+        <rect x="22" y="16" width="134" height="104" rx="6" fill="#b8b0a8" stroke="#a8a09a" stroke-width="1"/>
+        <!-- Ventana -->
+        <rect x="30" y="22" width="118" height="52" rx="4" fill="#8ab0c8" fill-opacity="0.7"/>
+        <!-- Manecilla interior -->
+        <rect x="128" y="82" width="22" height="6" rx="3" fill="#8a8a8a"/>
+        <circle cx="140" cy="85" r="4" fill="#9a9a9a"/>
+        <!-- Panel puerta -->
+        <rect x="30" y="80" width="58" height="28" rx="3" fill="#a8a0a0"/>
+        <!-- Altavoz -->
+        <circle cx="72" cy="110" r="8" fill="#8a8a8a"/>
+        <circle cx="72" cy="110" r="5" fill="#7a7a7a"/>
+        <circle cx="72" cy="110" r="2" fill="#6a6a6a"/>
+        <text x="10" y="152" font-family="ui-sans-serif" font-size="9" fill="#0d2a1f" font-weight="700">Puerta del. der.</text>
+        <text x="10" y="166" font-family="ui-sans-serif" font-size="8.5" fill="#3f8e26" font-weight="600">Seat León III (2018)</text>
+        <text x="10" y="179" font-family="ui-sans-serif" font-size="8" fill="#7a8a7a">Garantía 30 días</text>
+        <text x="10" y="210" font-family="Archivo Black,sans-serif" font-size="22" fill="#0d2a1f">140€</text>
+        <rect x="10" y="222" width="78" height="18" rx="4" fill="#25D366"/>
+        <text x="49" y="234" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+        <rect x="94" y="222" width="74" height="18" rx="4" fill="#F4C430" fill-opacity="0.15" stroke="#F4C430" stroke-width="0.5"/>
+        <text x="131" y="234" font-family="ui-monospace" font-size="7" fill="#a87f00" text-anchor="middle" font-weight="700">BAJO STOCK</text>
+      </g>
+
+      <!-- CARD 4: Alternador -->
+      <g transform="translate(598,170)">
+        <rect width="178" height="258" rx="8" fill="#fff" stroke="#e8e3d5"/>
+        <rect width="178" height="130" rx="8" fill="#2a2a2a"/>
+        <rect x="6" y="6" width="60" height="14" rx="3" fill="#d4a010"/>
+        <text x="36" y="16" font-family="ui-monospace" font-size="7" fill="#0d2a1f" text-anchor="middle" font-weight="700">REF 1237</text>
+        <!-- Alternador: cilindro con poleas y cables -->
+        <ellipse cx="89" cy="64" rx="52" ry="48" fill="#3a3a3a" stroke="#4a4a4a" stroke-width="1"/>
+        <ellipse cx="89" cy="64" rx="40" ry="36" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/>
+        <!-- ventilación lateral -->
+        <path d="M50 42 L38 42" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 52 L38 52" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 62 L38 62" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 72 L38 72" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 82 L38 82" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round"/>
+        <!-- polea dentada -->
+        <circle cx="89" cy="64" rx="22" r="22" fill="none" stroke="#6a6a6a" stroke-width="3" stroke-dasharray="5 3"/>
+        <circle cx="89" cy="64" r="10" fill="#3a3a3a" stroke="#5a5a5a" stroke-width="2"/>
+        <!-- cable positivo rojo -->
+        <path d="M118 48 L138 40 L138 32" fill="none" stroke="#c83a2a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="138" cy="30" r="4" fill="#c83a2a"/>
+        <!-- tornillo montaje -->
+        <circle cx="36" cy="96" r="6" fill="#3a3a3a" stroke="#5a5a5a" stroke-width="1.5"/>
+        <circle cx="142" cy="96" r="6" fill="#3a3a3a" stroke="#5a5a5a" stroke-width="1.5"/>
+        <text x="10" y="152" font-family="ui-sans-serif" font-size="9" fill="#0d2a1f" font-weight="700">Alternador 140A</text>
+        <text x="10" y="166" font-family="ui-sans-serif" font-size="8.5" fill="#3f8e26" font-weight="600">Ford Focus IV (2020)</text>
+        <text x="10" y="179" font-family="ui-sans-serif" font-size="8" fill="#7a8a7a">Garantía 30 días</text>
+        <text x="10" y="210" font-family="Archivo Black,sans-serif" font-size="22" fill="#0d2a1f">95€</text>
+        <rect x="10" y="222" width="78" height="18" rx="4" fill="#25D366"/>
+        <text x="49" y="234" font-family="ui-sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">WhatsApp</text>
+        <rect x="94" y="222" width="74" height="18" rx="4" fill="#3f8e26" fill-opacity="0.12" stroke="#3f8e26" stroke-width="0.5"/>
+        <text x="131" y="234" font-family="ui-monospace" font-size="7" fill="#3f8e26" text-anchor="middle" font-weight="700">DISPONIBLE</text>
+      </g>
     </svg>`,
 
     /* RECAMBIOS RECICLACAT — Tabla ERP */
