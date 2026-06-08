@@ -107,195 +107,122 @@
 </header>
 
 <!-- HERO NUEVO -->
-<section id="servicios" class="relative overflow-hidden" style="background:linear-gradient(160deg,#050D18 0%,#080F1E 50%,#050D18 100%);min-height:100svh;display:flex;flex-direction:column;justify-content:center;">
+<section id="servicios" class="relative overflow-hidden" style="background:linear-gradient(160deg,#050D18 0%,#080F1E 60%,#050D18 100%);min-height:100svh;display:flex;flex-direction:column;justify-content:center;">
 
-  <!-- Grid de fondo sutil -->
-  <div class="absolute inset-0 pointer-events-none" style="background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px;"></div>
+  <!-- Grid de fondo -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;"></div>
 
-  <!-- Glow de fondo limón -->
-  <div class="absolute pointer-events-none" style="right:-5%;top:5%;width:55%;height:80%;background:radial-gradient(ellipse at 60% 40%,rgba(244,196,48,0.12) 0%,rgba(103,194,58,0.06) 40%,transparent 70%);"></div>
+  <div class="relative z-10 max-w-8xl mx-auto px-6 w-full py-14 sm:py-16">
 
-  <div class="relative z-10 max-w-8xl mx-auto px-6 w-full py-16 sm:py-20">
+    <!-- LAYOUT: texto izquierda + limón derecha -->
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-6 items-center mb-12 sm:mb-14">
 
-    <!-- LAYOUT PRINCIPAL: texto izquierda + limón derecha -->
-    <div class="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center mb-14 sm:mb-16">
-
-      <!-- COLUMNA IZQUIERDA: texto -->
+      <!-- IZQUIERDA: texto -->
       <div class="order-2 lg:order-1">
         <div class="reveal mb-4">
-          <span class="font-mono text-xs sm:text-sm tracking-widest uppercase" style="color:#67C23A;">● Bienvenidos a</span>
+          <span class="font-mono text-xs sm:text-sm tracking-widest uppercase" style="color:#67C23A;">● Bienvenidos a Limonada Web</span>
         </div>
-        <div class="reveal" data-delay="1">
-          <div class="font-wordmark leading-none" style="font-size:clamp(4rem,10vw,7.5rem);color:#ffffff;letter-spacing:-0.04em;">LIMONADA</div>
-          <div class="flex items-center gap-4">
-            <div class="font-wordmark leading-none" style="font-size:clamp(4rem,10vw,7.5rem);color:#F4C430;letter-spacing:-0.04em;">WEB</div>
-            <!-- Hoja decorativa -->
-            <svg viewBox="0 0 60 80" class="flex-shrink-0" style="width:clamp(2.5rem,5vw,4rem);height:auto;margin-bottom:0.5rem;">
-              <path d="M30 75 C 15 60, 5 40, 10 20 C 15 5, 30 2, 30 2 C 30 2, 45 5, 50 20 C 55 40, 45 60, 30 75 Z" fill="#67C23A"/>
-              <path d="M30 2 L 30 75" fill="none" stroke="#3f8e26" stroke-width="2" opacity="0.6"/>
-              <path d="M30 20 C 20 25, 15 35, 18 45" fill="none" stroke="#3f8e26" stroke-width="1.5" opacity="0.5"/>
-              <path d="M30 20 C 40 25, 45 35, 42 45" fill="none" stroke="#3f8e26" stroke-width="1.5" opacity="0.5"/>
-            </svg>
-          </div>
-        </div>
-        <p class="reveal mt-6 text-base sm:text-lg leading-relaxed text-balance" style="color:rgba(255,255,255,0.7);max-width:480px;" data-delay="2">
-          Creamos páginas web modernas, aplicaciones web y soluciones con inteligencia artificial para ayudar a tu negocio a crecer.
+
+        <h1 class="reveal font-wordmark leading-[0.92]" style="font-size:clamp(2.8rem,6.5vw,5rem);color:#ffffff;letter-spacing:-0.03em;" data-delay="1">
+          Webs que <span style="color:#F4C430;">venden.</span><br>
+          <span class="h-serif" style="font-size:clamp(2.2rem,5.5vw,4.2rem);color:#ffffff;">Automatizaciones</span><br>
+          <span class="h-serif" style="font-size:clamp(2.2rem,5.5vw,4.2rem);color:#F4C430;">que trabajan por ti.</span>
+        </h1>
+
+        <p class="reveal mt-6 text-base sm:text-lg leading-relaxed" style="color:rgba(255,255,255,0.65);max-width:500px;" data-delay="2">
+          Diseñamos páginas web modernas, aplicaciones y automatizaciones procesadas con IA para que tu negocio sea más eficiente y rentable.
         </p>
+
         <div class="reveal mt-8 flex flex-col sm:flex-row gap-3" data-delay="3">
-          <a href="#contacto" class="btn btn-primary text-base">Hablemos <svg class="w-5 h-5"><use href="#arr"/></svg></a>
+          <a href="#contacto" class="btn btn-primary text-base">Solicitar presupuesto <svg class="w-5 h-5"><use href="#arr"/></svg></a>
           <a href="https://wa.me/34628482475?text=Hola%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Limonada%20Web" target="_blank" rel="noopener"
-            class="btn text-base font-medium"
-            style="background:#25D366;color:#fff;border:none;">
+            class="btn text-base font-medium" style="background:#25D366;color:#fff;border:none;">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1-1.4-.7-2.7-1.9-3.5-3.3-.1-.3-.1-.4.1-.6.2-.2.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.3 5.3 4.6 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l5-1.3c1.5.8 3.2 1.3 5 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
             WhatsApp directo
           </a>
         </div>
+
+        <!-- Stats rápidos -->
+        <div class="reveal mt-8 flex flex-wrap gap-6" data-delay="4">
+          <div><div class="font-wordmark text-2xl text-lemon" data-counter="25" data-suffix="+">25+</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Años en tech</div></div>
+          <div class="w-px bg-white/10 self-stretch"></div>
+          <div><div class="font-wordmark text-2xl text-lemon" data-counter="7">7</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Proyectos vivos</div></div>
+          <div class="w-px bg-white/10 self-stretch"></div>
+          <div><div class="font-wordmark text-2xl text-lemon" data-counter="100" data-suffix="%">100%</div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Código propio</div></div>
+        </div>
       </div>
 
-      <!-- COLUMNA DERECHA: Limón 3D brillante -->
+      <!-- DERECHA: Limón neón real -->
       <div class="order-1 lg:order-2 flex items-center justify-center reveal" data-delay="1">
-        <div class="relative" style="width:min(420px,90vw);height:min(420px,90vw);">
-          <!-- Glow exterior animado -->
-          <div class="absolute inset-0 rounded-full" style="background:radial-gradient(circle,rgba(244,196,48,0.35) 0%,rgba(103,194,58,0.15) 50%,transparent 70%);animation:aurora-drift 4s ease-in-out infinite;filter:blur(20px);"></div>
-          <!-- SVG Limón 3D -->
-          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:relative;z-index:1;filter:drop-shadow(0 0 40px rgba(244,196,48,0.5)) drop-shadow(0 0 80px rgba(244,196,48,0.2));">
-            <defs>
-              <radialGradient id="limonBody" cx="35%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#FFE566"/>
-                <stop offset="35%" stop-color="#F4C430"/>
-                <stop offset="70%" stop-color="#D4A010"/>
-                <stop offset="100%" stop-color="#8A6500"/>
-              </radialGradient>
-              <radialGradient id="limonShine" cx="25%" cy="20%" r="40%">
-                <stop offset="0%" stop-color="#FFFBE0" stop-opacity="0.9"/>
-                <stop offset="100%" stop-color="#FFE566" stop-opacity="0"/>
-              </radialGradient>
-              <radialGradient id="leafGrad" cx="40%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#8DC63F"/>
-                <stop offset="60%" stop-color="#67C23A"/>
-                <stop offset="100%" stop-color="#3f8e26"/>
-              </radialGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="4" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <!-- Sombra del limón -->
-            <ellipse cx="210" cy="330" rx="95" ry="18" fill="rgba(0,0,0,0.4)" filter="url(#glow)"/>
-            <!-- Cuerpo del limón -->
-            <path d="M 95 200 C 90 130, 130 60, 200 55 C 270 50, 320 110, 320 190 C 320 265, 280 330, 205 330 C 135 330, 100 270, 95 200 Z" fill="url(#limonBody)"/>
-            <!-- Textura de la piel -->
-            <path d="M 95 200 C 90 130, 130 60, 200 55 C 270 50, 320 110, 320 190 C 320 265, 280 330, 205 330 C 135 330, 100 270, 95 200 Z" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <!-- Brillo principal -->
-            <ellipse cx="160" cy="130" rx="60" ry="45" fill="url(#limonShine)"/>
-            <!-- Brillo secundario pequeño -->
-            <ellipse cx="135" cy="108" rx="22" ry="15" fill="rgba(255,255,255,0.6)" opacity="0.8"/>
-            <!-- Punta derecha del limón -->
-            <path d="M 312 175 C 330 170, 355 175, 350 190 C 345 205, 325 205, 318 200 Z" fill="#D4A010"/>
-            <!-- Punta izquierda del limón -->
-            <path d="M 100 205 C 82 200, 60 205, 62 218 C 64 230, 84 232, 92 225 Z" fill="#D4A010"/>
-            <!-- Hoja -->
-            <path d="M 195 55 C 175 10, 135 -5, 145 25 C 150 40, 170 48, 195 55 Z" fill="url(#leafGrad)" filter="url(#glow)"/>
-            <path d="M 195 55 C 175 35, 155 20, 148 28" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <!-- Tallo -->
-            <path d="M 198 55 C 195 42, 192 30, 190 18" fill="none" stroke="#5a9e2a" stroke-width="4" stroke-linecap="round"/>
-            <!-- Destellos / sparks -->
-            <g filter="url(#glow)" fill="#FFE566">
-              <circle cx="340" cy="120" r="4" opacity="0.9"/>
-              <circle cx="355" cy="145" r="2.5" opacity="0.7"/>
-              <circle cx="330" cy="100" r="2" opacity="0.6"/>
-              <circle cx="70" cy="160" r="3.5" opacity="0.8"/>
-              <circle cx="58" cy="185" r="2" opacity="0.6"/>
-              <circle cx="240" cy="40" r="3" opacity="0.7"/>
-              <circle cx="260" cy="25" r="2" opacity="0.5"/>
-              <circle cx="150" cy="340" r="3" opacity="0.6"/>
-              <circle cx="170" cy="355" r="2" opacity="0.4"/>
-            </g>
-            <!-- Líneas de brillo radiante -->
-            <g stroke="#F4C430" stroke-linecap="round" opacity="0.4">
-              <line x1="350" y1="90" x2="365" y2="75" stroke-width="2"/>
-              <line x1="358" y1="82" x2="375" y2="82" stroke-width="1.5"/>
-              <line x1="60" y1="140" x2="42" y2="125" stroke-width="2"/>
-              <line x1="52" y1="148" x2="35" y2="148" stroke-width="1.5"/>
-            </g>
-          </svg>
+        <div class="relative" style="width:min(500px,90vw);">
+          <!-- Glow de fondo -->
+          <div class="absolute inset-0 rounded-full pointer-events-none" style="background:radial-gradient(circle at 50% 50%,rgba(244,196,48,0.25) 0%,rgba(244,196,48,0.08) 50%,transparent 75%);transform:scale(1.15);filter:blur(30px);"></div>
+          <img
+            src="/images/limon-neon.png"
+            alt="Limón neón Limonada Web"
+            class="relative z-10 w-full h-auto"
+            style="mix-blend-mode:screen;filter:drop-shadow(0 0 60px rgba(244,196,48,0.6)) drop-shadow(0 0 20px rgba(244,196,48,0.4));"
+            loading="eager"
+          >
         </div>
       </div>
     </div>
 
-    <!-- FILA DE 5 SERVICIOS -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-
-      <div class="reveal glass-card p-5 sm:p-6 flex flex-col gap-3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.2);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
+    <!-- 5 SERVICIOS EN FILA -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div class="reveal glass-card p-5 flex flex-col gap-3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
+        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
           <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
         </div>
-        <div>
-          <div class="font-wordmark text-sm text-white mb-1">Diseño Web</div>
-          <div class="text-xs text-white/50 leading-relaxed">Páginas modernas, rápidas y optimizadas para convertir.</div>
-        </div>
+        <div><div class="font-wordmark text-sm text-white mb-1">Diseño Web</div><div class="text-xs text-white/50 leading-relaxed">Páginas modernas, rápidas y optimizadas para convertir.</div></div>
       </div>
 
-      <div class="reveal glass-card p-5 sm:p-6 flex flex-col gap-3" data-delay="1" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.2);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
-          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="1" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
+        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
+          <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a2 2 0 012 2v2a2 2 0 01-2 2 2 2 0 01-2-2V4a2 2 0 012-2z"/><path d="M6 8h12l1 10H5L6 8z"/><path d="M9 12v4M12 11v5M15 12v4"/></svg>
         </div>
-        <div>
-          <div class="font-wordmark text-sm text-white mb-1">Inteligencia Artificial</div>
-          <div class="text-xs text-white/50 leading-relaxed">Chatbots, automatizaciones y agentes para tu negocio.</div>
-        </div>
+        <div><div class="font-wordmark text-sm text-white mb-1">Inteligencia Artificial</div><div class="text-xs text-white/50 leading-relaxed">Chatbots, automatizaciones y agentes inteligentes.</div></div>
       </div>
 
-      <div class="reveal glass-card p-5 sm:p-6 flex flex-col gap-3" data-delay="2" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.2);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
+      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="2" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
+        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
           <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
         </div>
-        <div>
-          <div class="font-wordmark text-sm text-white mb-1">Automatización</div>
-          <div class="text-xs text-white/50 leading-relaxed">Optimizamos procesos y ahorramos tiempo y dinero.</div>
-        </div>
+        <div><div class="font-wordmark text-sm text-white mb-1">Automatización</div><div class="text-xs text-white/50 leading-relaxed">Optimizamos procesos y ahorramos tiempo y dinero.</div></div>
       </div>
 
-      <div class="reveal glass-card p-5 sm:p-6 flex flex-col gap-3" data-delay="3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.2);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
+      <div class="reveal glass-card p-5 flex flex-col gap-3" data-delay="3" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
+        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,60,0.12);border:1px solid rgba(103,194,60,0.3);">
           <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
-        <div>
-          <div class="font-wordmark text-sm text-white mb-1">SEO Local</div>
-          <div class="text-xs text-white/50 leading-relaxed">Te ayudamos a aparecer en Google y atraer más clientes.</div>
-        </div>
+        <div><div class="font-wordmark text-sm text-white mb-1">SEO Local</div><div class="text-xs text-white/50 leading-relaxed">Aparece en Google y atrae más clientes locales.</div></div>
       </div>
 
-      <div class="reveal glass-card p-5 sm:p-6 flex flex-col gap-3 col-span-2 sm:col-span-1" data-delay="4" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.2);">
-        <div class="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
+      <div class="reveal glass-card p-5 flex flex-col gap-3 col-span-2 sm:col-span-1" data-delay="4" style="background:rgba(255,255,255,0.03);border-color:rgba(103,194,58,0.25);">
+        <div class="w-10 h-10 rounded-xl grid place-items-center" style="background:rgba(103,194,58,0.12);border:1px solid rgba(103,194,58,0.3);">
           <svg class="w-5 h-5" style="color:#67C23A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
         </div>
-        <div>
-          <div class="font-wordmark text-sm text-white mb-1">Apps Web</div>
-          <div class="text-xs text-white/50 leading-relaxed">Desarrollamos aplicaciones a medida para gestionar tu negocio.</div>
-        </div>
+        <div><div class="font-wordmark text-sm text-white mb-1">Apps Web</div><div class="text-xs text-white/50 leading-relaxed">Aplicaciones a medida para gestionar tu negocio.</div></div>
       </div>
-
     </div>
-    <!-- CTA inferior -->
-    <div class="reveal mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl" style="background:rgba(244,196,48,0.06);border:1px solid rgba(244,196,48,0.2);" data-delay="2">
+
+    <!-- CTA INFERIOR -->
+    <div class="reveal mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl" style="background:rgba(244,196,48,0.06);border:1px solid rgba(244,196,48,0.2);" data-delay="3">
       <div class="flex items-center gap-3">
         <svg class="w-6 h-6 text-lemon flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        <span class="font-mono text-sm text-white/80">¿Tienes un proyecto? <span class="text-lemon font-bold">Hablemos</span></span>
+        <span class="font-mono text-sm" style="color:rgba(255,255,255,0.8);">¿Tienes un proyecto? <span class="text-lemon font-bold">HABLEMOS</span></span>
       </div>
-      <div class="flex gap-3">
-        <a href="#contacto" class="btn btn-primary text-sm !py-2.5 !px-5">Solicitar presupuesto <svg class="w-4 h-4"><use href="#arr"/></svg></a>
-        <a href="https://wa.me/34628482475?text=Hola%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Limonada%20Web" target="_blank" rel="noopener"
-          class="btn text-sm !py-2.5 !px-5" style="background:#25D366;color:#fff;">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1-1.4-.7-2.7-1.9-3.5-3.3-.1-.3-.1-.4.1-.6.2-.2.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.3 5.3 4.6 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l5-1.3c1.5.8 3.2 1.3 5 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
-          WhatsApp
-        </a>
-      </div>
+      <a href="https://wa.me/34628482475?text=Hola%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Limonada%20Web" target="_blank" rel="noopener"
+        class="btn text-sm !py-3 !px-6 w-full sm:w-auto justify-center" style="background:#F4C430;color:#050D18;font-weight:700;">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1-1.4-.7-2.7-1.9-3.5-3.3-.1-.3-.1-.4.1-.6.2-.2.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.3 5.3 4.6 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l5-1.3c1.5.8 3.2 1.3 5 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+        Escríbenos por WhatsApp y cuéntanos tu idea
+      </a>
     </div>
+
   </div>
 </section>
 
-<!-- CONFÍAN EN NOSOTROS -->
+<!-- CONFÍAN EN NOSOTROS --><!-- CONFÍAN EN NOSOTROS -->
 <!-- =====================================================
      PROYECTOS · 3 CASOS DESTACADOS (alternados)
      ===================================================== -->
