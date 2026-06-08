@@ -62,14 +62,16 @@
     });
   }
 
-  // WA BUTTON — ocultar al llegar al footer
+  // WA BUTTON — ocultar cuando se llega al footer (scroll directo, sin observer)
   const waBtn = document.querySelector('.wa-float');
-  const siteFooter = document.querySelector('footer');
-  if (waBtn && siteFooter && 'IntersectionObserver' in window) {
-    const footerObs = new IntersectionObserver(entries => {
-      entries.forEach(e => waBtn.classList.toggle('wa-hidden', e.isIntersecting));
-    }, { threshold: 0.1 });
-    footerObs.observe(siteFooter);
+  if (waBtn) {
+    const checkWaVisibility = () => {
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      waBtn.classList.toggle('wa-hidden', scrollBottom > docHeight - 120);
+    };
+    window.addEventListener('scroll', checkWaVisibility, { passive: true });
+    checkWaVisibility();
   }
 
   // SCROLL REVEAL
