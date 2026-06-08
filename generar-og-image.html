@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Generar OG Image · Limonada Web</title>
+<style>
+  body { margin: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial, sans-serif; gap: 20px; }
+  canvas { border: 2px solid #F4C430; border-radius: 8px; max-width: 100%; }
+  button { background: #F4C430; color: #0B1F3A; border: none; padding: 14px 36px; font-size: 18px; font-weight: 900; border-radius: 30px; cursor: pointer; letter-spacing: 1px; }
+  button:hover { background: #FFD645; }
+  p { color: #ffffff88; font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1200" height="630"></canvas>
+<button onclick="descargar()">Descargar og-image.png</button>
+<p>Guarda el PNG y cópialo a C:\proyectos\limonada-web\images\og-image.png</p>
+
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+const W = 1200, H = 630;
+
+// Fondo navy
+ctx.fillStyle = '#0B1F3A';
+ctx.fillRect(0, 0, W, H);
+
+// Grid lines
+ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+ctx.lineWidth = 1;
+for (let x = 0; x < W; x += 70) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+for (let y = 0; y < H; y += 70) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+// Glow círculo fondo
+const grd = ctx.createRadialGradient(1000, 350, 50, 1000, 350, 450);
+grd.addColorStop(0, 'rgba(244,196,48,0.12)');
+grd.addColorStop(1, 'rgba(244,196,48,0)');
+ctx.fillStyle = grd;
+ctx.fillRect(0, 0, W, H);
+
+// Limón grande decorativo (derecha)
+function limon(cx, cy, r, strokeW) {
+  // Hoja
+  ctx.fillStyle = '#67C23A';
+  ctx.beginPath();
+  ctx.ellipse(cx + r*0.55, cy - r*0.85, r*0.22, r*0.12, -0.6, 0, Math.PI*2);
+  ctx.fill();
+  // Tallo
+  ctx.strokeStyle = '#67C23A'; ctx.lineWidth = strokeW*0.4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(cx+r*0.42, cy-r*0.72); ctx.lineTo(cx+r*0.28, cy-r*0.5); ctx.stroke();
+  // Cuerpo
+  ctx.strokeStyle = '#F4C430'; ctx.lineWidth = strokeW;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, r*0.72, r, -0.2, 0, Math.PI*2);
+  ctx.stroke();
+  // Reflejo
+  ctx.lineWidth = strokeW*0.5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(cx-r*0.4, cy-r*0.3); ctx.quadraticCurveTo(cx-r*0.55, cy, cx-r*0.4, cy+r*0.3); ctx.stroke();
+  // Motas
+  ctx.fillStyle = '#F4C430';
+  [[0.2,0],[0.35,-0.2],[0.28,0.2],[0.42,0.1],[-0.1,0.45],[0.04,0.55]].forEach(([dx,dy]) => {
+    ctx.beginPath(); ctx.arc(cx+dx*r, cy+dy*r, strokeW*0.28, 0, Math.PI*2); ctx.fill();
+  });
+}
+limon(950, 320, 210, 22);
+
+// Logo pequeño
+ctx.strokeStyle = 'rgba(244,196,48,0.4)'; ctx.lineWidth = 2;
+ctx.beginPath(); roundRect(ctx, 84, 64, 100, 100, 18); ctx.fillStyle = '#06142A'; ctx.fill(); ctx.stroke();
+limon(134, 114, 30, 5);
+
+// Wordmark
+ctx.fillStyle = '#ffffff';
+ctx.font = '900 28px "Arial Black", Arial, sans-serif';
+ctx.fillText('LIMONADA', 204, 104);
+ctx.fillStyle = '#F4C430';
+ctx.font = '900 22px "Arial Black", Arial, sans-serif';
+ctx.fillText('— WEB —', 204, 136);
+
+// Headline principal
+ctx.fillStyle = '#ffffff';
+ctx.font = '900 108px "Arial Black", Arial, sans-serif';
+ctx.fillText('Exprimimos', 84, 320);
+
+ctx.fillStyle = '#F4C430';
+ctx.fillText('internet', 84, 436);
+
+ctx.fillStyle = 'rgba(255,255,255,0.85)';
+ctx.font = 'italic 78px Georgia, serif';
+ctx.fillText('para tu negocio.', 84, 530);
+
+// Footer
+ctx.strokeStyle = 'rgba(244,196,48,0.25)'; ctx.lineWidth = 1;
+ctx.beginPath(); ctx.moveTo(84, 568); ctx.lineTo(750, 568); ctx.stroke();
+
+ctx.fillStyle = 'rgba(255,255,255,0.5)';
+ctx.font = '22px "Courier New", monospace';
+ctx.letterSpacing = '3px';
+ctx.fillText('limonadaweb.com', 84, 604);
+
+ctx.fillStyle = 'rgba(255,255,255,0.3)';
+ctx.font = '18px "Courier New", monospace';
+ctx.fillText('Agencia digital · Málaga', 600, 604);
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
+  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r);
+  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+  ctx.closePath();
+}
+
+function descargar() {
+  const a = document.createElement('a');
+  a.download = 'og-image.png';
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>

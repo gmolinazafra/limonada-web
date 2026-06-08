@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso Legal · Limonada Web</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --navy: #0B1F3A; --navy-deep: #06142A; --lemon: #F4C430; --leaf: #67C23A; }
+    body { background: var(--navy); color: #fff; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 16px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    a { color: var(--lemon); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 40; background: rgba(11,31,58,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; }
+    .nav-brand span { color: var(--lemon); }
+    .nav-logo { width: 36px; height: 36px; background: var(--navy-deep); border: 1px solid rgba(244,196,48,0.3); border-radius: 10px; display: grid; place-items: center; }
+    .nav-back { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+    .nav-back:hover { color: var(--lemon); text-decoration: none; }
+
+    /* CONTENIDO */
+    main { max-width: 780px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .breadcrumb { font-family: monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.35); margin-bottom: 2rem; }
+    .breadcrumb span { color: var(--lemon); }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.5rem; }
+    .updated { font-size: 0.75rem; font-family: monospace; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    h2 { font-size: 1.1rem; font-weight: 700; color: var(--lemon); text-transform: uppercase; letter-spacing: 0.08em; margin: 2.5rem 0 0.75rem; }
+    p { color: rgba(255,255,255,0.75); margin-bottom: 1rem; }
+    .dato { display: flex; gap: 1rem; padding: 0.4rem 0; }
+    .dato strong { color: rgba(255,255,255,0.45); font-weight: 400; min-width: 140px; font-size: 0.9rem; }
+    .dato span { color: rgba(255,255,255,0.8); }
+    .pendiente { background: rgba(244,196,48,0.1); border: 1px dashed rgba(244,196,48,0.4); border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.8rem; color: var(--lemon); font-family: monospace; }
+
+    /* FOOTER */
+    footer { background: var(--navy-deep); border-top: 1px solid rgba(255,255,255,0.05); padding: 2rem; text-align: center; }
+    footer p { font-size: 0.8rem; color: rgba(255,255,255,0.3); font-family: monospace; }
+    .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.75rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.75rem; color: rgba(255,255,255,0.35); font-family: monospace; text-transform: uppercase; letter-spacing: 0.08em; }
+    .footer-links a:hover { color: var(--lemon); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand" style="text-decoration:none;color:#fff">
+    <div class="nav-logo">
+      <svg width="24" height="24" viewBox="0 0 100 100">
+        <path d="M58 18 C 70 12, 82 16, 78 30 C 70 28, 62 24, 58 18 Z" fill="#67C23A"/>
+        <path d="M52 32 C 22 30, 12 60, 28 80 C 44 96, 78 92, 86 70 C 92 50, 78 34, 52 32 Z" fill="none" stroke="#F4C430" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+    </div>
+    LIMONADA <span>WEB</span>
+  </a>
+  <a href="/" class="nav-back">← Volver a la web</a>
+</nav>
+
+<main>
+  <div class="breadcrumb">Limonada Web · <span>Aviso Legal</span></div>
+
+  <h1>Aviso Legal</h1>
+  <div class="updated">Última actualización: junio de 2026</div>
+
+  <h2>1. Datos del titular</h2>
+  <div class="dato"><strong>Titular</strong><span>Mari Ángeles Pedrosa Alarcón</span></div>
+  <div class="dato"><strong>NIF</strong><span class="pendiente">COMPLETAR</span></div>
+  <div class="dato"><strong>Domicilio</strong><span>Málaga, España <span class="pendiente">COMPLETAR dirección</span></span></div>
+  <div class="dato"><strong>Email</strong><span><a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a></span></div>
+  <div class="dato"><strong>Teléfono</strong><span>+34 628 482 475</span></div>
+  <div class="dato"><strong>Web</strong><span><a href="https://limonadaweb.com">limonadaweb.com</a></span></div>
+
+  <h2>2. Objeto y ámbito de aplicación</h2>
+  <p>El presente aviso legal regula el acceso y uso del sitio web <strong>limonadaweb.com</strong>, cuya titularidad corresponde a la persona indicada en el apartado anterior. El acceso al sitio web implica la aceptación de las condiciones aquí recogidas.</p>
+
+  <h2>3. Propiedad intelectual</h2>
+  <p>Todos los contenidos del sitio web —textos, imágenes, diseño gráfico, código fuente y demás elementos— son titularidad de Limonada Web o de terceros que han autorizado su uso, y están protegidos por la legislación española e internacional sobre propiedad intelectual e industrial.</p>
+  <p>Queda prohibida la reproducción, distribución, comunicación pública o transformación de cualquier contenido sin autorización expresa y por escrito del titular.</p>
+
+  <h2>4. Responsabilidad</h2>
+  <p>Limonada Web no se responsabiliza de los daños o perjuicios que pudieran derivarse del acceso o uso del sitio web, incluidos los producidos por virus informáticos, ni de la disponibilidad técnica del mismo.</p>
+  <p>Los enlaces a sitios web de terceros se ofrecen como referencia informativa. Limonada Web no controla ni asume responsabilidad sobre los contenidos de dichos sitios.</p>
+
+  <h2>5. Legislación aplicable</h2>
+  <p>Este aviso legal se rige por la legislación española. Para la resolución de cualquier controversia, las partes se someten a los juzgados y tribunales de Málaga, con renuncia expresa a cualquier otro fuero que pudiera corresponderles.</p>
+</main>
+
+<footer>
+  <p>© 2026 Limonada Web · Mari Ángeles Pedrosa Alarcón · Málaga, España</p>
+  <div class="footer-links">
+    <a href="/aviso-legal">Aviso legal</a>
+    <a href="/politica-privacidad">Privacidad</a>
+    <a href="/cookies">Cookies</a>
+    <a href="/">Inicio</a>
+  </div>
+</footer>
+
+</body>
+</html>
