@@ -45,14 +45,17 @@
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', () => {
+    const doToggle = (e) => {
+      e.preventDefault();
       const isOpen = mobileMenu.style.display === 'block';
       mobileMenu.style.display = isOpen ? 'none' : 'block';
       const icon = menuToggle.querySelector('svg');
       if (icon) icon.innerHTML = isOpen
         ? '<line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
         : '<line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="4" x2="4" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
-    });
+    };
+    menuToggle.addEventListener('click', doToggle);
+    menuToggle.addEventListener('touchend', doToggle, { passive: false });
     mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.style.display = 'none';
