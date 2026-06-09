@@ -190,7 +190,7 @@
   }
 
   .hero-desktop-screen {
-    display: block;
+    display: none;
   }
 
   /* ---------- Scroll reveal ---------- */
@@ -342,6 +342,11 @@
 }
 
 @media (min-width: 1024px) {
+  .hero-mobile-copy,
+  .hero-stats {
+    display: none !important;
+  }
+
   .site-topbar,
   .site-header {
     display: none !important;
