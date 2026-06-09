@@ -347,12 +347,25 @@
     display: none !important;
   }
 
+  .hero-section {
+    min-height: 100vh;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .hero-shell {
+    max-width: none !important;
+    width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .hero-desktop-screen {
     display: block;
     position: relative;
-    min-height: 560px;
+    min-height: 100vh;
     overflow: hidden;
-    padding: 3.2rem 3.5rem 3.6rem;
+    padding: clamp(2.2rem, 4vw, 3.8rem) clamp(3rem, 7vw, 6.5rem);
     background:
       radial-gradient(circle at 74% 45%, rgba(244,196,48,0.18) 0%, transparent 31%),
       radial-gradient(circle at 92% 16%, rgba(103,194,58,0.14) 0%, transparent 28%),
@@ -376,9 +389,9 @@
     content: "";
     position: absolute;
     z-index: 1;
-    top: 3rem;
-    right: -2rem;
-    width: min(48vw, 650px);
+    top: clamp(4rem, 10vh, 7rem);
+    right: clamp(-5rem, -3vw, -2rem);
+    width: min(55vw, 820px);
     aspect-ratio: 3 / 2;
     background: url("../images/limon-hero-integrado.png") center / cover no-repeat;
     opacity: 0.92;
@@ -443,19 +456,19 @@
     z-index: 2;
     display: flex;
     align-items: center;
-    min-height: 410px;
+    min-height: calc(100vh - 8rem);
   }
 
   .hero-screen-text {
     position: relative;
     z-index: 3;
-    max-width: 520px;
+    max-width: 660px;
     padding-left: 1rem;
   }
 
   .hero-screen-text h1 {
     font-family: "Bricolage Grotesque", system-ui, sans-serif;
-    font-size: clamp(3.25rem, 4.6vw, 5rem);
+    font-size: clamp(4rem, 6vw, 6.8rem);
     font-weight: 800;
     line-height: 0.98;
     letter-spacing: 0;
