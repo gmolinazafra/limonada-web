@@ -342,6 +342,11 @@
 }
 
 @media (min-width: 1024px) {
+  .site-topbar,
+  .site-header {
+    display: none !important;
+  }
+
   .hero-desktop-screen {
     display: block;
     position: relative;
