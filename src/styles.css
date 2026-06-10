@@ -274,6 +274,24 @@
     100% { transform: scale(1.6); opacity: 0; }
   }
 
+  /* ---------- FAQ acordeón ---------- */
+  .faq-content {
+    max-height: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    transition: max-height .35s cubic-bezier(.2,.7,.2,1), padding-bottom .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .faq-item.is-open .faq-content {
+    max-height: 520px;
+    padding-bottom: 1.5rem;
+  }
+  .faq-icon svg {
+    transition: transform .3s;
+  }
+  .faq-item.is-open .faq-icon svg {
+    transform: rotate(180deg);
+  }
+
   /* ---------- Highlight subrayado limón ---------- */
   .underline-lemon {
     background-image: linear-gradient(120deg, var(--lemon) 0%, var(--lemon) 100%);
