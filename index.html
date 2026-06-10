@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/styles.css?v=6">
+  <link rel="stylesheet" href="/assets/styles.css?v=7">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Limonada Web","description":"Agencia digital especializada en marketplaces, aplicaciones SaaS, webs corporativas, automatizaciones e integraciones con IA.","url":"https://limonadaweb.com","logo":"https://limonadaweb.com/images/logo-limonadaweb.png","telephone":"+34628482475","email":"hola@limonadaweb.com","address":{"@type":"PostalAddress","addressLocality":"Málaga","addressCountry":"ES"},"sameAs":["https://www.instagram.com/limonada_web/"],"slogan":"Exprimimos internet para tu negocio"}</script>
 </head>
 <body class="font-sans bg-navy text-white">
@@ -70,8 +70,8 @@
 <header class="site-header sticky top-0 z-40 border-b border-white/5 bg-navy/80 backdrop-blur-xl">
   <nav class="max-w-8xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#" class="flex items-center gap-3 group" aria-label="Limonada Web">
-      <span class="w-10 h-10 grid place-items-center rounded-xl bg-navy-deep border border-white/10 group-hover:border-lemon/40 transition-colors">
-        <svg class="w-7 h-7"><use href="#limon"/></svg>
+      <span class="w-10 h-10 grid place-items-center rounded-xl overflow-hidden bg-navy-deep border border-white/10 group-hover:border-lemon/40 transition-colors">
+        <img src="images/logo-limonadaweb-nav.png" alt="" class="w-full h-full object-cover">
       </span>
       <span class="hidden sm:flex flex-col leading-none">
         <span class="font-wordmark text-base tracking-tight">LIMONADA<span class="text-lemon ml-1">WEB</span></span>
@@ -332,7 +332,7 @@
           <div class="relative">
             <div class="absolute -inset-4 bg-gradient-to-br from-lemon/20 to-transparent rounded-3xl blur-2xl"></div>
             <div class="relative mockup-frame" data-mockup-content="red-desguace"></div>
-            <div class="absolute -top-3 -right-3 sm:top-5 sm:-right-5 px-4 py-1.5 rounded-full bg-leaf/20 backdrop-blur border border-leaf/40 text-leaf-soft text-xs font-mono uppercase tracking-widest">● En producción</div>
+            <div class="absolute -top-3 -right-3 sm:top-5 sm:-right-5 z-10 px-3 py-1.5 rounded-full bg-[#0a2618] border border-leaf/50 text-leaf text-2xs font-mono uppercase tracking-widest whitespace-nowrap shadow-lg">● En producción</div>
           </div>
         </div>
         <div class="lg:col-span-5 reveal" data-delay="1">
@@ -392,7 +392,7 @@
           <div class="relative">
             <div class="absolute -inset-4 bg-gradient-to-bl from-leaf/25 to-transparent rounded-3xl blur-2xl"></div>
             <div class="relative mockup-frame" data-mockup-content="reciclacat"></div>
-            <div class="absolute -top-3 -left-3 sm:top-5 sm:-left-5 px-4 py-1.5 rounded-full bg-leaf/20 backdrop-blur border border-leaf/40 text-leaf-soft text-xs font-mono uppercase tracking-widest">● Google Play</div>
+            <div class="absolute -top-3 -left-3 sm:top-5 sm:-left-5 z-10 px-3 py-1.5 rounded-full bg-[#0a2618] border border-leaf/50 text-leaf text-2xs font-mono uppercase tracking-widest whitespace-nowrap shadow-lg">● Google Play</div>
           </div>
         </div>
       </div>
@@ -406,7 +406,7 @@
           <div class="relative">
             <div class="absolute -inset-4 bg-gradient-to-tr from-lemon/20 to-transparent rounded-3xl blur-2xl"></div>
             <div class="relative mockup-frame" data-mockup-content="medibitacora"></div>
-            <div class="absolute -top-3 -right-3 sm:top-5 sm:-right-5 px-4 py-1.5 rounded-full bg-leaf/20 backdrop-blur border border-leaf/40 text-leaf-soft text-xs font-mono uppercase tracking-widest">● PWA + Android</div>
+            <div class="absolute -top-3 -right-3 sm:top-5 sm:-right-5 z-10 px-3 py-1.5 rounded-full bg-[#0a2618] border border-leaf/50 text-leaf text-2xs font-mono uppercase tracking-widest whitespace-nowrap shadow-lg">● PWA + Android</div>
           </div>
         </div>
         <div class="lg:col-span-5 reveal" data-delay="1">
@@ -690,23 +690,17 @@
   <div class="absolute top-20 right-0 w-96 h-96 bg-lemon/5 blur-3xl rounded-full pointer-events-none"></div>
 
   <div class="relative z-10 max-w-6xl mx-auto px-6">
-    <div class="grid lg:grid-cols-12 gap-12 mb-14">
-      <div class="lg:col-span-5 reveal">
-        <div class="pill mb-6"><span class="text-lemon">·</span> Preguntas frecuentes</div>
-        <h2 class="h-display text-5xl sm:text-6xl leading-[0.95]">
-          Antes de<br>
-          <span class="h-serif italic text-lemon">preguntarnos.</span>
-        </h2>
-        <p class="text-white/65 text-lg mt-6 text-balance">
-          Las dudas que más nos hacen antes de empezar. Si tienes otra, escríbenos sin compromiso.
-        </p>
-        <a href="#contacto" class="btn btn-primary mt-8 text-sm">
-          Hablemos
-          <svg class="w-4 h-4"><use href="#arr"/></svg>
-        </a>
-      </div>
+    <div class="text-center mb-14 reveal">
+      <div class="pill mx-auto mb-6"><span class="text-lemon">·</span> Preguntas frecuentes</div>
+      <h2 class="h-display text-5xl sm:text-6xl leading-[0.95]">
+        Antes de <span class="h-serif italic text-lemon">preguntarnos.</span>
+      </h2>
+      <p class="text-white/65 text-lg mt-6 max-w-2xl mx-auto text-balance">
+        Las dudas que más nos hacen antes de empezar. Si tienes otra, escríbenos sin compromiso.
+      </p>
+    </div>
 
-      <div class="lg:col-span-7 space-y-3 reveal" data-delay="1">
+    <div class="max-w-3xl mx-auto space-y-3 reveal" data-delay="1">
 
         <div class="faq-item glass-card overflow-hidden">
           <button class="faq-trigger w-full text-left p-6 flex items-center justify-between gap-4 hover:bg-white/[0.02] transition-colors">
@@ -804,7 +798,9 @@
           </div>
         </div>
 
-      </div>
+    </div>
+    <div class="text-center mt-10 reveal">
+      <a href="#contacto" class="btn btn-primary text-sm">Hablemos <svg class="w-4 h-4"><use href="#arr"/></svg></a>
     </div>
   </div>
 </section>
