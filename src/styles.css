@@ -418,12 +418,36 @@
     border-bottom: 1px solid hsla(0, 0%, 100%, 0.06);
   }
 
-  .hero-screen-nav img {
-    width: 210px;
-    height: auto;
+  .hero-screen-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem 0.7rem;
     border-radius: 0.9rem;
     border: 1px solid rgba(244,196,48,0.22);
+    background: rgba(6,20,42,0.55);
     box-shadow: 0 8px 30px -12px rgba(0,0,0,0.6);
+  }
+
+  .hero-screen-brand img {
+    width: 200px;
+    height: auto;
+  }
+
+  .hero-screen-brand span {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .hero-screen-brand span em {
+    font-style: normal;
+    color: var(--lemon);
   }
 
   .hero-screen-nav nav {
