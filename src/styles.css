@@ -342,6 +342,11 @@
 }
 
 @media (min-width: 1024px) {
+  .hero-mobile-copy,
+  .hero-stats {
+    display: none !important;
+  }
+
   .site-header,
   .site-topbar {
     display: none !important;
