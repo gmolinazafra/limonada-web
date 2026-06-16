@@ -26,6 +26,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/styles.css?v=7">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Limonada Web","description":"Agencia digital especializada en marketplaces, aplicaciones SaaS, webs corporativas, automatizaciones e integraciones con IA.","url":"https://limonadaweb.com","logo":"https://limonadaweb.com/images/logo-limonadaweb.png","telephone":"+34628482475","email":"hola@limonadaweb.com","address":{"@type":"PostalAddress","addressLocality":"Málaga","addressCountry":"ES"},"sameAs":["https://www.instagram.com/limonada_web/"],"slogan":"Exprimimos internet para tu negocio"}</script>
+  <style>
+    /* Emblema de marca: limón neón vectorial en el nav (móvil + escritorio) */
+    .lw-brand-emblem{position:relative;width:2.5rem;height:2.5rem;flex:none;overflow:visible;display:grid;place-items:center}
+    .lw-brand-emblem::before{content:"";position:absolute;inset:-32%;border-radius:9999px;background:radial-gradient(circle at 50% 50%,rgba(244,196,48,.5),rgba(244,196,48,0) 68%);filter:blur(2px);opacity:.85;transition:opacity .35s ease;pointer-events:none;z-index:0}
+    .lw-brand-emblem svg{position:relative;z-index:1;width:74%;height:74%;filter:drop-shadow(0 0 4px rgba(244,196,48,.65)) drop-shadow(0 0 11px rgba(244,196,48,.32))}
+    .lw-brand:hover .lw-brand-emblem::before{opacity:1}
+    .lw-brand:hover .lw-brand-emblem svg{filter:drop-shadow(0 0 5px rgba(244,196,48,.8)) drop-shadow(0 0 14px rgba(244,196,48,.45))}
+    @media (min-width:640px){.lw-brand-emblem{width:2.75rem;height:2.75rem}}
+  </style>
 </head>
 <body class="font-sans bg-navy text-white">
 <div id="scroll-progress"></div>
@@ -69,13 +78,13 @@
 <!-- NAV -->
 <header class="site-header sticky top-0 z-40 border-b border-white/5 bg-navy/80 backdrop-blur-xl">
   <nav class="max-w-8xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#" class="flex items-center gap-3 group" aria-label="Limonada Web">
-      <span class="w-10 h-10 grid place-items-center rounded-xl overflow-hidden bg-navy-deep border border-white/10 group-hover:border-lemon/40 transition-colors">
-        <img src="images/logo-limonadaweb-nav.png" alt="" class="w-full h-full object-cover">
+    <a href="#" class="lw-brand flex items-center gap-3 group" aria-label="Limonada Web">
+      <span class="lw-brand-emblem rounded-2xl bg-navy-deep border border-white/10 group-hover:border-lemon/50 transition-colors">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#limon"/></svg>
       </span>
-      <span class="hidden sm:flex flex-col leading-none">
-        <span class="font-wordmark text-base tracking-tight">LIMONADA<span class="text-lemon ml-1">WEB</span></span>
-        <span class="text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Agencia digital · Málaga</span>
+      <span class="flex flex-col leading-none">
+        <span class="font-wordmark text-sm sm:text-base tracking-tight whitespace-nowrap">LIMONADA<span class="text-lemon ml-1">WEB</span></span>
+        <span class="hidden sm:block text-2xs font-mono uppercase tracking-widest text-white/40 mt-1">Agencia digital · Málaga</span>
       </span>
     </a>
     <ul class="hidden lg:flex items-center gap-1 bg-white/5 border border-white/10 rounded-full px-2 py-1.5 backdrop-blur">
@@ -87,7 +96,7 @@
       <li><a href="#contacto" class="px-4 py-2 rounded-full text-sm text-white/80 hover:text-white hover:bg-white/5 transition">Contacto</a></li>
     </ul>
     <div class="flex items-center gap-3">
-      <a href="#contacto" class="btn btn-primary text-sm !py-2.5 !px-5">Hablemos <svg class="w-4 h-4"><use href="#arr"/></svg></a>
+      <a href="#contacto" class="btn btn-primary text-sm !py-2.5 !px-5 hidden lg:inline-flex">Hablemos <svg class="w-4 h-4"><use href="#arr"/></svg></a>
       <button id="menu-toggle" class="w-10 h-10 grid place-items-center rounded-xl bg-white/5 border border-white/10 hover:border-lemon/40 transition-colors" aria-label="Menú">
         <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
@@ -102,6 +111,7 @@
       <li><a href="#proceso" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/5 transition">Proceso</a></li>
       <li><a href="#faq" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/5 transition">FAQ</a></li>
       <li><a href="#contacto" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/5 transition">Contacto</a></li>
+      <li class="pt-2"><a href="#contacto" class="mobile-nav-link btn btn-primary w-full justify-center text-sm">Hablemos <svg class="w-4 h-4"><use href="#arr"/></svg></a></li>
     </ul>
   </div>
 </header>
