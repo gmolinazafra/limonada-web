@@ -27,12 +27,11 @@
   <link rel="stylesheet" href="/assets/styles.css?v=7">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Limonada Web","description":"Agencia digital especializada en marketplaces, aplicaciones SaaS, webs corporativas, automatizaciones e integraciones con IA.","url":"https://limonadaweb.com","logo":"https://limonadaweb.com/images/logo-limonadaweb.png","telephone":"+34628482475","email":"hola@limonadaweb.com","address":{"@type":"PostalAddress","addressLocality":"Málaga","addressCountry":"ES"},"sameAs":["https://www.instagram.com/limonada_web/"],"slogan":"Exprimimos internet para tu negocio"}</script>
   <style>
-    /* Emblema de marca: limón neón vectorial en el nav (móvil + escritorio) */
-    .lw-brand-emblem{position:relative;width:2.5rem;height:2.5rem;flex:none;overflow:visible;display:grid;place-items:center}
-    .lw-brand-emblem::before{content:"";position:absolute;inset:-32%;border-radius:9999px;background:radial-gradient(circle at 50% 50%,rgba(244,196,48,.5),rgba(244,196,48,0) 68%);filter:blur(2px);opacity:.85;transition:opacity .35s ease;pointer-events:none;z-index:0}
-    .lw-brand-emblem svg{position:relative;z-index:1;width:74%;height:74%;filter:drop-shadow(0 0 4px rgba(244,196,48,.65)) drop-shadow(0 0 11px rgba(244,196,48,.32))}
+    /* Emblema de marca: limón neón real (hero) sobre disco navy, mezcla screen */
+    .lw-brand-emblem{position:relative;width:2.5rem;height:2.5rem;flex:none}
+    .lw-brand-emblem::before{content:"";position:absolute;inset:-30%;border-radius:9999px;background:radial-gradient(circle at 50% 45%,rgba(244,196,48,.42),rgba(244,196,48,0) 64%);filter:blur(3px);opacity:.7;transition:opacity .35s ease;pointer-events:none;z-index:0}
+    .lw-brand-emblem img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;z-index:1}
     .lw-brand:hover .lw-brand-emblem::before{opacity:1}
-    .lw-brand:hover .lw-brand-emblem svg{filter:drop-shadow(0 0 5px rgba(244,196,48,.8)) drop-shadow(0 0 14px rgba(244,196,48,.45))}
     @media (min-width:640px){.lw-brand-emblem{width:2.75rem;height:2.75rem}}
   </style>
 </head>
@@ -79,8 +78,8 @@
 <header class="site-header sticky top-0 z-40 border-b border-white/5 bg-navy/80 backdrop-blur-xl">
   <nav class="max-w-8xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#" class="lw-brand flex items-center gap-3 group" aria-label="Limonada Web">
-      <span class="lw-brand-emblem rounded-2xl bg-navy-deep border border-white/10 group-hover:border-lemon/50 transition-colors">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#limon"/></svg>
+      <span class="lw-brand-emblem rounded-full border border-white/10 group-hover:border-lemon/50 transition-colors" style="background:#0B1F3A">
+        <img src="images/logo-limonadaweb-lemon.png" alt="">
       </span>
       <span class="flex flex-col leading-none">
         <span class="font-wordmark text-sm sm:text-base tracking-tight whitespace-nowrap">LIMONADA<span class="text-lemon ml-1">WEB</span></span>
@@ -1144,9 +1143,12 @@
       <div class="lg:col-span-2"><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mb-4">Empresa</div><ul class="space-y-2 text-white/70 text-sm"><li><a href="#proyectos" class="hover:text-lemon transition">Proyectos</a></li><li><a href="#sobre-mi" class="hover:text-lemon transition">Sobre mí</a></li><li><a href="#proceso" class="hover:text-lemon transition">Proceso</a></li><li><a href="#faq" class="hover:text-lemon transition">FAQ</a></li><li><a href="#contacto" class="hover:text-lemon transition">Contacto</a></li></ul></div>
       <div class="lg:col-span-2"><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mb-4">Contacto directo</div><ul class="space-y-2 text-white/70 text-sm"><li><a href="mailto:hola@limonadaweb.com" class="hover:text-lemon transition">hola@limonadaweb.com</a></li><li><a href="tel:+34628482475" class="hover:text-lemon transition">+34 628 482 475</a></li><li class="text-white/50">Málaga · España</li></ul></div>
     </div>
-    <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40 font-mono">
-      <div>© <span id="current-year">2026</span> Limonada Web · Todos los derechos reservados</div>
-      <div class="flex gap-6"><a href="/aviso-legal" class="hover:text-lemon transition">Aviso legal</a><a href="/politica-privacidad" class="hover:text-lemon transition">Privacidad</a><a href="/cookies" class="hover:text-lemon transition">Cookies</a></div>
+    <div class="pt-8 border-t border-white/5">
+      <p class="text-2xs font-mono text-white/35 leading-relaxed mb-5 text-center sm:text-left">Titular: Mari Ángeles Pedrosa Alarcón · NIF 53691928S · Av. Marcelino Camacho 90, 29010 Málaga (España) · <a href="mailto:hola@limonadaweb.com" class="hover:text-lemon transition">hola@limonadaweb.com</a> · <a href="tel:+34628482475" class="hover:text-lemon transition">+34 628 482 475</a></p>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40 font-mono">
+        <div>© <span id="current-year">2026</span> Limonada Web · Todos los derechos reservados</div>
+        <div class="flex gap-6"><a href="/aviso-legal" class="hover:text-lemon transition">Aviso legal</a><a href="/politica-privacidad" class="hover:text-lemon transition">Privacidad</a><a href="/cookies" class="hover:text-lemon transition">Cookies</a></div>
+      </div>
     </div>
   </div>
 </footer>
