@@ -35,6 +35,10 @@
     .lw-brand-emblem img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;z-index:1}
     .lw-brand:hover .lw-brand-emblem::before{opacity:1}
     @media (min-width:640px){.lw-brand-emblem{width:2.75rem;height:2.75rem}}
+    /* Pill de ubicación del hero: una sola fila, centrado, icono alineado */
+    .lw-hero-pill{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;white-space:nowrap;font-size:11px;letter-spacing:.04em;max-width:100%}
+    .lw-hero-pill svg{flex:none}
+    @media (min-width:480px){.lw-hero-pill{font-size:12px}}
   </style>
 </head>
 <body class="font-sans bg-navy text-white">
@@ -45,13 +49,11 @@
 <!-- SVG SPRITE -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="limon" viewBox="0 0 100 100">
-    <path d="M58 18 C 70 12, 82 16, 78 30 C 70 28, 62 24, 58 18 Z" fill="#67C23A"/>
-    <line x1="56" y1="22" x2="52" y2="32" stroke="#67C23A" stroke-width="3" stroke-linecap="round"/>
-    <path d="M52 32 C 22 30, 12 60, 28 80 C 44 96, 78 92, 86 70 C 92 50, 78 34, 52 32 Z" fill="none" stroke="#F4C430" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M36 48 C 30 56, 30 66, 34 74" stroke="#F4C430" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <circle cx="60" cy="50" r="1.8" fill="#F4C430"/><circle cx="68" cy="46" r="1.5" fill="#F4C430"/>
-    <circle cx="64" cy="56" r="1.5" fill="#F4C430"/><circle cx="72" cy="56" r="1.6" fill="#F4C430"/>
-    <circle cx="42" cy="72" r="1.8" fill="#F4C430"/><circle cx="50" cy="78" r="1.5" fill="#F4C430"/>
+    <path d="M 67 28 C 79 16, 93 19, 90 31 C 87 42, 72 41, 67 28 Z" fill="#67C23A"/>
+    <path d="M 60 27 C 62 24, 64 23, 67 23" stroke="#F4C430" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 83.6 34.0 L 83.9 34.7 L 84.2 35.8 L 84.3 37.3 L 84.4 38.9 L 84.3 40.7 L 84.1 42.7 L 83.7 44.9 L 83.2 47.1 L 82.5 49.4 L 81.7 51.8 L 80.7 54.2 L 79.6 56.7 L 78.5 59.1 L 77.2 61.5 L 75.8 63.8 L 74.3 66.1 L 72.8 68.2 L 71.2 70.3 L 69.6 72.1 L 68.1 73.9 L 66.6 75.4 L 65.1 76.6 L 63.9 77.7 L 63.0 78.2 L 62.0 78.7 L 60.5 79.3 L 58.7 79.9 L 56.7 80.5 L 54.4 81.0 L 52.0 81.4 L 49.4 81.7 L 46.8 82.0 L 44.1 82.1 L 41.4 82.1 L 38.7 82.1 L 36.0 81.9 L 33.4 81.6 L 30.8 81.2 L 28.3 80.7 L 26.0 80.1 L 23.8 79.5 L 21.7 78.7 L 19.9 77.9 L 18.2 77.1 L 16.8 76.2 L 15.7 75.4 L 14.8 74.6 L 14.4 74.0 L 14.1 73.3 L 13.8 72.2 L 13.7 70.7 L 13.6 69.1 L 13.7 67.3 L 13.9 65.3 L 14.3 63.1 L 14.8 60.9 L 15.5 58.6 L 16.3 56.2 L 17.3 53.8 L 18.4 51.3 L 19.5 48.9 L 20.8 46.5 L 22.2 44.2 L 23.7 41.9 L 25.2 39.8 L 26.8 37.7 L 28.4 35.9 L 29.9 34.1 L 31.4 32.6 L 32.9 31.4 L 34.1 30.3 L 35.0 29.8 L 36.0 29.3 L 37.5 28.7 L 39.3 28.1 L 41.3 27.5 L 43.6 27.0 L 46.0 26.6 L 48.6 26.3 L 51.2 26.0 L 53.9 25.9 L 56.6 25.9 L 59.3 25.9 L 62.0 26.1 L 64.6 26.4 L 67.2 26.8 L 69.7 27.3 L 72.0 27.9 L 74.2 28.5 L 76.3 29.3 L 78.1 30.1 L 79.8 30.9 L 81.2 31.8 L 82.3 32.6 L 83.2 33.4 Z" fill="none" stroke="#F4C430" stroke-width="7.5" stroke-linejoin="round"/>
+    <path d="M31 49 C 25 57, 25 68, 32 77" stroke="#F4C430" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+    <circle cx="58" cy="50" r="2.1" fill="#F4C430"/><circle cx="66" cy="56" r="1.8" fill="#F4C430"/><circle cx="44" cy="73" r="1.9" fill="#F4C430"/>
   </symbol>
   <symbol id="ext" viewBox="0 0 24 24">
     <path d="M14 4h6v6M20 4l-9 9M19 13v6a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -124,7 +126,7 @@
   <div class="hero-shell relative z-10 max-w-8xl mx-auto px-6">
     <div class="hero-mobile-copy">
       <div class="reveal flex justify-center mb-8">
-        <div class="pill pill-lemon"><svg class="w-3.5 h-3.5"><use href="#limon"/></svg> Málaga · España · Disponible online</div>
+        <div class="pill pill-lemon lw-hero-pill"><svg class="w-3.5 h-3.5"><use href="#limon"/></svg> Málaga · España · Disponible online</div>
       </div>
       <h1 class="reveal h-display text-center text-5xl sm:text-6xl lg:text-[7rem] text-white leading-[0.92]" data-delay="1">
         Webs que <span class="text-gradient-lemon">venden.</span><br>
