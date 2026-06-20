@@ -599,13 +599,14 @@
           <p class="text-white/70 text-lg mb-6 leading-relaxed">Aplicación SaaS que digitaliza la gestión operativa diaria de los Centros Autorizados de Tratamiento. Cumplimiento normativo, gestión de campa y trazabilidad completa.</p>
           <div class="space-y-4 mb-8">
             <div class="flex gap-4"><div class="flex-shrink-0 w-1 bg-lemon rounded-full mt-1"></div><div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mb-1">El reto</div><p class="text-white/75 text-sm">Eliminar papel, hojas Excel dispersas y software costoso. Cumplir RD 614/2001 y Ley 7/2022 con documentación automática y auditable.</p></div></div>
-            <div class="flex gap-4"><div class="flex-shrink-0 w-1 bg-leaf rounded-full mt-1"></div><div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mb-1">El resultado</div><p class="text-white/75 text-sm">Generación automática del Boletín de Supresión de Tensión y Acta de Descontaminación, mapa visual de campa, sync con Google Sheets y avisos del límite legal de 2 años.</p></div></div>
+            <div class="flex gap-4"><div class="flex-shrink-0 w-1 bg-leaf rounded-full mt-1"></div><div><div class="text-2xs font-mono uppercase tracking-widest text-white/40 mb-1">El resultado</div><p class="text-white/75 text-sm">Generación automática del Boletín de Supresión de Tensión y Acta de Descontaminación, mapa visual de campa, sync con Google Sheets vía OAuth 2.0 (scope <code class="text-lemon/80 font-mono text-xs">drive.file</code>, sin auditoría CASA) y avisos del límite legal de 2 años.</p></div></div>
           </div>
           <div class="flex flex-wrap gap-2 mb-8">
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">SaaS</span>
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">React Native</span>
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">Expo</span>
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">Google Sheets API</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">OAuth 2.0 · Google APIs</span>
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">Cumplimiento</span>
             <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 font-mono">Offline-first</span>
           </div>
@@ -908,6 +909,11 @@
         <div class="w-12 h-12 rounded-xl bg-lemon/15 border border-lemon/20 grid place-items-center mb-6"><svg class="w-6 h-6 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <h3 class="h-display text-2xl mb-3">Cumplimiento normativo</h3>
         <p class="text-white/60 text-sm">Plataformas sectoriales que cumplen RD, leyes y normativas específicas sin que tengas que pensar en ello.</p>
+      </div>
+      <div class="col-span-12 md:col-span-6 lg:col-span-4 glass-card p-8 reveal" data-delay="3">
+        <div class="w-12 h-12 rounded-xl bg-lemon/15 border border-lemon/20 grid place-items-center mb-6"><svg class="w-6 h-6 text-lemon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/><path d="M9 12a3 3 0 003-3V3a3 3 0 00-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="h-display text-2xl mb-3">Integraciones OAuth 2.0</h3>
+        <p class="text-white/60 text-sm">Conectamos tu web con Google, Microsoft y otros proveedores. Login social, sincronización de calendarios, lectura de hojas y documentos sin contraseñas en juego.</p>
       </div>
     </div>
   </div>
