@@ -538,9 +538,9 @@
   .hero-screen-nav nav {
     display: flex;
     align-items: center;
-    gap: 2.9rem;
+    gap: clamp(1.4rem, 2.2vw, 2.4rem);
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.86rem;
+    font-size: clamp(0.72rem, 0.85vw, 0.84rem);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
