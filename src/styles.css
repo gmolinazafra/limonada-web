@@ -418,6 +418,10 @@
 }
 
 @media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 0;
+  }
+
   .hero-mobile-copy,
   .hero-stats {
     display: none !important;
