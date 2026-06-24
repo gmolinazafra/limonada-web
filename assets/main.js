@@ -77,6 +77,38 @@
     checkWaVisibility();
   }
 
+  // ASISTENTE DE CONTACTO
+  const leadAssistant = document.getElementById('lead-assistant');
+  const leadAssistantClose = document.getElementById('lead-assistant-close');
+  if (leadAssistant && leadAssistantClose) {
+    const storageKey = 'lwLeadAssistantClosed';
+    const hasClosedAssistant = () => {
+      try { return localStorage.getItem(storageKey) === '1'; }
+      catch { return false; }
+    };
+    const markAssistantClosed = () => {
+      try { localStorage.setItem(storageKey, '1'); }
+      catch {}
+    };
+    const showAssistant = () => {
+      if (!hasClosedAssistant()) leadAssistant.classList.add('is-visible');
+    };
+    const delayedShow = window.setTimeout(showAssistant, 5200);
+    const showOnScroll = () => {
+      if (window.scrollY > 360) {
+        showAssistant();
+        window.removeEventListener('scroll', showOnScroll);
+      }
+    };
+    window.addEventListener('scroll', showOnScroll, { passive: true });
+    leadAssistantClose.addEventListener('click', () => {
+      window.clearTimeout(delayedShow);
+      markAssistantClosed();
+      leadAssistant.classList.remove('is-visible');
+      window.removeEventListener('scroll', showOnScroll);
+    });
+  }
+
   // SCROLL REVEAL
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
