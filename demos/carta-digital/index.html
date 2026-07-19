@@ -21,6 +21,7 @@
 
   <!-- Polyfill window.storage usando localStorage -->
   <script>
+    window.IS_DEMO = true; // Demo pública: deshabilita subida de fotos
     window.storage = {
       get: async (key) => {
         try {
@@ -515,11 +516,13 @@ function ModalPlato({ plato, fotoInicial, categorias, onSave, onClose }) {
       <div className="modal-bx">
         <div className="modal-tit">{isNew ? "Nuevo plato" : "Editar plato"}</div>
 
-        {/* Foto */}
-        <div className="ff">
-          <label className="fl">Foto del plato</label>
-          <FotoUpload valor={foto ?? null} onChange={handleFotoChange} />
-        </div>
+        {/* Foto — oculta en modo demo */}
+        {!window.IS_DEMO && (
+          <div className="ff">
+            <label className="fl">Foto del plato</label>
+            <FotoUpload valor={foto ?? null} onChange={handleFotoChange} />
+          </div>
+        )}
 
         <div className="fr">
           <div className="ff">
