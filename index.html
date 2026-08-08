@@ -250,7 +250,6 @@
       pointer-events:none;background:white
     }
     .web-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
-    .web-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
     .rgpd{background:#fff}
     .rgpd-intro{
       display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:start;
@@ -280,7 +279,6 @@
       border:0;width:1440px;height:900px;transform:scale(.39);transform-origin:top left;
       pointer-events:none;background:white
     }
-    .rgpd-mini-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
     .rgpd-client-copy{padding:22px}
     .rgpd-client-copy .small{font-size:11px;color:#7b6410;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
     .rgpd-client-copy h3{font-size:20px;margin:7px 0 4px}
@@ -347,6 +345,17 @@
     #cookie-banner .btn-reject{background:transparent;color:#c0c8d3;border:1px solid rgba(255,255,255,.2);padding:9px 20px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer}
     #cookie-banner.hidden{display:none}
     @media(max-width:640px){#cookie-banner{flex-direction:column;align-items:flex-start}#cookie-banner .cookie-btns{width:100%;justify-content:stretch}#cookie-banner .btn-accept,#cookie-banner .btn-reject{flex:1;text-align:center}}
+
+    /* Browserbar estático para previews con imagen */
+    .browserbar-static{height:28px;background:#f2f4f7;border-bottom:1px solid #e2e5ea;display:flex;align-items:center;gap:5px;padding:0 10px;flex-shrink:0}
+    .browserbar-static i{width:7px;height:7px;border-radius:50%;background:#d8dde3;display:block}
+    .browserbar-static span{font-size:10px;color:#8896a7;margin-left:4px}
+    /* Imagen de preview RGPD */
+    .rgpd-client-preview{display:flex;flex-direction:column}
+    .rgpd-preview-img{width:100%;flex:1;object-fit:cover;object-position:top;display:block;border:0;min-height:0}
+    /* Imagen de preview proyectos */
+    .web-preview{height:300px;background:#eef0ec;border-bottom:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+    .project-preview-img{width:100%;flex:1;object-fit:cover;object-position:top;display:block;border:0;min-height:0}
   </style>
   <meta property="og:title" content="Limonada Web · Diseño web, apps y automatizaciones en Málaga">
   <meta property="og:description" content="Creamos webs, aplicaciones, automatizaciones e implantaciones RGPD que ayudan a vender mejor, trabajar con más orden y reducir riesgos y tareas manuales.">
@@ -390,7 +399,6 @@
       function toggle(e){ e.preventDefault(); panel.toggleAttribute('hidden'); }
       btn.addEventListener('click', toggle);
       btn.addEventListener('touchend', toggle);
-      // Smooth scroll solo en links de navegación internos
       document.querySelectorAll('a[href^="#"]').forEach(function(a){
         a.addEventListener('click', function(e){
           var id = a.getAttribute('href').slice(1);
@@ -519,7 +527,7 @@
 
       <div class="projectgrid">
         <a class="project" href="https://reddesguace.com" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reddesguace.com</span></div><img src="/images/preview-reddesguace.png" alt="Red Desguace" loading="lazy"></div></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>reddesguace.com</span></div><img src="/images/preview-reddesguace.png" alt="Red Desguace" loading="lazy" class="project-preview-img"></div>
           <div class="projectbody">
             <div class="projectmeta">Marketplace · Automoción</div>
             <h3>Red Desguace</h3>
@@ -529,7 +537,7 @@
         </a>
 
         <a class="project" href="https://reciclacat.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reciclacat.es</span></div><img src="/images/preview-reciclacat.png" alt="ReciclaCAT" loading="lazy"></div></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>reciclacat.es</span></div><img src="/images/preview-reciclacat.png" alt="ReciclaCAT" loading="lazy" class="project-preview-img"></div>
           <div class="projectbody">
             <div class="projectmeta">SaaS · Gestión</div>
             <h3>ReciclaCAT</h3>
@@ -539,7 +547,7 @@
         </a>
 
         <a class="project" href="https://medibitacora.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>medibitacora.es</span></div><img src="/images/preview-medibitacora.png" alt="MediBitácora" loading="lazy"></div></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>medibitacora.es</span></div><img src="/images/preview-medibitacora.png" alt="MediBitácora" loading="lazy" class="project-preview-img"></div>
           <div class="projectbody">
             <div class="projectmeta">Aplicación · Datos</div>
             <h3>MediBitácora</h3>
@@ -549,7 +557,7 @@
         </a>
 
         <a class="project" href="https://holaitvmalaga.com" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>holaitvmalaga.com</span></div><img src="/images/preview-hola-itv.png" alt="Hola ITV Málaga" loading="lazy"></div></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>holaitvmalaga.com</span></div><img src="/images/preview-hola-itv.png" alt="Hola ITV Málaga" loading="lazy" class="project-preview-img"></div>
           <div class="projectbody">
             <div class="projectmeta">Web · Servicio local</div>
             <h3>Hola ITV Málaga</h3>
@@ -638,10 +646,8 @@
       <div class="rgpd-clients">
         <a class="rgpd-client" href="https://www.desguacesgruporedia.com/" target="_blank" rel="noopener">
           <div class="rgpd-client-preview">
-            <div class="rgpd-mini-browser">
-              <div class="browserbar"><i></i><i></i><i></i><span>desguacesgruporedia.com</span></div>
-              <img src="/images/preview-redia.png" alt="Desguaces Grupo REDIA" loading="lazy">
-            </div>
+              <div class="browserbar-static"><i></i><i></i><i></i><span>desguacesgruporedia.com</span></div>
+              <img src="/images/preview-redia.png" alt="desguacesgruporedia.com" loading="lazy" class="rgpd-preview-img">
           </div>
           <div class="rgpd-client-copy">
             <div class="small">Sector automoción</div>
@@ -652,10 +658,8 @@
 
         <a class="rgpd-client" href="https://www.parkingcostagolf.com/" target="_blank" rel="noopener">
           <div class="rgpd-client-preview">
-            <div class="rgpd-mini-browser">
-              <div class="browserbar"><i></i><i></i><i></i><span>parkingcostagolf.com</span></div>
-              <img src="/images/preview-parking.png" alt="Parking Costa Golf" loading="lazy">
-            </div>
+              <div class="browserbar-static"><i></i><i></i><i></i><span>parkingcostagolf.com</span></div>
+              <img src="/images/preview-parking.png" alt="parkingcostagolf.com" loading="lazy" class="rgpd-preview-img">
           </div>
           <div class="rgpd-client-copy">
             <div class="small">Servicios de parking</div>
@@ -666,10 +670,8 @@
 
         <a class="rgpd-client" href="https://www.lasuertedelsur.es/" target="_blank" rel="noopener">
           <div class="rgpd-client-preview">
-            <div class="rgpd-mini-browser">
-              <div class="browserbar"><i></i><i></i><i></i><span>lasuertedelsur.es</span></div>
-              <img src="/images/preview-suerte.png" alt="Loterías La Suerte del Sur" loading="lazy">
-            </div>
+              <div class="browserbar-static"><i></i><i></i><i></i><span>lasuertedelsur.es</span></div>
+              <img src="/images/preview-suerte.png" alt="lasuertedelsur.es" loading="lazy" class="rgpd-preview-img">
           </div>
           <div class="rgpd-client-copy">
             <div class="small">Administración de lotería</div>
@@ -802,9 +804,15 @@
         <img src="https://www.limonadaweb.com/images/logo-limonadaweb-nav.png" alt="Limonada Web">
         <p>Agencia digital en Málaga. Exprimimos internet para que tu negocio crezca: marketplaces, SaaS, webs, automatizaciones e IA.</p>
         <div class="footer-social">
-          <a href="https://www.instagram.com/limonada_web/" target="_blank" rel="noopener" aria-label="Instagram">◎</a>
-          <a href="https://wa.me/34628482475" target="_blank" rel="noopener" aria-label="WhatsApp">●</a>
-          <a href="mailto:hola@limonadaweb.com" aria-label="Email">✉</a>
+          <a href="https://www.instagram.com/limonada_web/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/34628482475" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </a>
+          <a href="mailto:hola@limonadaweb.com" aria-label="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
         </div>
       </div>
 
