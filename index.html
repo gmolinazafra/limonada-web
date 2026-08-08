@@ -284,24 +284,30 @@
     .rgpd-client-copy h3{font-size:20px;margin:7px 0 4px}
     .rgpd-client-copy p{font-size:13px;line-height:1.5}
 
-    .full-footer{background:#0d2039;color:#fff;padding:60px 0 28px}
-    .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:52px;margin-bottom:48px;align-items:start}
-    .footer-brand img{height:52px;width:auto;margin-bottom:16px}
-    .footer-brand p{color:#aeb8c6;font-size:13.5px;max-width:280px;line-height:1.7;margin-top:10px}
-    .footer-social{display:flex;gap:10px;margin-top:22px}
-    .footer-social a{width:38px;height:38px;border:1px solid rgba(255,255,255,.15);border-radius:9px;display:grid;place-items:center;color:#c0c8d3;transition:.15s}
-    .footer-social a:hover{border-color:var(--yellow);color:var(--yellow)}
-    .footer-col-title{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#4d6180;font-weight:800;margin-bottom:18px}
-    .footer-col{display:grid;align-content:start;gap:11px}
-    .footer-col a,.footer-col span{font-size:13.5px;color:#8fa3bc;line-height:1.35;transition:.15s}
+    .footer-wrap{width:min(calc(100% - 80px),1440px);margin:auto}
+    .full-footer{background:#0d2039;color:#fff;padding:48px 0 28px}
+    /* Fila principal: logo+tagline a la izq, columnas nav a la der */
+    .footer-top{display:flex;align-items:flex-start;gap:64px;margin-bottom:44px}
+    .footer-brand{flex:0 0 260px}
+    .footer-brand img{height:50px;width:auto;margin-bottom:14px}
+    .footer-brand p{color:#8fa3bc;font-size:13px;line-height:1.7;margin-top:8px;max-width:240px}
+    .footer-social{display:flex;gap:9px;margin-top:18px}
+    .footer-social a{width:36px;height:36px;border:1px solid rgba(255,255,255,.13);border-radius:8px;display:grid;place-items:center;color:#8fa3bc;transition:.15s}
+    .footer-social a:hover{border-color:#f4c430;color:#f4c430}
+    /* Nav cols en fila */
+    .footer-nav{display:flex;flex:1;gap:48px;justify-content:flex-end}
+    .footer-col{display:grid;align-content:start;gap:10px}
+    .footer-col-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#3d5470;font-weight:800;margin-bottom:6px}
+    .footer-col a,.footer-col span{font-size:13px;color:#7a95b0;line-height:1.4;transition:.12s;white-space:nowrap}
     .footer-col a:hover{color:#f4c430}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}
-    .footer-copy{font-size:11.5px;color:#4d6180;line-height:1.7}
-    .footer-legal{display:flex;gap:22px;white-space:nowrap}
-    .footer-legal a{font-size:11.5px;color:#4d6180;transition:.15s}
+    /* Bottom */
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .footer-copy{font-size:11px;color:#3d5470;line-height:1.6}
+    .footer-legal{display:flex;gap:20px}
+    .footer-legal a{font-size:11px;color:#3d5470;transition:.12s;white-space:nowrap}
     .footer-legal a:hover{color:#f4c430}
-    @media(max-width:1000px){.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{align-items:flex-start;flex-direction:column;gap:14px}}
-    @media(max-width:580px){.footer-grid{grid-template-columns:1fr}.footer-legal{gap:14px;flex-wrap:wrap}}
+    @media(max-width:900px){.footer-top{flex-wrap:wrap;gap:36px}.footer-brand{flex:0 0 100%}.footer-nav{justify-content:flex-start;flex-wrap:wrap;gap:32px}}
+    @media(max-width:580px){.footer-wrap{width:calc(100% - 40px)}.footer-nav{gap:24px}.footer-bottom{flex-direction:column;align-items:flex-start;gap:12px}.footer-legal{flex-wrap:wrap;gap:12px}}
 
     @media(max-width:920px){
       .rgpd-intro{grid-template-columns:1fr}
@@ -799,60 +805,57 @@
 </main>
 
 <footer class="full-footer">
-  <div class="wrap">
-    <div class="footer-grid">
+  <div class="footer-wrap">
+    <div class="footer-top">
       <div class="footer-brand">
         <img src="https://www.limonadaweb.com/images/logo-limonadaweb-nav.png" alt="Limonada Web">
-        <p>Agencia digital en Málaga. Exprimimos internet para que tu negocio crezca: marketplaces, SaaS, webs, automatizaciones e IA.</p>
+        <p>Agencia digital en Málaga. Exprimimos internet para que tu negocio crezca: webs, apps, automatizaciones e IA.</p>
         <div class="footer-social">
           <a href="https://www.instagram.com/limonada_web/" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           </a>
           <a href="https://wa.me/34628482475" target="_blank" rel="noopener" aria-label="WhatsApp">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
           </a>
           <a href="mailto:hola@limonadaweb.com" aria-label="Email">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </a>
         </div>
       </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Servicios</div>
-        <a href="#servicios">Diseño web</a>
-        <a href="#servicios">Aplicaciones SaaS</a>
-        <a href="#servicios">Inteligencia artificial</a>
-        <a href="#servicios">Posicionamiento local</a>
-        <a href="#servicios">Conectores e integraciones</a>
-        <a href="#servicios">Consultoría digital</a>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Soluciones</div>
-        <a href="#muestras">Carta digital con QR</a>
-        <a href="#rgpd">Implantación RGPD</a>
-        <a href="#proyectos">Proyectos reales</a>
-        <a href="#muestras">Muestras</a>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Empresa</div>
-        <a href="#proceso">Cómo trabajamos</a>
-        <a href="#precios">Precios</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Contacto</div>
-        <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>
-        <a href="tel:+34628482475">+34 628 482 475</a>
-        <span>Málaga · España</span>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <div class="footer-col-title">Servicios</div>
+          <a href="#servicios">Diseño web</a>
+          <a href="#servicios">Aplicaciones SaaS</a>
+          <a href="#servicios">Inteligencia artificial</a>
+          <a href="#servicios">Posicionamiento local</a>
+          <a href="#servicios">Conectores e integraciones</a>
+          <a href="#servicios">Consultoría digital</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Soluciones</div>
+          <a href="#muestras">Carta digital QR</a>
+          <a href="#rgpd">Implantación RGPD</a>
+          <a href="#proyectos">Proyectos reales</a>
+          <a href="#muestras">Muestras</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Empresa</div>
+          <a href="#proceso">Cómo trabajamos</a>
+          <a href="#precios">Precios</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Contacto</div>
+          <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>
+          <a href="tel:+34628482475">+34 628 482 475</a>
+          <span>Málaga · España</span>
+        </div>
       </div>
     </div>
-
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Limonada Web · Todos los derechos reservados<br><span style="opacity:.6">MediBitácora Pro (RPI 04/2026/2802) · ReciclaCAT (RPI 04/2026/3282)</span></div>
+      <div class="footer-copy">© 2026 Limonada Web · Todos los derechos reservados · <span style="opacity:.55">MediBitácora Pro (RPI 04/2026/2802) · ReciclaCAT (RPI 04/2026/3282)</span></div>
       <div class="footer-legal">
         <a href="/aviso-legal">Aviso legal</a>
         <a href="/politica-privacidad">Privacidad</a>
