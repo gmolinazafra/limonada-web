@@ -25,7 +25,7 @@
       --max:1180px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:auto}
     body{
       margin:0;background:var(--bg);color:var(--ink);
       font-family:"Inter",system-ui,sans-serif;
@@ -250,6 +250,7 @@
       pointer-events:none;background:white
     }
     .web-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
+    .web-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
     .rgpd{background:#fff}
     .rgpd-intro{
       display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:start;
@@ -279,6 +280,7 @@
       border:0;width:1440px;height:900px;transform:scale(.39);transform-origin:top left;
       pointer-events:none;background:white
     }
+    .rgpd-mini-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
     .rgpd-client-copy{padding:22px}
     .rgpd-client-copy .small{font-size:11px;color:#7b6410;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
     .rgpd-client-copy h3{font-size:20px;margin:7px 0 4px}
@@ -388,6 +390,15 @@
       function toggle(e){ e.preventDefault(); panel.toggleAttribute('hidden'); }
       btn.addEventListener('click', toggle);
       btn.addEventListener('touchend', toggle);
+      // Smooth scroll solo en links de navegación internos
+      document.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(e){
+          var id = a.getAttribute('href').slice(1);
+          var el = document.getElementById(id);
+          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+          if(panel && !panel.hidden){ panel.setAttribute('hidden',''); }
+        });
+      });
     })();
   </script>
   </div>
@@ -629,7 +640,7 @@
           <div class="rgpd-client-preview">
             <div class="rgpd-mini-browser">
               <div class="browserbar"><i></i><i></i><i></i><span>desguacesgruporedia.com</span></div>
-              <iframe loading="lazy" title="Desguaces Grupo REDIA" src="https://www.desguacesgruporedia.com/"></iframe>
+              <img src="/images/preview-redia.png" alt="Desguaces Grupo REDIA" loading="lazy">
             </div>
           </div>
           <div class="rgpd-client-copy">
@@ -643,7 +654,7 @@
           <div class="rgpd-client-preview">
             <div class="rgpd-mini-browser">
               <div class="browserbar"><i></i><i></i><i></i><span>parkingcostagolf.com</span></div>
-              <iframe loading="lazy" title="Parking Costa Golf" src="https://www.parkingcostagolf.com/"></iframe>
+              <img src="/images/preview-parking.png" alt="Parking Costa Golf" loading="lazy">
             </div>
           </div>
           <div class="rgpd-client-copy">
@@ -657,7 +668,7 @@
           <div class="rgpd-client-preview">
             <div class="rgpd-mini-browser">
               <div class="browserbar"><i></i><i></i><i></i><span>lasuertedelsur.es</span></div>
-              <iframe loading="lazy" title="Loterías La Suerte del Sur" src="https://www.lasuertedelsur.es/"></iframe>
+              <img src="/images/preview-suerte.png" alt="Loterías La Suerte del Sur" loading="lazy">
             </div>
           </div>
           <div class="rgpd-client-copy">
@@ -808,15 +819,17 @@
       </div>
 
       <div class="footer-col">
-        <div class="footer-col-title">Soluciones sectoriales</div>
+        <div class="footer-col-title">Soluciones</div>
         <a href="#muestras">Carta digital con QR</a>
         <a href="#rgpd">Implantación RGPD</a>
+        <a href="#proyectos">Proyectos reales</a>
+        <a href="#muestras">Muestras</a>
       </div>
 
       <div class="footer-col">
         <div class="footer-col-title">Empresa</div>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#proceso">Proceso</a>
+        <a href="#proceso">Cómo trabajamos</a>
+        <a href="#precios">Precios</a>
         <a href="#faq">FAQ</a>
         <a href="#contacto">Contacto</a>
       </div>
@@ -830,7 +843,7 @@
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Limonada Web · Todos los derechos reservados · MediBitácora Pro (RPI 04/2026/2802) · ReciclaCAT (RPI 04/2026/3282)</div>
+      <div class="footer-copy">© 2026 Limonada Web · Todos los derechos reservados<br><span style="opacity:.6">MediBitácora Pro (RPI 04/2026/2802) · ReciclaCAT (RPI 04/2026/3282)</span></div>
       <div class="footer-legal">
         <a href="/aviso-legal">Aviso legal</a>
         <a href="/politica-privacidad">Privacidad</a>
