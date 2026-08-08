@@ -226,6 +226,12 @@
       border:0;width:1440px;height:900px;transform:scale(.54);transform-origin:top left;
       pointer-events:none;background:white
     }
+    .browser-static{
+      margin:28px 0 0 28px;width:calc(100% - 28px);height:370px;background:#fff;
+      border:1px solid #d8dde3;border-radius:14px 14px 0 0;overflow:hidden;
+      box-shadow:0 26px 60px rgba(16,24,40,.15);display:flex;flex-direction:column
+    }
+    .browser-static-img{width:100%;flex:1;object-fit:cover;object-position:left top;display:block;border:0;min-height:0}
     .showcase-copy{padding:28px}
     .showcase-copy h3{font-size:28px;margin:8px 0 10px}
     .showcase-copy p{font-size:14px;margin-bottom:20px}
@@ -312,7 +318,7 @@
       .rgpd-clients{grid-template-columns:1fr}
     }
 
-    @media(max-width:920px){.showcasegrid{grid-template-columns:1fr}.browser{width:calc(100% + 380px)}}
+    @media(max-width:920px){.showcasegrid{grid-template-columns:1fr}.browser{width:calc(100% + 380px)}.browser-static{width:calc(100% - 28px);margin-right:0}}
 
     @media(max-width:920px){
       .navlinks,.nav>.btn{display:none}
@@ -544,7 +550,7 @@
         </a>
 
         <a class="project" href="https://reciclacat.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>reciclacat.es</span></div><img src="/images/preview-reciclacat.png" alt="ReciclaCAT" loading="lazy" class="project-preview-img"></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>reciclacat.es</span></div><img src="/images/preview-reciclacat.png" alt="ReciclaCAT" loading="lazy" class="project-preview-img" style="object-position:left top"></div>
           <div class="projectbody">
             <div class="projectmeta">SaaS · Gestión</div>
             <h3>ReciclaCAT</h3>
@@ -554,7 +560,7 @@
         </a>
 
         <a class="project" href="https://medibitacora.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>medibitacora.es</span></div><img src="/images/preview-medibitacora.png" alt="MediBitácora" loading="lazy" class="project-preview-img"></div>
+          <div class="web-preview"><div class="browserbar-static"><i></i><i></i><i></i><span>medibitacora.es</span></div><img src="/images/preview-medibitacora.png" alt="MediBitácora" loading="lazy" class="project-preview-img" style="object-position:left top"></div>
           <div class="projectbody">
             <div class="projectmeta">Aplicación · Datos</div>
             <h3>MediBitácora</h3>
@@ -603,9 +609,9 @@
 
         <article class="showcase">
           <div class="showcase-preview">
-            <div class="browser" aria-hidden="true">
+            <div class="browser-static" aria-hidden="true">
               <div class="browserbar"><i></i><i></i><i></i><span>mcmotorpremium.com</span></div>
-              <iframe loading="lazy" title="Vista previa web MC Motor Premium" src="https://mcmotorpremium.com/"></iframe>
+              <img src="/images/preview-mc-motor.png" alt="MC Motor Premium" loading="lazy" class="browser-static-img" style="object-position:left top">
             </div>
           </div>
           <div class="showcase-copy">
