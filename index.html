@@ -249,6 +249,7 @@
       border:0;width:1440px;height:900px;transform:scale(.47);transform-origin:top left;
       pointer-events:none;background:white
     }
+    .web-browser img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border:0}
     .rgpd{background:#fff}
     .rgpd-intro{
       display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:start;
@@ -334,6 +335,16 @@
       .step{border-right:0;border-bottom:1px solid var(--line)}
       footer .wrap{flex-direction:column;align-items:flex-start}
     }
+
+    /* ── Cookie banner ── */
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d2039;color:#c0c8d3;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px;box-shadow:0 -2px 16px rgba(0,0,0,.25);flex-wrap:wrap}
+    #cookie-banner p{margin:0;line-height:1.5;max-width:680px}
+    #cookie-banner a{color:#f4c430;text-decoration:underline}
+    #cookie-banner .cookie-btns{display:flex;gap:10px;flex-shrink:0}
+    #cookie-banner .btn-accept{background:#f4c430;color:#1d1d1d;border:0;padding:9px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer}
+    #cookie-banner .btn-reject{background:transparent;color:#c0c8d3;border:1px solid rgba(255,255,255,.2);padding:9px 20px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer}
+    #cookie-banner.hidden{display:none}
+    @media(max-width:640px){#cookie-banner{flex-direction:column;align-items:flex-start}#cookie-banner .cookie-btns{width:100%;justify-content:stretch}#cookie-banner .btn-accept,#cookie-banner .btn-reject{flex:1;text-align:center}}
   </style>
   <meta property="og:title" content="Limonada Web · Diseño web, apps y automatizaciones en Málaga">
   <meta property="og:description" content="Creamos webs, aplicaciones, automatizaciones e implantaciones RGPD que ayudan a vender mejor, trabajar con más orden y reducir riesgos y tareas manuales.">
@@ -453,7 +464,7 @@
             <li>Catálogos online</li>
             <li>Tiendas y formularios</li>
           </ul>
-          <div class="bottom">Desde 300 €</div>
+          <div class="bottom">Desde 600 €</div>
         </article>
 
         <article class="service">
@@ -497,7 +508,7 @@
 
       <div class="projectgrid">
         <a class="project" href="https://reddesguace.com" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reddesguace.com</span></div><iframe loading="lazy" title="Vista previa Red Desguace" src="https://reddesguace.com/"></iframe></div></div>
+          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reddesguace.com</span></div><img src="/images/preview-reddesguace.png" alt="Red Desguace" loading="lazy"></div></div>
           <div class="projectbody">
             <div class="projectmeta">Marketplace · Automoción</div>
             <h3>Red Desguace</h3>
@@ -507,7 +518,7 @@
         </a>
 
         <a class="project" href="https://reciclacat.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reciclacat.es</span></div><iframe loading="lazy" title="Vista previa ReciclaCAT" src="https://reciclacat.es/"></iframe></div></div>
+          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>reciclacat.es</span></div><img src="/images/preview-reciclacat.png" alt="ReciclaCAT" loading="lazy"></div></div>
           <div class="projectbody">
             <div class="projectmeta">SaaS · Gestión</div>
             <h3>ReciclaCAT</h3>
@@ -517,7 +528,7 @@
         </a>
 
         <a class="project" href="https://medibitacora.es" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>medibitacora.es</span></div><iframe loading="lazy" title="Vista previa MediBitácora" src="https://medibitacora.es/"></iframe></div></div>
+          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>medibitacora.es</span></div><img src="/images/preview-medibitacora.png" alt="MediBitácora" loading="lazy"></div></div>
           <div class="projectbody">
             <div class="projectmeta">Aplicación · Datos</div>
             <h3>MediBitácora</h3>
@@ -527,7 +538,7 @@
         </a>
 
         <a class="project" href="https://holaitvmalaga.com" target="_blank" rel="noopener">
-          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>holaitvmalaga.com</span></div><iframe loading="lazy" title="Vista previa Hola ITV Málaga" src="https://holaitvmalaga.com/"></iframe></div></div>
+          <div class="web-preview"><div class="web-browser"><div class="browserbar"><i></i><i></i><i></i><span>holaitvmalaga.com</span></div><img src="/images/preview-hola-itv.png" alt="Hola ITV Málaga" loading="lazy"></div></div>
           <div class="projectbody">
             <div class="projectmeta">Web · Servicio local</div>
             <h3>Hola ITV Málaga</h3>
@@ -828,6 +839,32 @@
     </div>
   </div>
 </footer>
+
+
+<!-- Cookie banner -->
+<div id="cookie-banner" class="hidden" role="dialog" aria-label="Aviso de cookies">
+  <p>Usamos cookies propias para el funcionamiento del sitio y analítica básica. No cedemos datos a terceros. <a href="/cookies">Política de cookies</a> · <a href="/politica-privacidad">Privacidad</a>.</p>
+  <div class="cookie-btns">
+    <button class="btn-reject" id="cookie-reject">Solo esenciales</button>
+    <button class="btn-accept" id="cookie-accept">Aceptar</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b = document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookies_consent')){
+    b.classList.remove('hidden');
+  }
+  document.getElementById('cookie-accept').addEventListener('click', function(){
+    localStorage.setItem('cookies_consent','accepted');
+    b.classList.add('hidden');
+  });
+  document.getElementById('cookie-reject').addEventListener('click', function(){
+    localStorage.setItem('cookies_consent','rejected');
+    b.classList.add('hidden');
+  });
+})();
+</script>
 
 </body>
 </html>
