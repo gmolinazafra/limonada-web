@@ -284,23 +284,24 @@
     .rgpd-client-copy h3{font-size:20px;margin:7px 0 4px}
     .rgpd-client-copy p{font-size:13px;line-height:1.5}
 
-    .full-footer{background:#0d2039;color:#fff;padding:54px 0 22px}
-    .footer-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:38px;margin-bottom:42px}
-    .footer-brand img{height:58px;width:auto;margin-bottom:18px}
-    .footer-brand p{color:#aeb8c6;font-size:14px;max-width:330px;line-height:1.65}
-    .footer-social{display:flex;gap:10px;margin-top:20px}
-    .footer-social a{width:40px;height:40px;border:1px solid rgba(255,255,255,.12);border-radius:10px;display:grid;place-items:center;color:#fff}
-    .footer-col-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#728096;font-weight:800;margin-bottom:16px}
-    .footer-col{display:grid;align-content:start;gap:9px}
-    .footer-col a,.footer-col span{font-size:14px;color:#c0c8d3;line-height:1.35}
+    .full-footer{background:#0d2039;color:#fff;padding:60px 0 28px}
+    .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:52px;margin-bottom:48px;align-items:start}
+    .footer-brand img{height:52px;width:auto;margin-bottom:16px}
+    .footer-brand p{color:#aeb8c6;font-size:13.5px;max-width:280px;line-height:1.7;margin-top:10px}
+    .footer-social{display:flex;gap:10px;margin-top:22px}
+    .footer-social a{width:38px;height:38px;border:1px solid rgba(255,255,255,.15);border-radius:9px;display:grid;place-items:center;color:#c0c8d3;transition:.15s}
+    .footer-social a:hover{border-color:var(--yellow);color:var(--yellow)}
+    .footer-col-title{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#4d6180;font-weight:800;margin-bottom:18px}
+    .footer-col{display:grid;align-content:start;gap:11px}
+    .footer-col a,.footer-col span{font-size:13.5px;color:#8fa3bc;line-height:1.35;transition:.15s}
     .footer-col a:hover{color:#f4c430}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;justify-content:space-between;gap:25px;align-items:center}
-    .footer-copy{font-size:12px;color:#75849a;line-height:1.6}
-    .footer-legal{display:flex;gap:24px;white-space:nowrap}
-    .footer-legal a{font-size:12px;color:#8794a7}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}
+    .footer-copy{font-size:11.5px;color:#4d6180;line-height:1.7}
+    .footer-legal{display:flex;gap:22px;white-space:nowrap}
+    .footer-legal a{font-size:11.5px;color:#4d6180;transition:.15s}
     .footer-legal a:hover{color:#f4c430}
-    @media(max-width:1000px){.footer-grid{grid-template-columns:2fr 1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{align-items:flex-start;flex-direction:column}}
-    @media(max-width:650px){.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-legal{gap:14px;flex-wrap:wrap}}
+    @media(max-width:1000px){.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{align-items:flex-start;flex-direction:column;gap:14px}}
+    @media(max-width:580px){.footer-grid{grid-template-columns:1fr}.footer-legal{gap:14px;flex-wrap:wrap}}
 
     @media(max-width:920px){
       .rgpd-intro{grid-template-columns:1fr}
@@ -843,7 +844,7 @@
       </div>
 
       <div class="footer-col">
-        <div class="footer-col-title">Contacto directo</div>
+        <div class="footer-col-title">Contacto</div>
         <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>
         <a href="tel:+34628482475">+34 628 482 475</a>
         <span>Málaga · España</span>
