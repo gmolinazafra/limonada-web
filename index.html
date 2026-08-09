@@ -402,6 +402,7 @@
       <a href="#proceso">Cómo trabajamos</a>
       <a href="#rgpd">RGPD</a>
       <a href="#precios">Precios</a>
+      <a href="#reciclacat-gest">Gestión CATs</a>
     </nav>
     <a class="btn btn-dark" href="#contacto">Cuéntame tu proyecto</a>
     <button class="menu-btn" aria-label="Menú" id="menu-toggle">☰</button>
@@ -414,6 +415,7 @@
       <a href="#proceso">Cómo trabajamos</a>
       <a href="#rgpd">RGPD</a>
       <a href="#precios">Precios</a>
+      <a href="#reciclacat-gest">Gestión CATs</a>
       <a href="#contacto">Contacto</a>
     </div>
   </div>
@@ -799,80 +801,84 @@
      ============================================================ -->
 <style>
   /* ── ReciclaCAT_Gest section ── */
-  .rcg{background:var(--ink,#0b1f3a);color:#fff;padding:96px 0 80px;overflow:hidden}
-  .rcg .kicker{color:#f4c430;opacity:.85}
-  .rcg .kicker::before{background:#f4c430}
-  .rcg h2{color:#fff;margin-bottom:0}
+  .rcg{background:#f8f9fb;padding:96px 0 80px;overflow:hidden;border-top:1px solid #e8eaed}
+  .rcg .kicker::before{background:var(--leaf,#67c23a)}
+  .rcg .kicker{color:var(--leaf,#67c23a)}
+  .rcg h2{letter-spacing:-.04em}
+  .rcg h2 em{font-style:normal;color:var(--leaf,#67c23a)}
 
   /* Hero */
-  .rcg-hero{display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center;margin-bottom:80px}
-  .rcg-hero-copy h2{font-size:clamp(32px,4vw,48px);line-height:1.08;letter-spacing:-.04em;margin:12px 0 18px}
-  .rcg-hero-copy h2 em{font-style:normal;color:#f4c430}
-  .rcg-hero-copy p{font-size:16px;color:rgba(255,255,255,.6);line-height:1.75;max-width:560px;margin-bottom:32px}
-  .rcg-cred{display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.35);margin-bottom:32px;letter-spacing:.02em}
-  .rcg-cred::before{content:"";width:28px;height:2px;background:#f4c430;flex-shrink:0}
-  .rcg-logo-wrap{width:260px;flex-shrink:0}
+  .rcg-hero{display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center;margin-bottom:48px}
+  .rcg-hero-copy h2{font-size:clamp(28px,3.5vw,44px);line-height:1.1;margin:12px 0 16px}
+  .rcg-hero-copy > p{font-size:16px;color:#4a5568;line-height:1.75;max-width:560px;margin-bottom:24px}
+  .rcg-cred{display:flex;align-items:center;gap:10px;font-size:12px;color:#8896a7;margin-bottom:28px;letter-spacing:.02em}
+  .rcg-cred::before{content:"";width:28px;height:2px;background:var(--leaf,#67c23a);flex-shrink:0}
+  .rcg-logo-wrap{width:220px;flex-shrink:0}
   .rcg-logo{width:100%;height:auto;display:block}
-  .rcg-btns{display:flex;gap:12px;flex-wrap:wrap}
-  .rcg-btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 24px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:.15s}
-  .rcg-btn-primary{background:#f4c430;color:#0b1f3a}
-  .rcg-btn-primary:hover{background:#e0b300}
-  .rcg-btn-ghost{border:1px solid rgba(255,255,255,.18);color:#fff}
-  .rcg-btn-ghost:hover{border-color:rgba(255,255,255,.45)}
+  .rcg-btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .rcg-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 22px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:.15s;cursor:pointer;border:none;font-family:inherit}
+  .rcg-btn-primary{background:var(--leaf,#67c23a);color:#fff}
+  .rcg-btn-primary:hover{background:#58a832}
+  .rcg-btn-ghost{border:1.5px solid #d0d5dd;color:#344054;background:transparent}
+  .rcg-btn-ghost:hover{border-color:#8896a7}
+  .rcg-btn-expand{background:transparent;border:1.5px solid #d0d5dd;color:#344054;font-size:13px;min-height:38px;padding:0 18px}
+  .rcg-btn-expand:hover{border-color:#8896a7}
 
-  /* Módulos */
-  .rcg-modulos-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:700;margin-bottom:24px}
-  .rcg-modulos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:72px}
-  .rcg-modulo{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px}
-  .rcg-modulo-ico{font-size:24px;margin-bottom:12px}
-  .rcg-modulo h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.02em}
-  .rcg-modulo p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin:0}
-  .rcg-modulo ul{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:7px}
-  .rcg-modulo ul li{font-size:13px;color:rgba(255,255,255,.5);display:flex;align-items:flex-start;gap:8px;line-height:1.45}
-  .rcg-modulo ul li::before{content:"→";color:#f4c430;font-weight:700;flex-shrink:0;font-size:12px;margin-top:1px}
+  /* Resumen — siempre visible */
+  .rcg-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+  .rcg-summary-item{background:#fff;border:1px solid #e8eaed;border-radius:14px;padding:20px}
+  .rcg-summary-item-ico{font-size:22px;margin-bottom:8px}
+  .rcg-summary-item h4{font-size:14px;font-weight:700;color:#1a202c;margin-bottom:4px}
+  .rcg-summary-item p{font-size:13px;color:#718096;line-height:1.5;margin:0}
 
-  /* Integraciones */
-  .rcg-integra{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px 32px;margin-bottom:24px;display:flex;align-items:flex-start;gap:20px}
-  .rcg-integra-ico{font-size:26px;flex-shrink:0;margin-top:2px}
-  .rcg-integra h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
-  .rcg-integra p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin:0}
+  /* Detalle — oculto hasta "Ver más" */
+  .rcg-detail{display:none;margin-top:16px}
+  .rcg-detail.open{display:block}
 
-  /* Próximamente */
-  .rcg-prox{background:rgba(244,196,48,.06);border:1px solid rgba(244,196,48,.18);border-radius:14px;padding:22px 28px;margin-bottom:72px;display:flex;align-items:center;gap:20px}
-  .rcg-prox-ico{font-size:26px;flex-shrink:0}
-  .rcg-prox h4{font-size:15px;font-weight:700;color:#f4c430;margin-bottom:4px}
-  .rcg-prox p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.55;margin:0}
+  .rcg-modulos-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#a0aab4;font-weight:700;margin-bottom:20px;margin-top:40px}
+  .rcg-modulos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:48px}
+  .rcg-modulo{background:#fff;border:1px solid #e8eaed;border-radius:14px;padding:22px}
+  .rcg-modulo-ico{font-size:22px;margin-bottom:10px}
+  .rcg-modulo h3{font-size:14px;font-weight:700;color:#1a202c;margin-bottom:6px}
+  .rcg-modulo p{font-size:13px;color:#718096;line-height:1.55;margin:0}
+  .rcg-modulo ul{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+  .rcg-modulo ul li{font-size:13px;color:#718096;display:flex;align-items:flex-start;gap:7px;line-height:1.4}
+  .rcg-modulo ul li::before{content:"→";color:var(--leaf,#67c23a);font-weight:700;flex-shrink:0;font-size:11px;margin-top:2px}
 
-  /* Planes */
-  .rcg-planes-title{text-align:center;margin-bottom:32px}
-  .rcg-planes-title h3{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:8px}
-  .rcg-planes-title p{font-size:14px;color:rgba(255,255,255,.4)}
-  .rcg-planes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px}
-  .rcg-plan{border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:30px}
-  .rcg-plan-dest{background:rgba(244,196,48,.06);border-color:rgba(244,196,48,.35)}
-  .rcg-plan-badge{display:inline-block;font-size:10px;font-weight:700;padding:4px 12px;border-radius:6px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em}
-  .rcg-plan-dest .rcg-plan-badge{background:#f4c430;color:#0b1f3a}
-  .rcg-plan:not(.rcg-plan-dest) .rcg-plan-badge{background:rgba(255,255,255,.09);color:rgba(255,255,255,.5)}
-  .rcg-plan h4{font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.03em}
-  .rcg-plan > p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:20px}
-  .rcg-plan ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
-  .rcg-plan ul li{font-size:13px;color:rgba(255,255,255,.65);display:flex;align-items:flex-start;gap:9px;line-height:1.45}
-  .rcg-plan ul li::before{content:"✓";color:#f4c430;font-weight:700;flex-shrink:0;margin-top:1px}
+  .rcg-integra{background:#fff;border:1px solid #e8eaed;border-radius:14px;padding:24px 28px;margin-bottom:20px;display:flex;align-items:flex-start;gap:18px}
+  .rcg-integra-ico{font-size:24px;flex-shrink:0;margin-top:2px}
+  .rcg-integra h3{font-size:14px;font-weight:700;color:#1a202c;margin-bottom:6px}
+  .rcg-integra p{font-size:13px;color:#718096;line-height:1.6;margin:0}
 
-  /* CTA bottom */
+  .rcg-prox{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px 26px;margin-bottom:48px;display:flex;align-items:center;gap:18px}
+  .rcg-prox-ico{font-size:24px;flex-shrink:0}
+  .rcg-prox h4{font-size:14px;font-weight:700;color:#166534;margin-bottom:4px}
+  .rcg-prox p{font-size:13px;color:#4b7a5a;line-height:1.55;margin:0}
+
+  .rcg-planes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px}
+  .rcg-plan{border:1px solid #e8eaed;border-radius:16px;padding:26px;background:#fff}
+  .rcg-plan-dest{border-color:var(--leaf,#67c23a);background:#f0fdf4}
+  .rcg-plan-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em}
+  .rcg-plan-dest .rcg-plan-badge{background:var(--leaf,#67c23a);color:#fff}
+  .rcg-plan:not(.rcg-plan-dest) .rcg-plan-badge{background:#f2f4f7;color:#718096}
+  .rcg-plan h4{font-size:18px;font-weight:700;color:#1a202c;margin-bottom:6px;letter-spacing:-.02em}
+  .rcg-plan > p{font-size:13px;color:#718096;line-height:1.6;margin-bottom:18px}
+  .rcg-plan ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .rcg-plan ul li{font-size:13px;color:#4a5568;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+  .rcg-plan ul li::before{content:"✓";color:var(--leaf,#67c23a);font-weight:700;flex-shrink:0;margin-top:1px}
+
   .rcg-cta{text-align:center;padding-top:8px}
-  .rcg-cta .rcg-btn{font-size:16px;min-height:54px;padding:0 36px}
-  .rcg-cta-sub{font-size:12px;color:rgba(255,255,255,.25);margin-top:14px}
+  .rcg-cta .rcg-btn{font-size:15px;min-height:50px;padding:0 32px}
+  .rcg-cta-sub{font-size:12px;color:#a0aab4;margin-top:12px}
 
-  /* Responsive */
   @media(max-width:900px){
-    .rcg-modulos{grid-template-columns:1fr 1fr}
     .rcg-hero{grid-template-columns:1fr}
-    .rcg-logo-wrap{width:180px;margin:0 auto}
+    .rcg-logo-wrap{width:160px}
+    .rcg-modulos{grid-template-columns:1fr 1fr}
+    .rcg-summary{grid-template-columns:1fr 1fr}
   }
-  @media(max-width:640px){
-    .rcg-modulos,.rcg-planes{grid-template-columns:1fr}
-    .rcg-hero{gap:36px}
+  @media(max-width:600px){
+    .rcg-modulos,.rcg-planes,.rcg-summary{grid-template-columns:1fr}
   }
 </style>
 
@@ -888,142 +894,165 @@
         <div class="rcg-cred">Desarrollado por profesionales del sector · Llave en mano</div>
         <div class="rcg-btns">
           <a class="rcg-btn rcg-btn-primary" href="#rcg-demo">Solicitar demo →</a>
-          <a class="rcg-btn rcg-btn-ghost" href="#rcg-modulos">Ver qué incluye</a>
+          <button class="rcg-btn rcg-btn-expand" id="rcg-toggle" onclick="(function(){var d=document.getElementById('rcg-detail');var b=document.getElementById('rcg-toggle');var open=d.classList.toggle('open');b.textContent=open?'Ver menos ↑':'Ver más ↓';})()">Ver más ↓</button>
         </div>
       </div>
       <div class="rcg-logo-wrap">
-        <img class="rcg-logo" src="/images/logo-reciclacat-gest.png" alt="ReciclaCAT_Gest — software de gestión para desguaces">
+        <img class="rcg-logo" src="/images/logo-reciclacat-gest.png" alt="ReciclaCAT_Gest">
       </div>
     </div>
 
-    <!-- Módulos -->
-    <div class="rcg-modulos-title" id="rcg-modulos">Todo lo que necesita un desguace, nada de lo que no necesita</div>
-    <div class="rcg-modulos">
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">🖥️</div>
-        <h3>Escritorio</h3>
-        <p>Nada más entrar tienes los números que importan: motos activas, piezas disponibles, recogidas pendientes del día y pedidos nuevos sin gestionar.</p>
+    <!-- Resumen — siempre visible -->
+    <div class="rcg-summary">
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">💰</div>
+        <h4>Ventas completas</h4>
+        <p>Pedidos, presupuestos, facturas PDF automáticas y cobro online con Stripe.</p>
       </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">💰</div>
-        <h3>Ventas</h3>
-        <ul>
-          <li>Pedidos con cambio de estado y email automático al cliente</li>
-          <li>Presupuestos con búsqueda de cliente y piezas, IVA, portes y descuentos</li>
-          <li>Enlace de pago Stripe o pago por transferencia</li>
-          <li>Facturas PDF generadas automáticamente al cobrar</li>
-          <li>Venta rápida en mostrador</li>
-          <li>Tarifas por zona y cupones de descuento</li>
-        </ul>
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">🏍️</div>
+        <h4>Catálogo gestionado</h4>
+        <p>1.259 motos y 19.112 piezas con fotos, ubicaciones y búsqueda por marca y modelo.</p>
       </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">📦</div>
-        <h3>Almacén</h3>
-        <p>Cada pieza tiene su ubicación exacta: planta, pasillo, fila y caja. Sabes dónde está todo sin tener que llamar a nadie.</p>
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">📊</div>
+        <h4>Kilos para la memoria</h4>
+        <p>Cruza ventas con pesos y obtén el dato anual para la memoria CAT sin cálculos manuales.</p>
       </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">📊</div>
-        <h3>Análisis</h3>
-        <ul>
-          <li>Evolución de ventas, pedidos y facturación</li>
-          <li>Kilos vendidos por año para la memoria anual de la CAT, sin cálculos manuales</li>
-        </ul>
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">👥</div>
+        <h4>CRM y recogidas</h4>
+        <p>Historial de clientes, agenda de recogidas y emails automáticos de confirmación.</p>
       </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">👥</div>
-        <h3>CRM de clientes</h3>
-        <p>Historial de compras, alta rápida desde base de datos. Búsqueda por nombre, teléfono o email — se rellena solo en presupuestos y recogidas.</p>
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">🔗</div>
+        <h4>Integrado</h4>
+        <p>GLS, Stripe, Contasimple y Red Desguace conectados desde el panel.</p>
       </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">🗓️</div>
-        <h3>Agenda de recogidas</h3>
-        <p>Programa recogidas con datos del cliente y vehículo. Email de confirmación automático. Estados de gestión para saber qué está pendiente.</p>
-      </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">🏍️</div>
-        <h3>Catálogo — Motos</h3>
-        <p>1.259 motos con sus piezas, fotos reales y ubicaciones de almacén. Búsqueda por marca, modelo o referencia.</p>
-      </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">🔩</div>
-        <h3>Catálogo — Piezas</h3>
-        <ul>
-          <li>19.112 piezas activas. Edita el precio directamente en la tabla</li>
-          <li>701 tipos de artículo con peso en gramos para el cálculo de kilos</li>
-          <li>Impresión de etiquetas para ubicaciones de almacén</li>
-        </ul>
-      </div>
-
-      <div class="rcg-modulo">
-        <div class="rcg-modulo-ico">🌐</div>
-        <h3>Web pública</h3>
-        <p>Escaparate con catálogo indexado, búsqueda por marca y modelo, fichas con despiece completo, fotos reales, precio con IVA y WhatsApp directo. Incluida en el plan completo.</p>
-      </div>
-
-    </div>
-
-    <!-- Integraciones -->
-    <div class="rcg-integra">
-      <div class="rcg-integra-ico">🔗</div>
-      <div>
-        <h3>Integrado con lo que ya usas</h3>
-        <p><strong style="color:rgba(255,255,255,.7)">GLS</strong> para envíos con etiqueta y tracking automático · <strong style="color:rgba(255,255,255,.7)">Stripe</strong> para cobros online · <strong style="color:rgba(255,255,255,.7)">Contasimple</strong> para facturas · <strong style="color:rgba(255,255,255,.7)">Red Desguace</strong> para publicar tu stock en el mayor escaparate de recambios de España.</p>
+      <div class="rcg-summary-item">
+        <div class="rcg-summary-item-ico">🌐</div>
+        <h4>Web pública incluida</h4>
+        <p>Escaparate con catálogo indexado y WhatsApp directo. En el plan completo.</p>
       </div>
     </div>
 
-    <!-- Próximamente -->
-    <div class="rcg-prox">
-      <div class="rcg-prox-ico">🔮</div>
-      <div>
-        <h4>Próximamente</h4>
-        <p>Decodificación automática por bastidor (VIN) y equivalencias por ktype. Escribe el VIN y el sistema identifica el vehículo y todas sus piezas compatibles al instante.</p>
-      </div>
-    </div>
+    <!-- Detalle expandible -->
+    <div class="rcg-detail" id="rcg-detail">
 
-    <!-- Planes -->
-    <div class="rcg-planes-title">
-      <h3>Dos formas de entrar</h3>
-      <p>Sin cuotas abusivas · Sin funciones que no usas · Hecho por y para el sector</p>
-    </div>
-    <div class="rcg-planes">
-      <div class="rcg-plan rcg-plan-dest">
-        <div class="rcg-plan-badge">Web + software</div>
-        <h4>Escaparate + gestión</h4>
-        <p>Tu escaparate público, tu catálogo online y el panel de gestión completo. Todo llave en mano.</p>
-        <ul>
-          <li>Web pública con catálogo indexado</li>
-          <li>Búsqueda por marca, modelo y referencia</li>
-          <li>Panel de gestión completo</li>
-          <li>Clientes, pedidos y presupuestos</li>
-          <li>Agenda de recogidas</li>
-          <li>Estadísticas y kilos vendidos</li>
-          <li>Integración con Red Desguace</li>
-        </ul>
+      <div class="rcg-modulos-title">Módulos detallados</div>
+      <div class="rcg-modulos">
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">🖥️</div>
+          <h3>Escritorio</h3>
+          <p>Nada más entrar tienes los números que importan: motos activas, piezas disponibles, recogidas pendientes del día y pedidos nuevos sin gestionar.</p>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">💰</div>
+          <h3>Ventas</h3>
+          <ul>
+            <li>Pedidos con cambio de estado y email automático al cliente</li>
+            <li>Presupuestos con IVA, portes y descuentos automáticos</li>
+            <li>Enlace de pago Stripe o transferencia — el pedido se crea solo al cobrar</li>
+            <li>Facturas PDF generadas automáticamente</li>
+            <li>Venta rápida en mostrador</li>
+            <li>Tarifas por zona y cupones de descuento</li>
+          </ul>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">📦</div>
+          <h3>Almacén</h3>
+          <p>Cada pieza tiene su ubicación exacta: planta, pasillo, fila y caja. Sabes dónde está todo sin tener que llamar a nadie.</p>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">📊</div>
+          <h3>Análisis</h3>
+          <ul>
+            <li>Evolución de ventas, pedidos y facturación</li>
+            <li>Kilos vendidos por año para la memoria anual CAT, sin cálculos manuales</li>
+          </ul>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">👥</div>
+          <h3>CRM de clientes</h3>
+          <p>Historial de compras, alta rápida. Búsqueda por nombre, teléfono o email — se rellena solo en presupuestos y recogidas.</p>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">🗓️</div>
+          <h3>Agenda de recogidas</h3>
+          <p>Programa recogidas con datos del cliente y vehículo. Email automático de confirmación. Estados para saber qué está pendiente.</p>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">🏍️</div>
+          <h3>Catálogo — Motos</h3>
+          <p>1.259 motos con piezas, fotos reales y ubicaciones. Búsqueda por marca, modelo o referencia.</p>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">🔩</div>
+          <h3>Catálogo — Piezas</h3>
+          <ul>
+            <li>19.112 piezas activas. Edita precio directamente en la tabla</li>
+            <li>701 tipos de artículo con peso para el cálculo de kilos</li>
+            <li>Impresión de etiquetas para ubicaciones</li>
+          </ul>
+        </div>
+        <div class="rcg-modulo">
+          <div class="rcg-modulo-ico">🌐</div>
+          <h3>Web pública</h3>
+          <p>Escaparate con catálogo indexado, búsqueda por marca y modelo, fichas con despiece, fotos reales, precio con IVA y WhatsApp directo. Incluida en el plan completo.</p>
+        </div>
       </div>
-      <div class="rcg-plan">
-        <div class="rcg-plan-badge">Solo software</div>
-        <h4>Solo gestión</h4>
-        <p>Ya tienes web. Necesitas el panel de gestión que de verdad funcione para un desguace.</p>
-        <ul>
-          <li>Panel de gestión completo</li>
-          <li>Clientes, pedidos y presupuestos</li>
-          <li>Agenda de recogidas</li>
-          <li>Estadísticas y kilos vendidos</li>
-          <li>Facturación integrada</li>
-          <li>GLS y seguimiento de envíos</li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- CTA -->
+      <div class="rcg-integra">
+        <div class="rcg-integra-ico">🔗</div>
+        <div>
+          <h3>Integrado con lo que ya usas</h3>
+          <p><strong>GLS</strong> para envíos con etiqueta y tracking · <strong>Stripe</strong> para cobros online · <strong>Contasimple</strong> para facturas · <strong>Red Desguace</strong> para publicar tu stock en el mayor escaparate de recambios de España.</p>
+        </div>
+      </div>
+
+      <div class="rcg-prox">
+        <div class="rcg-prox-ico">🔮</div>
+        <div>
+          <h4>Próximamente</h4>
+          <p>Decodificación automática por bastidor (VIN) y equivalencias por ktype. Escribe el VIN y el sistema identifica el vehículo y todas sus piezas compatibles al instante.</p>
+        </div>
+      </div>
+
+      <div style="margin-bottom:48px">
+        <div class="rcg-planes">
+          <div class="rcg-plan rcg-plan-dest">
+            <div class="rcg-plan-badge">Web + software</div>
+            <h4>Escaparate + gestión</h4>
+            <p>Tu escaparate público y el panel de gestión completo. Todo llave en mano.</p>
+            <ul>
+              <li>Web pública con catálogo indexado</li>
+              <li>Búsqueda por marca, modelo y referencia</li>
+              <li>Panel de gestión completo</li>
+              <li>Clientes, pedidos y presupuestos</li>
+              <li>Agenda de recogidas</li>
+              <li>Estadísticas y kilos vendidos</li>
+              <li>Integración con Red Desguace</li>
+            </ul>
+          </div>
+          <div class="rcg-plan">
+            <div class="rcg-plan-badge">Solo software</div>
+            <h4>Solo gestión</h4>
+            <p>Ya tienes web. Solo necesitas el panel que de verdad funcione para un desguace.</p>
+            <ul>
+              <li>Panel de gestión completo</li>
+              <li>Clientes, pedidos y presupuestos</li>
+              <li>Agenda de recogidas</li>
+              <li>Estadísticas y kilos vendidos</li>
+              <li>Facturación integrada</li>
+              <li>GLS y seguimiento de envíos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /rcg-detail -->
+
+    <!-- CTA siempre visible -->
     <div class="rcg-cta" id="rcg-demo">
       <a class="rcg-btn rcg-btn-primary"
         href="mailto:info@reciclacat.es?subject=Demo%20ReciclaCAT_Gest&body=Hola%2C%20me%20interesa%20una%20demo%20de%20ReciclaCAT_Gest.%0A%0ANombre%3A%0AEmpresa%3A%0ATel%C3%A9fono%3A%0AVeh%C3%ADculos%20aprox.%3A%0AQu%C3%A9%20me%20interesa%3A">
