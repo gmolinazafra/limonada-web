@@ -405,23 +405,7 @@
     </nav>
     <a class="btn btn-dark" href="#contacto">Cuéntame tu proyecto</a>
     <button class="menu-btn" aria-label="Menú" id="menu-toggle">☰</button>
-  <script>
-    (function(){
-      var btn = document.getElementById('menu-toggle');
-      var panel = document.getElementById('mobile');
-      function toggle(e){ e.preventDefault(); panel.toggleAttribute('hidden'); }
-      btn.addEventListener('click', toggle);
-      btn.addEventListener('touchend', toggle);
-      document.querySelectorAll('a[href^="#"]').forEach(function(a){
-        a.addEventListener('click', function(e){
-          var id = a.getAttribute('href').slice(1);
-          var el = document.getElementById(id);
-          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-          if(panel && !panel.hidden){ panel.setAttribute('hidden',''); }
-        });
-      });
-    })();
-  </script>
+
   </div>
   <div id="mobile" hidden style="border-top:1px solid #e6e8ec;background:#fff">
     <div class="wrap" style="padding:14px 0 20px;display:grid;gap:13px;font-weight:700">
@@ -880,6 +864,24 @@
     <button class="btn-accept" id="cookie-accept">Aceptar</button>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('menu-toggle');
+  var panel = document.getElementById('mobile');
+  if(!btn || !panel) return;
+  function toggleMenu(e){ e.preventDefault(); panel.toggleAttribute('hidden'); }
+  btn.addEventListener('click', toggleMenu);
+  btn.addEventListener('touchend', toggleMenu);
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+      if(panel && !panel.hidden){ panel.setAttribute('hidden',''); }
+    });
+  });
+});
+</script>
 <script>
 (function(){
   var b = document.getElementById('cookie-banner');
