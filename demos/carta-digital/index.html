@@ -114,6 +114,108 @@ const DATOS_DEMO = {
   ]
 };
 
+
+// ─── MAITRE BOT — LOGO ──────────────────────────────────────────────────────
+const MAITRE_LOGO     = "data:image/png;base64,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";  // logo MAITRE BOT sin tagline (FAB)
+const MAITRE_LOGO_HDR = "data:image/png;base64,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";  // robot+MAITRE BOT (header)
+
+// ─── MAITRE BOT — PLATOS DEL DÍA (demo) ─────────────────────────────────────
+// Estructura independiente; conectar al panel admin en la versión de producción.
+const DAILY_SPECIALS = [
+  { id:"ds1", nombre:"Arroz con bogavante", descripcion:"Arroz meloso con bogavante fresco del día, sofrito de verduras y toque de brandy.", precio:28.00, alergenos:["crustaceos"], available:true },
+  { id:"ds2", nombre:"Bacalao al pil-pil", descripcion:"Lomo de bacalao confitado en aceite de ajo y guindilla, con salsa pil-pil tradicional.", precio:22.00, alergenos:["pescado"], available:true },
+  { id:"ds3", nombre:"Paella de verduras", descripcion:"Arroz con alcachofas, judías verdes, garrofón y azafrán de La Mancha.", precio:15.00, alergenos:[], available:false },
+];
+
+// ─── MAITRE BOT — CHIPS INICIALES ────────────────────────────────────────────
+const INITIAL_CHIPS = [
+  { emoji:"🥘", label:"¿Qué me recomiendas?", value:"recomiendame" },
+  { emoji:"⭐", label:"Especialidades",        value:"especialidades" },
+  { emoji:"🍽️", label:"Plato del día",         value:"plato-dia" },
+  { emoji:"👥", label:"Para compartir",        value:"compartir" },
+  { emoji:"💶", label:"Según presupuesto",     value:"presupuesto" },
+  { emoji:"🌾", label:"Tengo alergias",        value:"alergias" },
+  { emoji:"🥗", label:"Algo ligero",           value:"ligero" },
+];
+
+// ─── MAITRE SERVICE ───────────────────────────────────────────────────────────
+// Capa de lógica separada de la UI. Para conectar una IA real basta con
+// sustituir processNL() por una llamada a la API sin tocar los componentes.
+const maitreService = {
+  getDestacados(platos) {
+    return platos.filter(p => p.destacado && p.activo);
+  },
+  getAvailable(platos) {
+    return platos.filter(p => p.activo);
+  },
+  filterSafeFor(platos, excluded) {
+    if (!excluded.length) return platos.filter(p => p.activo);
+    return platos.filter(p => p.activo && !p.alergenos.some(a => excluded.includes(a)));
+  },
+  getForSharing(platos) {
+    return platos.filter(p => p.activo && ["entrantes","pescados"].includes(p.categoriaId));
+  },
+  getLightOptions(platos) {
+    return platos.filter(p => p.activo && p.precio < 14);
+  },
+  buildMenuForBudget(platos, budget) {
+    const av = platos.filter(p => p.activo);
+    const sort = cat => [...av.filter(p => p.categoriaId === cat)].sort((a,b) => a.precio - b.precio);
+    const mains    = [...av.filter(p => ["principales","pescados"].includes(p.categoriaId))].sort((a,b)=>a.precio-b.precio);
+    const starters = sort("entrantes");
+    const desserts = sort("postres");
+    const drinks   = sort("bebidas");
+
+    const sel = []; let rem = budget;
+    const drinkFloor = drinks.length ? drinks[0].precio : 0;
+
+    const main = mains.find(p => p.precio <= rem - drinkFloor);
+    if (main)    { sel.push({...main,    role:"Principal"}); rem -= main.precio; }
+
+    const start = starters.find(p => p.precio <= rem - drinkFloor);
+    if (start)   { sel.push({...start,   role:"Entrante"});  rem -= start.precio; }
+
+    const dess = desserts.find(p => p.precio <= rem - drinkFloor);
+    if (dess)    { sel.push({...dess,    role:"Postre"});    rem -= dess.precio; }
+
+    const drink = drinks.find(p => p.precio <= rem);
+    if (drink)   { sel.push({...drink,   role:"Bebida"});    rem -= drink.precio; }
+
+    return { selection: sel, total: budget - rem };
+  },
+  // Procesamiento en lenguaje natural basado en palabras clave.
+  // FUTURO: sustituir este método por una llamada a LLM sin cambiar la UI.
+  processNL(raw, platos, dailySpecials) {
+    const t = raw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    const av = platos.filter(p => p.activo);
+    if (/recomiend|que pido|no se|suger/.test(t))
+      return { intent:"recommend", platos: av.filter(p => p.destacado) };
+    if (/plato del dia|del dia|hoy/.test(t))
+      return { intent:"daily" };
+    if (/marisco|gamba|bogavante|langosta|almeja|mejillon|crustac/.test(t))
+      return { intent:"seafood", message:"Nuestros platos de marisco y pescado:", platos: av.filter(p => p.categoriaId==="pescados") };
+    if (/pescado|merluza|dorada|bacalao|salmon|atun/.test(t))
+      return { intent:"fish",    message:"Nuestros platos de pescado:", platos: av.filter(p => p.categoriaId==="pescados") };
+    if (/carne|cerdo|iberico|carrillada|secreto|ternera|vaca/.test(t))
+      return { intent:"meat",    message:"Nuestros platos de carne:", platos: av.filter(p => p.categoriaId==="principales") };
+    if (/vegetarian|verdura|sin carne|sin pescado/.test(t))
+      return { intent:"veggie",  message:"Opciones más vegetales:", platos: av.filter(p => !["pescados","principales"].includes(p.categoriaId)) };
+    if (/ligero|dieta|sano|poco|saludable/.test(t))
+      return { intent:"light",   message:"Opciones más ligeras:", platos: av.filter(p => p.precio < 14) };
+    if (/compartir|para dos|tapas|para varios/.test(t))
+      return { intent:"sharing", message:"Para poner en el centro y compartir:", platos: av.filter(p => ["entrantes","pescados"].includes(p.categoriaId)) };
+    if (/postre|dulce|tarta|helado/.test(t))
+      return { intent:"dessert", message:"Nuestros postres:", platos: av.filter(p => p.categoriaId==="postres") };
+    if (/nino|ninos|bebe|infantil|pequeño/.test(t))
+      return { intent:"kids",    message:"Opciones más sencillas:", platos: av.filter(p=>p.precio<12).slice(0,4) };
+    if (/gluten|celiaco/.test(t))  return { intent:"allergen", allergen:"gluten" };
+    if (/lactosa|leche|lacteo/.test(t)) return { intent:"allergen", allergen:"lacteos" };
+    const bm = t.match(/(\d+)\s*(euro|€)?/);
+    if (bm) { const n = parseInt(bm[1]); if (n>=8 && n<=200) return { intent:"budget", budget:n }; }
+    return { intent:"unknown" };
+  },
+};
+
 // ─── COMPRIMIR IMAGEN CON CANVAS ──────────────────────────────────────────────
 
 async function comprimirImagen(file, maxDim = 560, q = 0.74) {
@@ -230,7 +332,7 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 .btn-full{width:100%;justify-content:center;padding:10px}
 .sel-input{width:100%;padding:8px 12px;border:1px solid #D0C8C0;border-radius:6px;font-size:.86rem;font-family:'Inter',sans-serif;background:#FAFAF8;color:#1A1A1A;outline:none;appearance:none}
 .sel-input:focus{border-color:#2C4A3E}
-.chk-label{display:flex;align-items:center;gap:7px;font-size:.83rem;cursor:pointer;color:#444;margin-top:4px}
+.chk-label{display:flex;align-items:center;font-size:.83rem;cursor:pointer;color:#444;margin-top:4px}
 
 /* ── LISTA PLATOS ADMIN ── */
 .adm-plato{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #F0EBE4}
@@ -285,6 +387,325 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 .toast{position:fixed;bottom:22px;right:22px;background:#1A1A1A;color:#fff;padding:11px 18px;border-radius:8px;font-size:.82rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);animation:fadeup .2s ease}
 @keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .empty{text-align:center;padding:28px;color:#AAA;font-size:.82rem}
+/* ── MAITRE BOT ─────────────────────────────────────────────────────────────── */
+
+/* ─ FAB ─ */
+.mb-fab{
+  position:fixed;bottom:22px;right:18px;z-index:600;
+  display:flex;align-items:center;gap:7px;
+  background:transparent;
+  border:none;
+  border-radius:9999px;padding:8px 20px 8px 14px;
+  cursor:pointer;
+  box-shadow:none;
+  transition:transform .18s,box-shadow .18s;
+  font-family:'Inter',sans-serif;
+}
+.mb-fab:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,31,58,.22)}
+.mb-fab:active{transform:scale(.96)}
+.mb-fab img{width:auto;height:88px;object-fit:contain;flex-shrink:0}
+.mb-fab-txt{display:none}
+
+/* ─ Hint bubble ─ */
+.mb-hint{
+  position:fixed;bottom:78px;right:18px;z-index:599;
+  background:#fff;color:#0B1F3A;
+  border:1.5px solid rgba(11,31,58,.12);
+  border-radius:14px 14px 4px 14px;
+  padding:10px 14px;font-size:.76rem;font-weight:500;
+  box-shadow:0 4px 20px rgba(0,0,0,.12);
+  max-width:210px;line-height:1.45;
+  animation:mb_hint .3s ease;
+  font-family:'Inter',sans-serif;pointer-events:none;
+}
+@keyframes mb_hint{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mb-hint::after{
+  content:'';position:absolute;bottom:-9px;right:22px;
+  border:5px solid transparent;border-top-color:#fff;
+}
+
+/* ─ Overlay ─ */
+.mb-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.35);
+  z-index:610;backdrop-filter:blur(3px);
+  animation:mb_fade .2s ease;
+}
+@keyframes mb_fade{from{opacity:0}to{opacity:1}}
+
+/* ─ Panel — MOBILE: bottom-sheet ─ */
+.mb-panel{
+  position:fixed;bottom:0;left:0;right:0;
+  z-index:620;
+  background:#F7F5F2;
+  border-radius:24px 24px 0 0;
+  display:flex;flex-direction:column;
+  max-height:92vh;min-height:70vh;
+  box-shadow:0 -8px 50px rgba(0,0,0,.22),0 -2px 10px rgba(0,0,0,.08);
+  animation:mb_up .28s cubic-bezier(.22,.72,0,1);
+  overflow:hidden;
+}
+@keyframes mb_up{from{transform:translateY(105%)}to{transform:translateY(0)}}
+
+/* ─ Panel — DESKTOP: ventana flotante ─ */
+@media(min-width:768px){
+  .mb-panel{
+    left:auto;width:400px;
+    right:18px;bottom:78px;
+    border-radius:20px;
+    min-height:540px;max-height:82vh;
+    animation:mb_pop .22s cubic-bezier(.22,.72,0,1);
+  }
+  @keyframes mb_pop{
+    from{opacity:0;transform:scale(.92) translateY(12px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+  }
+}
+
+/* ─ Drag handle ─ */
+.mb-drag{
+  width:38px;height:4px;background:#D8D0C8;
+  border-radius:2px;margin:11px auto 0;flex-shrink:0;
+}
+@media(min-width:768px){.mb-drag{display:none}}
+
+/* ─ Header ─ */
+.mb-hdr{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:#fff;
+  border-bottom:2px solid #0B1F3A;
+  flex-shrink:0;
+}
+.mb-hdr-logo{width:auto;height:58px;object-fit:contain;flex-shrink:0}
+.mb-hdr-info{flex:1;min-width:0}
+.mb-hdr-name{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;font-weight:700;
+  color:#0B1F3A;line-height:1.2;
+}
+.mb-hdr-claim{font-size:.64rem;color:#B8952A;letter-spacing:.04em}
+.mb-close{
+  background:#F0EDE8;border:1px solid #D8D0C8;
+  cursor:pointer;color:#666;font-size:1rem;
+  border-radius:50%;width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;flex-shrink:0;
+}
+.mb-close:hover{background:#E0D8D0;color:#333}
+
+/* ─ Chat área ─ */
+.mb-chat{
+  flex:1;overflow-y:auto;
+  padding:14px 14px 6px;
+  display:flex;flex-direction:column;gap:9px;
+  scroll-behavior:smooth;
+  overscroll-behavior:contain;
+  background:#F7F5F2;
+}
+.mb-chat::-webkit-scrollbar{width:3px}
+.mb-chat::-webkit-scrollbar-thumb{background:#D0C8C0;border-radius:2px}
+
+/* ─ Burbujas ─ */
+.mb-msg-bot{
+  align-self:flex-start;max-width:88%;
+  background:#fff;color:#1A1A1A;
+  border-radius:4px 16px 16px 16px;
+  padding:10px 14px;
+  font-size:.83rem;line-height:1.55;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+  white-space:pre-line;
+}
+.mb-msg-user{
+  align-self:flex-end;max-width:88%;
+  background:#0B1F3A;color:#fff;
+  border-radius:16px 4px 16px 16px;
+  padding:10px 14px;
+  font-size:.83rem;line-height:1.55;
+  font-family:'Inter',sans-serif;
+}
+
+/* ─ Typing ─ */
+.mb-typing{
+  align-self:flex-start;
+  background:#fff;
+  border-radius:4px 16px 16px 16px;
+  padding:12px 16px;
+  display:flex;gap:5px;align-items:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+}
+.mb-dot{width:7px;height:7px;border-radius:50%;background:#0B1F3A;opacity:.3;animation:mb_dot .8s infinite}
+.mb-dot:nth-child(2){animation-delay:.2s}
+.mb-dot:nth-child(3){animation-delay:.4s}
+@keyframes mb_dot{0%,80%,100%{transform:scale(1);opacity:.3}40%{transform:scale(1.5);opacity:.9}}
+
+/* ─ Quick chips ─ */
+.mb-chips{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:100%}
+.mb-chip{
+  display:flex;align-items:center;gap:4px;
+  padding:7px 13px;border-radius:20px;
+  border:1.5px solid #D0C8C0;
+  background:#fff;cursor:pointer;
+  font-size:.75rem;font-family:'Inter',sans-serif;
+  color:#0B1F3A;font-weight:500;
+  transition:all .15s;white-space:nowrap;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.mb-chip:hover{border-color:#B8952A;background:#FFF8EC;color:#7A5A10}
+.mb-chip:active{transform:scale(.95)}
+
+/* ─ Tarjetas de platos en chat ─ */
+.mb-platos{display:flex;flex-direction:column;gap:8px;align-self:stretch}
+.mb-pc{
+  display:flex;align-items:flex-start;gap:10px;
+  background:#fff;border:1px solid #EAE4DC;
+  border-radius:14px;padding:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+  transition:box-shadow .15s;
+}
+.mb-pc:hover{box-shadow:0 4px 14px rgba(0,0,0,.09)}
+.mb-pc-img{width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.mb-pc-body{flex:1;min-width:0}
+.mb-pc-role{
+  font-size:.58rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:#B8952A;display:block;margin-bottom:2px;
+}
+.mb-pc-nombre{
+  font-family:'Playfair Display',serif;
+  font-size:.85rem;font-weight:600;color:#0B1F3A;
+  line-height:1.3;margin-bottom:3px;
+}
+.mb-pc-desc{
+  font-size:.7rem;color:#777;line-height:1.4;margin-bottom:7px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.mb-pc-foot{display:flex;align-items:center;gap:7px;flex-wrap:nowrap}
+.mb-pc-precio{font-size:.85rem;font-weight:700;color:#9A7010;flex-shrink:0}
+.mb-pc-als{display:flex;gap:3px;flex:1;min-width:0;overflow:hidden}
+.mb-ver{
+  background:#0B1F3A;color:#fff;border:none;
+  border-radius:20px;padding:5px 11px;
+  font-size:.67rem;font-weight:600;cursor:pointer;
+  white-space:nowrap;transition:background .15s;
+  font-family:'Inter',sans-serif;flex-shrink:0;
+}
+.mb-ver:hover{background:#1D3A6A}
+
+/* ─ Selector de alérgenos ─ */
+.mb-al-sel{
+  background:#fff;border:1px solid #EAE4DC;
+  border-radius:14px;padding:12px;
+  display:flex;flex-direction:column;gap:10px;
+  align-self:stretch;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.mb-al-chips{display:flex;flex-wrap:wrap;gap:6px}
+.mb-al-chip{
+  display:flex;align-items:center;gap:4px;
+  padding:6px 11px;border-radius:20px;
+  border:1.5px solid #D0C8C0;background:#fff;
+  cursor:pointer;font-size:.72rem;
+  font-family:'Inter',sans-serif;color:#444;
+  transition:all .15s;user-select:none;
+}
+.mb-al-chip.mb-al-on{color:#fff;border-color:transparent}
+.mb-al-chip:active{transform:scale(.95)}
+.mb-al-ok{
+  width:100%;padding:10px;
+  background:#0B1F3A;color:#fff;border:none;
+  border-radius:10px;font-size:.82rem;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:background .15s;
+}
+.mb-al-ok:hover{background:#1D3A6A}
+.mb-al-ok:disabled{background:#C8C0B8;cursor:not-allowed}
+
+/* ─ Opciones de presupuesto ─ */
+.mb-budget-opts{display:flex;flex-direction:column;gap:6px;align-self:stretch}
+.mb-budget-btn{
+  padding:10px 14px;border-radius:12px;
+  border:1.5px solid #D0C8C0;background:#fff;
+  cursor:pointer;font-size:.82rem;
+  font-family:'Inter',sans-serif;color:#0B1F3A;font-weight:500;
+  text-align:left;transition:all .15s;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.mb-budget-btn:hover{border-color:#B8952A;background:#FFF8EC}
+
+/* ─ Combo menú ─ */
+.mb-combo{
+  background:#fff;border:1.5px solid rgba(184,149,42,.3);
+  border-radius:14px;padding:13px;align-self:stretch;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.mb-combo-tit{
+  font-size:.7rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:#B8952A;margin-bottom:8px;
+}
+.mb-combo-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;border-bottom:1px dashed #EAE4DC;
+  font-size:.8rem;color:#1A1A1A;
+}
+.mb-combo-row:last-child{border-bottom:none}
+.mb-combo-role{color:#AAA;font-size:.68rem;margin-right:3px}
+.mb-combo-total{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:8px;padding-top:8px;
+  border-top:2px solid #EAE4DC;
+  font-weight:700;font-size:.86rem;color:#0B1F3A;
+}
+
+/* ─ Disclaimer ─ */
+.mb-disclaimer{
+  font-size:.72rem;color:#7A5A20;line-height:1.5;
+  padding:9px 12px;background:#FFF9F0;border-radius:10px;
+  border-left:3px solid #B8952A;align-self:stretch;
+}
+
+/* ─ Input área ─ */
+.mb-input-area{
+  padding:10px 14px;
+  border-top:1px solid #EAE4DC;flex-shrink:0;
+  background:#fff;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+}
+.mb-reset{
+  background:none;border:none;color:#AAA;
+  font-size:.69rem;cursor:pointer;
+  padding:0 0 8px;font-family:'Inter',sans-serif;
+  display:flex;align-items:center;gap:3px;transition:color .15s;
+}
+.mb-reset:hover{color:#555}
+.mb-input-row{display:flex;gap:8px;align-items:center}
+.mb-input{
+  flex:1;padding:10px 15px;
+  border:1.5px solid #D0C8C0;border-radius:24px;
+  font-size:.83rem;font-family:'Inter',sans-serif;
+  outline:none;background:#F7F5F2;color:#1A1A1A;
+  transition:border-color .15s,background .15s;min-width:0;
+}
+.mb-input:focus{border-color:#0B1F3A;background:#fff}
+.mb-send{
+  width:38px;height:38px;border-radius:50%;
+  background:#0B1F3A;color:#fff;border:none;
+  cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:.95rem;
+  transition:background .15s,transform .1s;flex-shrink:0;
+}
+.mb-send:hover{background:#1D3A6A}
+.mb-send:active{transform:scale(.93)}
+.mb-send:disabled{background:#C8C0B8;cursor:not-allowed}
+
+/* Slot Maitre inline — solo visible en móvil */
+.mb-mobile-slot{display:none}
+/* Slot inline desactivado */
+@media(max-width:767px){
+  .mb-mobile-slot{display:none!important}
+  /* Subir el FAB para que quede a la altura del primer plato */
+  .mb-fab{bottom:auto!important;top:61vh!important;right:12px!important}
+}
+.mb-fab-inline{background:none;border:none;cursor:pointer;padding:0}
+.mb-fab-inline img{height:80px;width:auto;object-fit:contain}
 `;
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
@@ -326,6 +747,402 @@ function Lightbox({ src, alt, onClose }) {
   );
 }
 
+
+// ─── MAITRE BOT — COMPONENTES ────────────────────────────────────────────────
+
+function ChatPlatoCard({ plato, foto, onVer }) {
+  return (
+    <div className="mb-pc">
+      {foto && <img src={foto} alt={plato.nombre} className="mb-pc-img" loading="lazy" />}
+      <div className="mb-pc-body">
+        {plato.role && <span className="mb-pc-role">{plato.role}</span>}
+        <div className="mb-pc-nombre">{plato.nombre}</div>
+        {plato.descripcion && <div className="mb-pc-desc">{plato.descripcion}</div>}
+        <div className="mb-pc-foot">
+          <span className="mb-pc-precio">{fmt(plato.precio)}</span>
+          {plato.alergenos && plato.alergenos.length > 0 && (
+            <div className="mb-pc-als">
+              {plato.alergenos.slice(0,3).map(id => <AlBadge key={id} id={id} size={16} />)}
+              {plato.alergenos.length > 3 && <span style={{fontSize:".6rem",color:"#AAA"}}>+{plato.alergenos.length-3}</span>}
+            </div>
+          )}
+          <button className="mb-ver" onClick={onVer}>Ver en carta</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AllergenSelector({ onConfirm }) {
+  const [sel, setSel] = useState([]);
+  const toggle = id => setSel(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+  const SHOW = ALERGENOS.filter(a =>
+    ["gluten","lacteos","huevos","pescado","crustaceos","frutosSecos","soja","mostaza","sesamo","apio"].includes(a.id)
+  );
+  return (
+    <div className="mb-al-sel">
+      <div className="mb-al-chips">
+        {SHOW.map(a => (
+          <div key={a.id}
+            className={"mb-al-chip" + (sel.includes(a.id) ? " mb-al-on" : "")}
+            style={sel.includes(a.id) ? {background:a.color,borderColor:a.color} : {}}
+            onClick={() => toggle(a.id)}
+          >
+            {a.nombre}
+          </div>
+        ))}
+      </div>
+      <button className="mb-al-ok" disabled={!sel.length} onClick={() => onConfirm(sel)}>
+        {sel.length ? "Buscar opciones compatibles →" : "Selecciona al menos uno"}
+      </button>
+    </div>
+  );
+}
+
+function MessageItem({ msg, fotos, onVerPlato, onChip, onAllergenConfirm, onBudget }) {
+  if (msg.type === "bot")  return <div className="mb-msg-bot">{msg.text}</div>;
+  if (msg.type === "user") return <div className="mb-msg-user">{msg.text}</div>;
+  if (msg.type === "disclaimer") return <div className="mb-disclaimer">⚠️ {msg.text}</div>;
+
+  if (msg.type === "chips") return (
+    <div className="mb-chips">
+      {msg.chips.map((c,i) => (
+        <button key={i} className="mb-chip" onClick={() => onChip(c.value, c.emoji + " " + c.label)}>
+          {c.emoji} {c.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (msg.type === "platos") return (
+    <div className="mb-platos">
+      {msg.platos.map(p => (
+        <ChatPlatoCard
+          key={p.id || p.nombre}
+          plato={p}
+          foto={p.id ? (fotos[p.id] || p.fotoDemo || null) : null}
+          onVer={() => onVerPlato(p.id)}
+        />
+      ))}
+    </div>
+  );
+
+  if (msg.type === "allergen-select") return (
+    <AllergenSelector onConfirm={onAllergenConfirm} />
+  );
+
+  if (msg.type === "budget-options") return (
+    <div className="mb-budget-opts">
+      {msg.options.map((o,i) => (
+        <button key={i} className="mb-budget-btn" onClick={() => onBudget(o.value, o.label)}>
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (msg.type === "combo") return (
+    <div className="mb-combo">
+      <div className="mb-combo-tit">Menú sugerido</div>
+      {msg.items.map((item,i) => (
+        <div key={i} className="mb-combo-row">
+          <span><span className="mb-combo-role">{item.role} ·</span> {item.nombre}</span>
+          <span style={{fontWeight:600,flexShrink:0,marginLeft:8}}>{fmt(item.precio)}</span>
+        </div>
+      ))}
+      <div className="mb-combo-total">
+        <span>Total aprox.</span>
+        <span style={{color:"#B8952A"}}>{fmt(msg.total)}</span>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
+function MaitreBot({ data, fotos }) {
+  const [open,      setOpen]      = useState(false);
+  const [msgs,      setMsgs]      = useState([]);
+  const [isTyping,  setIsTyping]  = useState(false);
+  const [showHint,  setShowHint]  = useState(false);
+  const [inputVal,  setInputVal]  = useState("");
+  const chatRef  = useRef(null);
+  const inputRef = useRef(null);
+  const inited   = useRef(false);
+
+  // Hint de bienvenida la primera vez
+  useEffect(() => {
+    const t1 = setTimeout(() => setShowHint(true),  2200);
+    const t2 = setTimeout(() => setShowHint(false), 7500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+
+  useEffect(() => {
+    window._maitreOpen = () => setOpen(true);
+    return () => { try{ delete window._maitreOpen; }catch(e){} };
+  }, []);
+
+  // Iniciar conversación al abrir por primera vez
+  useEffect(() => {
+    if (!open) return;
+    setShowHint(false);
+    if (!inited.current) {
+      inited.current = true;
+      const welcome = "Hola 👋 Soy Maitre.\nConozco nuestra carta y puedo ayudarte a elegir según lo que te apetezca, tu presupuesto o tus intolerancias.\n\n¿Qué te apetece hoy?";
+      setTimeout(() => {
+        addMsg({ type:"bot", text: welcome });
+        addMsg({ type:"chips", chips: INITIAL_CHIPS });
+      }, 280);
+    }
+    setTimeout(() => inputRef.current && inputRef.current.focus(), 450);
+  }, [open]);
+
+  // Auto-scroll al último mensaje
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [msgs, isTyping]);
+
+  const addMsg = msg => setMsgs(prev => [...prev, { id: Date.now() + Math.random(), ...msg }]);
+
+  const botRespond = (cb, delay=680) => {
+    setIsTyping(true);
+    setTimeout(() => { setIsTyping(false); cb(); }, delay);
+  };
+
+  const handleReset = () => {
+    setMsgs([]); setInputVal(""); setIsTyping(false);
+    inited.current = true;
+    setTimeout(() => {
+      addMsg({ type:"bot",   text:"¡Empecemos de nuevo! 😊 ¿En qué puedo ayudarte?" });
+      addMsg({ type:"chips", chips: INITIAL_CHIPS });
+    }, 180);
+  };
+
+  const handleVerPlato = id => {
+    setOpen(false);
+    setTimeout(() => {
+      const el = document.getElementById("plato-" + id);
+      if (!el) return;
+      el.scrollIntoView({ behavior:"smooth", block:"center" });
+      el.style.transition = "box-shadow .3s";
+      el.style.boxShadow  = "0 0 0 3px rgba(184,149,42,.5)";
+      el.style.borderRadius = "8px";
+      setTimeout(() => { el.style.boxShadow = ""; el.style.borderRadius = ""; }, 1800);
+    }, 320);
+  };
+
+  const handleChip = (value, label) => {
+    addMsg({ type:"user", text: label });
+    switch(value) {
+      case "recomiendame": case "especialidades": {
+        const dest = maitreService.getDestacados(data.platos);
+        botRespond(() => {
+          addMsg({ type:"bot", text: dest.length ? "Estas son nuestras recomendaciones estrella, las que más piden:" : "Hoy todo está buenísimo. Te muestro lo más pedido." });
+          if (dest.length) addMsg({ type:"platos", platos: dest.slice(0,3) });
+          addMsg({ type:"chips", chips:[
+            {emoji:"💶",label:"Por presupuesto",value:"presupuesto"},
+            {emoji:"🌾",label:"Tengo alergias", value:"alergias"},
+            {emoji:"👥",label:"Para compartir", value:"compartir"},
+          ]});
+        }); break;
+      }
+      case "plato-dia": {
+        const avail = DAILY_SPECIALS.filter(s => s.available);
+        botRespond(() => {
+          if (avail.length) {
+            addMsg({ type:"bot",   text:"Hoy tenemos estas sugerencias especiales fuera de carta:" });
+            addMsg({ type:"platos", platos: avail });
+          } else {
+            addMsg({ type:"bot", text:"Hoy no tenemos platos del día registrados. Pregunta a nuestro personal por las sugerencias de la jornada." });
+          }
+          addMsg({ type:"chips", chips:[
+            {emoji:"🥘",label:"Ver recomendaciones",value:"recomiendame"},
+            {emoji:"💶",label:"Por presupuesto",     value:"presupuesto"},
+          ]});
+        }); break;
+      }
+      case "compartir": {
+        const sh = maitreService.getForSharing(data.platos);
+        botRespond(() => {
+          addMsg({ type:"bot",    text:"Perfectos para poner en el centro de la mesa:" });
+          addMsg({ type:"platos", platos: sh.slice(0,4) });
+          addMsg({ type:"chips",  chips:[
+            {emoji:"💶",label:"Según presupuesto",value:"presupuesto"},
+            {emoji:"🌾",label:"Tengo alergias",   value:"alergias"},
+          ]});
+        }); break;
+      }
+      case "presupuesto": {
+        botRespond(() => {
+          addMsg({ type:"bot", text:"¿Cuánto quieres gastar aproximadamente por persona?" });
+          addMsg({ type:"budget-options", options:[
+            {label:"Menos de 15 €", value:14},
+            {label:"15 – 25 €",     value:25},
+            {label:"25 – 40 €",     value:40},
+            {label:"Más de 40 €",   value:60},
+          ]});
+        }); break;
+      }
+      case "alergias": {
+        botRespond(() => {
+          addMsg({ type:"bot",          text:"¿Qué necesitas evitar? Puedes seleccionar varios:" });
+          addMsg({ type:"allergen-select" });
+        }); break;
+      }
+      case "ligero": {
+        const lig = maitreService.getLightOptions(data.platos);
+        botRespond(() => {
+          addMsg({ type:"bot",    text:"Opciones más ligeras de nuestra carta:" });
+          addMsg({ type:"platos", platos: lig.slice(0,4) });
+          addMsg({ type:"chips",  chips:[
+            {emoji:"🌾",label:"Sin alérgenos",     value:"alergias"},
+            {emoji:"🥘",label:"Ver recomendaciones",value:"recomiendame"},
+          ]});
+        }); break;
+      }
+    }
+  };
+
+  const handleBudget = (amount, label) => {
+    addMsg({ type:"user", text: label });
+    const combo = maitreService.buildMenuForBudget(data.platos, amount);
+    botRespond(() => {
+      if (!combo.selection.length) {
+        addMsg({ type:"bot", text:"Con ese presupuesto las opciones son muy limitadas. Te muestro lo más económico:" });
+        addMsg({ type:"platos", platos: maitreService.getAvailable(data.platos).sort((a,b)=>a.precio-b.precio).slice(0,3) });
+      } else {
+        addMsg({ type:"bot",   text:"Por unos " + amount + " € por persona, esta podría ser una buena combinación:" });
+        addMsg({ type:"combo", items: combo.selection, total: combo.total });
+        addMsg({ type:"chips", chips:[
+          {emoji:"🌾",label:"Tengo alergias",     value:"alergias"},
+          {emoji:"🥘",label:"Ver recomendaciones",value:"recomiendame"},
+        ]});
+      }
+    });
+  };
+
+  const handleAllergenConfirm = selected => {
+    const names = selected.map(id => ALERGENOS.find(a => a.id === id)).filter(Boolean).map(a => a.nombre);
+    addMsg({ type:"user", text: "Evito: " + names.join(", ") });
+    const compat = maitreService.filterSafeFor(data.platos, selected);
+    botRespond(() => {
+      addMsg({ type:"bot", text:"Según la información de alérgenos del establecimiento, estas opciones pueden encajarte:" });
+      if (compat.length) {
+        addMsg({ type:"platos", platos: compat.slice(0,5) });
+      } else {
+        addMsg({ type:"bot", text:"No encontré platos sin todos esos alérgenos. Por favor consulta directamente con nuestro personal." });
+      }
+      addMsg({ type:"disclaimer", text:"Si tienes una alergia grave, consulta siempre con el personal sobre posibles trazas o contaminación cruzada." });
+    });
+  };
+
+  const handleSend = () => {
+    if (!inputVal.trim()) return;
+    const text = inputVal.trim();
+    setInputVal("");
+    addMsg({ type:"user", text });
+    const r = maitreService.processNL(text, data.platos, DAILY_SPECIALS);
+    botRespond(() => {
+      switch(r.intent) {
+        case "recommend":
+          addMsg({ type:"bot",    text:"Mis recomendaciones de la carta:" });
+          addMsg({ type:"platos", platos: r.platos.slice(0,3) });
+          break;
+        case "seafood": case "fish": case "meat":
+        case "veggie":  case "light": case "sharing":
+        case "dessert": case "kids":
+          addMsg({ type:"bot",    text: r.message });
+          if (r.platos && r.platos.length) addMsg({ type:"platos", platos: r.platos.slice(0,4) });
+          else addMsg({ type:"bot", text:"No encontré opciones. ¿Quieres que te muestre las especialidades?" });
+          break;
+        case "daily":
+          const avDS = DAILY_SPECIALS.filter(s => s.available);
+          if (avDS.length) { addMsg({ type:"bot", text:"Sugerencias del día:" }); addMsg({ type:"platos", platos:avDS }); }
+          else addMsg({ type:"bot", text:"Hoy no hemos registrado platos del día. Pregunta a nuestro personal." });
+          break;
+        case "allergen":
+          addMsg({ type:"bot",          text:"¿Qué alérgeno necesitas evitar? Selecciona:" });
+          addMsg({ type:"allergen-select" });
+          break;
+        case "budget":
+          handleBudget(r.budget, r.budget + " €");
+          break;
+        default:
+          addMsg({ type:"bot", text:"No he entendido bien. Prueba con los botones o escribe algo como: \"algo con marisco\", \"sin gluten\" o \"menos de 20 €\"." });
+          addMsg({ type:"chips", chips: INITIAL_CHIPS.slice(0,4) });
+      }
+    });
+  };
+
+  return (
+    <>
+      {showHint && !open && (
+        <div className="mb-hint" role="status" aria-live="polite">
+          ¿No sabes qué pedir? Pregúntame 😊
+        </div>
+      )}
+
+      {!open && (
+        <button className="mb-fab" onClick={() => setOpen(true)} aria-label="Abrir Maitre Bot, asistente de carta">
+          <img src={MAITRE_LOGO} alt="" aria-hidden="true" />
+          
+        </button>
+      )}
+
+      {open && <div className="mb-overlay" onClick={() => setOpen(false)} aria-hidden="true" />}
+
+      {open && (
+        <div className="mb-panel" role="dialog" aria-modal="true" aria-label="Maitre Bot">
+          <div className="mb-drag" aria-hidden="true" />
+
+          <div className="mb-hdr">
+            <img src={MAITRE_LOGO_HDR} alt="" className="mb-hdr-logo" aria-hidden="true" />
+            <div className="mb-hdr-info">
+              <div className="mb-hdr-name">Maitre Bot</div>
+              <div className="mb-hdr-claim">Tu asistente personal de mesa</div>
+            </div>
+            <button className="mb-close" onClick={() => setOpen(false)} aria-label="Cerrar">✕</button>
+          </div>
+
+          <div className="mb-chat" ref={chatRef} aria-live="polite" aria-label="Chat con Maitre">
+            {msgs.map(msg => (
+              <MessageItem
+                key={msg.id} msg={msg} fotos={fotos}
+                onVerPlato={handleVerPlato} onChip={handleChip}
+                onAllergenConfirm={handleAllergenConfirm} onBudget={handleBudget}
+              />
+            ))}
+            {isTyping && (
+              <div className="mb-typing" aria-label="Maitre está escribiendo">
+                <div className="mb-dot" /><div className="mb-dot" /><div className="mb-dot" />
+              </div>
+            )}
+          </div>
+
+          <div className="mb-input-area">
+            <button className="mb-reset" onClick={handleReset} aria-label="Reiniciar conversación">
+              ↺ Empezar de nuevo
+            </button>
+            <div className="mb-input-row">
+              <input
+                ref={inputRef}
+                className="mb-input"
+                type="text"
+                placeholder="Escribe qué te apetece..."
+                value={inputVal}
+                onChange={e => setInputVal(e.target.value)}
+                onKeyDown={e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }}}
+                aria-label="Mensaje para Maitre Bot"
+              />
+              <button className="mb-send" onClick={handleSend} disabled={!inputVal.trim()} aria-label="Enviar">→</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 // ─── CARTA PÚBLICA ────────────────────────────────────────────────────────────
 
 function CartaPublica({ data, fotos, onAdmin }) {
@@ -346,7 +1163,7 @@ function CartaPublica({ data, fotos, onAdmin }) {
       </div>
 
       <div className="cb">
-        {categorias.map(cat => {
+        {categorias.map((cat, catIdx) => {
           const catPlatos = platos.filter(p => p.categoriaId === cat.id && p.activo);
           if (!catPlatos.length) return null;
           return (
@@ -355,10 +1172,11 @@ function CartaPublica({ data, fotos, onAdmin }) {
                 <span className="cat-emoji">{cat.emoji}</span>
                 <h2 className="cat-nombre">{cat.nombre}</h2>
               </div>
-              {catPlatos.map(p => {
+              {catPlatos.map((p, pi) => {
                 const foto = fotos[p.id] || p.fotoDemo || null;
                 return (
-                  <div key={p.id} className="plato">
+                  <React.Fragment key={p.id}>
+                  <div id={"plato-" + p.id} className="plato">
                     <div className="plato-info">
                       <div className="plato-row1">
                         <span className="plato-nombre">{p.nombre}</span>
@@ -388,6 +1206,15 @@ function CartaPublica({ data, fotos, onAdmin }) {
                       />
                     )}
                   </div>
+                  {false && catIdx === 0 && pi === 0 && (
+                    <div className="mb-mobile-slot">
+                      <button className="mb-fab-inline" aria-label="Abrir Maitre Bot"
+                        onClick={() => window._maitreOpen && window._maitreOpen()}>
+                        <img src={MAITRE_LOGO} alt="Maitre Bot" />
+                      </button>
+                    </div>
+                  )}
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -424,6 +1251,7 @@ function CartaPublica({ data, fotos, onAdmin }) {
       </div>
 
       {lb && <Lightbox src={lb.src} alt={lb.alt} onClose={() => setLb(null)} />}
+      <MaitreBot data={data} fotos={fotos} />
     </div>
   );
 }
