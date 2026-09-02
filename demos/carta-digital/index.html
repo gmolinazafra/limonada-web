@@ -1505,11 +1505,36 @@ async function apiCall(path,options={}){
   const response=await fetch(path,{...options,headers:{"Content-Type":"application/json",...(options.headers||{})}});
   const result=await response.json();if(!response.ok)throw new Error(result.error||"Servicio no disponible");return result;
 }
+
+// ─── WAITLIST STORAGE (localStorage — sin API) ───────────────────────────────
+// Para conectar backend: sustituir estas funciones por llamadas a /api/waitlist
+const wlGet = async () => {
+  try { const r=await window.storage.get("waitlist"); return r?JSON.parse(r.value):[]; } catch{return[];}
+};
+const wlSet = async list => { try{await window.storage.set("waitlist",JSON.stringify(list));}catch{} };
+const wlGetCfg = async () => {
+  try { const r=await window.storage.get("waitlist-config"); return r?JSON.parse(r.value):{enabled:true}; } catch{return{enabled:true};}
+};
+const wlSetCfg = async cfg => { try{await window.storage.set("waitlist-config",JSON.stringify(cfg));}catch{} };
+
 function WaitlistForm({onClose}){
   const locale=React.useContext(MenuLanguage);
   const [name,setName]=useState(""),[phone,setPhone]=useState(""),[people,setPeople]=useState(2),[busy,setBusy]=useState(false),[error,setError]=useState(""),[receipt,setReceipt]=useState(null),[enabled,setEnabled]=useState(null);
-  useEffect(()=>{let live=true;apiCall('/api/waitlist/config').then(r=>{if(live)setEnabled(r.enabled)}).catch(()=>{if(live)setError("La lista de espera requiere la versión online. Consulta con el personal.")});return ()=>{live=false}},[]);
-  const submit=async e=>{e.preventDefault();if(busy)return;setBusy(true);setError("");try{const r=await apiCall('/api/waitlist',{method:'POST',body:JSON.stringify({name,phone,people})});setReceipt(r.reference);setName("");setPhone("");}catch(e){setError(e.message)}finally{setBusy(false)}};
+  useEffect(()=>{
+    wlGetCfg().then(c=>setEnabled(c.enabled));
+  },[]);
+  const submit=async e=>{
+    e.preventDefault();if(busy)return;
+    setBusy(true);setError("");
+    try{
+      const list=await wlGet();
+      const ref="T"+String(Date.now()).slice(-4);
+      list.push({id:"w"+Date.now(),reference:ref,name,phone,people:Number(people),status:"waiting",created:new Date().toISOString()});
+      await wlSet(list);
+      setReceipt(ref);setName("");setPhone("");
+    }catch(e){setError("No se ha podido guardar. Inténtalo de nuevo.");}
+    finally{setBusy(false);}
+  };
   return localizeTree(<section className="set-menu-card" id="waitlist-form" aria-labelledby="waitlist-title"><div className="set-menu-title"><h2 id="waitlist-title">Lista de espera</h2><button className="btn btn-sec" onClick={onClose} aria-label="Cerrar lista de espera">×</button></div>{receipt?<div role="status"><h3>Ya estás en la lista</h3><p>Referencia: {receipt}</p><p>El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.</p></div>:<><p>¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.</p>{enabled===false?<p>La lista está cerrada. Consulta con el personal.</p>:<form onSubmit={submit}><div className="menu-editor-grid"><label className="ff">Nombre<input className="fi" required minLength={2} maxLength={80} autoComplete="given-name" value={name} onChange={e=>setName(e.target.value)}/></label><label className="ff">Teléfono<input className="fi" type="tel" required autoComplete="tel" maxLength={24} value={phone} onChange={e=>setPhone(e.target.value)}/></label><label className="ff">Número de personas<input className="fi" type="number" required min={1} max={30} value={people} onChange={e=>setPeople(e.target.value)}/></label></div><p>Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.</p><p>Demo: utiliza datos ficticios.</p><button className="btn btn-pri" disabled={busy||enabled!==true}>{busy?"Enviando…":"Apuntarme a la lista"}</button></form>}</>}{error&&<p role="alert">{error}</p>}</section>,locale);
 }
 Object.assign(ENGLISH,{"Lista de espera":"Waiting list","Cerrar lista de espera":"Close waiting list","Ya estás en la lista":"You are on the list","Referencia: ":"Reference: ","El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.":"Our staff will contact you when a table can be offered. This is not a reservation or a guaranteed waiting time.","¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.":"No table available? Leave your details and contact our staff if you need to change or cancel your place.","La lista está cerrada. Consulta con el personal.":"The list is closed. Please speak to our staff.","Nombre":"Name","Teléfono":"Phone","Número de personas":"Number of guests","Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.":"We use these details only to manage your place and contact you. They are not published or used for advertising. Entries expire after 24 hours.","Demo: utiliza datos ficticios.":"Demo: please use fictitious details.","Enviando…":"Sending…","Apuntarme a la lista":"Join the waiting list","La lista de espera requiere la versión online. Consulta con el personal.":"The waiting list requires the online version. Please speak to our staff.","¿Sin mesa? Lista de espera":"No table? Join the waiting list"});
@@ -1832,10 +1857,30 @@ function ModalPlato({ plato, fotoInicial, categorias, onSave, onClose }) {
 // ─── PANEL ADMIN ──────────────────────────────────────────────────────────────
 function WaitlistManager(){
   const [entries,setEntries]=useState([]),[enabled,setEnabled]=useState(true),[error,setError]=useState(""),[busy,setBusy]=useState(false),[loaded,setLoaded]=useState(false);
-  const load=async()=>{try{const [list,config]=await Promise.all([apiCall('/api/waitlist'),apiCall('/api/waitlist/config')]);setEntries(list.entries);setEnabled(config.enabled);setLoaded(true);setError("");}catch(e){setError(e.message)}};
-  useEffect(()=>{load();const timer=setInterval(load,15000);return ()=>clearInterval(timer)},[]);
-  const update=async(id,status)=>{setBusy(true);try{await apiCall('/api/waitlist/'+id,{method:'PATCH',body:JSON.stringify({status})});await load();}catch(e){setError(e.message)}finally{setBusy(false)}};
-  const toggle=async()=>{setBusy(true);try{await apiCall('/api/waitlist/config',{method:'PUT',body:JSON.stringify({enabled:!enabled})});await load();}catch(e){setError(e.message)}finally{setBusy(false)}};
+  const load=async()=>{
+    try{
+      const [list,cfg]=await Promise.all([wlGet(),wlGetCfg()]);
+      setEntries(list);setEnabled(cfg.enabled);setLoaded(true);setError("");
+    }catch(e){setError(e.message);}
+  };
+  useEffect(()=>{load();const timer=setInterval(load,15000);return()=>clearInterval(timer);},[]);
+  const update=async(id,status)=>{
+    setBusy(true);
+    try{
+      const list=await wlGet();
+      await wlSet(list.map(e=>e.id===id?{...e,status}:e));
+      await load();
+    }catch(e){setError(e.message);}
+    finally{setBusy(false);}
+  };
+  const toggle=async()=>{
+    setBusy(true);
+    try{
+      await wlSetCfg({enabled:!enabled});
+      await load();
+    }catch(e){setError(e.message);}
+    finally{setBusy(false);}
+  };
   const open=entries.filter(e=>['waiting','notified'].includes(e.status));
   const labels={waiting:"En espera",notified:"Avisado",seated:"Sentado",cancelled:"Cancelado"};
   return <section><h2>Lista de espera · {open.length} grupos</h2><p>Actualización cada 15 segundos. El orden es de llegada; la asignación de mesas la decide el personal.</p><div className="menu-editor-actions"><button className="btn btn-sec" onClick={load}>Actualizar</button><button className="btn btn-pri" disabled={!loaded||busy} onClick={toggle}>{enabled?"Cerrar nuevas inscripciones":"Abrir lista de espera"}</button></div>{error&&<p role="alert">{error}</p>}<details style={{margin:"16px 0"}}><summary>QR para apuntarse</summary><img src="/qr-espera.svg" alt="QR de acceso a la lista de espera" width="220" height="220"/><p><a href="?espera=1" target="_blank" rel="noopener">Abrir formulario del cliente</a></p><p>El acceso del QR depende de los permisos de publicación de esta demo.</p></details>{loaded&&!open.length&&<p>No hay grupos esperando.</p>}
