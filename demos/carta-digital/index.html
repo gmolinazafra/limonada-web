@@ -1529,26 +1529,47 @@ const wlGetCfg = async () => {
 const wlSetCfg = async cfg => { try{await window.storage.set("waitlist-config",JSON.stringify(cfg));}catch{} };
 
 
-// ─── FORMULARIO PARA CREAR ÍTEM PROPIO EN UN MENÚ ────────────────────────────
-function CustomItemForm({ onAdd }) {
+// ─── CREAR PLATO NUEVO DESDE EL EDITOR DE MENÚ ───────────────────────────────
+// El plato se añade a data.platos y queda disponible en todos los menús
+function NewPlatoGroupForm({ categorias, onAdd }) {
   const [nombre, setNombre] = useState("");
   const [precio, setPrecio] = useState("");
+  const [catId,  setCatId]  = useState(() => categorias[0]?.id || "");
   const add = () => {
     if (!nombre.trim()) return;
-    onAdd({ nombre: nombre.trim(), precio: precio ? Number(precio) : 0 });
+    onAdd({
+      id:          "pm-" + Date.now(),
+      categoriaId: catId,
+      nombre:      nombre.trim(),
+      descripcion: "",
+      precio:      precio ? Number(precio) : 0,
+      alergenos:   [],
+      destacado:   false,
+      activo:      true,
+      fotoDemo:    null,
+    });
     setNombre(""); setPrecio("");
   };
   return (
     <div className="menu-custom-form">
       <label>
         Nombre del plato o bebida
-        <input className="fi" placeholder="Ej: Agua mineral, Vino de la casa..." value={nombre} onChange={e=>setNombre(e.target.value)} onKeyDown={e=>e.key==="Enter"&&(e.preventDefault(),add())} />
+        <input className="fi" placeholder="Ej: Vino de la casa, Agua..." value={nombre}
+          onChange={e=>setNombre(e.target.value)}
+          onKeyDown={e=>e.key==="Enter"&&(e.preventDefault(),add())} />
       </label>
       <label>
         Precio (€) <span style={{fontWeight:400,color:"#AAA"}}>opcional</span>
-        <input className="fi fi-precio" type="number" min="0" step="0.01" placeholder="0.00" value={precio} onChange={e=>setPrecio(e.target.value)} />
+        <input className="fi fi-precio" type="number" min="0" step="0.01" placeholder="0.00"
+          value={precio} onChange={e=>setPrecio(e.target.value)} />
       </label>
-      <button type="button" className="menu-custom-add-btn" onClick={add}>+ Añadir ítem</button>
+      <label>
+        Categoría en carta
+        <select className="sel-input" style={{marginTop:3}} value={catId} onChange={e=>setCatId(e.target.value)}>
+          {categorias.map(c=><option key={c.id} value={c.id}>{c.emoji} {c.nombre}</option>)}
+        </select>
+      </label>
+      <button type="button" className="menu-custom-add-btn" onClick={add}>+ Crear y añadir</button>
     </div>
   );
 }
@@ -1967,7 +1988,7 @@ function SetMenuManager({data,setData,onPrint,showToast}){
                   </div>
                 </div>
               )}
-              <CustomItemForm onAdd={ci=>groupChange(i,"customItems",[...(g.customItems||[]),ci])} />
+              <details className="menu-dish-add" style={{marginTop:8}}><summary>✏️ Crear plato o bebida nuevo</summary><NewPlatoGroupForm categorias={data.categorias} onAdd={plato=>{setData(d=>({...d,platos:[...d.platos,plato]}));groupChange(i,"platoIds",[...g.platoIds,plato.id]);}}/></details>
               <button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
       <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[],customItems:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
     </form>}
