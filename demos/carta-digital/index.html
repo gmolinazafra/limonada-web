@@ -1540,9 +1540,10 @@ function NewPlatoGroupForm({ categorias, onAdd }) {
   const [nombre, setNombre] = useState("");
   const [precio, setPrecio] = useState("");
   const [catId,  setCatId]  = useState(() => categorias[0]?.id || "");
+  const [foto,   setFoto]   = useState(null);
   const add = () => {
     if (!nombre.trim()) return;
-    onAdd({
+    const plato = {
       id:          "pm-" + Date.now(),
       categoriaId: catId,
       nombre:      nombre.trim(),
@@ -1552,8 +1553,9 @@ function NewPlatoGroupForm({ categorias, onAdd }) {
       destacado:   false,
       activo:      true,
       fotoDemo:    null,
-    });
-    setNombre(""); setPrecio("");
+    };
+    onAdd(plato, foto || undefined);
+    setNombre(""); setPrecio(""); setFoto(null);
   };
   return (
     <div className="menu-custom-form">
@@ -1574,6 +1576,12 @@ function NewPlatoGroupForm({ categorias, onAdd }) {
           {categorias.map(c=><option key={c.id} value={c.id}>{c.emoji} {c.nombre}</option>)}
         </select>
       </label>
+      {!window.IS_DEMO && (
+        <div style={{width:"100%"}}>
+          <div className="fl" style={{marginBottom:4}}>Foto <span style={{fontWeight:400,color:"#AAA"}}>opcional</span></div>
+          <FotoUpload valor={foto} onChange={setFoto} />
+        </div>
+      )}
       <button type="button" className="menu-custom-add-btn" onClick={add}>+ Crear y añadir</button>
     </div>
   );
@@ -1597,7 +1605,62 @@ function WaitlistForm({onClose}){
     }catch(e){setError("No se ha podido guardar. Inténtalo de nuevo.");}
     finally{setBusy(false);}
   };
-  return localizeTree(<section className="set-menu-card" id="waitlist-form" aria-labelledby="waitlist-title"><div className="set-menu-title"><h2 id="waitlist-title">Lista de espera</h2><button className="btn btn-sec" onClick={onClose} aria-label="Cerrar lista de espera">×</button></div>{receipt?<div role="status"><h3>Ya estás en la lista</h3><p>Referencia: {receipt}</p><p>El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.</p></div>:<><p>¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.</p>{enabled===false?<p>La lista está cerrada. Consulta con el personal.</p>:<form onSubmit={submit}><div className="menu-editor-grid"><label className="ff">Nombre<input className="fi" required minLength={2} maxLength={80} autoComplete="given-name" value={name} onChange={e=>setName(e.target.value)}/></label><label className="ff">Teléfono<input className="fi" type="tel" required autoComplete="tel" maxLength={24} value={phone} onChange={e=>setPhone(e.target.value)}/></label><label className="ff">Número de personas<input className="fi" type="number" required min={1} max={30} value={people} onChange={e=>setPeople(e.target.value)}/></label></div><p>Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.</p><p>Demo: utiliza datos ficticios.</p><button className="btn btn-pri" disabled={busy||enabled!==true}>{busy?"Enviando…":"Apuntarme a la lista"}</button></form>}</>}{error&&<p role="alert">{error}</p>}</section>,locale);
+  return (
+    <div style={{minHeight:"100vh",background:"#F7F3EE",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px 16px"}}>
+      <style>{CSS}</style>
+      <div style={{background:"#fff",borderRadius:16,padding:"32px 24px",width:"100%",maxWidth:440,boxShadow:"0 4px 24px rgba(0,0,0,.09)"}}>
+        <div style={{textAlign:"center",marginBottom:22}}>
+          <div style={{fontSize:"2rem",marginBottom:8}}>⏳</div>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.3rem",fontWeight:700,color:"#0B1F3A"}}>Lista de espera</div>
+          <div style={{fontSize:".78rem",color:"#888",marginTop:6}}>¿No hay mesa? Déjanos tus datos y te avisaremos.</div>
+        </div>
+
+        {receipt ? (
+          <div style={{textAlign:"center",padding:"10px 0"}}>
+            <div style={{fontSize:"2.4rem",marginBottom:10}}>✅</div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.05rem",fontWeight:600,color:"#2C4A3E",marginBottom:6}}>Ya estás en la lista</div>
+            <div style={{fontSize:".82rem",color:"#555",marginBottom:4}}>Referencia: <strong>{receipt}</strong></div>
+            <div style={{fontSize:".75rem",color:"#999",marginBottom:20}}>El personal te avisará cuando pueda atenderte.</div>
+            <button className="btn btn-pri btn-full" onClick={onClose}>Volver a la carta</button>
+          </div>
+        ) : enabled === false ? (
+          <div style={{textAlign:"center",padding:"10px 0"}}>
+            <div style={{fontSize:"2rem",marginBottom:12}}>🔒</div>
+            <p style={{color:"#666",fontSize:".85rem",marginBottom:20}}>La lista de espera está cerrada en este momento. Consulta con el personal.</p>
+            <button className="btn btn-sec btn-full" onClick={onClose}>Volver a la carta</button>
+          </div>
+        ) : (
+          <form onSubmit={submit}>
+            <div className="ff">
+              <label className="fl">Nombre *</label>
+              <input className="fi" required minLength={2} maxLength={80} autoComplete="given-name"
+                value={name} onChange={e=>setName(e.target.value)} placeholder="Tu nombre" autoFocus />
+            </div>
+            <div className="ff">
+              <label className="fl">Teléfono *</label>
+              <input className="fi" type="tel" required autoComplete="tel" maxLength={24}
+                value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+34 600..." />
+            </div>
+            <div className="ff">
+              <label className="fl">Número de personas *</label>
+              <input className="fi" type="number" required min={1} max={30}
+                value={people} onChange={e=>setPeople(e.target.value)} />
+            </div>
+            <div style={{fontSize:".7rem",color:"#AAA",margin:"10px 0 16px",lineHeight:1.5}}>
+              Datos usados solo para gestionar tu turno. Los turnos caducan a las 24 horas.
+            </div>
+            {error && <div className="login-err" style={{marginBottom:10}}>{error}</div>}
+            <button className="btn btn-pri btn-full" type="submit" disabled={busy||enabled!==true}>
+              {busy ? "Enviando..." : "Apuntarme a la lista"}
+            </button>
+            <button type="button" className="btn btn-sec btn-full" style={{marginTop:8}} onClick={onClose}>
+              Volver a la carta
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
 }
 Object.assign(ENGLISH,{"Lista de espera":"Waiting list","Cerrar lista de espera":"Close waiting list","Ya estás en la lista":"You are on the list","Referencia: ":"Reference: ","El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.":"Our staff will contact you when a table can be offered. This is not a reservation or a guaranteed waiting time.","¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.":"No table available? Leave your details and contact our staff if you need to change or cancel your place.","La lista está cerrada. Consulta con el personal.":"The list is closed. Please speak to our staff.","Nombre":"Name","Teléfono":"Phone","Número de personas":"Number of guests","Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.":"We use these details only to manage your place and contact you. They are not published or used for advertising. Entries expire after 24 hours.","Demo: utiliza datos ficticios.":"Demo: please use fictitious details.","Enviando…":"Sending…","Apuntarme a la lista":"Join the waiting list","La lista de espera requiere la versión online. Consulta con el personal.":"The waiting list requires the online version. Please speak to our staff.","¿Sin mesa? Lista de espera":"No table? Join the waiting list"});
 function LanguageFlag({code}) {
@@ -1949,7 +2012,7 @@ function WaitlistManager(){
     {entries.map(e=><article className="card" key={e.id}><h3>{e.name} · {e.people} personas</h3><p><a href={"tel:"+e.phone}>{e.phone}</a> · {new Date(e.created).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})} · {labels[e.status]}</p>{['waiting','notified'].includes(e.status)&&<div className="menu-editor-actions"><button className="btn btn-sec" disabled={busy||e.status==='notified'} onClick={()=>update(e.id,'notified')}>Marcar avisado</button><button className="btn btn-pri" disabled={busy} onClick={()=>update(e.id,'seated')}>Marcar sentado</button><button className="btn btn-sec" disabled={busy} onClick={()=>{if(confirm('¿Cancelar este turno?'))update(e.id,'cancelled')}}>Cancelar turno</button></div>}</article>)}<p>«Marcar avisado» registra la acción: no envía SMS ni WhatsApp. Usa el teléfono para contactar. Los turnos de más de 24 horas se eliminan al consultar o utilizar la lista.</p>
   </section>;
 }
-function SetMenuManager({data,setData,onPrint,showToast}){
+function SetMenuManager({data,setData,setFotos,onPrint,showToast}){
   const [draft,setDraft]=useState(null),[error,setError]=useState("");
   const menus=data.menus||[];
   const edit=m=>{setDraft(JSON.parse(JSON.stringify(m)));setError("");};
@@ -1993,7 +2056,7 @@ function SetMenuManager({data,setData,onPrint,showToast}){
                   </div>
                 </div>
               )}
-              <details className="menu-dish-add" style={{marginTop:8}}><summary>✏️ Crear plato o bebida nuevo</summary><NewPlatoGroupForm categorias={data.categorias} onAdd={plato=>{setData(d=>({...d,platos:[...d.platos,plato]}));groupChange(i,"platoIds",[...g.platoIds,plato.id]);}}/></details>
+              <details className="menu-dish-add" style={{marginTop:8}}><summary>✏️ Crear plato o bebida nuevo</summary><NewPlatoGroupForm categorias={data.categorias} onAdd={(plato,foto)=>{setData(d=>({...d,platos:[...d.platos,plato]}));groupChange(i,"platoIds",[...g.platoIds,plato.id]);if(foto&&setFotos){window.storage.set("carta-img-"+plato.id,foto).catch(()=>{});setFotos(f=>({...f,[plato.id]:foto}));}}}/></details>
               <button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
       <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[],customItems:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
     </form>}
@@ -2073,7 +2136,7 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
           <button className={`tab-btn${tab==="qr"?" act":""}`} onClick={()=>setTab("qr")}>📲 Códigos QR</button>
         </div>
 
-        {tab==="menus"&&<SetMenuManager data={data} setData={setData} onPrint={requestPrint} showToast={showToast}/>}
+        {tab==="menus"&&<SetMenuManager data={data} setData={setData} setFotos={setFotos} onPrint={requestPrint} showToast={showToast}/>}
         {tab==="espera"&&<WaitlistManager/>}
         {tab==="reservas"&&<ReservaManager/>}
         {tab==="qr"&&<QRPanel/>}
