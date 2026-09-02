@@ -385,12 +385,28 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 
 /* ── ADMIN ── */
 .adm-wrap{min-height:100vh;background:#F0EDE8}
-.adm-hdr{background:#1A1A1A;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.adm-tit{font-family:'Playfair Display',serif;font-size:1.25rem}
+.adm-hdr{background:linear-gradient(135deg,#1E3A2C 0%,#2C4A3E 55%,#356048 100%);color:#fff;padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(28,59,40,.18)}
+.adm-hdr-inner{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.adm-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.adm-brand-icon{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.adm-brand-txt{display:flex;flex-direction:column;line-height:1.15}
+.adm-tit{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;letter-spacing:-.01em}
+.adm-sub{font-size:.66rem;color:rgba(255,255,255,.6);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.adm-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.adm-print-lang{display:flex;align-items:center;gap:6px;font-size:.72rem;color:rgba(255,255,255,.72);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px 10px}
+.adm-print-lang select{background:rgba(0,0,0,.18);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:2px 6px;font-size:.72rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer}
+.adm-print-lang select option{background:#2C4A3E;color:#fff}
+.adm-btn-ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;padding:6px 13px;font-size:.76rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.adm-btn-ghost:hover{background:rgba(255,255,255,.2)}
+.adm-btn-white{background:#fff;border:none;color:#2C4A3E;border-radius:8px;padding:6px 14px;font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.adm-btn-white:hover{opacity:.88}
 .adm-body{max-width:1100px;margin:0 auto;padding:28px 16px 80px}
-.tabs{display:flex;border-bottom:2px solid #DDD8D0;margin-bottom:24px;overflow-x:auto}
-.tab-btn{padding:10px 14px;font-size:.78rem;font-weight:500;color:#888;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s}
-.tab-btn.act{color:#2C4A3E;border-bottom-color:#2C4A3E}
+.tabs{display:flex;border-bottom:2px solid #E4DED4;margin-bottom:24px;overflow-x:auto;gap:2px}
+.tabs::-webkit-scrollbar{height:3px}
+.tabs::-webkit-scrollbar-thumb{background:#D0C8C0;border-radius:2px}
+.tab-btn{padding:11px 16px;font-size:.79rem;font-weight:500;color:#8A857C;cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s,background .15s;border-radius:8px 8px 0 0}
+.tab-btn:hover{color:#2C4A3E;background:rgba(44,74,62,.05)}
+.tab-btn.act{color:#2C4A3E;border-bottom-color:#2C4A3E;font-weight:600}
 .card{background:#fff;border:1px solid #E0D8CF;border-radius:10px;padding:22px;margin-bottom:22px}
 .card-tit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:#2C4A3E;margin-bottom:16px}
 .ff{margin-bottom:13px}
@@ -2250,12 +2266,20 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
       <style>{CSS}{MENU_CSS}</style>
       <MenuLanguage.Provider value={printLocale}><CartaImprimible data={data} target={printRequest?.target||"carta"} /></MenuLanguage.Provider>
       <div className="adm-hdr">
-        <div className="adm-tit">🍽️ Gestión de carta</div>
-        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-          <label style={{fontSize:13}}>Idioma de impresión <select aria-label="Idioma de impresión" value={printLanguage} onChange={e=>setPrintLanguage(e.target.value)}><option value="es">Español</option><option value="en">English</option></select></label>
-          <button className="btn btn-pri btn-sm" onClick={()=>requestPrint("carta")}>Imprimir carta</button>
-          <button className="btn btn-sec btn-sm" onClick={onVerCarta}>← Ver carta</button>
-          <button className="btn btn-sec btn-sm" onClick={onLogout}>Salir</button>
+        <div className="adm-hdr-inner">
+          <div className="adm-brand">
+            <div className="adm-brand-icon">🍽️</div>
+            <div className="adm-brand-txt">
+              <span className="adm-tit">Gestión de carta</span>
+              <span className="adm-sub">Panel · Limonada Web</span>
+            </div>
+          </div>
+          <div className="adm-actions">
+            <span className="adm-print-lang">Imprimir en <select aria-label="Idioma de impresión" value={printLanguage} onChange={e=>setPrintLanguage(e.target.value)}><option value="es">Español</option><option value="en">English</option></select></span>
+            <button className="adm-btn-white" onClick={()=>requestPrint("carta")}>🖨️ Imprimir</button>
+            <button className="adm-btn-ghost" onClick={onVerCarta}>← Ver carta</button>
+            <button className="adm-btn-ghost" onClick={onLogout}>Salir</button>
+          </div>
         </div>
       </div>
 
