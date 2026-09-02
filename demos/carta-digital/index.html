@@ -106,6 +106,8 @@ const DATOS_DEMO = {
   },
   categorias: [
     { id:"entrantes",   nombre:"Entrantes",            emoji:"🫒" },
+    { id:"cuchareo",    nombre:"Cucharas y guisos",    emoji:"🍲" },
+    { id:"carnes",      nombre:"Carnes",               emoji:"🥩" },
     { id:"principales", nombre:"Platos principales",   emoji:"🍽️" },
     { id:"pescados",    nombre:"Pescados y mariscos",  emoji:"🐟" },
     { id:"postres",     nombre:"Postres",              emoji:"🍮" },
@@ -127,7 +129,22 @@ const DATOS_DEMO = {
     { id:"p13", categoriaId:"postres",     nombre:"Crema catalana",                    descripcion:"Crema suave de yema y vainilla con cobertura de azúcar quemado al momento.",                   precio:5.50,  alergenos:["huevos","lacteos"],            destacado:false, activo:true,fotoDemo:null, },
     { id:"p14", categoriaId:"bebidas",     nombre:"Vino tinto Rioja Reserva (copa)",   descripcion:"Selección de la casa. Tempranillo en roble francés. Notas de frutos rojos y vainilla.",       precio:5.00,  alergenos:["sulfitos"],                   destacado:false, activo:true,fotoDemo:"https://images.unsplash.com/photo-1615830783066-26a99bc9d959?w=320&h=320&fit=crop&auto=format&q=78", },
     { id:"p15", categoriaId:"bebidas",     nombre:"Cerveza artesanal malagueña (33cl)",descripcion:"Rubia elaborada en Málaga con lúpulo Cascade. Refrescante, con notas cítricas.",               precio:3.50,  alergenos:["gluten"],                     destacado:false, activo:true,fotoDemo:null, },
-    { id:"p16", categoriaId:"bebidas",     nombre:"Agua mineral (50cl)",               descripcion:"Agua mineral natural de manantial.",                                                            precio:2.00,  alergenos:[],                             destacado:false, activo:true,fotoDemo:null, },
+    { id:"p16", categoriaId:"bebidas",     nombre:"Agua mineral (50cl)",               descripcion:"Agua mineral natural de manantial.",                                                            precio:2.00,  alergenos:[],                             destacado:false, activo:true,fotoDemo:null, },,
+    // ── CUCHARAS Y GUISOS ──
+    { id:"p17", categoriaId:"cuchareo",    nombre:"Lentejas estofadas con chorizo",    descripcion:"Lentejas pardinas guisadas a fuego lento con chorizo, morcilla, verduras y un toque de pimentón.", precio:9.50,  alergenos:["sulfitos"],                   destacado:true,  activo:true, fotoDemo:null },
+    { id:"p18", categoriaId:"cuchareo",    nombre:"Puchero andaluz",                   descripcion:"Cocido tradicional con garbanzos, carne de ternera, pollo, tocino y verduras de temporada.",       precio:11.00, alergenos:["apio"],                       destacado:false, activo:true, fotoDemo:null },
+    { id:"p19", categoriaId:"cuchareo",    nombre:"Fabada asturiana",                  descripcion:"Fabes de la granja con lacón, chorizo y morcilla asturiana. Guiso contundente y sabroso.",         precio:12.50, alergenos:["sulfitos"],                   destacado:false, activo:true, fotoDemo:null },
+    { id:"p20", categoriaId:"cuchareo",    nombre:"Sopa de marisco",                   descripcion:"Caldo intenso de pescado de roca con gambas, almejas, rape y un toque de brandy.",                 precio:10.50, alergenos:["crustaceos","pescado","moluscos","gluten"], destacado:false, activo:true, fotoDemo:null },
+    { id:"p21", categoriaId:"cuchareo",    nombre:"Garbanzos con espinacas y bacalao", descripcion:"Potaje tradicional de garbanzos con espinacas, bacalao desalado y huevo cocido.",                 precio:9.00,  alergenos:["pescado","huevos"],           destacado:false, activo:true, fotoDemo:null },
+    { id:"p22", categoriaId:"cuchareo",    nombre:"Crema de calabaza y zanahoria",     descripcion:"Crema suave de calabaza asada, zanahoria y jengibre, con semillas tostadas por encima.",           precio:6.50,  alergenos:["lacteos"],                    destacado:false, activo:true, fotoDemo:null },
+    // ── CARNES ──
+    { id:"p23", categoriaId:"carnes",      nombre:"Rabo de toro estofado",             descripcion:"Rabo de toro cocinado a fuego lento en salsa de vino tinto con verduras. Se deshace al tacto.",     precio:19.50, alergenos:["sulfitos","apio"],            destacado:true,  activo:true, fotoDemo:null },
+    { id:"p24", categoriaId:"carnes",      nombre:"Solomillo de ternera al Pedro Ximénez", descripcion:"Medallones de solomillo con reducción de Pedro Ximénez, pasas y puré de patata trufado.",       precio:23.00, alergenos:["lacteos","sulfitos"],         destacado:false, activo:true, fotoDemo:null },
+    { id:"p25", categoriaId:"carnes",      nombre:"Chuletón de vaca madurada (500g)",  descripcion:"Chuletón madurado 45 días a la brasa, con sal en escamas y patatas panadera. Para los amantes de la carne.", precio:32.00, alergenos:[], destacado:false, activo:true, fotoDemo:null },
+    { id:"p26", categoriaId:"carnes",      nombre:"Pollo de corral al ajillo",         descripcion:"Pollo de corral troceado y guisado con ajos, vino blanco, laurel y un toque de guindilla.",        precio:13.50, alergenos:["sulfitos"],                   destacado:false, activo:true, fotoDemo:null },
+    { id:"p27", categoriaId:"carnes",      nombre:"Cordero lechal al horno",           descripcion:"Pierna de cordero lechal asada lentamente con romero, ajo y patatas panadera.",                   precio:21.00, alergenos:[],                             destacado:false, activo:true, fotoDemo:null },
+    { id:"p28", categoriaId:"carnes",      nombre:"Albóndigas caseras en salsa",       descripcion:"Albóndigas de ternera y cerdo en salsa de tomate casero con guisantes y patatas fritas.",          precio:11.50, alergenos:["gluten","huevos"],            destacado:false, activo:true, fotoDemo:null },
+    { id:"p29", categoriaId:"carnes",      nombre:"Entrecot a la pimienta",            descripcion:"Entrecot de vacuno a la plancha con salsa cremosa de pimienta verde y patatas al horno.",          precio:18.50, alergenos:["lacteos"],                    destacado:false, activo:true, fotoDemo:null },
   ]
 };
 
@@ -138,11 +155,11 @@ DATOS_DEMO.platos.push(...EXTRA_DEMO_PLATOS);
 DATOS_DEMO.demoContentVersion = 2;
 const MENU_FILTERS = [
   ["all","Todos"], ["chef","Sugerencia del chef"], ["recommended","Recomendados"],
-  ["entrantes","Entrantes"], ["carnes","Carnes"], ["pescados","Pescados"],
-  ["mariscos","Mariscos"], ["verde","Verde"], ["postres","Postres"],
-  ["vinos","Vinos"], ["bebidas","Bebidas"], ["daily","Plato del día"]
+  ["entrantes","Entrantes"], ["cuchareo","Cucharas y guisos"], ["carnes","Carnes"],
+  ["pescados","Pescados"], ["mariscos","Mariscos"], ["verde","Verde"],
+  ["postres","Postres"], ["vinos","Vinos"], ["bebidas","Bebidas"], ["daily","Plato del día"]
 ];
-const DEMO_SECTIONS = {p1:"entrantes",p2:"entrantes",p3:"mariscos",p4:"verde",p5:"carnes",p6:"carnes",p7:"verde",p8:"pescados",p9:"mariscos",p10:"pescados",p11:"postres",p12:"postres",p13:"postres",p14:"vinos",p15:"bebidas",p16:"bebidas"};
+const DEMO_SECTIONS = {p1:"entrantes",p2:"entrantes",p3:"mariscos",p4:"verde",p5:"carnes",p6:"carnes",p7:"verde",p8:"pescados",p9:"mariscos",p10:"pescados",p11:"postres",p12:"postres",p13:"postres",p14:"vinos",p15:"bebidas",p16:"bebidas",p17:"cuchareo",p18:"cuchareo",p19:"cuchareo",p20:"cuchareo",p21:"cuchareo",p22:"cuchareo",p23:"carnes",p24:"carnes",p25:"carnes",p26:"carnes",p27:"carnes",p28:"carnes",p29:"carnes"};
 function menuSection(p) {
   return p.seccionCarta || (DATOS_DEMO.platos.some(d => d.id === p.id && d.nombre === p.nombre) ? DEMO_SECTIONS[p.id] : null) || ({principales:"carnes"}[p.categoriaId] || p.categoriaId);
 }
@@ -274,7 +291,9 @@ const maitreService = {
       return { intent:"seafood", message:"Nuestros platos de marisco y pescado:", platos: av.filter(p => menuSection(p)==="mariscos") };
     if (/pescado|merluza|dorada|bacalao|salmon|atun/.test(t))
       return { intent:"fish",    message:"Nuestros platos de pescado:", platos: av.filter(p => menuSection(p)==="pescados") };
-    if (/carne|cerdo|iberico|carrillada|secreto|ternera|vaca/.test(t))
+    if (/cuchara|guiso|guisado|estofado|potaje|cocido|puchero|lenteja|garbanzo|fabada|sopa|caldo|crema/.test(t))
+      return { intent:"stew", message:"Nuestras cucharas y guisos:", platos: av.filter(p => menuSection(p)==="cuchareo") };
+    if (/carne|cerdo|iberico|carrillada|secreto|ternera|vaca|rabo|solomillo|chuleton|entrecot|cordero|pollo|albondiga/.test(t))
       return { intent:"meat",    message:"Nuestros platos de carne:", platos: av.filter(p => menuSection(p)==="carnes") };
     if (/vegetarian|verdura|sin carne|sin pescado/.test(t))
       return { intent:"veggie",  message:"Opciones más vegetales:", platos: av.filter(p => menuSection(p)==="verde") };
@@ -1274,7 +1293,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
           break;
         case "seafood": case "fish": case "meat":
         case "veggie":  case "light": case "sharing":
-        case "dessert": case "kids":  case "search":
+        case "dessert": case "kids":  case "search": case "stew":
           addMsg({ type:"bot",    text: r.message });
           if (r.platos && r.platos.length) addMsg({ type:"platos", platos: r.platos.slice(0,4) });
           else addMsg({ type:"bot", text:"No encontré opciones. ¿Quieres que te muestre las especialidades?" });
