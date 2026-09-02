@@ -96,6 +96,7 @@ const ALERGENOS = [
 ];
 
 const DATOS_DEMO = {
+  demoVersion: 2,
   restaurante: {
     nombre: "La Bodega de Gus",
     subtitulo: "Cocina mediterránea de autor",
@@ -2672,9 +2673,18 @@ function App() {
         let cartaData = DATOS_DEMO;
         try {
           const r = await window.storage.get("carta-lw-v1");
-          if (r) cartaData = JSON.parse(r.value);
+          if (r) {
+            const saved = JSON.parse(r.value);
+            // Migración: si la demo guardada es de una versión anterior, usar la nueva
+            if (saved && saved.demoVersion === DATOS_DEMO.demoVersion) {
+              cartaData = saved;
+            } else {
+              cartaData = DATOS_DEMO;
+              window.storage.set("carta-lw-v1", JSON.stringify(DATOS_DEMO)).catch(()=>{});
+            }
+          }
         } catch {}
-        // Sanear: descartar platos corruptos (undefined o sin id) de datos guardados
+        // Sanear: descartar platos corruptos (undefined o sin id)
         if (cartaData && Array.isArray(cartaData.platos)) {
           cartaData = { ...cartaData, platos: cartaData.platos.filter(p => p && p.id) };
         }
