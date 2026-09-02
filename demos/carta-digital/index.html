@@ -765,6 +765,17 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 .mb-send:active{transform:scale(.93)}
 .mb-send:disabled{background:#C8C0B8;cursor:not-allowed}
 
+/* ── MENÚ — ítems custom (platos/bebidas creados en el menú) ── */
+.menu-custom-chip{display:inline-flex;align-items:center;gap:5px;background:#B8952A;color:#fff;border-radius:20px;padding:4px 12px;font-size:.74rem;font-family:'Inter',sans-serif;line-height:1.4}
+.menu-custom-form{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:10px;padding:12px;background:#FAFAF8;border:1px dashed #D0C8C0;border-radius:8px}
+.menu-custom-form .fi{flex:1;min-width:120px}
+.menu-custom-form .fi-precio{width:90px;flex:none}
+.menu-custom-form label{font-size:.72rem;font-weight:600;color:#555;display:flex;flex-direction:column;gap:3px;flex:1;min-width:120px}
+.menu-custom-add-btn{background:#B8952A;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;align-self:flex-end}
+.menu-custom-add-btn:hover{background:#9A7A1A}
+.menu-custom-section{margin-top:10px;padding-top:10px;border-top:1px solid #F0EBE4}
+.menu-custom-section-title{font-size:.72rem;font-weight:700;color:#B8952A;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+
 /* ── EDITOR DE MENÚS — platos ── */
 .menu-platos-sel{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
 .menu-plato-chip{display:inline-flex;align-items:center;gap:5px;background:#2C4A3E;color:#fff;border-radius:20px;padding:4px 12px;font-size:.74rem;font-family:'Inter',sans-serif;line-height:1.4}
@@ -1383,8 +1394,8 @@ Object.assign(ENGLISH,{"Espumosos":"Sparkling wines","Blancos":"White wines","Ro
 Object.assign(ENGLISH,{"Cerrar menú ×":"Close menu ×"});
 const SET_MENU_FILTERS=[["menus-diarios","Menús diarios"],["menus-empresa","Menús de empresa"]];
 const SET_MENU_DEMO=[
-  {id:"menu-demo-diario",tipo:"diario",activo:true,nombre:"Menú del día",nombreEn:"Daily set menu",precio:18.5,disponibilidad:"Lunes a viernes · servicio de almuerzo",disponibilidadEn:"Monday to Friday · lunch service",incluye:"Un primero, un segundo y un postre. Pan y agua incluidos.",incluyeEn:"One starter, one main and one dessert. Bread and water included.",condiciones:"IVA incluido. No disponible en festivos.",condicionesEn:"VAT included. Not available on public holidays.",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:["p4","demo2-ensaladilla"]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:["demo2-pollo","p7"]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:["p13","demo2-sorbete"]}]},
-  {id:"menu-demo-empresa",tipo:"empresa",activo:true,nombre:"Menú de empresa · Mediterráneo",nombreEn:"Business set menu · Mediterranean",precio:39,disponibilidad:"Comidas y cenas de grupo · con reserva",disponibilidadEn:"Group lunches and dinners · reservation required",incluye:"Entrantes para compartir, un principal y un postre por persona. Pan, agua y una copa de vino o refresco incluidos.",incluyeEn:"Shared starters, one main and one dessert per person. Bread, water and one glass of wine or soft drink included.",condiciones:"IVA incluido. Mínimo 8 personas. Reserva con 48 horas de antelación. Bebidas adicionales no incluidas.",condicionesEn:"VAT included. Minimum 8 guests. Book 48 hours ahead. Additional drinks not included.",grupos:[{titulo:"Entrantes para compartir",tituloEn:"Shared starters",platoIds:["p2","demo2-ensalada","demo2-quesos"]},{titulo:"Principal · elige uno",tituloEn:"Main · choose one",platoIds:["p5","demo2-lubina","p7"]},{titulo:"Postre · elige uno",tituloEn:"Dessert · choose one",platoIds:["p11","p12"]}]}
+  {id:"menu-demo-diario",tipo:"diario",activo:true,nombre:"Menú del día",nombreEn:"Daily set menu",precio:18.5,disponibilidad:"Lunes a viernes · servicio de almuerzo",disponibilidadEn:"Monday to Friday · lunch service",incluye:"Un primero, un segundo y un postre. Pan y agua incluidos.",incluyeEn:"One starter, one main and one dessert. Bread and water included.",condiciones:"IVA incluido. No disponible en festivos.",condicionesEn:"VAT included. Not available on public holidays.",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:["p4","demo2-ensaladilla"],customItems:[]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:["demo2-pollo","p7"],customItems:[]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:["p13","demo2-sorbete"],customItems:[]}]},
+  {id:"menu-demo-empresa",tipo:"empresa",activo:true,nombre:"Menú de empresa · Mediterráneo",nombreEn:"Business set menu · Mediterranean",precio:39,disponibilidad:"Comidas y cenas de grupo · con reserva",disponibilidadEn:"Group lunches and dinners · reservation required",incluye:"Entrantes para compartir, un principal y un postre por persona. Pan, agua y una copa de vino o refresco incluidos.",incluyeEn:"Shared starters, one main and one dessert per person. Bread, water and one glass of wine or soft drink included.",condiciones:"IVA incluido. Mínimo 8 personas. Reserva con 48 horas de antelación. Bebidas adicionales no incluidas.",condicionesEn:"VAT included. Minimum 8 guests. Book 48 hours ahead. Additional drinks not included.",grupos:[{titulo:"Entrantes para compartir",tituloEn:"Shared starters",platoIds:["p2","demo2-ensalada","demo2-quesos"],customItems:[]},{titulo:"Principal · elige uno",tituloEn:"Main · choose one",platoIds:["p5","demo2-lubina","p7"],customItems:[]},{titulo:"Postre · elige uno",tituloEn:"Dessert · choose one",platoIds:["p11","p12"],customItems:[]}]}
 ];
 DATOS_DEMO.menus=SET_MENU_DEMO;
 function menuDishes(group,data){return group.platoIds.map(id=>data.platos.find(p=>p.id===id&&p.activo)).filter(Boolean);}
@@ -1516,6 +1527,31 @@ const wlGetCfg = async () => {
   try { const r=await window.storage.get("waitlist-config"); return r?JSON.parse(r.value):{enabled:true}; } catch{return{enabled:true};}
 };
 const wlSetCfg = async cfg => { try{await window.storage.set("waitlist-config",JSON.stringify(cfg));}catch{} };
+
+
+// ─── FORMULARIO PARA CREAR ÍTEM PROPIO EN UN MENÚ ────────────────────────────
+function CustomItemForm({ onAdd }) {
+  const [nombre, setNombre] = useState("");
+  const [precio, setPrecio] = useState("");
+  const add = () => {
+    if (!nombre.trim()) return;
+    onAdd({ nombre: nombre.trim(), precio: precio ? Number(precio) : 0 });
+    setNombre(""); setPrecio("");
+  };
+  return (
+    <div className="menu-custom-form">
+      <label>
+        Nombre del plato o bebida
+        <input className="fi" placeholder="Ej: Agua mineral, Vino de la casa..." value={nombre} onChange={e=>setNombre(e.target.value)} onKeyDown={e=>e.key==="Enter"&&(e.preventDefault(),add())} />
+      </label>
+      <label>
+        Precio (€) <span style={{fontWeight:400,color:"#AAA"}}>opcional</span>
+        <input className="fi fi-precio" type="number" min="0" step="0.01" placeholder="0.00" value={precio} onChange={e=>setPrecio(e.target.value)} />
+      </label>
+      <button type="button" className="menu-custom-add-btn" onClick={add}>+ Añadir ítem</button>
+    </div>
+  );
+}
 
 function WaitlistForm({onClose}){
   const locale=React.useContext(MenuLanguage);
@@ -1894,7 +1930,7 @@ function SetMenuManager({data,setData,onPrint,showToast}){
   const change=(key,value)=>setDraft(d=>({...d,[key]:value}));
   const groupChange=(i,key,value)=>setDraft(d=>({...d,grupos:d.grupos.map((g,n)=>n===i?{...g,[key]:value}:g)}));
   const save=async e=>{e.preventDefault();if(!validSetMenu(draft,data)){setError("Completa el nombre, un precio mayor que cero y al menos un plato disponible en cada sección.");return;}const saved={...draft,precio:Number(draft.precio)};const ok=await setData(d=>({...d,menus:menus.some(m=>m.id===saved.id)?d.menus.map(m=>m.id===saved.id?saved:m):[...(d.menus||[]),saved]}));if(ok===false){setError("No se ha guardado. Revisa la conexión y vuelve a intentarlo.");return;}setDraft(null);showToast("Menú guardado");};
-  return <div><div className="menu-editor-actions">{[["diario","+ Menú diario"],["empresa","+ Menú de empresa"]].map(([tipo,label])=><button key={tipo} className="btn btn-pri" onClick={()=>edit({id:"menu-"+Date.now(),tipo,activo:false,nombre:"",nombreEn:"",precio:"",disponibilidad:"",disponibilidadEn:"",incluye:"",incluyeEn:"",condiciones:"",condicionesEn:"",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:[]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:[]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:[]}]})}>{label}</button>)}</div>
+  return <div><div className="menu-editor-actions">{[["diario","+ Menú diario"],["empresa","+ Menú de empresa"]].map(([tipo,label])=><button key={tipo} className="btn btn-pri" onClick={()=>edit({id:"menu-"+Date.now(),tipo,activo:false,nombre:"",nombreEn:"",precio:"",disponibilidad:"",disponibilidadEn:"",incluye:"",incluyeEn:"",condiciones:"",condicionesEn:"",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:[],customItems:[]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:[],customItems:[]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:[],customItems:[]},{titulo:"Bebidas",tituloEn:"Drinks",platoIds:[],customItems:[]}]})}>{label}</button>)}</div>
     <p style={{margin:"14px 0"}}>Los menús activados aparecen en la carta. La disponibilidad es informativa: activa u oculta cada propuesta cuando corresponda.</p>
     {menus.map(m=><div className="card" key={m.id}><h3>{m.nombre} · {fmt(m.precio)}</h3><p>{m.tipo==="empresa"?"Menú de empresa":"Menú diario"} · {m.activo?"Activo · visible en la carta":"Desactivado · oculto para los clientes"}</p>{!validSetMenu(m,data)&&<p role="status">Revisa las secciones: falta algún plato disponible. Este menú no se muestra al cliente.</p>}<div className="menu-editor-actions"><button className="btn btn-sec" onClick={()=>edit(m)}>Editar menú</button><button type="button" className="menu-active-switch" role="switch" aria-checked={!!m.activo} aria-label={"Mostrar en la carta: "+m.nombre} disabled={!m.activo&&!validSetMenu(m,data)} onClick={()=>setData(d=>({...d,menus:d.menus.map(x=>x.id===m.id?{...x,activo:!x.activo}:x)}))}>{m.activo?"Desactivar menú":"Activar menú"}</button><button className="btn btn-pri" onClick={()=>onPrint(m.id)}>Imprimir menú</button></div></div>)}
     {draft&&<form className="card" onSubmit={save}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}><h2 style={{margin:0}}>Editar menú</h2><button type="button" className="menu-editor-close" onClick={()=>setDraft(null)} aria-label="Cerrar editor">✕</button></div><div className="menu-editor-grid">{[["nombre","Nombre"],["precio","Precio por persona (€)"],["disponibilidad","Días, horario o disponibilidad"],["incluye","Qué incluye"],["condiciones","Condiciones y reserva"]].map(([key,label])=><label className="ff" key={key}><span className="fl">{label}</span><input className="fi" required={key==="nombre"||key==="precio"} type={key==="precio"?"number":"text"} min={key==="precio"?"0.01":undefined} step={key==="precio"?"0.01":undefined} value={draft[key]} onChange={e=>change(key,e.target.value)}/></label>)}</div>
@@ -1914,8 +1950,26 @@ function SetMenuManager({data,setData,onPrint,showToast}){
                   </div>
                 ))}
               </div>
-            </details><button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
-      <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
+            </details>
+              {/* ── Ítems propios del menú (platos/bebidas creados aquí) ── */}
+              {(g.customItems||[]).length>0&&(
+                <div className="menu-custom-section">
+                  <div className="menu-custom-section-title">Ítems propios de este menú</div>
+                  <div className="menu-platos-sel">
+                    {(g.customItems||[]).map((ci,ci_i)=>(
+                      <span key={ci_i} className="menu-custom-chip">
+                        {ci.nombre}{ci.precio>0?" · "+fmt(ci.precio):""}
+                        <button type="button" className="menu-plato-chip-del"
+                          aria-label={"Quitar "+ci.nombre}
+                          onClick={()=>groupChange(i,"customItems",(g.customItems||[]).filter((_,n)=>n!==ci_i))}>✕</button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <CustomItemForm onAdd={ci=>groupChange(i,"customItems",[...(g.customItems||[]),ci])} />
+              <button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
+      <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[],customItems:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
     </form>}
   </div>;
 }
@@ -2158,8 +2212,8 @@ function App() {
     const next=typeof updater==="function"?updater(data):updater;
     saving.current=true;
     try{
-      if(/^https?:$/.test(window.location?.protocol||""))await apiCall('/api/catalog',{method:'PUT',body:JSON.stringify(next)});
-      else await window.storage.set("carta-lw-v1",JSON.stringify(next));
+      await window.storage.set("carta-lw-v1",JSON.stringify(next));
+      if(/^https?:$/.test(window.location?.protocol||""))apiCall('/api/catalog',{method:'PUT',body:JSON.stringify(next)}).catch(()=>{});
       setData(next);setToast("Cambios guardados");return true;
     }catch(e){setToast("No se ha guardado: "+e.message);return false;}finally{saving.current=false;}
   }, [data]);
