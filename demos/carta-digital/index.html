@@ -378,9 +378,9 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 .adm-wrap{min-height:100vh;background:#F0EDE8}
 .adm-hdr{background:#1A1A1A;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .adm-tit{font-family:'Playfair Display',serif;font-size:1.25rem}
-.adm-body{max-width:920px;margin:0 auto;padding:28px 16px 80px}
+.adm-body{max-width:1100px;margin:0 auto;padding:28px 16px 80px}
 .tabs{display:flex;border-bottom:2px solid #DDD8D0;margin-bottom:24px;overflow-x:auto}
-.tab-btn{padding:10px 20px;font-size:.83rem;font-weight:500;color:#888;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s}
+.tab-btn{padding:10px 14px;font-size:.78rem;font-weight:500;color:#888;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s}
 .tab-btn.act{color:#2C4A3E;border-bottom-color:#2C4A3E}
 .card{background:#fff;border:1px solid #E0D8CF;border-radius:10px;padding:22px;margin-bottom:22px}
 .card-tit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:#2C4A3E;margin-bottom:16px}
@@ -2127,9 +2127,9 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
           <button className={`tab-btn${tab==="platos"?" act":""}`} onClick={() => setTab("platos")}>🍽️ Platos ({data.platos.length})</button>
           <button className={`tab-btn${tab==="menus"?" act":""}`} onClick={()=>setTab("menus")}>Menús diarios y empresas</button>
           <button className={`tab-btn${tab==="espera"?" act":""}`} onClick={()=>setTab("espera")}>Lista de espera</button>
-          <button className={`tab-btn${tab==="info"?" act":""}`} onClick={() => setTab("info")}>ℹ️ Datos del restaurante</button>
           <button className={`tab-btn${tab==="reservas"?" act":""}`} onClick={()=>setTab("reservas")}>📅 Reservas</button>
           <button className={`tab-btn${tab==="qr"?" act":""}`} onClick={()=>setTab("qr")}>📲 Códigos QR</button>
+          <button className={`tab-btn${tab==="info"?" act":""}`} onClick={() => setTab("info")}>ℹ️ Datos del restaurante</button>
         </div>
 
         {tab==="menus"&&<SetMenuManager data={data} setData={setData} setFotos={setFotos} onPrint={requestPrint} showToast={showToast}/>}
