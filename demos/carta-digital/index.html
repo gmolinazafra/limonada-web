@@ -2194,7 +2194,29 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
             <div className="ff"><label className="fl">Dirección</label><input className="fi" value={infoF.direccion} onChange={e => setInfo("direccion", e.target.value)} /></div>
             <div className="ff"><label className="fl">Aviso de alérgenos</label><textarea className="fi fi-ta" rows={3} value={infoF.alergenos_nota} onChange={e => setInfo("alergenos_nota", e.target.value)} /></div>
             <div className="ff"><label className="fl">Nota sobre precios</label><input className="fi" value={infoF.ivaNota} onChange={e => setInfo("ivaNota", e.target.value)} /></div>
-            <div style={{ textAlign:"right", marginTop:6 }}><button className="btn btn-pri" onClick={guardarInfo}>Guardar cambios</button></div>
+            {/* ── SELECTOR DE TEMA ── */}
+            <div style={{marginTop:20,paddingTop:18,borderTop:"1px solid #E0D8CF"}}>
+              <div className="card-tit">🎨 Diseño de la carta</div>
+              <p style={{fontSize:".78rem",color:"#888",marginBottom:10}}>Elige el estilo visual. Los cambios se ven en la carta al guardar.</p>
+              <div className="tema-grid">
+                {TEMAS.map(t => {
+                  const PREV_BG={clasico:"#2C4A3E",jardin:"#2D5016",carbon:"#111",mediterraneo:"#7A3010",azul:"#1A3A6A",rustico:"#4A3520"};
+                  const isSelected=(infoF.tema||"clasico")===t.id;
+                  return (
+                    <div key={t.id} className={"tema-card"+(isSelected?" selected":"")} onClick={()=>setInfo("tema",t.id)}>
+                      <div className="tema-card-emoji">{t.emoji}</div>
+                      <div className="tema-card-nombre">{t.nombre}</div>
+                      <div className="tema-card-desc">{t.desc}</div>
+                      <div className="tema-preview" style={{background:PREV_BG[t.id]||"#2C4A3E"}}>
+                        {isSelected?"✓ Activo":"Seleccionar"}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div style={{ textAlign:"right", marginTop:16 }}><button className="btn btn-pri" onClick={guardarInfo}>Guardar cambios</button></div>
           </div>
         )}
       </div>
