@@ -1997,9 +1997,6 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
 function Login({ onLogin }) {
   const [pass, setPass] = useState("");
   const [err,  setErr]  = useState(false);
-  const [onlineError,setOnlineError]=useState("");
-  const hosted=typeof window!=="undefined"&&/^https?:$/.test(window.location?.protocol||"");
-  useEffect(()=>{if(hosted)apiCall('/api/session').then(r=>{if(r.admin)onLogin();else setOnlineError("La gestión online está reservada al propietario de esta demo.")}).catch(()=>setOnlineError("No se ha podido comprobar el acceso. Inténtalo de nuevo."));},[]);
   const ok = () => { if (pass === "demo1234") onLogin(); else setErr(true); };
   return (
     <div className="login-bg">
@@ -2007,7 +2004,7 @@ function Login({ onLogin }) {
       <div className="login-card">
         <div className="login-logo">🍽️ Carta Digital</div>
         <div className="login-sub">Panel de gestión · Limonada Web</div>
-        {hosted?<div><p>{onlineError||"Comprobando acceso…"}</p><a href="/signin-with-chatgpt?return_to=%2F" target="_top">Iniciar sesión con ChatGPT</a></div>:<><div className="ff">
+        <div className="ff">
           <label className="fl">Contraseña de acceso</label>
           <input className="fi" type="password" value={pass} autoFocus
             onChange={e => { setPass(e.target.value); setErr(false); }}
@@ -2018,7 +2015,6 @@ function Login({ onLogin }) {
         </div>
         <button className="btn btn-pri btn-full" onClick={ok}>Entrar al panel</button>
         <div className="login-hint">Demo: contraseña <strong style={{ color:"#999" }}>demo1234</strong></div>
-        </>}
       </div>
     </div>
   );
