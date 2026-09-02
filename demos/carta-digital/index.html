@@ -1517,6 +1517,11 @@ async function apiCall(path,options={}){
   const result=await response.json();if(!response.ok)throw new Error(result.error||"Servicio no disponible");return result;
 }
 
+
+// ─── RESERVAS — localStorage ──────────────────────────────────────────────────
+const rsvGet = async () => { try { const r=await window.storage.get("reservas"); return r?JSON.parse(r.value):[]; } catch{return[];} };
+const rsvSet = async list => { try{await window.storage.set("reservas",JSON.stringify(list));}catch{} };
+
 // ─── WAITLIST STORAGE (localStorage — sin API) ───────────────────────────────
 // Para conectar backend: sustituir estas funciones por llamadas a /api/waitlist
 const wlGet = async () => {
@@ -2064,10 +2069,14 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
           <button className={`tab-btn${tab==="menus"?" act":""}`} onClick={()=>setTab("menus")}>Menús diarios y empresas</button>
           <button className={`tab-btn${tab==="espera"?" act":""}`} onClick={()=>setTab("espera")}>Lista de espera</button>
           <button className={`tab-btn${tab==="info"?" act":""}`} onClick={() => setTab("info")}>ℹ️ Datos del restaurante</button>
+          <button className={`tab-btn${tab==="reservas"?" act":""}`} onClick={()=>setTab("reservas")}>📅 Reservas</button>
+          <button className={`tab-btn${tab==="qr"?" act":""}`} onClick={()=>setTab("qr")}>📲 Códigos QR</button>
         </div>
 
         {tab==="menus"&&<SetMenuManager data={data} setData={setData} onPrint={requestPrint} showToast={showToast}/>}
         {tab==="espera"&&<WaitlistManager/>}
+        {tab==="reservas"&&<ReservaManager/>}
+        {tab==="qr"&&<QRPanel/>}
         {tab === "platos" && (
           <>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:10, marginBottom:14, flexWrap:"wrap" }}>
@@ -2172,10 +2181,199 @@ function Login({ onLogin }) {
   );
 }
 
+
+// ─── RESERVA DE MESA — formulario público ─────────────────────────────────────
+function ReservaForm({ onClose }) {
+  const [nombre,setNombre]=useState("");
+  const [telefono,setTelefono]=useState("");
+  const [fecha,setFecha]=useState("");
+  const [hora,setHora]=useState("");
+  const [personas,setPersonas]=useState(2);
+  const [notas,setNotas]=useState("");
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState("");
+  const [receipt,setReceipt]=useState(null);
+
+  const hoy = new Date().toISOString().split("T")[0];
+  const submit = async e => {
+    e.preventDefault(); if(busy) return;
+    setBusy(true); setError("");
+    try {
+      const list = await rsvGet();
+      const id = "R" + String(Date.now()).slice(-6);
+      list.push({ id, nombre, telefono, fecha, hora, personas:Number(personas), notas, estado:"pendiente", created:new Date().toISOString() });
+      await rsvSet(list);
+      setReceipt(id);
+    } catch { setError("No se pudo guardar. Inténtalo de nuevo."); }
+    finally { setBusy(false); }
+  };
+
+  return (
+    <div style={{minHeight:"100vh",background:"#F7F3EE",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <style>{CSS}</style>
+      <div className="login-card" style={{maxWidth:460,width:"100%"}}>
+        <div className="login-logo" style={{fontSize:"1.6rem"}}>📅</div>
+        <div className="login-logo" style={{marginTop:-8}}>Reserva de mesa</div>
+        <div className="login-sub" style={{marginBottom:20}}>Confirmaremos su reserva por teléfono</div>
+        {receipt ? (
+          <div style={{textAlign:"center",padding:"16px 0"}}>
+            <div style={{fontSize:"2.4rem",marginBottom:10}}>✅</div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.05rem",fontWeight:600,color:"#2C4A3E",marginBottom:6}}>Solicitud recibida</div>
+            <div style={{fontSize:".82rem",color:"#666",marginBottom:4}}>Referencia: <strong>{receipt}</strong></div>
+            <div style={{fontSize:".75rem",color:"#999",marginBottom:20}}>Le confirmaremos la disponibilidad por teléfono.</div>
+            <button className="btn btn-pri btn-full" onClick={onClose}>Volver a la carta</button>
+          </div>
+        ) : (
+          <form onSubmit={submit}>
+            <div className="fr">
+              <div className="ff"><label className="fl">Nombre *</label><input className="fi" required value={nombre} onChange={e=>setNombre(e.target.value)} placeholder="Su nombre"/></div>
+              <div className="ff"><label className="fl">Teléfono *</label><input className="fi" required type="tel" value={telefono} onChange={e=>setTelefono(e.target.value)} placeholder="+34 600..."/></div>
+            </div>
+            <div className="fr">
+              <div className="ff"><label className="fl">Fecha *</label><input className="fi" required type="date" value={fecha} min={hoy} onChange={e=>setFecha(e.target.value)}/></div>
+              <div className="ff"><label className="fl">Hora *</label><input className="fi" required type="time" value={hora} onChange={e=>setHora(e.target.value)}/></div>
+            </div>
+            <div className="ff"><label className="fl">Personas *</label><input className="fi" required type="number" min="1" max="30" value={personas} onChange={e=>setPersonas(e.target.value)}/></div>
+            <div className="ff"><label className="fl">Notas <span style={{fontWeight:400,color:"#AAA"}}>opcional</span></label><textarea className="fi fi-ta" rows={2} value={notas} onChange={e=>setNotas(e.target.value)} placeholder="Alergias, ocasión especial, silla para bebé..."/></div>
+            {error && <div className="login-err">{error}</div>}
+            <button className="btn btn-pri btn-full" type="submit" disabled={busy}>{busy?"Enviando...":"Solicitar reserva"}</button>
+            <button type="button" className="btn btn-sec btn-full" style={{marginTop:8}} onClick={onClose}>Volver a la carta</button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── RESERVA DE MESA — gestión en panel admin ─────────────────────────────────
+function ReservaManager() {
+  const [entries,setEntries]=useState([]);
+  const [loaded,setLoaded]=useState(false);
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState("");
+  const [filtro,setFiltro]=useState("todas");
+
+  const load = async () => {
+    try {
+      const list = await rsvGet();
+      list.sort((a,b)=>new Date(a.fecha+"T"+(a.hora||"00:00"))-new Date(b.fecha+"T"+(b.hora||"00:00")));
+      setEntries(list); setLoaded(true);
+    } catch(e){ setError(e.message); }
+  };
+  useEffect(()=>{ load(); const t=setInterval(load,30000); return()=>clearInterval(t); },[]);
+
+  const update = async (id,estado) => {
+    setBusy(true);
+    try{ const list=await rsvGet(); await rsvSet(list.map(e=>e.id===id?{...e,estado}:e)); await load(); }
+    catch(e){ setError(e.message); }
+    finally{ setBusy(false); }
+  };
+  const del = async id => {
+    if(!confirm("¿Eliminar esta reserva?")) return;
+    setBusy(true);
+    try{ await rsvSet((await rsvGet()).filter(e=>e.id!==id)); await load(); }
+    catch{}
+    finally{ setBusy(false); }
+  };
+
+  const ESTADOS = { pendiente:{label:"Pendiente",color:"#C8860A"}, confirmada:{label:"Confirmada",color:"#2C4A3E"}, cancelada:{label:"Cancelada",color:"#C0392B"} };
+  const filtradas = filtro==="todas" ? entries : entries.filter(e=>e.estado===filtro);
+  const pendientes = entries.filter(e=>e.estado==="pendiente").length;
+
+  return (
+    <section>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16,flexWrap:"wrap",gap:10}}>
+        <div>
+          <h2>Reservas de mesa · {pendientes} pendientes</h2>
+          <p style={{fontSize:".78rem",color:"#888",marginTop:4}}>Actualización cada 30 s. Confirma disponibilidad por teléfono.</p>
+        </div>
+        <button className="btn btn-sec" onClick={load}>Actualizar</button>
+      </div>
+      {error && <p role="alert" style={{color:"#C0392B",marginBottom:12}}>{error}</p>}
+      <div className="cat-filters" style={{marginBottom:16}}>
+        {["todas","pendiente","confirmada","cancelada"].map(f=>(
+          <div key={f} className={`cf${filtro===f?" on":""}`} onClick={()=>setFiltro(f)} style={{textTransform:"capitalize"}}>
+            {f==="todas"?"Todas":ESTADOS[f]?.label}
+            {f!=="todas"&&<span style={{marginLeft:5,fontWeight:700}}>{entries.filter(e=>e.estado===f).length}</span>}
+          </div>
+        ))}
+      </div>
+      {loaded && filtradas.length===0 && <p style={{color:"#AAA",fontSize:".85rem"}}>No hay reservas en este estado.</p>}
+      {filtradas.map(e=>(
+        <div key={e.id} className="card" style={{marginBottom:12,opacity:e.estado==="cancelada"?.55:1}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:8}}>
+            <div>
+              <div style={{fontWeight:700,fontSize:"1rem"}}>{e.nombre} <span style={{fontWeight:400,fontSize:".82rem",color:"#888"}}>· {e.personas} persona{e.personas!==1?"s":""}</span></div>
+              <div style={{color:"#2C4A3E",fontWeight:600,fontSize:".9rem",margin:"3px 0"}}>{e.fecha} · {e.hora}</div>
+              {e.telefono&&<div style={{fontSize:".82rem"}}><a href={"tel:"+e.telefono} style={{color:"#0B1F3A"}}>{e.telefono}</a></div>}
+              {e.notas&&<div style={{fontSize:".75rem",color:"#888",marginTop:4,fontStyle:"italic"}}>"{e.notas}"</div>}
+              <div style={{fontSize:".65rem",color:"#BBB",marginTop:4}}>Ref. {e.id}</div>
+            </div>
+            <span style={{background:ESTADOS[e.estado]?.color||"#888",color:"#fff",borderRadius:20,padding:"3px 12px",fontSize:".72rem",fontWeight:700,whiteSpace:"nowrap",alignSelf:"flex-start"}}>
+              {ESTADOS[e.estado]?.label||e.estado}
+            </span>
+          </div>
+          <div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}}>
+            {e.estado!=="confirmada"&&<button className="btn btn-pri btn-sm" disabled={busy} onClick={()=>update(e.id,"confirmada")}>✅ Confirmar</button>}
+            {e.estado==="pendiente"&&<button className="btn btn-del btn-sm" disabled={busy} onClick={()=>update(e.id,"cancelada")}>❌ Cancelar</button>}
+            <button className="btn btn-sec btn-sm" disabled={busy} onClick={()=>del(e.id)}>🗑️</button>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+// ─── PANEL QR ─────────────────────────────────────────────────────────────────
+function QRPanel() {
+  const base = typeof window!=="undefined"
+    ? (window.location.origin+window.location.pathname).replace(/\/$/,"")
+    : "https://limonadaweb.com/demos/carta-digital";
+
+  const qrSrc = url =>
+    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=0B1F3A&bgcolor=F7F3EE&qzone=2&data=${encodeURIComponent(url)}`;
+
+  const codes = [
+    { label:"Carta digital",    icon:"🍽️", url:base,              desc:"La carta completa con el asistente Maitre" },
+    { label:"Lista de espera",  icon:"⏳",  url:base+"?espera=1",  desc:"Formulario para apuntarse cuando no hay mesa" },
+    { label:"Reserva de mesa",  icon:"📅",  url:base+"?reserva=1", desc:"Solicitud de reserva anticipada" },
+  ];
+
+  return (
+    <section>
+      <h2 style={{marginBottom:6}}>Códigos QR</h2>
+      <p style={{fontSize:".8rem",color:"#888",marginBottom:24}}>Descarga e imprime los QR para colocar en mesas y mostrador. Se generan con la URL actual de la demo.</p>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:20}}>
+        {codes.map(c=>(
+          <div key={c.label} className="card" style={{textAlign:"center"}}>
+            <div style={{fontSize:"1.6rem",marginBottom:4}}>{c.icon}</div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1rem",fontWeight:600,color:"#1A1A1A",marginBottom:4}}>{c.label}</div>
+            <div style={{fontSize:".72rem",color:"#888",marginBottom:16,minHeight:32}}>{c.desc}</div>
+            <img src={qrSrc(c.url)} alt={"QR "+c.label} width={200} height={200}
+              style={{borderRadius:10,border:"1px solid #E0D8CF",display:"block",margin:"0 auto"}} loading="lazy" />
+            <div style={{fontSize:".63rem",color:"#BBB",wordBreak:"break-all",margin:"10px 0 14px",lineHeight:1.4}}>{c.url}</div>
+            <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
+              <a href={qrSrc(c.url)} target="_blank" rel="noopener" className="btn btn-sec btn-sm">🔍 Ver QR</a>
+              <a href={qrSrc(c.url)} download={"qr-"+c.label.toLowerCase().replace(/ /g,"-")+".png"} className="btn btn-pri btn-sm">⬇️ Descargar</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 
 function App() {
-  const [mode,    setMode]    = useState("carta");
+  const [mode,    setMode]    = useState(()=>{
+    try{
+      const p=new URLSearchParams(window.location.search);
+      if(p.get("reserva")==="1") return "reserva";
+      if(p.get("espera")==="1")  return "espera";
+    }catch{}
+    return "carta";
+  });
   const [data,    setData]    = useState(null);
   const [fotos,   setFotos]   = useState({});
   const [loading, setLoading] = useState(true);
@@ -2251,6 +2449,12 @@ function App() {
     <>
       {mode === "carta" && (
         <CartaPublica data={data} fotos={fotos} onAdmin={() => setMode(isAdmin ? "admin" : "login")} />
+      )}
+      {mode === "reserva" && !loading && (
+        <ReservaForm onClose={() => setMode("carta")} />
+      )}
+      {mode === "espera" && !loading && (
+        <WaitlistForm onClose={() => setMode("carta")} />
       )}
       {mode === "login" && (
         <Login onLogin={() => { setIsAdmin(true); setMode("admin"); }} />
