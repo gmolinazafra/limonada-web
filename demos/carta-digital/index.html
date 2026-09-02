@@ -1253,7 +1253,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
           break;
         case "seafood": case "fish": case "meat":
         case "veggie":  case "light": case "sharing":
-        case "dessert": case "kids":
+        case "dessert": case "kids":  case "search":
           addMsg({ type:"bot",    text: r.message });
           if (r.platos && r.platos.length) addMsg({ type:"platos", platos: r.platos.slice(0,4) });
           else addMsg({ type:"bot", text:"No encontré opciones. ¿Quieres que te muestre las especialidades?" });
