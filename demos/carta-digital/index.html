@@ -1484,9 +1484,10 @@ const WINE_DEMO_DETAILS = {
   "demo2-px": ["D.O. Montilla-Moriles","Pedro Ximénez","Sin añada"]
 };
 function enrichWineDemo(data) {
-  return {...data,wineDetailsVersion:1,platos:data.platos.map(p=>{
+  return {...data,wineDetailsVersion:1,platos:data.platos.filter(Boolean).map(p=>{
+    if(!p||!p.id)return p;
     const values=WINE_DEMO_DETAILS[p.id];
-    const original=DATOS_DEMO.platos.find(d=>d.id===p.id);
+    const original=DATOS_DEMO.platos.find(d=>d&&d.id===p.id);
     if(!values||!original||p.nombre!==original.nombre)return p;
     return {vinoDenominacion:values[0],vinoUva:values[1],vinoAnada:values[2],vinoBodega:"Bodega de ejemplo",...p};
   })};
@@ -2673,6 +2674,10 @@ function App() {
           const r = await window.storage.get("carta-lw-v1");
           if (r) cartaData = JSON.parse(r.value);
         } catch {}
+        // Sanear: descartar platos corruptos (undefined o sin id) de datos guardados
+        if (cartaData && Array.isArray(cartaData.platos)) {
+          cartaData = { ...cartaData, platos: cartaData.platos.filter(p => p && p.id) };
+        }
 
         // 2. Cargar fotos en paralelo
         const fotosMap = {};
