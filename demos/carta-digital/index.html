@@ -1320,6 +1320,10 @@ const MENU_CSS = `
 }
 
 .menu-utilities{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.language-picker{display:flex;align-items:center;gap:8px;font-size:14px;color:#fff}.language-picker select,.audio-open{min-height:44px;border:1px solid #fff9;border-radius:8px;padding:8px 12px;background:#14241ae0;color:#fff;font:500 14px 'Inter',sans-serif}.language-picker select option{background:#fff;color:#22372f}.audio-open{cursor:pointer}.skip-menu{position:fixed;top:-100px;left:10px;z-index:3000;padding:12px;background:#fff;color:#22372f}.skip-menu:focus{top:10px}.menu-public select:focus-visible,.menu-public a:focus-visible,.menu-public input:focus-visible{outline:3px solid #b88824;outline-offset:3px}.audio-menu{border:1px solid #c9c1af;background:#f3efe5;border-radius:12px;padding:18px;margin-bottom:24px;font-size:15px;color:#243e35}.audio-menu h2{font:600 23px Georgia,serif}.audio-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.audio-heading button{width:44px;height:44px;font-size:24px}.audio-menu p{line-height:1.5;margin-top:10px}.audio-options{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}.audio-options label{flex:1;min-width:120px;font-size:14px}.audio-options select{display:block;width:100%;margin-top:6px;padding:10px;min-height:44px;background:#fff;color:#243e35;border:1px solid #aba38e;border-radius:6px;font-size:16px}.audio-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.audio-menu button{min-height:44px;padding:8px 14px;border:1px solid #9c967f;border-radius:7px;background:#fff;color:#243e35;font-size:14px;cursor:pointer}.audio-controls button:first-child{background:#243e35;color:#fff}.audio-menu button:disabled{opacity:.5;cursor:default}.audio-caption{padding:10px;border-left:3px solid #8d7029;background:#fff;color:#333}.audio-status{font-size:13px}.adm-hdr{flex-wrap:wrap;gap:12px}
+.language-flags{display:flex;gap:8px;align-items:center}.language-flag{display:grid;place-items:center;min-width:48px;min-height:48px;padding:4px 8px;border:2px solid transparent;border-radius:10px;background:#14241ab8;font-size:28px;line-height:1;cursor:pointer}.language-flag[aria-pressed="true"]{border-color:#ebcb80;background:#14241af0;box-shadow:0 2px 0 #ebcb80}.language-flag:hover{background:#14241af0}.language-flag:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.set-menu-card{border:1px solid #cfc5ae;border-radius:14px;padding:24px;margin:18px 0 28px;background:#fffdf7;overflow-wrap:anywhere}.set-menu-title{display:flex;justify-content:space-between;align-items:start;gap:18px;flex-wrap:wrap}.set-menu-title h2{font:600 26px/1.2 Georgia,serif;margin:6px 0 12px}.set-menu-kicker{font-size:14px;color:#806020}.set-menu-price strong{font-size:26px;display:block}.set-menu-price small{font-size:13px}.set-menu-card p{font-size:15px;line-height:1.6}.set-menu-course{margin-top:22px}.set-menu-course h3,.set-menu-includes h3{font-size:16px;margin-bottom:10px}.set-menu-course ul{list-style:none;padding:0}.set-menu-course li{padding:10px 0;border-bottom:1px solid #e8e3d8;font-size:16px}.set-menu-allergens summary{display:flex;align-items:center;gap:5px;flex-wrap:wrap;cursor:pointer;min-height:44px;font-size:13px}.set-menu-includes{margin-top:22px;padding-top:16px;border-top:1px solid #cfc5ae}.set-menu-conditions{margin:12px 0}.menu-editor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}.menu-editor-group{padding:16px;border:1px solid #ddd;border-radius:8px;margin:16px 0}.menu-dish-choices{display:grid;gap:8px;max-height:240px;overflow-y:auto;padding:8px}.menu-dish-choices label{display:flex;align-items:center;gap:10px;min-height:38px;font-size:14px}.menu-editor-actions{display:flex;gap:8px;flex-wrap:wrap}.tabs{flex-wrap:wrap}
+@media print{.print-set-menu{border:0;padding:0;margin:0;background:white}.print-set-menu .set-menu-title h2{font-size:20pt}.print-set-menu .set-menu-course{break-inside:avoid}.print-set-menu p,.print-set-menu li{font-size:10pt}.print-set-menu .set-menu-course li{padding:2mm 0}.print-set-menu .set-menu-course{margin-top:4mm}.print-set-menu .set-menu-course p{font-size:8pt}}
+.hero-waitlist{display:flex;justify-content:flex-end;margin-top:18px}.hero-waitlist button{max-width:100%;white-space:normal;text-align:center}.set-menu-close{display:flex;justify-content:flex-end;margin-bottom:14px}.menu-active-switch{border:1px solid #677867;min-height:44px;padding:10px 14px;border-radius:8px;background:#fff;color:#243e35;cursor:pointer;font-size:14px}.menu-active-switch[aria-checked="true"]{background:#243e35;color:#fff}.menu-active-switch:focus-visible{outline:3px solid #ba8825;outline-offset:3px}
 @media print{.adm-wrap{background:#fff!important;min-height:0!important}.adm-wrap > :not(.print-menu):not(style){display:none!important}.adm-wrap > .print-menu{display:block!important}.print-menu{color:#111!important}}
 `;
 
@@ -1359,6 +1363,30 @@ DATOS_DEMO.platos=enrichWineDemo(DATOS_DEMO).platos;
 DATOS_DEMO.wineDetailsVersion=1;
 Object.assign(ENGLISH,{"Espumosos":"Sparkling wines","Blancos":"White wines","Rosados":"Rosé wines","Tintos":"Red wines","Generosos":"Fortified wines","Dulces":"Sweet wines","Otros vinos":"Other wines","Sin D.O.":"No appellation","Denominación no indicada":"Appellation not specified","Bodega de ejemplo":"Example winery","Sin añada":"Non-vintage","Botella":"Bottle","Copa":"Glass","Referencias, bodegas, añadas y precios de demostración.":"Illustrative wines, wineries, vintages and prices."});
 
+Object.assign(ENGLISH,{"Cerrar menú ×":"Close menu ×"});
+const SET_MENU_FILTERS=[["menus-diarios","Menús diarios"],["menus-empresa","Menús de empresa"]];
+const SET_MENU_DEMO=[
+  {id:"menu-demo-diario",tipo:"diario",activo:true,nombre:"Menú del día",nombreEn:"Daily set menu",precio:18.5,disponibilidad:"Lunes a viernes · servicio de almuerzo",disponibilidadEn:"Monday to Friday · lunch service",incluye:"Un primero, un segundo y un postre. Pan y agua incluidos.",incluyeEn:"One starter, one main and one dessert. Bread and water included.",condiciones:"IVA incluido. No disponible en festivos.",condicionesEn:"VAT included. Not available on public holidays.",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:["p4","demo2-ensaladilla"]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:["demo2-pollo","p7"]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:["p13","demo2-sorbete"]}]},
+  {id:"menu-demo-empresa",tipo:"empresa",activo:true,nombre:"Menú de empresa · Mediterráneo",nombreEn:"Business set menu · Mediterranean",precio:39,disponibilidad:"Comidas y cenas de grupo · con reserva",disponibilidadEn:"Group lunches and dinners · reservation required",incluye:"Entrantes para compartir, un principal y un postre por persona. Pan, agua y una copa de vino o refresco incluidos.",incluyeEn:"Shared starters, one main and one dessert per person. Bread, water and one glass of wine or soft drink included.",condiciones:"IVA incluido. Mínimo 8 personas. Reserva con 48 horas de antelación. Bebidas adicionales no incluidas.",condicionesEn:"VAT included. Minimum 8 guests. Book 48 hours ahead. Additional drinks not included.",grupos:[{titulo:"Entrantes para compartir",tituloEn:"Shared starters",platoIds:["p2","demo2-ensalada","demo2-quesos"]},{titulo:"Principal · elige uno",tituloEn:"Main · choose one",platoIds:["p5","demo2-lubina","p7"]},{titulo:"Postre · elige uno",tituloEn:"Dessert · choose one",platoIds:["p11","p12"]}]}
+];
+DATOS_DEMO.menus=SET_MENU_DEMO;
+function menuDishes(group,data){return group.platoIds.map(id=>data.platos.find(p=>p.id===id&&p.activo)).filter(Boolean);}
+function validSetMenu(m,data){return m.nombre.trim()&&Number(m.precio)>0&&m.grupos.length>0&&m.grupos.every(g=>g.titulo.trim()&&menuDishes(g,data).length>0);}
+function activeSetMenus(data){return (data.menus||[]).filter(m=>m.activo&&validSetMenu(m,data));}
+function setMenuText(m,key,locale){return locale.code==="en"&&m[key+"En"]?m[key+"En"]:m[key];}
+Object.assign(ENGLISH,{"Menús diarios":"Daily set menus","Menús de empresa":"Business set menus","Precio por persona":"Price per person","Incluye":"Includes","Condiciones":"Conditions","Propuesta de demostración":"Example set menu","No hay menús activos en este apartado.":"There are no active set menus in this section."});
+function SetMenuCard({menu,data,print=false,onClose}){
+  const locale=React.useContext(MenuLanguage);
+  return localizeTree(<article className={print?"set-menu-card print-set-menu":"set-menu-card"}>
+    {!print&&onClose&&<div className="set-menu-close"><button type="button" className="btn btn-sec" onClick={onClose}>Cerrar menú ×</button></div>}
+    <header className="set-menu-title"><div><p className="set-menu-kicker">{menu.tipo==="empresa"?"Menús de empresa":"Menús diarios"}</p><h2>{setMenuText(menu,"nombre",locale)}</h2></div><div className="set-menu-price"><strong>{fmt(menu.precio)}</strong><small>Precio por persona</small></div></header>
+    <p>{setMenuText(menu,"disponibilidad",locale)}</p>
+    {menu.grupos.map((group,i)=><section className="set-menu-course" key={i}><h3>{setMenuText(group,"titulo",locale)}</h3><ul>{menuDishes(group,data).map(p=><li key={p.id}><strong>{p.nombre}</strong>{print?<p>Alérgenos: {p.alergenos.length?p.alergenos.map(id=>getAl(id)?.nombre||id).join(", "):"Sin alérgenos declarados. Consulta al personal sobre trazas."}</p>:p.alergenos.length>0&&<details className="set-menu-allergens"><summary>{p.alergenos.map(id=><AlBadge key={id} id={id}/>)} <span>Alérgenos</span></summary><p>{p.alergenos.map(id=>getAl(id)?.nombre||id).join(" · ")}</p></details>}</li>)}</ul></section>)}
+    <div className="set-menu-includes"><h3>Incluye</h3><p>{setMenuText(menu,"incluye",locale)}</p></div>
+    {menu.condiciones&&<p className="set-menu-conditions"><strong>Condiciones: </strong>{setMenuText(menu,"condiciones",locale)}</p>}
+    {menu.id.startsWith("menu-demo-")&&<small>Propuesta de demostración</small>}
+  </article>,locale);
+}
 function buildPrintSections(data, specials) {
   const base = MENU_FILTERS.filter(([id])=>!["all","chef","recommended","daily"].includes(id));
   const known = new Set(base.map(([id])=>id));
@@ -1372,13 +1400,15 @@ function buildPrintSections(data, specials) {
   if(daily.length)sections.push({id:"daily",nombre:"Platos del día · fuera de carta",platos:daily});
   return sections;
 }
-function CartaImprimible({data}) {
+function CartaImprimible({data,target="carta"}) {
   const locale=React.useContext(MenuLanguage);
   const r=data.restaurante;
-  const sections=buildPrintSections(data,DAILY_SPECIALS);
+  const sections=target==="carta"?buildPrintSections(data,DAILY_SPECIALS):[];
+  const selectedMenus=target==="carta"?[]:(data.menus||[]).filter(m=>m.id===target);
   return localizeTree((<div className="print-menu" lang={locale.code}>
     <header className="print-header"><h1>{r.nombre}</h1><p>{r.subtitulo}</p><p className="print-contact">{[r.direccion,r.telefono,r.horario].filter(Boolean).join(" · ")}</p></header>
     <p className="print-intro">Carta de demostración · platos, vinos y precios de ejemplo. {r.ivaNota}</p>
+    {selectedMenus.map(menu=><SetMenuCard key={menu.id} menu={menu} data={data} print/>)}
     {sections.map(section=><section className="print-section" key={section.id}>
       <h2>{section.nombre}</h2>
       {section.platos.map(p=><article key={p.id} className="print-dish">
@@ -1406,6 +1436,8 @@ function speechParts(data,scope,locale) {
     if(wineDetails(p))parts.push(translate(wineDetails(p),locale));
     parts.push(p.alergenos.length?translate("Alérgenos",locale)+": "+p.alergenos.map(id=>translate(getAl(id)?.nombre||id,locale)).join(", ")+".":translate("Sin alérgenos declarados. Consulta al personal sobre trazas.",locale));
   }}
+  const spokenMenus=activeSetMenus(data).filter(m=>scope==="all"||scope===(m.tipo==="empresa"?"menus-empresa":"menus-diarios"));
+  for(const m of spokenMenus){parts.push(setMenuText(m,"nombre",locale),number.format(m.precio)+" euros. "+translate("Precio por persona",locale),setMenuText(m,"disponibilidad",locale));for(const g of m.grupos){parts.push(setMenuText(g,"titulo",locale));for(const p of menuDishes(g,data)){parts.push(translate(p.nombre,locale));parts.push(translate("Alérgenos",locale)+": "+(p.alergenos.length?p.alergenos.map(id=>translate(getAl(id)?.nombre||id,locale)).join(", "):translate("Sin alérgenos declarados. Consulta al personal sobre trazas.",locale)));}}parts.push(setMenuText(m,"incluye",locale),setMenuText(m,"condiciones",locale));}
   parts.push(translate(data.restaurante.ivaNota,locale),translate("Fin de la carta.",locale));
   return parts.filter(Boolean);
 }
@@ -1442,7 +1474,7 @@ function AudioMenu({data,onClose}) {
     <div className="audio-heading"><h2 id="audio-heading">Audio de la carta</h2><button onClick={()=>{stop();onClose();}} aria-label="Cerrar audio">×</button></div>
     <p>Pulsa Reproducir para escuchar nombres, descripciones, precios y alérgenos.</p>
     {!supported?<p role="status">Tu navegador no ofrece lectura en voz alta. Puedes usar el lector de pantalla del dispositivo.</p>:<>
-      <div className="audio-options"><label>Sección para escuchar<select value={scope} onChange={e=>setScope(e.target.value)}>{MENU_FILTERS.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
+      <div className="audio-options"><label>Sección para escuchar<select value={scope} onChange={e=>setScope(e.target.value)}>{[...MENU_FILTERS,...SET_MENU_FILTERS.filter(([id])=>activeSetMenus(data).some(m=>id===(m.tipo==="empresa"?"menus-empresa":"menus-diarios")))].map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
       <label>Velocidad<select value={speed} disabled={status==="playing"} onChange={e=>setSpeed(Number(e.target.value))}><option value="0.85">Lenta</option><option value="1">Normal</option><option value="1.15">Rápida</option></select></label></div>
       <div className="audio-controls"><button onClick={status==="playing"?pause:status==="paused"?()=>playAt(current.current):start}>{status==="playing"?"Pausar":status==="paused"?"Continuar":"Reproducir"}</button><button onClick={stop} disabled={status==="idle"}>Detener</button>
       <button onClick={()=>playAt(Math.max(0,current.current-1))} disabled={!["playing","paused"].includes(status)||position===0}>Anterior</button><button onClick={()=>playAt(current.current+1)} disabled={!["playing","paused"].includes(status)}>Siguiente</button></div>
@@ -1452,10 +1484,29 @@ function AudioMenu({data,onClose}) {
   </section>,locale);
 }
 
+async function apiCall(path,options={}){
+  const response=await fetch(path,{...options,headers:{"Content-Type":"application/json",...(options.headers||{})}});
+  const result=await response.json();if(!response.ok)throw new Error(result.error||"Servicio no disponible");return result;
+}
+function WaitlistForm({onClose}){
+  const locale=React.useContext(MenuLanguage);
+  const [name,setName]=useState(""),[phone,setPhone]=useState(""),[people,setPeople]=useState(2),[busy,setBusy]=useState(false),[error,setError]=useState(""),[receipt,setReceipt]=useState(null),[enabled,setEnabled]=useState(null);
+  useEffect(()=>{let live=true;apiCall('/api/waitlist/config').then(r=>{if(live)setEnabled(r.enabled)}).catch(()=>{if(live)setError("La lista de espera requiere la versión online. Consulta con el personal.")});return ()=>{live=false}},[]);
+  const submit=async e=>{e.preventDefault();if(busy)return;setBusy(true);setError("");try{const r=await apiCall('/api/waitlist',{method:'POST',body:JSON.stringify({name,phone,people})});setReceipt(r.reference);setName("");setPhone("");}catch(e){setError(e.message)}finally{setBusy(false)}};
+  return localizeTree(<section className="set-menu-card" id="waitlist-form" aria-labelledby="waitlist-title"><div className="set-menu-title"><h2 id="waitlist-title">Lista de espera</h2><button className="btn btn-sec" onClick={onClose} aria-label="Cerrar lista de espera">×</button></div>{receipt?<div role="status"><h3>Ya estás en la lista</h3><p>Referencia: {receipt}</p><p>El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.</p></div>:<><p>¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.</p>{enabled===false?<p>La lista está cerrada. Consulta con el personal.</p>:<form onSubmit={submit}><div className="menu-editor-grid"><label className="ff">Nombre<input className="fi" required minLength={2} maxLength={80} autoComplete="given-name" value={name} onChange={e=>setName(e.target.value)}/></label><label className="ff">Teléfono<input className="fi" type="tel" required autoComplete="tel" maxLength={24} value={phone} onChange={e=>setPhone(e.target.value)}/></label><label className="ff">Número de personas<input className="fi" type="number" required min={1} max={30} value={people} onChange={e=>setPeople(e.target.value)}/></label></div><p>Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.</p><p>Demo: utiliza datos ficticios.</p><button className="btn btn-pri" disabled={busy||enabled!==true}>{busy?"Enviando…":"Apuntarme a la lista"}</button></form>}</>}{error&&<p role="alert">{error}</p>}</section>,locale);
+}
+Object.assign(ENGLISH,{"Lista de espera":"Waiting list","Cerrar lista de espera":"Close waiting list","Ya estás en la lista":"You are on the list","Referencia: ":"Reference: ","El personal te avisará cuando pueda atenderte. No es una reserva ni garantiza un tiempo de espera.":"Our staff will contact you when a table can be offered. This is not a reservation or a guaranteed waiting time.","¿No hay mesa? Déjanos tus datos y consulta con el personal si necesitas cambiar o cancelar tu turno.":"No table available? Leave your details and contact our staff if you need to change or cancel your place.","La lista está cerrada. Consulta con el personal.":"The list is closed. Please speak to our staff.","Nombre":"Name","Teléfono":"Phone","Número de personas":"Number of guests","Usaremos estos datos solo para gestionar tu turno y contactar contigo. No se publican ni se usan para publicidad. Los turnos caducan a las 24 horas.":"We use these details only to manage your place and contact you. They are not published or used for advertising. Entries expire after 24 hours.","Demo: utiliza datos ficticios.":"Demo: please use fictitious details.","Enviando…":"Sending…","Apuntarme a la lista":"Join the waiting list","La lista de espera requiere la versión online. Consulta con el personal.":"The waiting list requires the online version. Please speak to our staff.","¿Sin mesa? Lista de espera":"No table? Join the waiting list"});
+function LanguageFlag({code}) {
+  return code==="es"?<svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/></svg>:<svg width="30" height="20" viewBox="0 0 60 40" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" strokeWidth="8"/><path d="M0 0L30 20M60 40L30 20M60 0L30 20M0 40L30 20" stroke="#C8102E" strokeWidth="3"/><path d="M30 0V40M0 20H60" stroke="#fff" strokeWidth="13"/><path d="M30 0V40M0 20H60" stroke="#C8102E" strokeWidth="8"/></svg>;
+}
 function CartaPublica({ data, fotos, onAdmin }) {
   const [language,setLanguage]=useState(()=>{try{return localStorage.getItem("carta-language")==="en"?"en":"es";}catch{return "es";}});
   const locale=React.useMemo(()=>({code:language,words:translationWords(data)}),[language,data]);
   const [audioOpen,setAudioOpen]=useState(false);
+  const [waitlistOpen,setWaitlistOpen]=useState(()=>typeof window!=="undefined"&&new URLSearchParams(window.location?.search||"").has("espera"));
+  const waitlistButton=useRef(null);
+  const menuReturnFilter=useRef("all");
+  const closeSetMenu=()=>{setFilter("all");requestAnimationFrame(()=>document.querySelector('[data-menu-shortcut="'+menuReturnFilter.current+'"]')?.focus({preventScroll:true}));};
   useEffect(()=>{document.documentElement.lang=language;try{localStorage.setItem("carta-language",language);}catch{}return ()=>{document.documentElement.lang="es";};},[language]);
   const { restaurante: r, categorias, platos } = data;
   const [lb, setLb] = useState(null);
@@ -1471,12 +1522,17 @@ function CartaPublica({ data, fotos, onAdmin }) {
     return () => document.removeEventListener("pointerdown",closeOutside);
   },[categoriesOpen]);
   const available = platos.filter(p => p.activo);
+  const setMenus=activeSetMenus(data);
+  const publicFilters=[...MENU_FILTERS,...SET_MENU_FILTERS.filter(([id])=>setMenus.some(m=>id===(m.tipo==="empresa"?"menus-empresa":"menus-diarios")))];
+  const displayedMenus=setMenus.filter(m=>filter==="all"||filter===(m.tipo==="empresa"?"menus-empresa":"menus-diarios"));
+  useEffect(()=>{if(filter.startsWith("menus-")&&!publicFilters.some(([id])=>id===filter))setFilter("all");},[data,filter]);
   const daily = DAILY_SPECIALS.filter(p => p.available);
   const filtered = filter === "daily" ? daily : available.filter(p => matchesMenu(p,filter));
   const groupedWines=wineGroups(filtered);
   const wineHeadings=Object.fromEntries(groupedWines.map(g=>[g.platos[0].id,g.nombre]));
   const visible=[...filtered.filter(p=>menuSection(p)!=="vinos"),...groupedWines.flatMap(g=>g.platos)];
   const selectFilter = (id, event) => {
+    if(id.startsWith("menus-"))menuReturnFilter.current=id;
     setFilter(id);
     setCategoriesOpen(false);
     categoryButton.current?.focus({preventScroll:true});
@@ -1498,30 +1554,32 @@ function CartaPublica({ data, fotos, onAdmin }) {
       <a className="skip-menu" href="#menu-main">Saltar a la carta</a>
       <style>{CSS}{MENU_CSS}</style>
       <header className="menu-header">
-        <div className="menu-utilities"><label className="language-picker">Idioma<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select></label><button className="audio-open" aria-expanded={audioOpen} aria-controls="audio-menu-region" onClick={()=>setAudioOpen(v=>!v)}>Escuchar carta</button></div>
+        <div className="menu-utilities"><div className="language-flags" role="group" aria-label="Español / English">{[["es","Español"],["en","English"]].map(([code,name])=><button key={code} type="button" className="language-flag" lang={code} aria-label={name} title={name} aria-pressed={language===code} onClick={()=>setLanguage(code)}><LanguageFlag code={code}/></button>)}</div><button className="audio-open" aria-expanded={audioOpen} aria-controls="audio-menu-region" onClick={()=>setAudioOpen(v=>!v)}>Escuchar carta</button></div>
         <div className="menu-eyebrow">MÁLAGA · A LA MESA</div>
         <div style={{fontSize:12,color:"#fff3de",marginBottom:10}}>Carta demo · platos, vinos y precios de ejemplo</div>
         <h1>{r.nombre}</h1><p>{r.subtitulo}</p>
         <details className="restaurant-info"><summary>Horario y contacto</summary>
           <div>{r.horario}</div><div>{r.direccion}</div><a href={"tel:"+r.telefono}>{r.telefono}</a>
         </details>
-
+        <div className="hero-waitlist"><button ref={waitlistButton} type="button" className="audio-open" aria-expanded={waitlistOpen} aria-controls="waitlist-area" onClick={()=>setWaitlistOpen(v=>!v)}>¿Sin mesa? Lista de espera</button></div>
       </header>
       <nav className="menu-nav" ref={navRef} aria-label="Filtrar carta" onKeyDown={e => {if(e.key === "Escape") {setCategoriesOpen(false);categoryButton.current?.focus();}}}>
         <div className="category-bar">
           <button ref={categoryButton} className="category-toggle" aria-expanded={categoriesOpen} aria-controls="category-grid" onClick={() => setCategoriesOpen(v=>!v)}>
-            <span><small>EXPLORAR LA CARTA</small><strong>{MENU_FILTERS.find(([id])=>id===filter)?.[1]}</strong></span>
+            <span><small>EXPLORAR LA CARTA</small><strong>{publicFilters.find(([id])=>id===filter)?.[1]}</strong></span>
             <span className="category-action">{categoriesOpen ? "Cerrar ×" : "Categorías ▾"}</span>
           </button>
           {categoriesOpen && <div id="category-grid" className="category-grid">
-            {MENU_FILTERS.map(([id,label]) => <button key={id} className={"menu-pill"+(id===filter?" selected":"")+(id==="chef"?" chef-pill":"")} aria-pressed={id===filter} onClick={e => selectFilter(id,e)}>{id==="chef" && <span aria-hidden="true">✦ </span>}{label}</button>)}
+            {publicFilters.map(([id,label]) => <button key={id} className={"menu-pill"+(id===filter?" selected":"")+(id==="chef"?" chef-pill":"")} aria-pressed={id===filter} onClick={e => selectFilter(id,e)}>{id==="chef" && <span aria-hidden="true">✦ </span>}{label}</button>)}
           </div>}
         </div>
       </nav>
       <main className="cb" id="menu-main" tabIndex="-1">
+        <div id="waitlist-area">{waitlistOpen&&<WaitlistForm onClose={()=>{setWaitlistOpen(false);waitlistButton.current?.focus({preventScroll:true});}}/>}</div>
         <div id="audio-menu-region">{audioOpen&&<AudioMenu data={data} onClose={()=>setAudioOpen(false)} />}</div>
-        <div className="menu-section-title"><h2>{filter === "all" ? "Nuestra carta" : MENU_FILTERS.find(([id])=>id===filter)?.[1]}</h2><span aria-live="polite">{visible.length} opciones</span></div>
+        <div className="menu-section-title"><h2>{filter === "all" ? "Nuestra carta" : publicFilters.find(([id])=>id===filter)?.[1]}</h2><span aria-live="polite">{visible.length+displayedMenus.length} opciones</span></div>
         <p className="menu-iva">{r.ivaNota}</p>
+        {filter==="all"?<div className="menu-editor-actions" style={{marginBottom:20}}>{displayedMenus.map(menu=><button className="btn btn-sec" key={menu.id} data-menu-shortcut={menu.tipo==="empresa"?"menus-empresa":"menus-diarios"} onClick={()=>{const next=menu.tipo==="empresa"?"menus-empresa":"menus-diarios";menuReturnFilter.current=next;setFilter(next);}}>{setMenuText(menu,"nombre",locale)} · {fmt(menu.precio)}</button>)}</div>:displayedMenus.map(menu=><SetMenuCard key={menu.id} menu={menu} data={data} onClose={closeSetMenu}/>)}
         {filter==="vinos"&&<p className="menu-iva">Referencias, bodegas, añadas y precios de demostración.</p>}
         <div className="menu-grid">
           {visible.map(p => {
@@ -1539,7 +1597,7 @@ function CartaPublica({ data, fotos, onAdmin }) {
             </article></React.Fragment>;
           })}
         </div>
-        {!visible.length && <div className="empty">No hay opciones disponibles en este filtro.<br/><button className="menu-pill" onClick={()=>setFilter("all")}>Ver toda la carta</button></div>}
+        {!visible.length&&!displayedMenus.length && <div className="empty">No hay opciones disponibles en este filtro.<br/><button className="menu-pill" onClick={()=>setFilter("all")}>Ver toda la carta</button></div>}
         <div className="leyenda">
           <div className="leyenda-tit">⚠️ Guía de alérgenos</div>
           <div className="leyenda-grid">
@@ -1755,9 +1813,41 @@ function ModalPlato({ plato, fotoInicial, categorias, onSave, onClose }) {
 }
 
 // ─── PANEL ADMIN ──────────────────────────────────────────────────────────────
+function WaitlistManager(){
+  const [entries,setEntries]=useState([]),[enabled,setEnabled]=useState(true),[error,setError]=useState(""),[busy,setBusy]=useState(false),[loaded,setLoaded]=useState(false);
+  const load=async()=>{try{const [list,config]=await Promise.all([apiCall('/api/waitlist'),apiCall('/api/waitlist/config')]);setEntries(list.entries);setEnabled(config.enabled);setLoaded(true);setError("");}catch(e){setError(e.message)}};
+  useEffect(()=>{load();const timer=setInterval(load,15000);return ()=>clearInterval(timer)},[]);
+  const update=async(id,status)=>{setBusy(true);try{await apiCall('/api/waitlist/'+id,{method:'PATCH',body:JSON.stringify({status})});await load();}catch(e){setError(e.message)}finally{setBusy(false)}};
+  const toggle=async()=>{setBusy(true);try{await apiCall('/api/waitlist/config',{method:'PUT',body:JSON.stringify({enabled:!enabled})});await load();}catch(e){setError(e.message)}finally{setBusy(false)}};
+  const open=entries.filter(e=>['waiting','notified'].includes(e.status));
+  const labels={waiting:"En espera",notified:"Avisado",seated:"Sentado",cancelled:"Cancelado"};
+  return <section><h2>Lista de espera · {open.length} grupos</h2><p>Actualización cada 15 segundos. El orden es de llegada; la asignación de mesas la decide el personal.</p><div className="menu-editor-actions"><button className="btn btn-sec" onClick={load}>Actualizar</button><button className="btn btn-pri" disabled={!loaded||busy} onClick={toggle}>{enabled?"Cerrar nuevas inscripciones":"Abrir lista de espera"}</button></div>{error&&<p role="alert">{error}</p>}<details style={{margin:"16px 0"}}><summary>QR para apuntarse</summary><img src="/qr-espera.svg" alt="QR de acceso a la lista de espera" width="220" height="220"/><p><a href="?espera=1" target="_blank" rel="noopener">Abrir formulario del cliente</a></p><p>El acceso del QR depende de los permisos de publicación de esta demo.</p></details>{loaded&&!open.length&&<p>No hay grupos esperando.</p>}
+    {entries.map(e=><article className="card" key={e.id}><h3>{e.name} · {e.people} personas</h3><p><a href={"tel:"+e.phone}>{e.phone}</a> · {new Date(e.created).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})} · {labels[e.status]}</p>{['waiting','notified'].includes(e.status)&&<div className="menu-editor-actions"><button className="btn btn-sec" disabled={busy||e.status==='notified'} onClick={()=>update(e.id,'notified')}>Marcar avisado</button><button className="btn btn-pri" disabled={busy} onClick={()=>update(e.id,'seated')}>Marcar sentado</button><button className="btn btn-sec" disabled={busy} onClick={()=>{if(confirm('¿Cancelar este turno?'))update(e.id,'cancelled')}}>Cancelar turno</button></div>}</article>)}<p>«Marcar avisado» registra la acción: no envía SMS ni WhatsApp. Usa el teléfono para contactar. Los turnos de más de 24 horas se eliminan al consultar o utilizar la lista.</p>
+  </section>;
+}
+function SetMenuManager({data,setData,onPrint,showToast}){
+  const [draft,setDraft]=useState(null),[error,setError]=useState("");
+  const menus=data.menus||[];
+  const edit=m=>{setDraft(JSON.parse(JSON.stringify(m)));setError("");};
+  const change=(key,value)=>setDraft(d=>({...d,[key]:value}));
+  const groupChange=(i,key,value)=>setDraft(d=>({...d,grupos:d.grupos.map((g,n)=>n===i?{...g,[key]:value}:g)}));
+  const save=async e=>{e.preventDefault();if(!validSetMenu(draft,data)){setError("Completa el nombre, un precio mayor que cero y al menos un plato disponible en cada sección.");return;}const saved={...draft,precio:Number(draft.precio)};const ok=await setData(d=>({...d,menus:menus.some(m=>m.id===saved.id)?d.menus.map(m=>m.id===saved.id?saved:m):[...(d.menus||[]),saved]}));if(ok===false){setError("No se ha guardado. Revisa la conexión y vuelve a intentarlo.");return;}setDraft(null);showToast("Menú guardado");};
+  return <div><div className="menu-editor-actions">{[["diario","+ Menú diario"],["empresa","+ Menú de empresa"]].map(([tipo,label])=><button key={tipo} className="btn btn-pri" onClick={()=>edit({id:"menu-"+Date.now(),tipo,activo:false,nombre:"",nombreEn:"",precio:"",disponibilidad:"",disponibilidadEn:"",incluye:"",incluyeEn:"",condiciones:"",condicionesEn:"",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:[]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:[]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:[]}]})}>{label}</button>)}</div>
+    <p style={{margin:"14px 0"}}>Los menús activados aparecen en la carta. La disponibilidad es informativa: activa u oculta cada propuesta cuando corresponda.</p>
+    {menus.map(m=><div className="card" key={m.id}><h3>{m.nombre} · {fmt(m.precio)}</h3><p>{m.tipo==="empresa"?"Menú de empresa":"Menú diario"} · {m.activo?"Activo · visible en la carta":"Desactivado · oculto para los clientes"}</p>{!validSetMenu(m,data)&&<p role="status">Revisa las secciones: falta algún plato disponible. Este menú no se muestra al cliente.</p>}<div className="menu-editor-actions"><button className="btn btn-sec" onClick={()=>edit(m)}>Editar menú</button><button type="button" className="menu-active-switch" role="switch" aria-checked={!!m.activo} aria-label={"Mostrar en la carta: "+m.nombre} disabled={!m.activo&&!validSetMenu(m,data)} onClick={()=>setData(d=>({...d,menus:d.menus.map(x=>x.id===m.id?{...x,activo:!x.activo}:x)}))}>{m.activo?"Desactivar menú":"Activar menú"}</button><button className="btn btn-pri" onClick={()=>onPrint(m.id)}>Imprimir menú</button></div></div>)}
+    {draft&&<form className="card" onSubmit={save}><h2>Editar menú</h2><div className="menu-editor-grid">{[["nombre","Nombre"],["precio","Precio por persona (€)"],["disponibilidad","Días, horario o disponibilidad"],["incluye","Qué incluye"],["condiciones","Condiciones y reserva"]].map(([key,label])=><label className="ff" key={key}><span className="fl">{label}</span><input className="fi" required={key==="nombre"||key==="precio"} type={key==="precio"?"number":"text"} min={key==="precio"?"0.01":undefined} step={key==="precio"?"0.01":undefined} value={draft[key]} onChange={e=>change(key,e.target.value)}/></label>)}</div>
+      <details><summary>Textos en inglés</summary>{["nombre","disponibilidad","incluye","condiciones"].map(key=><label className="ff" key={key}>{key} (English)<input className="fi" value={draft[key+"En"]||""} onChange={e=>change(key+"En",e.target.value)}/></label>)}</details>
+      {draft.grupos.map((g,i)=><div className="menu-editor-group" key={i}><label className="ff">Título de la sección<input className="fi" required value={g.titulo} onChange={e=>groupChange(i,"titulo",e.target.value)}/></label><label className="ff">Título en inglés<input className="fi" value={g.tituloEn||""} onChange={e=>groupChange(i,"tituloEn",e.target.value)}/></label><p>Selecciona los platos incluidos o a elegir. Los alérgenos se toman de sus fichas.</p><div className="menu-dish-choices">{data.platos.filter(p=>p.activo||g.platoIds.includes(p.id)).map(p=><label key={p.id}><input type="checkbox" checked={g.platoIds.includes(p.id)} onChange={()=>groupChange(i,"platoIds",g.platoIds.includes(p.id)?g.platoIds.filter(id=>id!==p.id):[...g.platoIds,p.id])}/>{p.nombre}{!p.activo?" (no disponible)":""}</label>)}</div><button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
+      <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
+    </form>}
+  </div>;
+}
 
 function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, showToast }) {
   const [printLanguage,setPrintLanguage]=useState("es");
+  const [printRequest,setPrintRequest]=useState(null);
+  const requestPrint=target=>setPrintRequest({target,nonce:Date.now()});
+  useEffect(()=>{if(printRequest)window.print();},[printRequest]);
   const printLocale=React.useMemo(()=>({code:printLanguage,words:translationWords(data)}),[printLanguage,data]);
   const [tab,   setTab]   = useState("platos");
   const [catF,  setCatF]  = useState("all");
@@ -1805,12 +1895,12 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
   return (
     <div className="adm-wrap">
       <style>{CSS}{MENU_CSS}</style>
-      <MenuLanguage.Provider value={printLocale}><CartaImprimible data={data} /></MenuLanguage.Provider>
+      <MenuLanguage.Provider value={printLocale}><CartaImprimible data={data} target={printRequest?.target||"carta"} /></MenuLanguage.Provider>
       <div className="adm-hdr">
         <div className="adm-tit">🍽️ Gestión de carta</div>
         <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
           <label style={{fontSize:13}}>Idioma de impresión <select aria-label="Idioma de impresión" value={printLanguage} onChange={e=>setPrintLanguage(e.target.value)}><option value="es">Español</option><option value="en">English</option></select></label>
-          <button className="btn btn-pri btn-sm" onClick={()=>window.print()}>Imprimir carta</button>
+          <button className="btn btn-pri btn-sm" onClick={()=>requestPrint("carta")}>Imprimir carta</button>
           <button className="btn btn-sec btn-sm" onClick={onVerCarta}>← Ver carta</button>
           <button className="btn btn-sec btn-sm" onClick={onLogout}>Salir</button>
         </div>
@@ -1819,9 +1909,13 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
       <div className="adm-body">
         <div className="tabs">
           <button className={`tab-btn${tab==="platos"?" act":""}`} onClick={() => setTab("platos")}>🍽️ Platos ({data.platos.length})</button>
+          <button className={`tab-btn${tab==="menus"?" act":""}`} onClick={()=>setTab("menus")}>Menús diarios y empresas</button>
+          <button className={`tab-btn${tab==="espera"?" act":""}`} onClick={()=>setTab("espera")}>Lista de espera</button>
           <button className={`tab-btn${tab==="info"?" act":""}`} onClick={() => setTab("info")}>ℹ️ Datos del restaurante</button>
         </div>
 
+        {tab==="menus"&&<SetMenuManager data={data} setData={setData} onPrint={requestPrint} showToast={showToast}/>}
+        {tab==="espera"&&<WaitlistManager/>}
         {tab === "platos" && (
           <>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:10, marginBottom:14, flexWrap:"wrap" }}>
@@ -1903,6 +1997,9 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
 function Login({ onLogin }) {
   const [pass, setPass] = useState("");
   const [err,  setErr]  = useState(false);
+  const [onlineError,setOnlineError]=useState("");
+  const hosted=typeof window!=="undefined"&&/^https?:$/.test(window.location?.protocol||"");
+  useEffect(()=>{if(hosted)apiCall('/api/session').then(r=>{if(r.admin)onLogin();else setOnlineError("La gestión online está reservada al propietario de esta demo.")}).catch(()=>setOnlineError("No se ha podido comprobar el acceso. Inténtalo de nuevo."));},[]);
   const ok = () => { if (pass === "demo1234") onLogin(); else setErr(true); };
   return (
     <div className="login-bg">
@@ -1910,7 +2007,7 @@ function Login({ onLogin }) {
       <div className="login-card">
         <div className="login-logo">🍽️ Carta Digital</div>
         <div className="login-sub">Panel de gestión · Limonada Web</div>
-        <div className="ff">
+        {hosted?<div><p>{onlineError||"Comprobando acceso…"}</p><a href="/signin-with-chatgpt?return_to=%2F" target="_top">Iniciar sesión con ChatGPT</a></div>:<><div className="ff">
           <label className="fl">Contraseña de acceso</label>
           <input className="fi" type="password" value={pass} autoFocus
             onChange={e => { setPass(e.target.value); setErr(false); }}
@@ -1921,6 +2018,7 @@ function Login({ onLogin }) {
         </div>
         <button className="btn btn-pri btn-full" onClick={ok}>Entrar al panel</button>
         <div className="login-hint">Demo: contraseña <strong style={{ color:"#999" }}>demo1234</strong></div>
+        </>}
       </div>
     </div>
   );
@@ -1935,6 +2033,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [toast,   setToast]   = useState(null);
+  const saving=useRef(false);
 
   useEffect(() => {
     (async () => {
@@ -1966,6 +2065,12 @@ function App() {
           cartaData=enrichWineDemo(cartaData);
           await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
         }
+        if(!Array.isArray(cartaData.menus))cartaData={...cartaData,menus:SET_MENU_DEMO};
+        if(/^https?:$/.test(window.location?.protocol||"")){
+          const remote=await apiCall('/api/catalog');
+          cartaData=remote.data||DATOS_DEMO;
+          if(!Array.isArray(cartaData.menus))cartaData={...cartaData,menus:SET_MENU_DEMO};
+        }
         setData(cartaData);
         setFotos(fotosMap);
       } catch { setData(DATOS_DEMO); }
@@ -1973,13 +2078,16 @@ function App() {
     })();
   }, []);
 
-  const handleSetData = useCallback(updater => {
-    setData(prev => {
-      const next = typeof updater === "function" ? updater(prev) : updater;
-      window.storage.set("carta-lw-v1", JSON.stringify(next)).catch(() => {});
-      return next;
-    });
-  }, []);
+  const handleSetData = useCallback(async updater => {
+    if(saving.current){setToast("Espera a que termine de guardarse el cambio anterior.");return false;}
+    const next=typeof updater==="function"?updater(data):updater;
+    saving.current=true;
+    try{
+      if(/^https?:$/.test(window.location?.protocol||""))await apiCall('/api/catalog',{method:'PUT',body:JSON.stringify(next)});
+      else await window.storage.set("carta-lw-v1",JSON.stringify(next));
+      setData(next);setToast("Cambios guardados");return true;
+    }catch(e){setToast("No se ha guardado: "+e.message);return false;}finally{saving.current=false;}
+  }, [data]);
 
   if (loading) return (
     <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#F7F3EE", flexDirection:"column", gap:12, fontFamily:"Inter,sans-serif", color:"#2C4A3E" }}>
