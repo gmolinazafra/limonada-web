@@ -765,6 +765,23 @@ body{font-family:'Inter',sans-serif;background:#F7F3EE;color:#1A1A1A;min-height:
 .mb-send:active{transform:scale(.93)}
 .mb-send:disabled{background:#C8C0B8;cursor:not-allowed}
 
+/* ── EDITOR DE MENÚS — platos ── */
+.menu-platos-sel{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.menu-plato-chip{display:inline-flex;align-items:center;gap:5px;background:#2C4A3E;color:#fff;border-radius:20px;padding:4px 12px;font-size:.74rem;font-family:'Inter',sans-serif;line-height:1.4}
+.menu-plato-chip-del{background:none;border:none;color:rgba(255,255,255,.65);cursor:pointer;font-size:.9rem;line-height:1;padding:0 0 0 2px;display:flex;align-items:center}
+.menu-plato-chip-del:hover{color:#fff}
+.menu-dish-add{margin-top:8px;border:1px solid #E0D8CF;border-radius:8px;overflow:hidden}
+.menu-dish-add summary{cursor:pointer;font-size:.78rem;color:#2C4A3E;font-weight:600;padding:8px 12px;background:#F7F5F0;user-select:none}
+.menu-dish-add summary:hover{background:#EEE8E0}
+.menu-dish-picker{padding:6px 0;max-height:220px;overflow-y:auto}
+.menu-dish-pick-row{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;border-bottom:1px solid #F0EBE4;font-size:.8rem;cursor:pointer;transition:background .1s}
+.menu-dish-pick-row:last-child{border-bottom:none}
+.menu-dish-pick-row:hover{background:#F7F5F0}
+.menu-dish-pick-add{background:#2C4A3E;color:#fff;border:none;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.menu-dish-pick-add:hover{background:#1E3828}
+.menu-editor-close{background:#F0EDE8;border:1px solid #D0C8C0;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.menu-editor-close:hover{background:#E0D8D0;color:#333}
+
 /* Slot Maitre inline — solo visible en móvil */
 .mb-mobile-slot{display:none}
 /* Slot inline desactivado */
@@ -1835,9 +1852,24 @@ function SetMenuManager({data,setData,onPrint,showToast}){
   return <div><div className="menu-editor-actions">{[["diario","+ Menú diario"],["empresa","+ Menú de empresa"]].map(([tipo,label])=><button key={tipo} className="btn btn-pri" onClick={()=>edit({id:"menu-"+Date.now(),tipo,activo:false,nombre:"",nombreEn:"",precio:"",disponibilidad:"",disponibilidadEn:"",incluye:"",incluyeEn:"",condiciones:"",condicionesEn:"",grupos:[{titulo:"Primeros · elige uno",tituloEn:"Starters · choose one",platoIds:[]},{titulo:"Segundos · elige uno",tituloEn:"Mains · choose one",platoIds:[]},{titulo:"Postres · elige uno",tituloEn:"Desserts · choose one",platoIds:[]}]})}>{label}</button>)}</div>
     <p style={{margin:"14px 0"}}>Los menús activados aparecen en la carta. La disponibilidad es informativa: activa u oculta cada propuesta cuando corresponda.</p>
     {menus.map(m=><div className="card" key={m.id}><h3>{m.nombre} · {fmt(m.precio)}</h3><p>{m.tipo==="empresa"?"Menú de empresa":"Menú diario"} · {m.activo?"Activo · visible en la carta":"Desactivado · oculto para los clientes"}</p>{!validSetMenu(m,data)&&<p role="status">Revisa las secciones: falta algún plato disponible. Este menú no se muestra al cliente.</p>}<div className="menu-editor-actions"><button className="btn btn-sec" onClick={()=>edit(m)}>Editar menú</button><button type="button" className="menu-active-switch" role="switch" aria-checked={!!m.activo} aria-label={"Mostrar en la carta: "+m.nombre} disabled={!m.activo&&!validSetMenu(m,data)} onClick={()=>setData(d=>({...d,menus:d.menus.map(x=>x.id===m.id?{...x,activo:!x.activo}:x)}))}>{m.activo?"Desactivar menú":"Activar menú"}</button><button className="btn btn-pri" onClick={()=>onPrint(m.id)}>Imprimir menú</button></div></div>)}
-    {draft&&<form className="card" onSubmit={save}><h2>Editar menú</h2><div className="menu-editor-grid">{[["nombre","Nombre"],["precio","Precio por persona (€)"],["disponibilidad","Días, horario o disponibilidad"],["incluye","Qué incluye"],["condiciones","Condiciones y reserva"]].map(([key,label])=><label className="ff" key={key}><span className="fl">{label}</span><input className="fi" required={key==="nombre"||key==="precio"} type={key==="precio"?"number":"text"} min={key==="precio"?"0.01":undefined} step={key==="precio"?"0.01":undefined} value={draft[key]} onChange={e=>change(key,e.target.value)}/></label>)}</div>
+    {draft&&<form className="card" onSubmit={save}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}><h2 style={{margin:0}}>Editar menú</h2><button type="button" className="menu-editor-close" onClick={()=>setDraft(null)} aria-label="Cerrar editor">✕</button></div><div className="menu-editor-grid">{[["nombre","Nombre"],["precio","Precio por persona (€)"],["disponibilidad","Días, horario o disponibilidad"],["incluye","Qué incluye"],["condiciones","Condiciones y reserva"]].map(([key,label])=><label className="ff" key={key}><span className="fl">{label}</span><input className="fi" required={key==="nombre"||key==="precio"} type={key==="precio"?"number":"text"} min={key==="precio"?"0.01":undefined} step={key==="precio"?"0.01":undefined} value={draft[key]} onChange={e=>change(key,e.target.value)}/></label>)}</div>
       <details><summary>Textos en inglés</summary>{["nombre","disponibilidad","incluye","condiciones"].map(key=><label className="ff" key={key}>{key} (English)<input className="fi" value={draft[key+"En"]||""} onChange={e=>change(key+"En",e.target.value)}/></label>)}</details>
-      {draft.grupos.map((g,i)=><div className="menu-editor-group" key={i}><label className="ff">Título de la sección<input className="fi" required value={g.titulo} onChange={e=>groupChange(i,"titulo",e.target.value)}/></label><label className="ff">Título en inglés<input className="fi" value={g.tituloEn||""} onChange={e=>groupChange(i,"tituloEn",e.target.value)}/></label><p>Selecciona los platos incluidos o a elegir. Los alérgenos se toman de sus fichas.</p><div className="menu-dish-choices">{data.platos.filter(p=>p.activo||g.platoIds.includes(p.id)).map(p=><label key={p.id}><input type="checkbox" checked={g.platoIds.includes(p.id)} onChange={()=>groupChange(i,"platoIds",g.platoIds.includes(p.id)?g.platoIds.filter(id=>id!==p.id):[...g.platoIds,p.id])}/>{p.nombre}{!p.activo?" (no disponible)":""}</label>)}</div><button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
+      {draft.grupos.map((g,i)=><div className="menu-editor-group" key={i}><label className="ff">Título de la sección<input className="fi" required value={g.titulo} onChange={e=>groupChange(i,"titulo",e.target.value)}/></label><label className="ff">Título en inglés<input className="fi" value={g.tituloEn||""} onChange={e=>groupChange(i,"tituloEn",e.target.value)}/></label><div className="menu-platos-sel">
+              {g.platoIds.length===0&&<span style={{fontSize:".75rem",color:"#AAA"}}>Sin platos seleccionados — añade usando el selector de abajo</span>}
+              {g.platoIds.map(id=>{const p=data.platos.find(x=>x.id===id);if(!p)return null;return(<span key={id} className="menu-plato-chip">{p.nombre}<button type="button" className="menu-plato-chip-del" aria-label={"Quitar "+p.nombre} onClick={()=>groupChange(i,"platoIds",g.platoIds.filter(x=>x!==id))}>✕</button></span>);})}
+            </div>
+            <details className="menu-dish-add">
+              <summary>+ Añadir platos a esta sección</summary>
+              <div className="menu-dish-picker">
+                {data.platos.filter(p=>p.activo&&!g.platoIds.includes(p.id)).length===0&&<p style={{fontSize:".75rem",color:"#AAA",padding:"10px 12px"}}>Todos los platos activos ya están en esta sección.</p>}
+                {data.platos.filter(p=>p.activo&&!g.platoIds.includes(p.id)).map(p=>(
+                  <div key={p.id} className="menu-dish-pick-row">
+                    <span>{p.nombre} <span style={{color:"#9A7010",fontWeight:600}}>{fmt(p.precio)}</span></span>
+                    <button type="button" className="menu-dish-pick-add" onClick={()=>groupChange(i,"platoIds",[...g.platoIds,p.id])}>+ Añadir</button>
+                  </div>
+                ))}
+              </div>
+            </details><button type="button" className="btn btn-sec" onClick={()=>change("grupos",draft.grupos.filter((_,n)=>n!==i))}>Quitar sección</button></div>)}
       <button type="button" className="btn btn-sec" onClick={()=>change("grupos",[...draft.grupos,{titulo:"",tituloEn:"",platoIds:[]}])}>Añadir sección</button><label style={{display:"block",margin:"16px 0"}}><input type="checkbox" checked={draft.activo} onChange={e=>change("activo",e.target.checked)}/> Mostrar este menú en la carta</label>{error&&<p role="alert">{error}</p>}<div className="menu-editor-actions"><button className="btn btn-pri" type="submit">Guardar menú</button><button type="button" className="btn btn-sec" onClick={()=>setDraft(null)}>Cancelar</button></div>
     </form>}
   </div>;
@@ -2063,9 +2095,11 @@ function App() {
         }
         if(!Array.isArray(cartaData.menus))cartaData={...cartaData,menus:SET_MENU_DEMO};
         if(/^https?:$/.test(window.location?.protocol||"")){
-          const remote=await apiCall('/api/catalog');
-          cartaData=remote.data||DATOS_DEMO;
-          if(!Array.isArray(cartaData.menus))cartaData={...cartaData,menus:SET_MENU_DEMO};
+          try{
+            const remote=await apiCall('/api/catalog');
+            if(remote&&remote.data)cartaData=remote.data;
+            if(!Array.isArray(cartaData.menus))cartaData={...cartaData,menus:SET_MENU_DEMO};
+          }catch(e){ /* API no disponible, usar datos locales */ }
         }
         setData(cartaData);
         setFotos(fotosMap);
