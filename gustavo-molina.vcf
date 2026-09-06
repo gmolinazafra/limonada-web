@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Gustavo Molina
+N:Molina;Gustavo;;;
+ORG:Limonada Web
+TITLE:Agencia Digital
+TEL;TYPE=CELL,VOICE:+34628482475
+EMAIL;TYPE=INTERNET:hola@limonadaweb.com
+URL:https://limonadaweb.com
+NOTE:Exprimimos Internet para tu negocio
+END:VCARD
