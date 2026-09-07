@@ -256,7 +256,7 @@ const maitreService = {
   buildMenuForBudget(platos, budget) {
     const av = platos.filter(p => p.activo);
     const sort = cat => [...av.filter(p => p.categoriaId === cat)].sort((a,b) => a.precio - b.precio);
-    const mains    = [...av.filter(p => ["principales","pescados"].includes(p.categoriaId))].sort((a,b)=>a.precio-b.precio);
+    const mains    = [...av.filter(p => ["principales","pescados","carnes","cuchareo"].includes(p.categoriaId))].sort((a,b)=>a.precio-b.precio);
     const starters = sort("entrantes");
     const desserts = sort("postres");
     const drinks   = sort("bebidas");
@@ -1100,6 +1100,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
   const [showHint,  setShowHint]  = useState(false);
   const [inputVal,  setInputVal]  = useState("");
   const [wineContext, setWineContext] = useState("");
+  const [budget, setBudget] = useState(null);  // presupuesto activo por persona
   const chatRef  = useRef(null);
   const inputRef = useRef(null);
   const closeRef = useRef(null);
@@ -1145,7 +1146,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
   };
 
   const handleReset = () => {
-    setMsgs([]); setInputVal(""); setIsTyping(false); setWineContext("");
+    setMsgs([]); setInputVal(""); setIsTyping(false); setBudget(null); setWineContext("");
     inited.current = true;
     setTimeout(() => {
       addMsg({ type:"bot",   text:"¡Empecemos de nuevo! 😊 ¿En qué puedo ayudarte?" });
@@ -1245,6 +1246,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
 
   const handleBudget = (amount, label) => {
     addMsg({ type:"user", text: label });
+    setBudget(amount);  // recordar para filtros posteriores
     const combo = maitreService.buildMenuForBudget(data.platos, amount);
     botRespond(() => {
       if (!combo.selection.length) {
@@ -1264,11 +1266,18 @@ function MaitreBot({ data, fotos, onVerPlato }) {
   const handleAllergenConfirm = selected => {
     const names = selected.map(id => ALERGENOS.find(a => a.id === id)).filter(Boolean).map(a => a.nombre);
     addMsg({ type:"user", text: "Evito: " + names.join(", ") });
-    const compat = maitreService.filterSafeFor(data.platos, selected);
+    let compat = maitreService.filterSafeFor(data.platos, selected);
+    // Si había un presupuesto fijado, respetarlo también aquí
+    const conPresu = budget ? compat.filter(p => p.precio <= budget) : compat;
+    const lista = conPresu.length ? conPresu : compat;
     botRespond(() => {
-      addMsg({ type:"bot", text:"Según la información de alérgenos del establecimiento, estas opciones pueden encajarte:" });
-      if (compat.length) {
-        addMsg({ type:"platos", platos: compat.slice(0,5) });
+      const msgBase = "Según la información de alérgenos del establecimiento, estas opciones pueden encajarte:";
+      addMsg({ type:"bot", text: budget && conPresu.length ? msgBase + " (dentro de tu presupuesto de " + budget + " €)" : msgBase });
+      if (lista.length) {
+        addMsg({ type:"platos", platos: [...lista].sort((a,b)=>a.precio-b.precio).slice(0,5) });
+        if (budget && !conPresu.length) {
+          addMsg({ type:"bot", text:"No había platos compatibles por debajo de " + budget + " €, así que te muestro los más económicos sin esos alérgenos." });
+        }
       } else {
         addMsg({ type:"bot", text:"No encontré platos sin todos esos alérgenos. Por favor consulta directamente con nuestro personal." });
       }
