@@ -380,9 +380,10 @@ document.addEventListener("error",function(e){
 var U4="?w=320&h=320&fit=crop&auto=format&q=78";
 var DES_V4={
   fixFotos:{
-    d2:"https://images.unsplash.com/photo-1590426556824-5d005c1d0ece"+U4
+    d2:"https://images.unsplash.com/photo-1590426556824-5d005c1d0ece"+U4,
+    d4:"https://images.unsplash.com/photo-1687630433865-f86f07be989a"+U4
   },
-  nombresOriginales:{d2:"Tostada con jam\u00f3n ib\u00e9rico"},
+  nombresOriginales:{d2:"Tostada con jam\u00f3n ib\u00e9rico",d4:"Huevos revueltos con bacon"},
   addOpciones:{
     d1:{grupos:[{id:"gd-pan",nombre:"Tipo de pan",tipo:"single",obligatorio:true,opciones:[{id:"pan-cristal",nombre:"Pan de cristal",precio:0},{id:"pan-mollete",nombre:"Mollete",precio:0},{id:"pan-integral",nombre:"Integral",precio:0}]}]},
     d2:{grupos:[{id:"gd-pan",nombre:"Tipo de pan",tipo:"single",obligatorio:true,opciones:[{id:"pan-cristal",nombre:"Pan de cristal",precio:0},{id:"pan-mollete",nombre:"Mollete",precio:0},{id:"pan-integral",nombre:"Integral",precio:0}]}]},
@@ -419,6 +420,7 @@ var DES_V4={
   },
   PHOTO_ADD:{
     d2:"https://unsplash.com/s/photos/jamon-iberico-toast",
+    d4:"https://unsplash.com/photos/a-bowl-of-scrambled-eggs-next-to-a-slice-of-bread-qla1_604R4c",
     d7:"https://unsplash.com/photos/omelette-on-black-plate-6rtm6a_aVyE",
     d8:"https://unsplash.com/photos/orange-juice-in-clear-drinking-glass-kNJGfcx0V2o",
     d9:"https://unsplash.com/photos/avocado-toast-with-poached-egg-and-halloumi-cheese-ui-pynyV3Nc",
@@ -441,7 +443,7 @@ function aplicarDesayunosV4(data){
   });
   var ids={}; platos.forEach(function(p){ids[p.id]=1;});
   DES_V4.nuevos.forEach(function(p){ if(!ids[p.id]) platos.push(p); });
-  return Object.assign({},data,{demoContentVersion:4,platos:platos});
+  return Object.assign({},data,{demoContentVersion:5,platos:platos});
 }
 
 return{DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
@@ -2264,7 +2266,7 @@ function CartaPublica({ data, fotos, onAdmin }) {
       <main className="cb" id="menu-main" tabIndex="-1">
         <div id="waitlist-area">{waitlistOpen&&<WaitlistForm onClose={()=>{setWaitlistOpen(false);waitlistButton.current?.focus({preventScroll:true});}}/>}</div>
         <div id="audio-menu-region">{audioOpen&&<AudioMenu data={data} onClose={()=>setAudioOpen(false)} />}</div>
-        <div className="menu-section-title"><h2>{filter === "all" ? "Nuestra carta" : publicFilters.find(([id])=>id===filter)?.[1]}</h2><span aria-live="polite">{visible.length+displayedMenus.length} opciones</span></div>
+        <div className="menu-section-title"><h2>{filter === "all" ? "Nuestra carta" : publicFilters.find(([id])=>id===filter)?.[1]}</h2>{filter!=="all"&&<button className="btn btn-sm btn-sec" onClick={()=>{setFilter("all");document.getElementById("menu-main")?.focus({preventScroll:true});}}>← Volver a la carta</button>}<span aria-live="polite">{visible.length+displayedMenus.length} opciones</span></div>
         <p className="menu-iva">{r.ivaNota}</p>
         {filter==="all"?<div className="menu-editor-actions" style={{marginBottom:20}}>
             {data.platos.some(p=>p.categoriaId==="desayunos"&&p.activo)&&(
@@ -3077,7 +3079,7 @@ if(DEMO_PHOTOS.p1&&!DEMO_PHOTOS.d2)DEMO_PHOTOS.d2={...DEMO_PHOTOS.p1};
 Object.assign(DEMO_SECTIONS,window.LW_ORD.SECT_ADD);
 // ── Traducciones de todo lo nuevo (se integran en el sistema existente) ──
 Object.assign(ENGLISH,{
-"Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
+"← Volver a la carta":"← Back to the menu","Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
 "Carrito vacío. Añade platos desde la carta.":"Your basket is empty. Add dishes from the menu.",
 "Elige tamaño":"Choose size","Extras":"Extras","Extras de la hamburguesa":"Burger extras","Formato":"Serving","Hielo":"Ice","Con hielo":"With ice","Sin hielo":"No ice",
 "Elige hamburguesa":"Choose your burger","Elige patatas":"Choose your fries","Elige bebida":"Choose your drink",
@@ -3851,7 +3853,7 @@ function App() {
           const catsV3 = cartaData.categorias.some(c=>c.id===window.LW_ORD.PEDIDOS_DEMO_CAT.id)?cartaData.categorias:[...cartaData.categorias,window.LW_ORD.PEDIDOS_DEMO_CAT];
           cartaData = {...cartaData, demoContentVersion:3, categorias:catsV3, platos:[...cartaData.platos,...window.LW_ORD.PEDIDOS_DEMO_PLATOS.filter(p=>!idsV3.has(p.id))]};
         }
-        if ((cartaData.demoContentVersion || 0) < 4 && window.LW_ORD?.aplicarDesayunosV4) {
+        if ((cartaData.demoContentVersion || 0) < 5 && window.LW_ORD?.aplicarDesayunosV4) {
           cartaData = window.LW_ORD.aplicarDesayunosV4(cartaData);
           await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
         }
