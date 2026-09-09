@@ -68,7 +68,7 @@
   <script type="text/babel" data-type="module">
 const { useState, useEffect, useCallback, useRef } = React;
 const DEMO_PHOTOS = JSON.parse(document.getElementById("demo-photo-data").textContent);
-const PHOTO_SOURCES = {"p17": "https://unsplash.com/s/photos/lentil-stew", "p18": "https://unsplash.com/s/photos/spanish-stew", "p19": "https://unsplash.com/s/photos/fabada", "p20": "https://unsplash.com/s/photos/seafood-soup", "p21": "https://unsplash.com/s/photos/chickpea-stew", "p22": "https://unsplash.com/s/photos/pumpkin-soup", "p23": "https://unsplash.com/s/photos/braised-oxtail", "p24": "https://unsplash.com/s/photos/beef-tenderloin", "p25": "https://unsplash.com/s/photos/steak", "p26": "https://unsplash.com/s/photos/garlic-chicken", "p27": "https://unsplash.com/s/photos/roast-lamb", "p28": "https://unsplash.com/s/photos/meatballs", "p29": "https://unsplash.com/s/photos/entrecote"};
+const PHOTO_SOURCES = {"d1":"https://unsplash.com/s/photos/pan-tomate","d2":"https://unsplash.com/s/photos/jamon-toast","d3":"https://unsplash.com/s/photos/croissant","d4":"https://unsplash.com/s/photos/scrambled-eggs","d5":"https://unsplash.com/s/photos/granola-yogurt","d6":"https://unsplash.com/s/photos/coffee-pastry","p17": "https://unsplash.com/s/photos/lentil-stew", "p18": "https://unsplash.com/s/photos/spanish-stew", "p19": "https://unsplash.com/s/photos/fabada", "p20": "https://unsplash.com/s/photos/seafood-soup", "p21": "https://unsplash.com/s/photos/chickpea-stew", "p22": "https://unsplash.com/s/photos/pumpkin-soup", "p23": "https://unsplash.com/s/photos/braised-oxtail", "p24": "https://unsplash.com/s/photos/beef-tenderloin", "p25": "https://unsplash.com/s/photos/steak", "p26": "https://unsplash.com/s/photos/garlic-chicken", "p27": "https://unsplash.com/s/photos/roast-lamb", "p28": "https://unsplash.com/s/photos/meatballs", "p29": "https://unsplash.com/s/photos/entrecote"};
 function getDishPhoto(p, fotos = {}) {
   if(fotos[p.id]) return fotos[p.id];
   const original = [...DATOS_DEMO.platos,...DAILY_SPECIALS].find(d=>d.id===p.id);
@@ -96,7 +96,7 @@ const ALERGENOS = [
 ];
 
 const DATOS_DEMO = {
-  demoVersion: 2,
+  demoVersion: 3,
   restaurante: {
     nombre: "La Bodega de Gus",
     subtitulo: "Cocina mediterránea de autor",
@@ -107,6 +107,7 @@ const DATOS_DEMO = {
     alergenos_nota: "Si tiene alguna alergia o intolerancia alimentaria, consulte con nuestro personal antes de realizar su pedido. Elaboramos en cocinas donde se manipulan todos los alérgenos.",
   },
   categorias: [
+    { id:"desayunos",   nombre:"Desayunos",            emoji:"🥐" },
     { id:"entrantes",   nombre:"Entrantes",            emoji:"🫒" },
     { id:"cuchareo",    nombre:"Cucharas y guisos",    emoji:"🍲" },
     { id:"carnes",      nombre:"Carnes",               emoji:"🥩" },
@@ -116,6 +117,12 @@ const DATOS_DEMO = {
     { id:"bebidas",     nombre:"Bebidas",              emoji:"🍷" },
   ],
   platos: [
+    { id:"d1",  categoriaId:"desayunos",   nombre:"Tostada de pan de cristal con tomate", descripcion:"Pan de cristal tostado con tomate natural triturado, AOVE virgen extra y sal en escamas.", precio:3.50,  alergenos:["gluten"],                     destacado:true,  activo:true, fotoDemo:"https://images.unsplash.com/photo-1525351484163-7529414344d8?w=320&h=320&fit=crop&auto=format&q=78" },
+    { id:"d2",  categoriaId:"desayunos",   nombre:"Tostada con jamón ibérico",           descripcion:"Pan de cristal con tomate, AOVE y lascas de jamón ibérico de bellota.",                precio:5.00,  alergenos:["gluten"],                     destacado:false, activo:true, fotoDemo:"https://images.unsplash.com/photo-1528207776546-365bb4cb8bfd?w=320&h=320&fit=crop&auto=format&q=78" },
+    { id:"d3",  categoriaId:"desayunos",   nombre:"Croissant a la plancha",              descripcion:"Croissant de mantequilla artesanal a la plancha, con mantequilla y mermelada casera.",   precio:2.80,  alergenos:["gluten","lacteos","huevos"],   destacado:false, activo:true, fotoDemo:"https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=320&h=320&fit=crop&auto=format&q=78" },
+    { id:"d4",  categoriaId:"desayunos",   nombre:"Huevos revueltos con bacon",          descripcion:"Huevos revueltos cremosos con bacon crujiente y tostada de pan rústico.",              precio:6.50,  alergenos:["huevos","gluten"],            destacado:false, activo:true, fotoDemo:"https://images.unsplash.com/photo-1525351484163-7529414344d8?w=320&h=320&fit=crop&auto=format&q=78" },
+    { id:"d5",  categoriaId:"desayunos",   nombre:"Yogur con granola y frutos rojos",     descripcion:"Yogur natural con granola casera, miel y frutos rojos frescos de temporada.",           precio:4.50,  alergenos:["lacteos","gluten","frutosSecos"], destacado:false, activo:true, fotoDemo:"https://images.unsplash.com/photo-1488477181946-6428a0291777?w=320&h=320&fit=crop&auto=format&q=78" },
+    { id:"d6",  categoriaId:"desayunos",   nombre:"Café con leche y bollería",           descripcion:"Café con leche acompañado de una selección de bollería artesanal del día.",             precio:3.20,  alergenos:["lacteos","gluten","huevos"],   destacado:false, activo:true, fotoDemo:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=320&h=320&fit=crop&auto=format&q=78" },
     { id:"p1",  categoriaId:"entrantes",   nombre:"Pan con tomate y jamón ibérico",    descripcion:"Pan de hogaza artesanal, tomate maduro, AOVE y lascas de jamón ibérico de bellota.",          precio:8.50,  alergenos:["gluten"],                     destacado:false, activo:true,fotoDemo:"https://images.unsplash.com/photo-1590426556824-5d005c1d0ece?w=320&h=320&fit=crop&auto=format&q=78", },
     { id:"p2",  categoriaId:"entrantes",   nombre:"Croquetas de ibérico (6 uds)",      descripcion:"Croquetas cremosas de jamón ibérico y bechamel, rebozadas en panko dorado.",                  precio:9.00,  alergenos:["gluten","lacteos","huevos"],   destacado:true,  activo:true,fotoDemo:"https://images.unsplash.com/photo-1565599837634-134bc3aadce8?w=320&h=320&fit=crop&auto=format&q=78", },
     { id:"p3",  categoriaId:"entrantes",   nombre:"Carpaccio de pulpo a la gallega",   descripcion:"Pulpo cocido en finas láminas, patata, pimentón de la Vera, sal Maldon y AOVE.",              precio:14.50, alergenos:["moluscos"],                   destacado:false, activo:true,fotoDemo:"https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb?w=320&h=320&fit=crop&auto=format&q=78", },
@@ -157,11 +164,11 @@ DATOS_DEMO.platos.push(...EXTRA_DEMO_PLATOS);
 DATOS_DEMO.demoContentVersion = 2;
 const MENU_FILTERS = [
   ["all","Todos"], ["chef","Sugerencia del chef"], ["recommended","Recomendados"],
-  ["entrantes","Entrantes"], ["cuchareo","Cucharas y guisos"], ["carnes","Carnes"],
+  ["desayunos","Desayunos"], ["entrantes","Entrantes"], ["cuchareo","Cucharas y guisos"], ["carnes","Carnes"],
   ["pescados","Pescados"], ["mariscos","Mariscos"], ["verde","Verde"],
   ["postres","Postres"], ["vinos","Vinos"], ["bebidas","Bebidas"], ["daily","Plato del día"]
 ];
-const DEMO_SECTIONS = {p1:"entrantes",p2:"entrantes",p3:"mariscos",p4:"verde",p5:"carnes",p6:"carnes",p7:"verde",p8:"pescados",p9:"mariscos",p10:"pescados",p11:"postres",p12:"postres",p13:"postres",p14:"vinos",p15:"bebidas",p16:"bebidas",p17:"cuchareo",p18:"cuchareo",p19:"cuchareo",p20:"cuchareo",p21:"cuchareo",p22:"cuchareo",p23:"carnes",p24:"carnes",p25:"carnes",p26:"carnes",p27:"carnes",p28:"carnes",p29:"carnes"};
+const DEMO_SECTIONS = {d1:"desayunos",d2:"desayunos",d3:"desayunos",d4:"desayunos",d5:"desayunos",d6:"desayunos",p1:"entrantes",p2:"entrantes",p3:"mariscos",p4:"verde",p5:"carnes",p6:"carnes",p7:"verde",p8:"pescados",p9:"mariscos",p10:"pescados",p11:"postres",p12:"postres",p13:"postres",p14:"vinos",p15:"bebidas",p16:"bebidas",p17:"cuchareo",p18:"cuchareo",p19:"cuchareo",p20:"cuchareo",p21:"cuchareo",p22:"cuchareo",p23:"carnes",p24:"carnes",p25:"carnes",p26:"carnes",p27:"carnes",p28:"carnes",p29:"carnes"};
 function menuSection(p) {
   return p.seccionCarta || (DATOS_DEMO.platos.some(d => d.id === p.id && d.nombre === p.nombre) ? DEMO_SECTIONS[p.id] : null) || ({principales:"carnes"}[p.categoriaId] || p.categoriaId);
 }
@@ -293,6 +300,8 @@ const maitreService = {
       return { intent:"seafood", message:"Nuestros platos de marisco y pescado:", platos: av.filter(p => menuSection(p)==="mariscos") };
     if (/pescado|merluza|dorada|bacalao|salmon|atun/.test(t))
       return { intent:"fish",    message:"Nuestros platos de pescado:", platos: av.filter(p => menuSection(p)==="pescados") };
+    if (/desayuno|desayunar|tostada|croissant|cafe|bolleria|huevos revuelto|almorzar|almuerzo ligero/.test(t))
+      return { intent:"breakfast", message:"Nuestros desayunos:", platos: av.filter(p => p.categoriaId==="desayunos") };
     if (/cuchara|guiso|guisado|estofado|potaje|cocido|puchero|lenteja|garbanzo|fabada|sopa|caldo|crema/.test(t))
       return { intent:"stew", message:"Nuestras cucharas y guisos:", platos: av.filter(p => menuSection(p)==="cuchareo") };
     if (/carne|cerdo|iberico|carrillada|secreto|ternera|vaca|rabo|solomillo|chuleton|entrecot|cordero|pollo|albondiga/.test(t))
@@ -1304,7 +1313,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
           break;
         case "seafood": case "fish": case "meat":
         case "veggie":  case "light": case "sharing":
-        case "dessert": case "kids":  case "search": case "stew":
+        case "dessert": case "kids":  case "search": case "stew": case "breakfast":
           addMsg({ type:"bot",    text: r.message });
           if (r.platos && r.platos.length) addMsg({ type:"platos", platos: r.platos.slice(0,4) });
           else addMsg({ type:"bot", text:"No encontré opciones. ¿Quieres que te muestre las especialidades?" });
