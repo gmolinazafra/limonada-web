@@ -1881,7 +1881,12 @@ function CartaPublica({ data, fotos, onAdmin }) {
         <div id="audio-menu-region">{audioOpen&&<AudioMenu data={data} onClose={()=>setAudioOpen(false)} />}</div>
         <div className="menu-section-title"><h2>{filter === "all" ? "Nuestra carta" : publicFilters.find(([id])=>id===filter)?.[1]}</h2><span aria-live="polite">{visible.length+displayedMenus.length} opciones</span></div>
         <p className="menu-iva">{r.ivaNota}</p>
-        {filter==="all"?<div className="menu-editor-actions" style={{marginBottom:20}}>{displayedMenus.map(menu=><button className="btn btn-sec" key={menu.id} data-menu-shortcut={menu.tipo==="empresa"?"menus-empresa":"menus-diarios"} onClick={()=>{const next=menu.tipo==="empresa"?"menus-empresa":"menus-diarios";menuReturnFilter.current=next;setFilter(next);}}>{setMenuText(menu,"nombre",locale)} · {fmt(menu.precio)}</button>)}</div>:displayedMenus.map(menu=><SetMenuCard key={menu.id} menu={menu} data={data} onClose={closeSetMenu}/>)}
+        {filter==="all"?<div className="menu-editor-actions" style={{marginBottom:20}}>
+            {data.platos.some(p=>p.categoriaId==="desayunos"&&p.activo)&&(
+              <button className="btn btn-sec" onClick={()=>setFilter("desayunos")}>🥐 Desayunos</button>
+            )}
+            {displayedMenus.map(menu=><button className="btn btn-sec" key={menu.id} data-menu-shortcut={menu.tipo==="empresa"?"menus-empresa":"menus-diarios"} onClick={()=>{const next=menu.tipo==="empresa"?"menus-empresa":"menus-diarios";menuReturnFilter.current=next;setFilter(next);}}>{setMenuText(menu,"nombre",locale)} · {fmt(menu.precio)}</button>)}
+          </div>:displayedMenus.map(menu=><SetMenuCard key={menu.id} menu={menu} data={data} onClose={closeSetMenu}/>)}
         {filter==="vinos"&&<p className="menu-iva">Referencias, bodegas, añadas y precios de demostración.</p>}
         <div className="menu-grid">
           {visible.map(p => {
