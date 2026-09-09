@@ -254,7 +254,9 @@ const ORDER_CSS=`
 .ord-add:hover{background:#2C4A3E;color:#fff}
 .ord-add:disabled{border-color:#CCC;color:#AAA;background:#F5F2EC;cursor:not-allowed}
 .ord-agotado{font-size:.65rem;font-weight:600;color:#A33;background:#FBEAEA;border-radius:20px;padding:4px 10px;white-space:nowrap}
-.ord-bar{position:fixed;left:14px;bottom:14px;z-index:1400;background:#2C4A3E;color:#fff;border:none;border-radius:30px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;box-shadow:0 6px 22px rgba(26,42,32,.35);cursor:pointer;max-width:calc(100vw - 110px)}
+.ord-bar{position:fixed;right:14px;top:14px;z-index:1400;background:#2C4A3E;color:#fff;border:none;border-radius:30px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;box-shadow:0 6px 22px rgba(26,42,32,.35);cursor:pointer;max-width:calc(100vw - 110px)}
+.ord-bar.ord-bar-empty{opacity:.92;padding:9px 14px}
+@media(max-width:700px){.ord-bar{top:10px;right:10px;padding:9px 13px;font-size:.8rem}}
 .ord-bar b{background:#C8860A;border-radius:20px;padding:1px 8px;font-size:.75rem}
 .ord-overlay{position:fixed;inset:0;background:rgba(20,25,20,.5);z-index:1500;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:768px){.ord-overlay{align-items:center}}
@@ -3531,9 +3533,9 @@ function OrderLayer({data,fotos}){
   return localizeTree(
     <>
       <style>{ORDER_CSS}</style>
-      {n>0&&!cartOpen&&!checkout&&!config&&!confirm&&!track&&(
-        <button className="ord-bar" onClick={()=>{setCartOpen(true);window.LW_TRACK("carrito_abierto",{n});}} aria-label="Ver pedido">
-          🛒 <b>{n}</b> <span>Ver pedido</span> · {fmt(t.subtotal-t.descuento)}
+      {!cartOpen&&!checkout&&!config&&!confirm&&!track&&(
+        <button className={"ord-bar"+(n?"":" ord-bar-empty")} onClick={()=>{setCartOpen(true);window.LW_TRACK("carrito_abierto",{n});}} aria-label="Ver pedido">
+          {n?<>🛒 <b>{n}</b> <span>Ver pedido</span> · {fmt(t.subtotal-t.descuento)}</>:<>🛒 <span>Pedido</span></>}
         </button>
       )}
       {config&&<ProductConfig plato={config.plato} foto={getDishPhoto(config.plato,fotos)} initial={config.initial} onSave={saveItem} onClose={()=>setConfig(null)}/>}
