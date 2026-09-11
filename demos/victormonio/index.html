@@ -1009,6 +1009,7 @@ function BookingView({appointments,onAppointmentCreated,initialService}){
           <Btn variant="ghost" style={{width:"100%"}} onClick={reset}>Nueva reserva</Btn>
         </div>
         <p style={{fontSize:11,color:"#aaa",marginTop:16,lineHeight:1.7}}>Cancelación gratuita hasta 24h antes de la cita.</p>
+        </div>
       </div>
     );
   }
@@ -1196,7 +1197,6 @@ function BookingView({appointments,onAppointmentCreated,initialService}){
           <button onClick={()=>setStep(4)} style={{display:"block",margin:"12px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Cambiar hora</button>
         </div>
       )}
-        </div>
     </div>
   );
 }
