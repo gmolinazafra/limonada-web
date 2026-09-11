@@ -1261,7 +1261,7 @@ function AdminView({appointments,onAddAppointment}){
   const ingresos=todayCitas.reduce((s,a)=>s+a.price,0);
   const sections=[{id:"dashboard",icon:"◈",label:"Inicio"},{id:"agenda",icon:"◫",label:"Agenda"},{id:"appointments",icon:"✓",label:"Reservas"},{id:"clients",icon:"◎",label:"Clientes"},{id:"professionals",icon:"◐",label:"Equipo"},{id:"stats",icon:"◈",label:"Stats"},{id:"settings",icon:"⊙",label:"Config."}];
   return(
-    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+    <div style={{display:"flex",flexDirection:"column",minHeight:"100vh"}}>
       <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center 35%',position:'relative',height:160,flexShrink:0}}>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.82) 100%)'}}/>
         <div style={{position:'relative',zIndex:2,height:'100%',display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'0 16px 14px'}}>
@@ -1272,14 +1272,14 @@ function AdminView({appointments,onAddAppointment}){
           <p style={{margin:0,fontSize:11,color:T.gold,fontWeight:700}}>Admin</p>
         </div>
       </div>
-      <div style={{display:"flex",overflowX:"auto",background:"#1a1a1a",padding:"0 4px"}}>
+      <div style={{display:"flex",flexWrap:"wrap",background:"#1a1a1a",padding:"2px 4px"}}>
         {sections.map(s=>(
-          <button key={s.id} onClick={()=>setSec(s.id)} style={{padding:"12px 14px",border:"none",background:"none",color:sec===s.id?"#B89A5A":"#555",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",borderBottom:`2px solid ${sec===s.id?"#B89A5A":"transparent"}`}}>
+          <button key={s.id} onClick={()=>setSec(s.id)} style={{padding:"10px 12px",border:"none",background:"none",color:sec===s.id?"#B89A5A":"#555",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",borderBottom:`2px solid ${sec===s.id?"#B89A5A":"transparent"}`,flex:"1 0 auto"}}>
             {s.icon} {s.label}
           </button>
         ))}
       </div>
-      <div style={{flex:1,overflowY:"auto",background:"#F8F7F5"}}>
+      <div style={{flex:1,background:T.bg}}>
         {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos}/>}
         {sec==="agenda"&&<AdminAgenda appointments={appointments}/>}
         {sec==="appointments"&&<AdminApts appointments={appointments}/>}
@@ -1666,7 +1666,6 @@ function HamburgerMenu({onClient,onDemo,onBusiness}){
         <div style={{position:'absolute',top:'100%',right:0,background:T.bgCard,border:'1px solid rgba(0,0,0,0.07)',borderRadius:'0 0 0 14px',overflow:'hidden',minWidth:220,boxShadow:T.shadowMd,zIndex:602}}>
           {[
             {label:'Vista Cliente',desc:'App de reservas',icon:'O',action:()=>{onClient();setOpen(false);}},
-            {label:'Ver Demo',desc:'Selector de vista',icon:'*',action:()=>{onDemo();setOpen(false);}},
             {label:'Panel Peluqueria',desc:'Gestion del negocio',icon:'[]',action:()=>{onBusiness();setOpen(false);}},
           ].map((item,i,arr)=>(
             <button key={item.label} onClick={item.action}
