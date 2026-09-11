@@ -1,0 +1,2097 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Victor Monió — App de reservas | Demo Limonada Web</title>
+  <meta name="description" content="Demo comercial: app de reservas para barbería y peluquería. Tu marca, tus clientes, sin comisiones. Limonada Web.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #F8F7F5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    #root { min-height: 100vh; }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+    /* Ocultar scrollbar horizontal en contenedores scroll */
+    .scroll-x { -ms-overflow-style: none; scrollbar-width: none; }
+    .scroll-x::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + ReactDOM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel standalone -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+  <!-- App Victor Monió -->
+  <script type="text/babel">
+// ══ appData ══
+const businessConfig = {
+  id: "victormoniobarber",
+  name: "Victor Monió",
+  tagline: "Barbería",
+  subtitle: "Barbería · Peluquería · Estética",
+  phone: "963 000 000",
+  whatsapp: "34963000000",
+  address: "Calle Colón 14, Valencia",
+  city: "Valencia",
+  rating: 4.9,
+  reviews: 487,
+  primaryColor: "#1a1a1a",
+  accentColor: "#B89A5A",
+  instagram: "@victormoniobarber",
+  schedule: {
+    0: null,
+    1: null,
+    2: { open: "09:00", close: "20:00" },
+    3: { open: "09:00", close: "20:00" },
+    4: { open: "09:00", close: "20:00" },
+    5: { open: "09:00", close: "20:00" },
+    6: { open: "09:00", close: "15:00" },
+  },
+};
+
+// ============================================================
+// PROFESIONALES
+// ============================================================
+const professionals = [
+  {
+    id: "victor",
+    name: "Víctor",
+    role: "Fundador & Master Barber",
+    avatar: "VM",
+    avatarBg: "#2C2C2C",
+    avatarColor: "#B89A5A",
+    rating: 5.0,
+    reviews: 214,
+    specialties: ["Fade clásico", "Afeitado navaja", "Barba diseño", "Corte premium"],
+    bio: "Maestro barbero con más de 10 años de experiencia. Especialista en técnicas clásicas y modernas.",
+    schedule: {
+      2: { open: "09:00", close: "20:00" },
+      3: { open: "09:00", close: "20:00" },
+      4: { open: "09:00", close: "20:00" },
+      5: { open: "09:00", close: "20:00" },
+      6: { open: "09:00", close: "15:00" },
+    },
+    serviceIds: ["corte-hombre","corte-clasico","corte-degradado","skin-fade","corte-peinado","barba-arreglo","barba-perfilado","afeitado","corte-barba","corte-barba-premium","corte-barba-afeitado","corte-nino","lavado-corte"],
+  },
+  {
+    id: "miguel",
+    name: "Miguel",
+    role: "Senior Barber",
+    avatar: "MI",
+    avatarBg: "#2C2C2C",
+    avatarColor: "#B89A5A",
+    rating: 4.9,
+    reviews: 156,
+    specialties: ["Skin fade", "Degradado", "Barba perfilada", "Corte moderno"],
+    bio: "Especialista en fades y degradados modernos. Referente en cortes de tendencia.",
+    schedule: {
+      2: [{ open: "09:00", close: "14:00" }, { open: "16:00", close: "20:00" }],
+      3: [{ open: "09:00", close: "14:00" }, { open: "16:00", close: "20:00" }],
+      4: [{ open: "09:00", close: "14:00" }, { open: "16:00", close: "20:00" }],
+      5: [{ open: "09:00", close: "14:00" }, { open: "16:00", close: "20:00" }],
+      6: { open: "09:00", close: "15:00" },
+    },
+    serviceIds: ["corte-hombre","corte-clasico","corte-degradado","skin-fade","corte-peinado","barba-arreglo","barba-perfilado","corte-barba","corte-barba-premium","corte-nino","lavado-corte"],
+  },
+  {
+    id: "alex",
+    name: "Álex",
+    role: "Barber & Estilista",
+    avatar: "AL",
+    avatarBg: "#2C2C2C",
+    avatarColor: "#B89A5A",
+    rating: 4.8,
+    reviews: 89,
+    specialties: ["Corte hombre", "Fade", "Color hombre", "Tratamientos"],
+    bio: "Barbero y estilista especializado en colorimetría masculina y tendencias urbanas.",
+    schedule: {
+      2: { open: "09:00", close: "20:00" },
+      3: { open: "09:00", close: "20:00" },
+      5: { open: "09:00", close: "20:00" },
+      6: { open: "09:00", close: "15:00" },
+    },
+    serviceIds: ["corte-hombre","corte-clasico","corte-degradado","skin-fade","corte-peinado","barba-arreglo","barba-perfilado","corte-barba","tinte-hombre","mechas-hombre","aclaracion","corte-nino","lavado-corte"],
+  },
+  {
+    id: "sara",
+    name: "Sara",
+    role: "Estilista & Colorista",
+    avatar: "SA",
+    avatarBg: "#2C2C2C",
+    avatarColor: "#B89A5A",
+    rating: 4.9,
+    reviews: 103,
+    specialties: ["Corte mujer", "Balayage", "Color", "Keratina"],
+    bio: "Colorista especializada en técnicas de aclarado y tratamientos capilares para todos los tipos de cabello.",
+    schedule: {
+      2: { open: "09:00", close: "20:00" },
+      3: { open: "09:00", close: "20:00" },
+      4: { open: "09:00", close: "20:00" },
+      5: { open: "09:00", close: "20:00" },
+      6: { open: "09:00", close: "15:00" },
+    },
+    serviceIds: ["corte-mujer","corte-lavado","corte-lavado-peinado","lavado-peinado","peinado","recogido","tinte-raiz","tinte-completo","mechas-balayage","mechas","babylights","decoloracion","matizacion","baño-color","keratina","hidratacion"],
+  },
+  {
+    id: "lucia",
+    name: "Lucía",
+    role: "Esteticista",
+    avatar: "LU",
+    avatarBg: "#2C2C2C",
+    avatarColor: "#B89A5A",
+    rating: 4.8,
+    reviews: 72,
+    specialties: ["Cejas", "Pestañas", "Depilación", "Manicura"],
+    bio: "Especialista en tratamientos de belleza, diseño de cejas y extensiones de pestañas.",
+    schedule: {
+      2: { open: "10:00", close: "20:00" },
+      3: { open: "10:00", close: "20:00" },
+      4: { open: "10:00", close: "20:00" },
+      5: { open: "10:00", close: "20:00" },
+      6: { open: "09:00", close: "15:00" },
+    },
+    serviceIds: ["cejas-diseño","cejas-depilacion","cejas-hilo","cejas-tinte","cejas-laminado","pestañas-lifting","pestañas-tinte","pestañas-extensiones","depi-labio","depi-menton","depi-cara","depi-axilas","depi-brazos","depi-medias","depi-completas","depi-ingles","manicura","manicura-semi","pedicura","uñas-gel"],
+  },
+];
+
+// ============================================================
+// CATEGORÍAS Y SERVICIOS
+// ============================================================
+const categories = [
+  { id: "barberia", name: "Barbería", icon: "🪒" },
+  { id: "hombre", name: "Peluquería Hombre", icon: "✂" },
+  { id: "mujer", name: "Peluquería Mujer", icon: "✂" },
+  { id: "color", name: "Color", icon: "🎨" },
+  { id: "cejas", name: "Cejas", icon: "✦" },
+  { id: "pestañas", name: "Pestañas", icon: "✦" },
+  { id: "depilacion", name: "Depilación", icon: "✦" },
+  { id: "uñas", name: "Uñas", icon: "✦" },
+  { id: "niños", name: "Niños", icon: "✂" },
+  { id: "combos", name: "Packs", icon: "⭐" },
+];
+
+const services = [
+  // BARBERÍA
+  { id: "barba-arreglo", cat: "barberia", name: "Arreglo de barba", duration: 20, price: 14, desc: "Perfilado, recorte y definición completa de barba.", extras: [] },
+  { id: "barba-perfilado", cat: "barberia", name: "Perfilado de barba", duration: 15, price: 9, desc: "Solo perfilado exterior con navaja.", extras: [] },
+  { id: "afeitado", cat: "barberia", name: "Afeitado tradicional", duration: 35, price: 22, desc: "Afeitado a navaja con toalla caliente y aceite de pre-afeitado.", extras: [] },
+  { id: "corte-barba", cat: "barberia", name: "Corte + barba", duration: 45, price: 27, desc: "El pack más solicitado. Corte personalizado más arreglo completo de barba.", extras: ["e-lavado"] },
+  { id: "corte-barba-premium", cat: "barberia", name: "Corte + barba premium", duration: 60, price: 38, desc: "Corte, arreglo de barba y afeitado a navaja con tratamiento hidratante.", extras: [] },
+  { id: "corte-barba-afeitado", cat: "barberia", name: "La experiencia completa", duration: 75, price: 48, desc: "Corte + barba + afeitado tradicional + mascarilla facial. El servicio estrella.", extras: [] },
+  // HOMBRE
+  { id: "corte-hombre", cat: "hombre", name: "Corte hombre", duration: 30, price: 17, desc: "Corte personalizado a tijera o máquina.", extras: ["e-lavado"] },
+  { id: "corte-clasico", cat: "hombre", name: "Corte clásico", duration: 35, price: 20, desc: "Corte tradicional a tijera con acabado impecable.", extras: ["e-lavado"] },
+  { id: "corte-degradado", cat: "hombre", name: "Corte degradado", duration: 35, price: 20, desc: "Fade moderno a máquina y tijera.", extras: ["e-lavado"] },
+  { id: "skin-fade", cat: "hombre", name: "Skin fade", duration: 40, price: 24, desc: "Degradado al cero. Acabado de precisión.", extras: ["e-lavado"] },
+  { id: "corte-peinado", cat: "hombre", name: "Corte + peinado", duration: 40, price: 22, desc: "Con peinado y producto incluido.", extras: [] },
+  { id: "lavado-corte", cat: "hombre", name: "Lavado + corte", duration: 45, price: 24, desc: "Lavado con productos premium más corte.", extras: [] },
+  { id: "tinte-hombre", cat: "hombre", name: "Tinte hombre", duration: 50, price: 28, desc: "Cobertura de canas o cambio de tono.", extras: [] },
+  { id: "mechas-hombre", cat: "hombre", name: "Mechas hombre", duration: 60, price: 38, desc: "Mechas naturales o contraste.", extras: [] },
+  { id: "aclaracion", cat: "hombre", name: "Aclaración hombre", duration: 45, price: 32, desc: "Aclarado selectivo o global.", extras: [] },
+  // MUJER
+  { id: "corte-mujer", cat: "mujer", name: "Corte mujer", duration: 45, price: 30, desc: "Corte personalizado con diagnóstico capilar.", extras: ["e-lavado","e-mascarilla","e-peinado"] },
+  { id: "corte-lavado", cat: "mujer", name: "Corte + lavado", duration: 60, price: 38, desc: "Corte con lavado y acondicionador.", extras: ["e-mascarilla","e-peinado"] },
+  { id: "corte-lavado-peinado", cat: "mujer", name: "Corte + lavado + peinado", duration: 75, price: 48, desc: "Servicio completo. El más solicitado.", extras: ["e-mascarilla"] },
+  { id: "lavado-peinado", cat: "mujer", name: "Lavado + peinado", duration: 45, price: 28, desc: "Lavado y peinado a tu gusto.", extras: ["e-mascarilla"] },
+  { id: "peinado", cat: "mujer", name: "Peinado", duration: 30, price: 22, desc: "Peinado sin lavado.", extras: [] },
+  { id: "recogido", cat: "mujer", name: "Recogido", duration: 50, price: 38, desc: "Recogido para cualquier ocasión.", extras: [] },
+  { id: "keratina", cat: "mujer", name: "Keratina", duration: 120, price: 95, priceFrom: true, desc: "Alisado con keratina. Precio según largo.", extras: [] },
+  { id: "hidratacion", cat: "mujer", name: "Hidratación profunda", duration: 30, price: 22, desc: "Tratamiento hidratante intensivo.", extras: [] },
+  // COLOR
+  { id: "tinte-raiz", cat: "color", name: "Tinte raíz", duration: 60, price: 38, desc: "Aplicación en raíz.", extras: ["e-mascarilla"] },
+  { id: "tinte-completo", cat: "color", name: "Tinte completo", duration: 75, price: 55, priceFrom: true, desc: "Precio según largo.", extras: ["e-mascarilla"] },
+  { id: "baño-color", cat: "color", name: "Baño de color", duration: 45, price: 32, desc: "Potencia y unifica el color.", extras: [] },
+  { id: "mechas", cat: "color", name: "Mechas", duration: 90, price: 65, priceFrom: true, desc: "Mechas clásicas. Precio según largo.", extras: ["e-mascarilla"] },
+  { id: "mechas-balayage", cat: "color", name: "Balayage", duration: 120, price: 90, priceFrom: true, desc: "La técnica más natural y luminosa.", extras: ["e-mascarilla"] },
+  { id: "babylights", cat: "color", name: "Babylights", duration: 150, price: 100, priceFrom: true, desc: "Mechas muy finas para resultado ultraluminoso.", extras: ["e-mascarilla"] },
+  { id: "decoloracion", cat: "color", name: "Decoloración", duration: 90, price: 60, priceFrom: true, desc: "Proceso de aclarado.", extras: ["e-mascarilla"] },
+  { id: "matizacion", cat: "color", name: "Matización", duration: 30, price: 28, desc: "Neutraliza tonos no deseados.", extras: [] },
+  // CEJAS
+  { id: "cejas-diseño", cat: "cejas", name: "Diseño de cejas", duration: 20, price: 16, desc: "Diseño personalizado.", extras: [] },
+  { id: "cejas-depilacion", cat: "cejas", name: "Depilación cejas", duration: 15, price: 9, desc: "Depilación con cera.", extras: [] },
+  { id: "cejas-hilo", cat: "cejas", name: "Hilo", duration: 20, price: 11, desc: "Técnica tradicional con hilo.", extras: [] },
+  { id: "cejas-tinte", cat: "cejas", name: "Tinte de cejas", duration: 20, price: 13, desc: "Color duradero.", extras: [] },
+  { id: "cejas-laminado", cat: "cejas", name: "Laminado de cejas", duration: 45, price: 38, desc: "Efecto peinado de larga duración.", extras: [] },
+  // PESTAÑAS
+  { id: "pestañas-lifting", cat: "pestañas", name: "Lifting de pestañas", duration: 60, price: 48, desc: "Rizador semipermanente 6–8 semanas.", extras: ["e-tinte-pestañas"] },
+  { id: "pestañas-tinte", cat: "pestañas", name: "Tinte de pestañas", duration: 20, price: 16, desc: "Color intenso y duradero.", extras: [] },
+  { id: "pestañas-extensiones", cat: "pestañas", name: "Extensiones", duration: 90, price: 68, desc: "Extensiones pelo a pelo.", extras: [] },
+  // DEPILACIÓN
+  { id: "depi-labio", cat: "depilacion", name: "Labio superior", duration: 10, price: 7, desc: "Cera o hilo.", extras: [] },
+  { id: "depi-menton", cat: "depilacion", name: "Mentón", duration: 10, price: 7, desc: "Cera o hilo.", extras: [] },
+  { id: "depi-cara", cat: "depilacion", name: "Cara completa", duration: 30, price: 20, desc: "Depilación facial completa.", extras: [] },
+  { id: "depi-axilas", cat: "depilacion", name: "Axilas", duration: 15, price: 11, desc: "Cera.", extras: [] },
+  { id: "depi-brazos", cat: "depilacion", name: "Brazos", duration: 20, price: 16, desc: "Brazos completos.", extras: [] },
+  { id: "depi-medias", cat: "depilacion", name: "Medias piernas", duration: 20, price: 16, desc: "Hasta la rodilla.", extras: [] },
+  { id: "depi-completas", cat: "depilacion", name: "Piernas completas", duration: 35, price: 28, desc: "Piernas completas.", extras: [] },
+  { id: "depi-ingles", cat: "depilacion", name: "Ingles", duration: 20, price: 16, desc: "Ingles completas.", extras: [] },
+  // UÑAS
+  { id: "manicura", cat: "uñas", name: "Manicura", duration: 30, price: 20, desc: "Manicura básica.", extras: [] },
+  { id: "manicura-semi", cat: "uñas", name: "Manicura semipermanente", duration: 45, price: 30, desc: "Con esmalte semipermanente.", extras: [] },
+  { id: "pedicura", cat: "uñas", name: "Pedicura", duration: 45, price: 28, desc: "Pedicura completa.", extras: [] },
+  { id: "uñas-gel", cat: "uñas", name: "Uñas gel", duration: 75, price: 48, priceFrom: true, desc: "Construcción o reconstrucción.", extras: [] },
+  // NIÑOS
+  { id: "corte-nino", cat: "niños", name: "Corte niño/a", duration: 20, price: 11, desc: "Hasta 12 años.", extras: [] },
+  // COMBOS
+  { id: "pack-exp-completa", cat: "combos", name: "La experiencia completa", duration: 75, price: 48, desc: "Corte + barba + afeitado + mascarilla facial.", extras: [] },
+  { id: "pack-corte-barba", cat: "combos", name: "Pack Corte + Barba", duration: 45, price: 27, desc: "El pack más popular. Ahorra 4€.", extras: [] },
+  { id: "pack-corte-tinte", cat: "combos", name: "Pack Corte + Tinte", duration: 90, price: 60, desc: "Ahorra 5€.", extras: ["e-mascarilla"] },
+  { id: "pack-cejas-labio", cat: "combos", name: "Pack Cejas + Labio", duration: 25, price: 13, desc: "Ahorra 3€.", extras: [] },
+  { id: "pack-lifting-cejas", cat: "combos", name: "Lifting + Cejas", duration: 75, price: 58, desc: "El dúo perfecto. Ahorra 6€.", extras: [] },
+];
+
+const extrasData = {
+  "e-lavado": { name: "Lavado premium", price: 5, duration: 10 },
+  "e-mascarilla": { name: "Mascarilla hidratante", price: 8, duration: 10 },
+  "e-peinado": { name: "Peinado", price: 10, duration: 15 },
+  "e-tinte-pestañas": { name: "Tinte de pestañas", price: 13, duration: 15 },
+};
+
+// ============================================================
+// SEED CITAS
+// ============================================================
+const today = new Date();
+const todayStr = today.toISOString().split("T")[0];
+const tomorrowStr = new Date(today.getTime() + 86400000).toISOString().split("T")[0];
+const yesterday = new Date(today.getTime() - 86400000).toISOString().split("T")[0];
+
+const initialAppointments = [
+  { id: "apt001", date: todayStr, time: "09:15", professionalId: "victor", serviceId: "corte-barba-premium", clientName: "Andrés M.", clientPhone: "666111001", status: "confirmed", duration: 60, price: 38 },
+  { id: "apt002", date: todayStr, time: "10:00", professionalId: "miguel", serviceId: "skin-fade", clientName: "Javier P.", clientPhone: "666111002", status: "confirmed", duration: 40, price: 24 },
+  { id: "apt003", date: todayStr, time: "10:30", professionalId: "victor", serviceId: "corte-barba-afeitado", clientName: "Ricardo L.", clientPhone: "666111003", status: "confirmed", duration: 75, price: 48 },
+  { id: "apt004", date: todayStr, time: "11:00", professionalId: "sara", serviceId: "mechas-balayage", clientName: "Carmen R.", clientPhone: "666111004", status: "confirmed", duration: 120, price: 90 },
+  { id: "apt005", date: todayStr, time: "11:30", professionalId: "miguel", serviceId: "corte-barba", clientName: "Marcos S.", clientPhone: "666111005", status: "confirmed", duration: 45, price: 27 },
+  { id: "apt006", date: todayStr, time: "12:00", professionalId: "lucia", serviceId: "cejas-laminado", clientName: "Isabel F.", clientPhone: "666111006", status: "confirmed", duration: 45, price: 38 },
+  { id: "apt007", date: todayStr, time: "12:30", professionalId: "alex", serviceId: "corte-degradado", clientName: "Diego V.", clientPhone: "666111007", status: "confirmed", duration: 35, price: 20 },
+  { id: "apt008", date: todayStr, time: "16:00", professionalId: "victor", serviceId: "afeitado", clientName: "Manuel T.", clientPhone: "666111008", status: "confirmed", duration: 35, price: 22 },
+  { id: "apt009", date: todayStr, time: "16:30", professionalId: "miguel", serviceId: "skin-fade", clientName: "Pablo G.", clientPhone: "666111009", status: "confirmed", duration: 40, price: 24 },
+  { id: "apt010", date: todayStr, time: "17:00", professionalId: "sara", serviceId: "tinte-completo", clientName: "Elena C.", clientPhone: "666111010", status: "confirmed", duration: 75, price: 55 },
+  { id: "apt011", date: todayStr, time: "18:00", professionalId: "lucia", serviceId: "pestañas-lifting", clientName: "Natalia B.", clientPhone: "666111011", status: "confirmed", duration: 60, price: 48 },
+  { id: "apt012", date: tomorrowStr, time: "09:00", professionalId: "victor", serviceId: "corte-barba-premium", clientName: "Sergio O.", clientPhone: "666111012", status: "confirmed", duration: 60, price: 38 },
+  { id: "apt013", date: tomorrowStr, time: "10:00", professionalId: "miguel", serviceId: "corte-barba", clientName: "Tomás A.", clientPhone: "666111013", status: "confirmed", duration: 45, price: 27 },
+  { id: "apt014", date: tomorrowStr, time: "10:30", professionalId: "sara", serviceId: "corte-lavado-peinado", clientName: "Lucía M.", clientPhone: "666111014", status: "confirmed", duration: 75, price: 48 },
+  { id: "apt015", date: yesterday, time: "10:00", professionalId: "victor", serviceId: "corte-barba-afeitado", clientName: "Héctor R.", clientPhone: "666111015", status: "completed", duration: 75, price: 48 },
+  { id: "apt016", date: yesterday, time: "11:30", professionalId: "miguel", serviceId: "skin-fade", clientName: "Bruno N.", clientPhone: "666111016", status: "completed", duration: 40, price: 24 },
+  { id: "apt017", date: yesterday, time: "12:00", professionalId: "sara", serviceId: "mechas", clientName: "Marta Q.", clientPhone: "666111017", status: "completed", duration: 90, price: 65 },
+];
+
+// REVIEWS
+const reviews = [
+  { id: 1, name: "Andrés M.", rating: 5, text: "Víctor es un artista. El mejor afeitado a navaja que me han dado en mi vida. El local tiene un ambiente increíble, muy cuidado.", service: "La experiencia completa", professional: "Víctor", date: "Hace 2 días" },
+  { id: 2, name: "Javier P.", rating: 5, text: "Miguel clava el skin fade. Llevo 2 años viniendo y siempre perfecto. Nunca me ha fallado.", service: "Skin fade", professional: "Miguel", date: "Hace 4 días" },
+  { id: 3, name: "Carmen R.", rating: 5, text: "Sara es una maga del color. Pedí un balayage y el resultado superó mis expectativas. Natural, luminoso y muy bien ejecutado.", service: "Balayage", professional: "Sara", date: "Hace 1 semana" },
+  { id: 4, name: "Isabel F.", rating: 5, text: "El laminado de cejas de Lucía duró casi dos meses. Perfectas desde el primer día. Muy profesional y detallista.", service: "Laminado de cejas", professional: "Lucía", date: "Hace 1 semana" },
+  { id: 5, name: "Marcos S.", rating: 5, text: "Gran local, gran ambiente y profesionales de primera. El pack corte + barba por 27€ es imbatible en calidad-precio.", service: "Corte + Barba", professional: "Miguel", date: "Hace 2 semanas" },
+  { id: 6, name: "Diego V.", rating: 5, text: "Álex me hizo el degradado más limpio que he tenido. Muy buen profesional y excelente trato. Sin duda repetiré.", service: "Corte degradado", professional: "Álex", date: "Hace 3 semanas" },
+];
+
+// ============================================================
+// UTILS
+
+
+// ══ booking ══
+
+function timeToMinutes(t) { const [h,m] = t.split(":").map(Number); return h*60+m; }
+function minutesToTime(m) { return `${Math.floor(m/60).toString().padStart(2,"0")}:${(m%60).toString().padStart(2,"0")}`; }
+function getDayOfWeek(dateStr) { return new Date(dateStr+"T12:00:00").getDay(); }
+const todayNow = new Date();
+function isToday(d) { return d===todayStr; }
+function isTomorrow(d) { return d===tomorrowStr; }
+function formatDateLabel(d) {
+  if(isToday(d)) return "Hoy";
+  if(isTomorrow(d)) return "Mañana";
+  return new Date(d+"T12:00:00").toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+}
+function formatDateShort(d) { return new Date(d+"T12:00:00").toLocaleDateString("es-ES",{day:"numeric",month:"long"}); }
+function generateBookingCode() { return "VM-"+Math.random().toString(36).substring(2,7).toUpperCase(); }
+
+function getAvailableSlots(date, professionalId, serviceDuration, appointments) {
+  const dow = getDayOfWeek(date);
+  const prof = professionals.find(p=>p.id===professionalId);
+  if(!prof) return [];
+  const sched = prof.schedule[dow];
+  if(!sched) return [];
+  const ranges = Array.isArray(sched)?sched:[sched];
+  const busy = appointments
+    .filter(a=>a.date===date&&a.professionalId===professionalId&&a.status!=="cancelled")
+    .map(a=>({start:timeToMinutes(a.time),end:timeToMinutes(a.time)+a.duration}));
+  const slots=[];
+  for(const r of ranges){
+    let cur=timeToMinutes(r.open);
+    const end=timeToMinutes(r.close);
+    while(cur+serviceDuration<=end){
+      const se=cur+serviceDuration;
+      if(!busy.some(b=>cur<b.end&&se>b.start)) slots.push(minutesToTime(cur));
+      cur+=15;
+    }
+  }
+  return slots;
+}
+
+// ============================================================
+// COMPONENTES BASE
+
+
+// ══ useSwipe ══
+function useSwipe(onSwipeLeft, onSwipeRight, threshold = 50) {
+  const touchStart = { x: 0, y: 0 };
+  function onTouchStart(e) {
+    touchStart.x = e.touches[0].clientX;
+    touchStart.y = e.touches[0].clientY;
+  }
+  function onTouchEnd(e) {
+    const dx = e.changedTouches[0].clientX - touchStart.x;
+    const dy = e.changedTouches[0].clientY - touchStart.y;
+    if (Math.abs(dx) < threshold || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0) onSwipeLeft(); else onSwipeRight();
+  }
+  return { onTouchStart, onTouchEnd };
+}
+
+// ============================================================
+// CLIENTE APP — wrapper reutilizable (demo + producción)
+// ============================================================
+
+
+// ══ UI ══
+
+function Avatar({initials,bg="#2C2C2C",color="#B89A5A",size=40}){
+  return <div style={{width:size,height:size,borderRadius:"50%",background:bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.32,fontWeight:700,color,flexShrink:0}}>{initials}</div>;
+}
+function Stars({rating,size=14}){
+  return <span style={{color:"#B89A5A",fontSize:size}}>{"★".repeat(Math.floor(rating))}{"☆".repeat(5-Math.floor(rating))}</span>;
+}
+function Badge({children,color="#2D2D2D",bg="#F0EDE8"}){
+  return <span style={{display:"inline-block",padding:"2px 10px",borderRadius:20,fontSize:11,fontWeight:600,background:bg,color,letterSpacing:0.3}}>{children}</span>;
+}
+function Btn({children,onClick,variant="primary",style={},disabled=false}){
+  const v={
+    primary:{background:"#1a1a1a",color:"#fff",padding:"14px 24px"},
+    accent:{background:"#B89A5A",color:"#fff",padding:"14px 24px"},
+    outline:{background:"transparent",color:"#1a1a1a",padding:"12px 22px",border:"1.5px solid #1a1a1a"},
+    ghost:{background:"transparent",color:"#666",padding:"10px 16px",border:"1.5px solid #E0E0E0"},
+  };
+  return <button onClick={onClick} disabled={disabled} style={{border:"none",cursor:disabled?"not-allowed":"pointer",borderRadius:12,fontWeight:600,fontSize:15,transition:"all 0.15s",fontFamily:"inherit",...v[variant],opacity:disabled?0.5:1,...style}}>{children}</button>;
+}
+function Card({children,style={}}){
+  return <div style={{background:"#fff",borderRadius:16,padding:20,boxShadow:"0 2px 12px rgba(0,0,0,0.06)",...style}}>{children}</div>;
+}
+function Divider(){ return <div style={{height:1,background:"#F0EDE8",margin:"16px 0"}}/>; }
+
+// ============================================================
+// CABECERA CON LOGO
+// ============================================================
+function BusinessHeader({isOpen,schedule}){
+  return (
+    <div style={{background:"#0e0e0e",paddingBottom:24,position:"relative"}}>
+      {/* Logo centrado sobre fondo negro */}
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:"28px 40px 20px",background:"#0e0e0e"}}>
+        <img
+          src="/images/victor-monio-logo.jpg"
+          alt="Victor Monió Barbería"
+          style={{width:"100%",maxWidth:320,height:"auto",display:"block",objectFit:"contain"}}
+        />
+      </div>
+
+      {/* Línea separadora dorada */}
+      <div style={{height:1,background:"linear-gradient(to right, transparent, #B89A5A, transparent)",margin:"0 24px 20px"}}/>
+
+      {/* Info del negocio */}
+      <div style={{padding:"0 20px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{width:7,height:7,borderRadius:"50%",background:isOpen?"#4CAF50":"#e74c3c",display:"inline-block",flexShrink:0}}/>
+            <span style={{fontSize:12,color:isOpen?"#81C784":"#EF9A9A",fontWeight:600}}>{isOpen?"Abierto ahora":"Cerrado"}</span>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:4}}>
+            <Stars rating={businessConfig.rating} size={13}/>
+            <span style={{fontSize:13,fontWeight:800,color:"#B89A5A"}}>{businessConfig.rating}</span>
+            <span style={{fontSize:11,color:"#555",marginLeft:2}}>{businessConfig.reviews} reseñas</span>
+          </div>
+        </div>
+
+        <div style={{display:"flex",alignItems:"center",gap:5,marginTop:8,marginBottom:16}}>
+          <span style={{fontSize:12,color:"#666"}}>📍</span>
+          <span style={{fontSize:12,color:"#666"}}>{businessConfig.address}</span>
+        </div>
+
+        <div style={{display:"flex",gap:8}}>
+          {[["📞","Llamar"],["💬","WhatsApp"],["📍","Cómo llegar"]].map(([ic,lb])=>(
+            <button key={lb} style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(184,154,90,0.25)",borderRadius:10,padding:"9px 0",color:"#ccc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>
+              {ic} {lb}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// HOME
+
+
+// ══ DemoViews ══
+
+function LandingPage({onDemo,onClient,onBusiness}){
+  const benefits=["Tu marca","Reservas ilimitadas","Agenda inteligente","QR y NFC","Recordatorios","Tus clientes","Sin comisión por reserva"];
+  const areas=[
+    {
+      id:"client", icon:"◎", label:"Cliente",
+      desc:"Reserva en pocos segundos desde cualquier canal.",
+      btn:"ENTRAR COMO CLIENTE", action: onClient,
+      light:true,
+    },
+    {
+      id:"business", icon:"◫", label:"Peluquería",
+      desc:"Gestiona tu agenda, clientes, equipo y servicios.",
+      btn:"ACCESO PELUQUERÍA", action: onBusiness,
+      light:false,
+    },
+    {
+      id:"demo", icon:"✦", label:"Demo",
+      desc:"Prueba todas las funciones antes de contratar.",
+      btn:"VER DEMO", action: onDemo,
+      accent:true,
+    },
+  ];
+  return(
+    <div style={{background:"#F8F7F5",minHeight:"100vh",fontFamily:"inherit"}}>
+
+      {/* ── NAV ── */}
+      <nav style={{background:"#0e0e0e",padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"center",height:52,position:"sticky",top:0,zIndex:50}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <img src="/images/victor-monio-logo.jpg" alt="Victor Monió" style={{height:32,width:"auto",objectFit:"contain"}}/>
+        </div>
+        <div style={{display:"flex",gap:16,alignItems:"center"}}>
+          <button onClick={onDemo} style={{background:"none",border:"none",color:"#888",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Demo</button>
+          <button onClick={onBusiness} style={{background:"#B89A5A",border:"none",borderRadius:8,padding:"6px 14px",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Peluquería</button>
+        </div>
+      </nav>
+
+      {/* ── HERO ── */}
+      <div style={{background:"#0e0e0e",padding:"48px 24px 40px",textAlign:"center"}}>
+        <p style={{margin:"0 0 12px",fontSize:10,letterSpacing:3,color:"#B89A5A",fontWeight:700,textTransform:"uppercase"}}>Para peluquerías y centros de belleza</p>
+        <h1 style={{margin:"0 0 14px",fontSize:32,fontWeight:800,color:"#fff",lineHeight:1.2,maxWidth:320,marginLeft:"auto",marginRight:"auto"}}>
+          Tu peluquería<br/>en el móvil<br/>de tus clientes
+        </h1>
+        <p style={{margin:"0 0 10px",fontSize:13,color:"#666",lineHeight:1.6}}>
+          Reservas 24/7 · Tu marca · Tus clientes<br/>Cuota fija · Sin comisión por reserva
+        </p>
+        <div style={{height:1,background:"linear-gradient(to right,transparent,#B89A5A,transparent)",margin:"20px auto",maxWidth:160}}/>
+        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:280,margin:"0 auto"}}>
+          <button onClick={onDemo} style={{background:"#B89A5A",border:"none",borderRadius:12,padding:"14px",color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",letterSpacing:0.3}}>VER DEMO</button>
+          <button onClick={onBusiness} style={{background:"rgba(255,255,255,0.07)",border:"1.5px solid rgba(184,154,90,0.3)",borderRadius:12,padding:"12px",color:"#ccc",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>SOY PELUQUERÍA</button>
+        </div>
+      </div>
+
+      {/* ── TRES ACCESOS ── */}
+      <div style={{padding:"32px 20px",display:"flex",flexDirection:"column",gap:12}}>
+        <p style={{margin:"0 0 4px",textAlign:"center",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:2}}>¿Qué quieres hacer?</p>
+        {areas.map(a=>(
+          <div key={a.id} style={{background: a.accent?"#B89A5A": a.light?"#fff":"#0e0e0e", borderRadius:16, padding:"22px 20px", border: a.light?"1.5px solid #F0EDE8":"none", cursor:"pointer"}} onClick={a.action}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+              <div>
+                <span style={{fontSize:10,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color: a.accent?"rgba(255,255,255,0.7)": a.light?"#B89A5A":"#B89A5A"}}>{a.label}</span>
+                <p style={{margin:"4px 0 6px",fontSize:18,fontWeight:800,color: a.light&&!a.accent?"#1a1a1a":"#fff"}}>{a.btn.split(" ").slice(-2).join(" ")}</p>
+                <p style={{margin:0,fontSize:13,color: a.light&&!a.accent?"#888":"rgba(255,255,255,0.7)",lineHeight:1.5}}>{a.desc}</p>
+              </div>
+              <span style={{fontSize:28,color: a.light&&!a.accent?"#B89A5A":"rgba(255,255,255,0.4)",marginLeft:12,flexShrink:0}}>{a.icon}</span>
+            </div>
+            <div style={{marginTop:14,background: a.accent?"rgba(255,255,255,0.15)": a.light?"#F8F7F5":"rgba(255,255,255,0.07)",borderRadius:10,padding:"10px 14px",display:"inline-block",width:"100%",boxSizing:"border-box"}}>
+              <span style={{fontSize:13,fontWeight:800,color: a.light&&!a.accent?"#1a1a1a":"#fff"}}>{a.btn} →</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── BENEFICIOS ── */}
+      <div style={{padding:"8px 20px 32px",background:"#fff"}}>
+        <p style={{margin:"0 0 14px",textAlign:"center",fontSize:11,color:"#aaa",fontWeight:600,textTransform:"uppercase",letterSpacing:1.5}}>Incluido en tu cuota</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center"}}>
+          {benefits.map(b=>(
+            <span key={b} style={{background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:20,padding:"6px 14px",fontSize:12,fontWeight:700,color:"#444"}}>✦ {b}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── RECORDATORIOS (condensado) ── */}
+      <div style={{padding:"8px 20px 32px"}}>
+        <p style={{margin:"0 0 4px",textAlign:"center",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:2}}>Reduce las ausencias</p>
+        <h2 style={{margin:"0 0 16px",textAlign:"center",fontSize:20,fontWeight:800}}>Recordatorios automáticos</h2>
+        {[
+          {icon:"✉️",title:"Email",desc:"Confirmación + recordatorio 24h y 2h antes. Enlace para cancelar.",badge:"INCLUIDO"},
+          {icon:"🔔",title:"Notificaciones push",desc:"Directo a la pantalla del móvil. Huecos de última hora y lista de espera.",badge:"INCLUIDO"},
+        ].map(r=>(
+          <div key={r.title} style={{background:"#0e0e0e",borderRadius:14,padding:"16px 18px",marginBottom:10}}>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:22}}>{r.icon}</span>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                  <p style={{margin:0,fontSize:14,fontWeight:800,color:"#fff"}}>{r.title}</p>
+                  <span style={{background:"#B89A5A",color:"#fff",fontSize:9,fontWeight:800,padding:"2px 8px",borderRadius:20,whiteSpace:"nowrap"}}>{r.badge}</span>
+                </div>
+                <p style={{margin:0,fontSize:12,color:"#777",lineHeight:1.5}}>{r.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── HUECOS / ESPERA (condensado) ── */}
+      <div style={{padding:"8px 20px 32px",background:"#fff"}}>
+        <h2 style={{margin:"0 0 16px",textAlign:"center",fontSize:20,fontWeight:800}}>Cero horas muertas</h2>
+        {[
+          {icon:"⚡",title:"Huecos de última hora",desc:"Cancelación detectada → push a clientes interesados → hueco lleno automáticamente."},
+          {icon:"📋",title:"Lista de espera",desc:"Sin hueco disponible → el cliente se apunta → push inmediato cuando se libera uno."},
+        ].map(h=>(
+          <div key={h.title} style={{display:"flex",gap:14,padding:"16px 0",borderBottom:"1px solid #F0EDE8",alignItems:"flex-start"}}>
+            <div style={{width:40,height:40,borderRadius:10,background:"#0e0e0e",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{h.icon}</div>
+            <div>
+              <p style={{margin:"0 0 3px",fontSize:14,fontWeight:800}}>{h.title}</p>
+              <p style={{margin:0,fontSize:13,color:"#888",lineHeight:1.5}}>{h.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── CTA FINAL ── */}
+      <div style={{padding:"40px 24px",textAlign:"center",background:"#0e0e0e"}}>
+        <h2 style={{margin:"0 0 8px",fontSize:22,fontWeight:800,color:"#fff"}}>¿Listo para verlo?</h2>
+        <p style={{margin:"0 0 24px",fontSize:13,color:"#555"}}>Prueba la demo completa ahora, sin registro.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:280,margin:"0 auto"}}>
+          <button onClick={()=>{onDemo();}} style={{background:"#B89A5A",border:"none",borderRadius:12,padding:14,color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>Ver demo · Vista cliente</button>
+          <button onClick={onBusiness} style={{background:"rgba(255,255,255,0.07)",border:"1.5px solid rgba(255,255,255,0.12)",borderRadius:12,padding:12,color:"#ccc",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Ver demo · Panel del negocio</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// PORTAL DE DEMO — selección de qué probar
+// ============================================================
+function DemoPortal({onDemoClient,onDemoBusiness,onBack}){
+  return(
+    <div style={{minHeight:"100vh",background:"#F8F7F5",display:"flex",flexDirection:"column"}}>
+      <div style={{background:"#0e0e0e",padding:"20px 20px 28px"}}>
+        <button onClick={onBack} style={{background:"none",border:"none",color:"#B89A5A",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:20,padding:0}}>← Volver</button>
+        <div style={{display:"flex",justifyContent:"center",marginBottom:20}}>
+          <img src="/images/victor-monio-logo.jpg" alt="Victor Monió" style={{height:60,width:"auto",objectFit:"contain"}}/>
+        </div>
+        <h1 style={{margin:"0 0 6px",fontSize:22,fontWeight:800,color:"#fff",textAlign:"center"}}>Prueba la aplicación</h1>
+        <p style={{margin:0,fontSize:13,color:"#666",textAlign:"center",lineHeight:1.6}}>Descubre cómo funcionaría en tu peluquería.</p>
+      </div>
+
+      <div style={{padding:"24px 20px",display:"flex",flexDirection:"column",gap:14,flex:1}}>
+        {/* COMO CLIENTE */}
+        <div style={{background:"#fff",borderRadius:16,overflow:"hidden",border:"1.5px solid #F0EDE8"}}>
+          <div style={{padding:"20px 20px 0"}}>
+            <span style={{fontSize:10,fontWeight:700,letterSpacing:1.5,color:"#B89A5A",textTransform:"uppercase"}}>Vista cliente</span>
+            <p style={{margin:"6px 0 6px",fontSize:18,fontWeight:800,color:"#1a1a1a"}}>Como uno de tus clientes</p>
+            <p style={{margin:"0 0 16px",fontSize:13,color:"#888",lineHeight:1.5}}>Realiza una reserva igual que lo haría cualquier cliente desde el móvil, Instagram o tu web.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+              {["Buscar servicio","Elegir profesional","Ver disponibilidad","Reservar","Gestionar cita"].map(t=>(
+                <span key={t} style={{background:"#F8F7F5",border:"1px solid #F0EDE8",borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:600,color:"#666"}}>{t}</span>
+              ))}
+            </div>
+          </div>
+          <button onClick={onDemoClient} style={{width:"100%",background:"#1a1a1a",border:"none",padding:"14px 20px",color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+            PROBAR APP CLIENTE →
+          </button>
+        </div>
+
+        {/* COMO PELUQUERÍA */}
+        <div style={{background:"#0e0e0e",borderRadius:16,overflow:"hidden"}}>
+          <div style={{padding:"20px 20px 0"}}>
+            <span style={{fontSize:10,fontWeight:700,letterSpacing:1.5,color:"#B89A5A",textTransform:"uppercase"}}>Vista negocio</span>
+            <p style={{margin:"6px 0 6px",fontSize:18,fontWeight:800,color:"#fff"}}>Como dueño del negocio</p>
+            <p style={{margin:"0 0 16px",fontSize:13,color:"#777",lineHeight:1.5}}>Gestiona la agenda, los clientes, el equipo y los servicios. Todo lo que usarías cada día.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+              {["Agenda","Reservas","Clientes","Estadísticas","Configuración"].map(t=>(
+                <span key={t} style={{background:"rgba(184,154,90,0.15)",border:"1px solid rgba(184,154,90,0.3)",borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:600,color:"#B89A5A"}}>{t}</span>
+              ))}
+            </div>
+          </div>
+          <button onClick={onDemoBusiness} style={{width:"100%",background:"#B89A5A",border:"none",padding:"14px 20px",color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+            PROBAR PANEL →
+          </button>
+        </div>
+
+        <p style={{margin:0,textAlign:"center",fontSize:11,color:"#bbb",lineHeight:1.6}}>
+          Las reservas que hagas en la demo cliente<br/>aparecen en tiempo real en el panel del negocio.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// BARRA DE DEMO — superpuesta sobre cliente o panel
+// ============================================================
+function DemoBanner({label,onBack,onReset}){
+  return(
+    <div style={{position:"fixed",top:0,left:0,right:0,zIndex:300,background:"rgba(17,17,17,0.95)",backdropFilter:"blur(8px)",borderBottom:"1px solid rgba(184,154,90,0.3)",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 16px",maxWidth:430,margin:"0 auto"}}>
+      <div style={{display:"flex",alignItems:"center",gap:8}}>
+        <span style={{background:"#B89A5A",color:"#fff",fontSize:9,fontWeight:800,padding:"2px 8px",borderRadius:20,letterSpacing:1,textTransform:"uppercase"}}>DEMO</span>
+        <span style={{fontSize:11,color:"#888"}}>{label}</span>
+      </div>
+      <div style={{display:"flex",gap:8}}>
+        {onReset&&<button onClick={onReset} style={{background:"none",border:"1px solid rgba(184,154,90,0.4)",borderRadius:8,padding:"4px 10px",color:"#B89A5A",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Restablecer</button>}
+        <button onClick={onBack} style={{background:"none",border:"none",color:"#888",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>← Salir</button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// BUSINESS LOGIN
+// ============================================================
+function BusinessLogin({onLogin,onDemoAccess,onBack}){
+  const [email,setEmail]=useState("");
+  const [pass,setPass]=useState("");
+  const [err,setErr]=useState("");
+  function handleLogin(){
+    if(!email.trim()||!pass.trim()){setErr("Completa email y contraseña.");return;}
+    setErr("En producción se validaría con el servidor.");
+  }
+  return(
+    <div style={{minHeight:"100vh",background:"#0e0e0e",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
+      <button onClick={onBack} style={{position:"absolute",top:20,left:20,background:"none",border:"none",color:"#666",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>← Volver</button>
+      <div style={{width:"100%",maxWidth:320}}>
+        <div style={{display:"flex",justifyContent:"center",marginBottom:28}}>
+          <img src="/images/victor-monio-logo.jpg" alt="" style={{height:56,objectFit:"contain"}}/>
+        </div>
+        <h2 style={{margin:"0 0 6px",fontSize:20,fontWeight:800,color:"#fff",textAlign:"center"}}>Acceso peluquería</h2>
+        <p style={{margin:"0 0 24px",fontSize:13,color:"#555",textAlign:"center"}}>Panel de gestión del negocio</p>
+
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+          <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" type="email"
+            style={{padding:"13px 16px",background:"#1a1a1a",border:"1.5px solid #2a2a2a",borderRadius:12,fontSize:14,color:"#fff",fontFamily:"inherit",outline:"none"}}/>
+          <input value={pass} onChange={e=>setPass(e.target.value)} placeholder="Contraseña" type="password"
+            style={{padding:"13px 16px",background:"#1a1a1a",border:"1.5px solid #2a2a2a",borderRadius:12,fontSize:14,color:"#fff",fontFamily:"inherit",outline:"none"}}/>
+        </div>
+        {err&&<p style={{margin:"0 0 12px",fontSize:12,color:"#E74C3C",textAlign:"center"}}>{err}</p>}
+        <button onClick={handleLogin} style={{width:"100%",background:"#B89A5A",border:"none",borderRadius:12,padding:14,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>
+          Entrar
+        </button>
+        <button style={{width:"100%",background:"none",border:"none",color:"#555",fontSize:12,cursor:"pointer",fontFamily:"inherit",marginBottom:24}}>
+          Olvidé mi contraseña
+        </button>
+        <div style={{height:1,background:"#222",marginBottom:20}}/>
+        <button onClick={onDemoAccess} style={{width:"100%",background:"rgba(184,154,90,0.1)",border:"1.5px solid rgba(184,154,90,0.3)",borderRadius:12,padding:12,color:"#B89A5A",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>
+          ✦ Entrar en demo
+        </button>
+        <p style={{margin:"10px 0 0",textAlign:"center",fontSize:11,color:"#444"}}>Sin contraseña — solo para demostración</p>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// BOTTOM NAV
+// ============================================================
+
+
+// ══ CustomerViews ══
+
+function HomeView({onNav,appointments,onReservar}){
+  const dow = todayNow.getDay();
+  const schedule = businessConfig.schedule[dow];
+  const isOpen = schedule ? (()=>{
+    const now = todayNow.getHours()*60+todayNow.getMinutes();
+    return now>=timeToMinutes(schedule.open)&&now<timeToMinutes(schedule.close);
+  })() : false;
+
+  const nextSlots = useMemo(()=>{
+    const slots=[];
+    for(let i=0;i<7&&slots.length<2;i++){
+      const d=new Date(todayNow.getTime()+i*86400000);
+      const dStr=d.toISOString().split("T")[0];
+      for(const p of professionals){
+        const avail=getAvailableSlots(dStr,p.id,30,appointments);
+        if(avail.length>0&&!slots.find(s=>s.date===dStr)){
+          slots.push({date:dStr,time:avail[0],profId:p.id});
+          break;
+        }
+      }
+    }
+    return slots;
+  },[appointments]);
+
+  return (
+    <div style={{paddingBottom:80}}>
+      <BusinessHeader isOpen={isOpen} schedule={schedule}/>
+
+      {/* CTA */}
+      <div style={{padding:"20px 20px 0"}}>
+        <button onClick={()=>onNav("booking")} style={{width:"100%",background:"#B89A5A",border:"none",borderRadius:14,padding:18,color:"#fff",fontSize:17,fontWeight:800,cursor:"pointer",letterSpacing:0.5,fontFamily:"inherit"}}>
+          RESERVAR CITA
+        </button>
+      </div>
+
+      {/* Próximos huecos */}
+      {nextSlots.length>0&&(
+        <div style={{padding:"14px 20px 0"}}>
+          <Card>
+            <p style={{margin:"0 0 10px",fontSize:11,color:"#888",fontWeight:700,textTransform:"uppercase",letterSpacing:1.2}}>Próximos huecos</p>
+            {nextSlots.map((s,i)=>(
+              <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:i<nextSlots.length-1?"1px solid #F5F5F5":"none"}}>
+                <div>
+                  <span style={{fontSize:14,fontWeight:700}}>{formatDateLabel(s.date)}</span>
+                  <span style={{fontSize:14,color:"#B89A5A",marginLeft:8,fontWeight:800}}>{s.time}</span>
+                </div>
+                <button onClick={()=>onReservar(s)} style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                  Reservar
+                </button>
+              </div>
+            ))}
+          </Card>
+        </div>
+      )}
+
+      {/* Categorías */}
+      <div style={{padding:"20px 20px 0"}}>
+        <p style={{margin:"0 0 12px",fontSize:13,fontWeight:700}}>Servicios</p>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          {categories.map(c=>(
+            <button key={c.id} onClick={()=>onNav("services")} style={{background:"#fff",border:"1.5px solid #F0EDE8",borderRadius:12,padding:"13px 16px",textAlign:"left",cursor:"pointer",display:"flex",alignItems:"center",gap:10,fontFamily:"inherit"}}>
+              <span style={{fontSize:17}}>{c.icon}</span>
+              <span style={{fontSize:12,fontWeight:700,color:"#1a1a1a"}}>{c.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Equipo */}
+      <div style={{padding:"24px 20px 0"}}>
+        <p style={{margin:"0 0 12px",fontSize:13,fontWeight:700}}>Nuestro equipo</p>
+        <div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:4}}>
+          {professionals.map(p=>(
+            <div key={p.id} style={{minWidth:100,background:"#111",borderRadius:14,padding:"14px 10px",textAlign:"center",cursor:"pointer",flexShrink:0}} onClick={()=>onNav("booking")}>
+              <Avatar initials={p.avatar} bg="#2C2C2C" color="#B89A5A" size={46}/>
+              <p style={{margin:"8px 0 2px",fontSize:13,fontWeight:700,color:"#fff"}}>{p.name}</p>
+              <p style={{margin:0,fontSize:10,color:"#777",lineHeight:1.3}}>{p.role}</p>
+              <div style={{marginTop:5,display:"flex",justifyContent:"center",alignItems:"center",gap:2}}>
+                <Stars rating={p.rating} size={10}/>
+                <span style={{fontSize:10,color:"#B89A5A",fontWeight:800}}>{p.rating}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Huecos última hora */}
+      <div style={{padding:"20px 20px 0"}}>
+        <Card style={{background:"#111",border:"none"}}>
+          <p style={{margin:"0 0 10px",fontSize:12,fontWeight:700,color:"#B89A5A",textTransform:"uppercase",letterSpacing:1}}>🔥 Última hora — hoy</p>
+          {[
+            {time:"17:45",prof:"Miguel",service:"Corte degradado",discount:"−10%"},
+            {time:"18:30",prof:"Álex",service:"Corte + barba",discount:"−15%"},
+          ].map(h=>(
+            <div key={h.time} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:"1px solid #222"}}>
+              <div>
+                <span style={{fontSize:13,fontWeight:800,color:"#B89A5A"}}>{h.time}</span>
+                <span style={{fontSize:12,color:"#888",marginLeft:8}}>{h.prof} · {h.service}</span>
+              </div>
+              <span style={{background:"rgba(184,154,90,0.15)",color:"#B89A5A",fontSize:11,fontWeight:800,padding:"2px 10px",borderRadius:20,border:"1px solid rgba(184,154,90,0.3)"}}>{h.discount}</span>
+            </div>
+          ))}
+        </Card>
+      </div>
+
+      {/* Reseñas */}
+      <div style={{padding:"24px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+          <p style={{margin:0,fontSize:13,fontWeight:700}}>Opiniones</p>
+          <div style={{display:"flex",alignItems:"center",gap:4}}>
+            <Stars rating={businessConfig.rating} size={13}/>
+            <span style={{fontSize:13,fontWeight:800,color:"#B89A5A"}}>{businessConfig.rating}</span>
+            <span style={{fontSize:12,color:"#aaa"}}>({businessConfig.reviews})</span>
+          </div>
+        </div>
+        {reviews.slice(0,3).map(r=>(
+          <Card key={r.id} style={{marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <div>
+                <p style={{margin:0,fontSize:13,fontWeight:700}}>{r.name}</p>
+                <p style={{margin:"2px 0 0",fontSize:11,color:"#aaa"}}>{r.service} · {r.professional}</p>
+              </div>
+              <span style={{fontSize:11,color:"#bbb"}}>{r.date}</span>
+            </div>
+            <Stars rating={r.rating} size={12}/>
+            <p style={{margin:"6px 0 0",fontSize:13,color:"#444",lineHeight:1.6}}>{r.text}</p>
+          </Card>
+        ))}
+      </div>
+
+      <StyleBot onReservar={()=>onNav("booking")}/>
+    </div>
+  );
+}
+
+// ============================================================
+// STYLE BOT
+// ============================================================
+function StyleBot({onReservar}){
+  const [open,setOpen]=useState(false);
+  const [step,setStep]=useState(0);
+  const [answers,setAnswers]=useState({});
+  const [result,setResult]=useState(null);
+  const questions=[
+    {q:"¿Qué buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestañas"]},
+    {q:"¿Tienes preferencia de barbero?",opts:["Me da igual, el primero libre","Víctor","Miguel","Álex","Sara o Lucía"]},
+    {q:"¿Cuánto tiempo tienes?",opts:["Menos de 30 min","30–45 min","45–60 min","Sin límite"]},
+  ];
+  function handleAnswer(ans){
+    const na={...answers,[step]:ans};
+    setAnswers(na);
+    if(step<questions.length-1){setStep(step+1);}
+    else{
+      let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27 €"};
+      if(na[0]==="Solo barba") rec={service:"Arreglo de barba",professional:"Víctor",duration:"20 min",price:"14 €"};
+      else if(na[0]==="Corte + barba"&&na[2]==="Sin límite") rec={service:"La experiencia completa",professional:"Víctor",duration:"75 min",price:"48 €"};
+      else if(na[0]==="Color o mechas") rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90 €"};
+      else if(na[0]==="Cejas o pestañas") rec={service:"Laminado de cejas",professional:"Lucía",duration:"45 min",price:"38 €"};
+      else if(na[2]==="Menos de 30 min") rec={service:"Corte hombre",professional:"Álex",duration:"30 min",price:"17 €"};
+      setResult(rec);
+    }
+  }
+  function reset(){setStep(0);setAnswers({});setResult(null);}
+  return(
+    <>
+      <button onClick={()=>setOpen(!open)} aria-label="Abrir Style Bot" style={{position:"fixed",bottom:88,right:20,width:68,height:68,borderRadius:"50%",background:"transparent",border:"none",padding:0,cursor:"pointer",boxShadow:"0 6px 24px rgba(0,0,0,0.18)",zIndex:900,display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <img src="/images/style-bot.png" alt="Style Bot" style={{width:"100%",height:"100%",objectFit:"contain",display:"block"}}/>
+      </button>
+      {open&&(
+        <div style={{position:"fixed",bottom:164,right:20,width:280,background:"#fff",borderRadius:18,boxShadow:"0 8px 40px rgba(0,0,0,0.18)",zIndex:901,overflow:"hidden"}}>
+          <div style={{background:"#111",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <img src="/images/style-bot.png" alt="" style={{width:38,height:38,objectFit:"contain"}}/>
+              <div>
+                <p style={{margin:0,fontSize:13,fontWeight:800,color:"#fff"}}>STYLE BOT</p>
+                <p style={{margin:0,fontSize:11,color:"#B89A5A"}}>Te ayudo a elegir</p>
+              </div>
+            </div>
+            <button onClick={()=>{setOpen(false);reset();}} style={{background:"none",border:"none",color:"#555",fontSize:20,cursor:"pointer"}}>×</button>
+          </div>
+          <div style={{padding:16}}>
+            {!result?(
+              <>
+                <div style={{marginBottom:8}}><div style={{height:3,background:"#F0EDE8",borderRadius:2}}><div style={{height:"100%",width:`${((step+1)/questions.length)*100}%`,background:"#B89A5A",borderRadius:2,transition:"width 0.3s"}}/></div></div>
+                <p style={{fontSize:13,fontWeight:700,color:"#1a1a1a",marginBottom:10}}>{questions[step].q}</p>
+                {questions[step].opts.map(o=>(
+                  <button key={o} onClick={()=>handleAnswer(o)} style={{display:"block",width:"100%",background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:"10px 14px",fontSize:13,textAlign:"left",cursor:"pointer",marginBottom:6,fontFamily:"inherit",color:"#1a1a1a"}}>{o}</button>
+                ))}
+              </>
+            ):(
+              <div>
+                <p style={{fontSize:12,color:"#888",margin:"0 0 8px"}}>Mi recomendación:</p>
+                <div style={{background:"#111",borderRadius:12,padding:14,marginBottom:12}}>
+                  <p style={{margin:"0 0 4px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p>
+                  <p style={{margin:"0 0 2px",fontSize:12,color:"#888"}}>con {result.professional}</p>
+                  <p style={{margin:0,fontSize:12,color:"#B89A5A",fontWeight:600}}>{result.duration} · {result.price}</p>
+                </div>
+                <button onClick={()=>{onReservar();setOpen(false);}} style={{width:"100%",background:"#B89A5A",color:"#fff",border:"none",borderRadius:10,padding:"12px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
+                  RESERVAR ESTE SERVICIO
+                </button>
+                <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:"#aaa",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Empezar de nuevo</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ============================================================
+// SERVICIOS
+// ============================================================
+function ServicesView({onBookService}){
+  const [search,setSearch]=useState("");
+  const [activeCat,setActiveCat]=useState("all");
+  const filtered=useMemo(()=>services.filter(s=>{
+    const mc=activeCat==="all"||s.cat===activeCat;
+    const ms=!search||s.name.toLowerCase().includes(search.toLowerCase())||s.desc.toLowerCase().includes(search.toLowerCase());
+    return mc&&ms;
+  }),[search,activeCat]);
+  const grouped=useMemo(()=>{
+    const m={};
+    filtered.forEach(s=>{if(!m[s.cat])m[s.cat]=[];m[s.cat].push(s);});
+    return m;
+  },[filtered]);
+  return(
+    <div style={{paddingBottom:80}}>
+      <div style={{padding:"24px 20px 16px",background:"#fff",position:"sticky",top:0,zIndex:10,borderBottom:"1px solid #F0EDE8"}}>
+        <h2 style={{margin:"0 0 12px",fontSize:20,fontWeight:800}}>Servicios</h2>
+        <div style={{position:"relative"}}>
+          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar servicio..." style={{width:"100%",padding:"11px 16px 11px 40px",border:"1.5px solid #E8E8E8",borderRadius:12,fontSize:14,fontFamily:"inherit",background:"#F8F7F5",outline:"none",boxSizing:"border-box"}}/>
+          <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",fontSize:16,color:"#aaa"}}>🔍</span>
+        </div>
+        <div style={{display:"flex",gap:8,overflowX:"auto",paddingTop:12,paddingBottom:2}}>
+          <button onClick={()=>setActiveCat("all")} style={{whiteSpace:"nowrap",padding:"6px 14px",borderRadius:20,border:"none",background:activeCat==="all"?"#1a1a1a":"#F0EDE8",color:activeCat==="all"?"#fff":"#666",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Todos</button>
+          {categories.map(c=>(
+            <button key={c.id} onClick={()=>setActiveCat(c.id)} style={{whiteSpace:"nowrap",padding:"6px 14px",borderRadius:20,border:"none",background:activeCat===c.id?"#1a1a1a":"#F0EDE8",color:activeCat===c.id?"#fff":"#666",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{c.name}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{padding:"16px 20px"}}>
+        {Object.entries(grouped).map(([catId,svcs])=>{
+          const cat=categories.find(c=>c.id===catId);
+          return(
+            <div key={catId} style={{marginBottom:24}}>
+              <p style={{margin:"0 0 10px",fontSize:11,fontWeight:700,color:"#aaa",textTransform:"uppercase",letterSpacing:1.2}}>{cat?.name||catId}</p>
+              {svcs.map(s=>(
+                <div key={s.id} onClick={()=>onBookService(s)} style={{background:"#fff",borderRadius:14,padding:16,marginBottom:10,boxShadow:"0 2px 10px rgba(0,0,0,0.05)",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"flex-start",border:"1.5px solid transparent"}}>
+                  <div style={{flex:1,marginRight:12}}>
+                    <p style={{margin:"0 0 3px",fontSize:15,fontWeight:700}}>{s.name}</p>
+                    <p style={{margin:"0 0 6px",fontSize:12,color:"#888"}}>{s.desc}</p>
+                    <span style={{fontSize:12,color:"#aaa"}}>⏱ {s.duration} min</span>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <p style={{margin:0,fontSize:16,fontWeight:800,color:"#1a1a1a"}}>
+                      {s.priceFrom&&<span style={{fontSize:11,fontWeight:400,color:"#888"}}>desde </span>}
+                      {s.price} €
+                    </p>
+                    <span style={{fontSize:11,color:"#B89A5A",fontWeight:700}}>Reservar →</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// FLUJO DE RESERVA
+// ============================================================
+function BookingView({appointments,onAppointmentCreated,initialService}){
+  const [step,setStep]=useState(initialService?1:0);
+  const [selectedService,setSelectedService]=useState(initialService||null);
+  const [selectedExtras,setSelectedExtras]=useState([]);
+  const [selectedProfessional,setSelectedProfessional]=useState(null);
+  const [selectedDate,setSelectedDate]=useState(null);
+  const [selectedTime,setSelectedTime]=useState(null);
+  const [clientName,setClientName]=useState("");
+  const [clientPhone,setClientPhone]=useState("");
+  const [clientEmail,setClientEmail]=useState("");
+  const [notes,setNotes]=useState("");
+  const [privacyOk,setPrivacyOk]=useState(false);
+  const [confirmResult,setConfirmResult]=useState(null);
+  const [error,setError]=useState("");
+  const [search,setSearch]=useState("");
+
+  const totalDuration=useMemo(()=>!selectedService?0:selectedService.duration+selectedExtras.reduce((s,eid)=>s+(extrasData[eid]?.duration||0),0),[selectedService,selectedExtras]);
+  const totalPrice=useMemo(()=>!selectedService?0:selectedService.price+selectedExtras.reduce((s,eid)=>s+(extrasData[eid]?.price||0),0),[selectedService,selectedExtras]);
+
+  const availableSlots=useMemo(()=>{
+    if(!selectedDate||!selectedProfessional||selectedProfessional.id==="any") return [];
+    return getAvailableSlots(selectedDate,selectedProfessional.id,totalDuration,appointments);
+  },[selectedDate,selectedProfessional,totalDuration,appointments]);
+
+  const compatibleProfs=useMemo(()=>!selectedService?professionals:professionals.filter(p=>p.serviceIds.includes(selectedService.id)),[selectedService]);
+
+  const availableDates=useMemo(()=>{
+    const dates=[];
+    for(let i=0;i<14;i++){
+      const d=new Date(todayNow.getTime()+i*86400000);
+      const dStr=d.toISOString().split("T")[0];
+      if(businessConfig.schedule[d.getDay()]) dates.push(dStr);
+    }
+    return dates;
+  },[]);
+
+  function toggleExtra(eid){setSelectedExtras(p=>p.includes(eid)?p.filter(e=>e!==eid):[...p,eid]);}
+
+  function handleConfirm(){
+    if(!clientName.trim()||!clientPhone.trim()||!privacyOk){setError("Completa nombre, teléfono y acepta la política de privacidad.");return;}
+    setError("");
+    const profId=selectedProfessional.id==="any"
+      ?compatibleProfs.find(p=>getAvailableSlots(selectedDate,p.id,totalDuration,appointments).includes(selectedTime))?.id
+      :selectedProfessional.id;
+    if(!profId){setError("No se encontró disponibilidad. Por favor elige otra hora.");return;}
+    const current=getAvailableSlots(selectedDate,profId,totalDuration,appointments);
+    if(!current.includes(selectedTime)){setError("Este horario acaba de ser reservado. Elige otro.");setStep(3);return;}
+    const newApt={id:"apt"+Date.now(),date:selectedDate,time:selectedTime,professionalId:profId,serviceId:selectedService.id,clientName,clientPhone,clientEmail,notes,status:"confirmed",duration:totalDuration,price:totalPrice,code:generateBookingCode()};
+    onAppointmentCreated(newApt);
+    setConfirmResult(newApt);
+    setStep(6);
+  }
+
+  function reset(){setStep(0);setSelectedService(null);setSelectedExtras([]);setSelectedProfessional(null);setSelectedDate(null);setSelectedTime(null);setClientName("");setClientPhone("");setClientEmail("");setNotes("");setPrivacyOk(false);setConfirmResult(null);setError("");}
+
+  const SI=({current,total})=>(
+    <div style={{display:"flex",gap:5,padding:"0 20px 16px"}}>
+      {Array.from({length:total}).map((_,i)=>(
+        <div key={i} style={{flex:1,height:3,borderRadius:2,background:i<current?"#1a1a1a":i===current?"#B89A5A":"#F0EDE8",transition:"background 0.3s"}}/>
+      ))}
+    </div>
+  );
+
+  if(step===6&&confirmResult){
+    const prof=professionals.find(p=>p.id===confirmResult.professionalId);
+    const svc=services.find(s=>s.id===confirmResult.serviceId);
+    return(
+      <div style={{padding:20,paddingBottom:80,textAlign:"center"}}>
+        <div style={{background:"#111",borderRadius:20,padding:"40px 20px",marginBottom:20,color:"#fff"}}>
+          <div style={{width:60,height:60,borderRadius:"50%",background:"rgba(184,154,90,0.15)",border:"2px solid #B89A5A",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,margin:"0 auto 16px",color:"#B89A5A"}}>✓</div>
+          <h2 style={{margin:"0 0 8px",fontSize:24,fontWeight:800}}>¡Cita reservada!</h2>
+          <p style={{margin:"0 0 20px",color:"#666",fontSize:14}}>Te esperamos en Victor Monió Barbería</p>
+          <div style={{background:"rgba(184,154,90,0.1)",border:"1px solid rgba(184,154,90,0.3)",borderRadius:12,padding:"14px 20px",marginBottom:16}}>
+            <p style={{margin:0,fontSize:12,color:"#B89A5A"}}>Código de reserva</p>
+            <p style={{margin:"4px 0 0",fontSize:22,fontWeight:800,letterSpacing:3,color:"#B89A5A"}}>{confirmResult.code}</p>
+          </div>
+          <div style={{textAlign:"left"}}>
+            {[["Servicio",svc?.name],["Profesional",prof?.name],["Fecha",formatDateShort(confirmResult.date)],["Hora",confirmResult.time],["Duración",`${confirmResult.duration} min`],["Precio",`${confirmResult.price} €`]].map(([l,v])=>(
+              <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
+                <span style={{fontSize:13,color:"#666"}}>{l}</span>
+                <span style={{fontSize:13,fontWeight:700}}>{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <Btn variant="primary" style={{width:"100%"}} onClick={()=>{}}>Añadir al calendario</Btn>
+          <Btn variant="outline" style={{width:"100%"}} onClick={()=>{}}>Cómo llegar</Btn>
+          <Btn variant="ghost" style={{width:"100%"}} onClick={reset}>Nueva reserva</Btn>
+        </div>
+        <p style={{fontSize:11,color:"#aaa",marginTop:16,lineHeight:1.7}}>Cancelación gratuita hasta 24h antes de la cita.</p>
+      </div>
+    );
+  }
+
+  return(
+    <div style={{paddingBottom:80}}>
+      <div style={{padding:"24px 20px 12px"}}>
+        <h2 style={{margin:0,fontSize:20,fontWeight:800}}>Reservar cita</h2>
+      </div>
+      <SI current={step} total={6}/>
+
+      {/* PASO 0 */}
+      {step===0&&(
+        <div style={{padding:"0 20px"}}>
+          <p style={{fontSize:13,color:"#888",marginBottom:16}}>¿Qué servicio necesitas?</p>
+          <div style={{position:"relative",marginBottom:16}}>
+            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar..." style={{width:"100%",padding:"11px 16px 11px 40px",border:"1.5px solid #E8E8E8",borderRadius:12,fontSize:14,fontFamily:"inherit",background:"#F8F7F5",outline:"none",boxSizing:"border-box"}}/>
+            <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",color:"#aaa"}}>🔍</span>
+          </div>
+          {categories.map(cat=>{
+            const cs=services.filter(s=>s.cat===cat.id&&(!search||s.name.toLowerCase().includes(search.toLowerCase())));
+            if(!cs.length) return null;
+            return(
+              <div key={cat.id} style={{marginBottom:20}}>
+                <p style={{margin:"0 0 8px",fontSize:11,fontWeight:700,color:"#aaa",textTransform:"uppercase",letterSpacing:1}}>{cat.name}</p>
+                {cs.map(s=>(
+                  <div key={s.id} onClick={()=>{setSelectedService(s);setStep(1);}} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 16px",background:"#fff",borderRadius:12,marginBottom:8,cursor:"pointer",border:"1.5px solid #F0EDE8"}}>
+                    <div>
+                      <p style={{margin:0,fontSize:14,fontWeight:700}}>{s.name}</p>
+                      <p style={{margin:"2px 0 0",fontSize:12,color:"#888"}}>{s.duration} min</p>
+                    </div>
+                    <span style={{fontSize:15,fontWeight:800}}>{s.priceFrom&&<span style={{fontSize:11,color:"#888",fontWeight:400}}>desde </span>}{s.price} €</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* PASO 1 */}
+      {step===1&&selectedService&&(
+        <div style={{padding:"0 20px"}}>
+          <Card style={{marginBottom:16}}>
+            <p style={{margin:"0 0 4px",fontSize:16,fontWeight:800}}>{selectedService.name}</p>
+            <p style={{margin:"0 0 8px",fontSize:13,color:"#888"}}>{selectedService.desc}</p>
+            <div style={{display:"flex",gap:10}}>
+              <Badge>⏱ {selectedService.duration} min</Badge>
+              <Badge color="#B89A5A" bg="#FBF5EE">{selectedService.price} €</Badge>
+            </div>
+          </Card>
+          {selectedService.extras.length>0&&(
+            <div style={{marginBottom:16}}>
+              <p style={{margin:"0 0 10px",fontSize:13,fontWeight:700}}>Extras opcionales</p>
+              {selectedService.extras.map(eid=>{
+                const ex=extrasData[eid];if(!ex) return null;
+                const sel=selectedExtras.includes(eid);
+                return(
+                  <div key={eid} onClick={()=>toggleExtra(eid)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 16px",background:sel?"#1a1a1a":"#fff",borderRadius:12,marginBottom:8,cursor:"pointer",border:`1.5px solid ${sel?"#1a1a1a":"#F0EDE8"}`,color:sel?"#fff":"#1a1a1a"}}>
+                    <div><p style={{margin:0,fontSize:14,fontWeight:700}}>{ex.name}</p><p style={{margin:0,fontSize:12,color:sel?"#888":"#888"}}>+{ex.duration} min</p></div>
+                    <span style={{fontWeight:800}}>+{ex.price} €</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          <div style={{background:"#F8F7F5",borderRadius:12,padding:14,marginBottom:16}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:13,color:"#888"}}>Duración</span><span style={{fontWeight:700}}>{totalDuration} min</span></div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}><span style={{fontSize:13,color:"#888"}}>Total</span><span style={{fontWeight:800,fontSize:18,color:"#B89A5A"}}>{totalPrice} €</span></div>
+          </div>
+          <Btn onClick={()=>setStep(2)} style={{width:"100%"}}>Continuar →</Btn>
+          <button onClick={()=>setStep(0)} style={{display:"block",margin:"12px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Cambiar servicio</button>
+        </div>
+      )}
+
+      {/* PASO 2 */}
+      {step===2&&(
+        <div style={{padding:"0 20px"}}>
+          <p style={{fontSize:13,color:"#888",marginBottom:16}}>¿Con quién quieres la cita?</p>
+          <div onClick={()=>{setSelectedProfessional({id:"any",name:"Cualquier profesional"});setStep(3);}} style={{display:"flex",alignItems:"center",gap:14,padding:16,background:"#fff",borderRadius:14,marginBottom:10,cursor:"pointer",border:"1.5px solid #F0EDE8"}}>
+            <div style={{width:48,height:48,borderRadius:"50%",background:"#F0EDE8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>✦</div>
+            <div><p style={{margin:0,fontSize:15,fontWeight:700}}>Cualquier profesional</p><p style={{margin:0,fontSize:12,color:"#888"}}>El primero disponible</p></div>
+          </div>
+          {compatibleProfs.map(p=>(
+            <div key={p.id} onClick={()=>{setSelectedProfessional(p);setStep(3);}} style={{display:"flex",alignItems:"center",gap:14,padding:16,background:"#fff",borderRadius:14,marginBottom:10,cursor:"pointer",border:`1.5px solid ${selectedProfessional?.id===p.id?"#1a1a1a":"#F0EDE8"}`}}>
+              <Avatar initials={p.avatar} size={48}/>
+              <div style={{flex:1}}>
+                <p style={{margin:0,fontSize:15,fontWeight:800}}>{p.name}</p>
+                <p style={{margin:"2px 0 4px",fontSize:12,color:"#888"}}>{p.role}</p>
+                <div style={{display:"flex",flexWrap:"wrap",gap:4}}>{p.specialties.slice(0,2).map(s=><Badge key={s}>{s}</Badge>)}</div>
+              </div>
+              <div style={{textAlign:"right"}}><Stars rating={p.rating} size={12}/><p style={{margin:"2px 0 0",fontSize:12,color:"#B89A5A",fontWeight:800}}>{p.rating}</p></div>
+            </div>
+          ))}
+          <button onClick={()=>setStep(1)} style={{display:"block",margin:"12px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Atrás</button>
+        </div>
+      )}
+
+      {/* PASO 3 */}
+      {step===3&&(
+        <div style={{padding:"0 20px"}}>
+          <p style={{fontSize:13,color:"#888",marginBottom:16}}>¿Cuándo quieres la cita?</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {availableDates.map(d=>{
+              const hasSlots=selectedProfessional?.id==="any"
+                ?professionals.some(p=>getAvailableSlots(d,p.id,totalDuration,appointments).length>0)
+                :getAvailableSlots(d,selectedProfessional.id,totalDuration,appointments).length>0;
+              return(
+                <button key={d} onClick={()=>{if(hasSlots){setSelectedDate(d);setSelectedTime(null);setStep(4);}}} disabled={!hasSlots} style={{padding:"14px 10px",background:selectedDate===d?"#1a1a1a":hasSlots?"#fff":"#F8F7F5",border:`1.5px solid ${selectedDate===d?"#1a1a1a":hasSlots?"#F0EDE8":"#F0EDE8"}`,borderRadius:12,cursor:hasSlots?"pointer":"default",color:selectedDate===d?"#fff":hasSlots?"#1a1a1a":"#ccc",fontFamily:"inherit",fontSize:13,fontWeight:700}}>
+                  <div>{formatDateLabel(d)}</div>
+                  {!hasSlots&&<div style={{fontSize:10,marginTop:3,opacity:0.7}}>Sin disponibilidad</div>}
+                </button>
+              );
+            })}
+          </div>
+          <button onClick={()=>setStep(2)} style={{display:"block",margin:"16px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Atrás</button>
+        </div>
+      )}
+
+      {/* PASO 4 */}
+      {step===4&&(
+        <div style={{padding:"0 20px"}}>
+          <p style={{fontSize:13,color:"#888",marginBottom:4}}>Horas disponibles</p>
+          <p style={{fontSize:15,fontWeight:800,marginBottom:16}}>{formatDateLabel(selectedDate)}</p>
+          {availableSlots.length===0?(
+            <div style={{textAlign:"center",padding:40}}>
+              <p style={{fontSize:14,color:"#888"}}>No hay huecos disponibles este día.</p>
+              <Btn variant="outline" onClick={()=>setStep(3)} style={{marginTop:12}}>Cambiar fecha</Btn>
+            </div>
+          ):(
+            <>
+              {(()=>{
+                const am=availableSlots.filter(t=>parseInt(t)<14);
+                const pm=availableSlots.filter(t=>parseInt(t)>=14);
+                return(
+                  <>
+                    {am.length>0&&<p style={{fontSize:11,fontWeight:700,color:"#aaa",textTransform:"uppercase",letterSpacing:1,marginBottom:8}}>Mañana</p>}
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:16}}>
+                      {am.map(t=><button key={t} onClick={()=>{setSelectedTime(t);setStep(5);}} style={{padding:"12px 6px",border:`1.5px solid ${selectedTime===t?"#1a1a1a":"#F0EDE8"}`,borderRadius:10,background:selectedTime===t?"#1a1a1a":"#fff",color:selectedTime===t?"#fff":"#1a1a1a",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>{t}</button>)}
+                    </div>
+                    {pm.length>0&&<p style={{fontSize:11,fontWeight:700,color:"#aaa",textTransform:"uppercase",letterSpacing:1,marginBottom:8}}>Tarde</p>}
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+                      {pm.map(t=><button key={t} onClick={()=>{setSelectedTime(t);setStep(5);}} style={{padding:"12px 6px",border:`1.5px solid ${selectedTime===t?"#1a1a1a":"#F0EDE8"}`,borderRadius:10,background:selectedTime===t?"#1a1a1a":"#fff",color:selectedTime===t?"#fff":"#1a1a1a",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>{t}</button>)}
+                    </div>
+                  </>
+                );
+              })()}
+            </>
+          )}
+          <button onClick={()=>setStep(3)} style={{display:"block",margin:"16px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Cambiar fecha</button>
+        </div>
+      )}
+
+      {/* PASO 5 */}
+      {step===5&&(
+        <div style={{padding:"0 20px"}}>
+          <Card style={{marginBottom:16}}>
+            <p style={{margin:"0 0 10px",fontSize:11,fontWeight:700,color:"#888",textTransform:"uppercase",letterSpacing:1}}>Resumen</p>
+            {[["Servicio",`${selectedService.name}${selectedExtras.length>0?" + extras":""}`],["Profesional",selectedProfessional?.id==="any"?"Cualquier profesional":selectedProfessional?.name],["Fecha",formatDateShort(selectedDate)],["Hora",selectedTime],["Duración",`${totalDuration} min`]].map(([l,v])=>(
+              <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid #F8F7F5"}}>
+                <span style={{fontSize:13,color:"#888"}}>{l}</span>
+                <span style={{fontSize:13,fontWeight:700}}>{v}</span>
+              </div>
+            ))}
+            <div style={{display:"flex",justifyContent:"space-between",padding:"10px 0 0"}}>
+              <span style={{fontSize:15,fontWeight:800}}>Total</span>
+              <span style={{fontSize:18,fontWeight:800,color:"#B89A5A"}}>{totalPrice} €</span>
+            </div>
+          </Card>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {[["Tu nombre *",clientName,setClientName,"text"],["Teléfono *",clientPhone,setClientPhone,"tel"],["Email (opcional)",clientEmail,setClientEmail,"email"]].map(([ph,val,setter,type])=>(
+              <input key={ph} value={val} onChange={e=>setter(e.target.value)} placeholder={ph} type={type} style={{padding:"13px 16px",border:"1.5px solid #E8E8E8",borderRadius:12,fontSize:14,fontFamily:"inherit",outline:"none"}}/>
+            ))}
+            <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Notas para el profesional (opcional)" rows={3} style={{padding:"13px 16px",border:"1.5px solid #E8E8E8",borderRadius:12,fontSize:14,fontFamily:"inherit",outline:"none",resize:"vertical"}}/>
+            <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer"}}>
+              <input type="checkbox" checked={privacyOk} onChange={e=>setPrivacyOk(e.target.checked)} style={{marginTop:2}}/>
+              <span style={{fontSize:13,color:"#666",lineHeight:1.5}}>Acepto la política de privacidad y recibir comunicaciones sobre mi cita.</span>
+            </label>
+          </div>
+          {error&&<div style={{background:"#FFF0EE",borderRadius:10,padding:"12px 16px",marginTop:12,fontSize:13,color:"#C0392B"}}>{error}</div>}
+          <div style={{marginTop:16,display:"flex",flexDirection:"column",gap:10}}>
+            <Btn onClick={handleConfirm} style={{width:"100%"}}>CONFIRMAR RESERVA</Btn>
+            <p style={{textAlign:"center",fontSize:12,color:"#aaa",margin:0}}>Cancelación gratuita hasta 24h antes</p>
+          </div>
+          <button onClick={()=>setStep(4)} style={{display:"block",margin:"12px auto 0",background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Cambiar hora</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
+// MIS CITAS
+// ============================================================
+function AppointmentsView({appointments}){
+  const [tab,setTab]=useState("upcoming");
+  const upcoming=appointments.filter(a=>(a.date>todayStr||(a.date===todayStr&&a.status==="confirmed"))&&a.status!=="cancelled");
+  const past=appointments.filter(a=>(a.date<todayStr||a.status==="completed")&&a.status!=="cancelled");
+  const cancelled=appointments.filter(a=>a.status==="cancelled");
+  const tabs=[{id:"upcoming",label:"Próximas",list:upcoming},{id:"past",label:"Anteriores",list:past},{id:"cancelled",label:"Canceladas",list:cancelled}];
+  function AptCard({apt}){
+    const prof=professionals.find(p=>p.id===apt.professionalId);
+    const svc=services.find(s=>s.id===apt.serviceId);
+    const sc={confirmed:{bg:"#EFF8F0",c:"#2E7D32"},completed:{bg:"#F0EDE8",c:"#888"},cancelled:{bg:"#FFF0EE",c:"#C0392B"}}[apt.status]||{bg:"#F0EDE8",c:"#888"};
+    return(
+      <Card style={{marginBottom:12}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+          <div><p style={{margin:0,fontSize:15,fontWeight:800}}>{svc?.name||apt.serviceId}</p><p style={{margin:"2px 0 0",fontSize:12,color:"#888"}}>con {prof?.name}</p></div>
+          <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c}}>{{confirmed:"Confirmada",completed:"Completada",cancelled:"Cancelada"}[apt.status]}</span>
+        </div>
+        <Divider/>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {[["Fecha",formatDateLabel(apt.date)],["Hora",apt.time],["Duración",`${apt.duration} min`],["Precio",`${apt.price} €`]].map(([l,v])=>(
+            <div key={l}><p style={{margin:0,fontSize:11,color:"#aaa"}}>{l}</p><p style={{margin:"2px 0 0",fontSize:13,fontWeight:700}}>{v}</p></div>
+          ))}
+        </div>
+        {apt.code&&<div style={{marginTop:10,background:"#111",borderRadius:8,padding:"8px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:11,color:"#666"}}>Código</span><span style={{fontSize:13,fontWeight:800,letterSpacing:2,color:"#B89A5A"}}>{apt.code}</span></div>}
+        {apt.status==="confirmed"&&<div style={{display:"flex",gap:8,marginTop:12}}><button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Modificar</button><button style={{flex:1,background:"#FFF0EE",border:"1.5px solid #FCCABA",borderRadius:10,padding:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",color:"#C0392B"}}>Cancelar</button></div>}
+        {apt.status==="completed"&&<button style={{width:"100%",marginTop:10,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Repetir reserva</button>}
+      </Card>
+    );
+  }
+  return(
+    <div style={{paddingBottom:80}}>
+      <div style={{padding:"24px 20px 0",background:"#fff",borderBottom:"1px solid #F0EDE8"}}>
+        <h2 style={{margin:"0 0 16px",fontSize:20,fontWeight:800}}>Mis citas</h2>
+        <div style={{display:"flex"}}>
+          {tabs.map(t=>(
+            <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"10px 0",border:"none",background:"none",fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer",color:tab===t.id?"#1a1a1a":"#aaa",borderBottom:`2px solid ${tab===t.id?"#1a1a1a":"transparent"}`,transition:"all 0.2s"}}>
+              {t.label}
+              {t.list.length>0&&<span style={{marginLeft:4,fontSize:11,background:tab===t.id?"#1a1a1a":"#F0EDE8",color:tab===t.id?"#fff":"#888",borderRadius:20,padding:"1px 7px"}}>{t.list.length}</span>}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div style={{padding:20}}>
+        {tabs.find(t=>t.id===tab)?.list.length===0?(
+          <div style={{textAlign:"center",padding:40,color:"#aaa"}}><div style={{fontSize:40,marginBottom:12}}>📅</div><p style={{fontSize:14}}>No hay citas en esta sección</p></div>
+        ):(
+          tabs.find(t=>t.id===tab)?.list.map(a=><AptCard key={a.id} apt={a}/>)
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// ADMIN
+
+
+// ══ Navigation ══
+
+function BottomNav({active,onNav}){
+  const items=[{id:"home",icon:"◈",label:"Inicio"},{id:"services",icon:"✂",label:"Servicios"},{id:"booking",icon:"＋",label:"Reservar",accent:true},{id:"appointments",icon:"◫",label:"Mis citas"},{id:"profile",icon:"◎",label:"Perfil"}];
+  return(
+    <div style={{position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #F0EDE8",display:"flex",zIndex:100,maxWidth:430,margin:"0 auto"}}>
+      {items.map(item=>(
+        <button key={item.id} onClick={()=>onNav(item.id)} style={{flex:1,border:"none",background:"none",padding:"10px 4px 14px",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,fontFamily:"inherit"}}>
+          <span style={{fontSize:item.accent?24:18,width:item.accent?42:"auto",height:item.accent?42:"auto",background:item.accent?"#1a1a1a":"none",borderRadius:item.accent?"50%":0,display:item.accent?"flex":"block",alignItems:"center",justifyContent:"center",color:item.accent?"#fff":active===item.id?"#1a1a1a":"#bbb",marginTop:item.accent?-16:0,boxShadow:item.accent?"0 4px 16px rgba(0,0,0,0.25)":"none"}}>{item.icon}</span>
+          <span style={{fontSize:10,fontWeight:700,color:active===item.id?"#1a1a1a":"#bbb"}}>{item.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ProfileView(){
+  return(
+    <div style={{paddingBottom:80}}>
+      <div style={{background:"#111",padding:"40px 20px 30px",textAlign:"center"}}>
+        <img src="/images/victor-monio-logo.jpg" alt="Victor Monió" style={{width:80,height:80,borderRadius:"50%",objectFit:"cover",objectPosition:"center",border:"2px solid #B89A5A",marginBottom:12}}/>
+        <h2 style={{margin:"0 0 4px",fontSize:20,fontWeight:800,color:"#fff"}}>Victor Monió</h2>
+        <p style={{margin:0,fontSize:12,color:"#B89A5A",fontWeight:600,textTransform:"uppercase",letterSpacing:1.5}}>Barbería · Desde 2013</p>
+      </div>
+      <div style={{padding:20}}>
+        <Card style={{marginBottom:16,textAlign:"center",padding:24}}>
+          <div style={{width:60,height:60,borderRadius:"50%",background:"#F0EDE8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,margin:"0 auto 12px"}}>◎</div>
+          <p style={{margin:"0 0 4px",fontSize:16,fontWeight:800}}>Tu perfil</p>
+          <p style={{margin:"0 0 16px",fontSize:13,color:"#888"}}>Accede para gestionar tus citas</p>
+          <Btn style={{width:"100%"}}>Iniciar sesión</Btn>
+          <p style={{margin:"12px 0 0",fontSize:12,color:"#aaa"}}>También puedes reservar sin cuenta</p>
+        </Card>
+        <Card>
+          <p style={{margin:"0 0 12px",fontSize:13,fontWeight:800}}>Victor Monió Barbería</p>
+          {[["Dirección","Calle Colón 14, Valencia"],["Teléfono","963 000 000"],["Horario L–V","09:00–20:00"],["Horario sábado","09:00–15:00"],["Dom. y Lun.","Cerrado"]].map(([l,v])=>(
+            <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #F8F7F5"}}>
+              <span style={{fontSize:13,color:"#888"}}>{l}</span>
+              <span style={{fontSize:13,fontWeight:700}}>{v}</span>
+            </div>
+          ))}
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// LOGIN VIEW
+// ============================================================
+function LoginView({ onLogin, onBack, context = "appointments" }) {
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [step, setStep] = useState("form"); // form | otp | ok
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const contextMsg = {
+    appointments: { icon: "◫", title: "Mis citas", desc: "Accede para ver y gestionar tus reservas." },
+    profile: { icon: "◎", title: "Mi perfil", desc: "Accede para ver tu historial y preferencias." },
+  }[context] || { icon: "◎", title: "Acceder", desc: "" };
+
+  function handleSendOtp() {
+    if (!phone.trim() || phone.trim().length < 9) { setError("Introduce un teléfono válido."); return; }
+    if (!name.trim()) { setError("Introduce tu nombre."); return; }
+    setError("");
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setStep("otp"); }, 1200);
+  }
+
+  function handleVerifyOtp() {
+    if (otp.length < 4) { setError("Introduce el código de 4 dígitos."); return; }
+    setError("");
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      // En demo aceptamos cualquier código
+      onLogin({ name: name.trim(), phone: phone.trim() });
+    }, 1000);
+  }
+
+  function handleDemoAccess() {
+    onLogin({ name: "Cliente Demo", phone: "666000000" });
+  }
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#F8F7F5", display: "flex", flexDirection: "column" }}>
+      {/* Header */}
+      <div style={{ background: "#0e0e0e", padding: "20px 20px 24px" }}>
+        <button onClick={onBack} style={{ background: "none", border: "none", color: "#B89A5A", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 20, padding: 0, display: "flex", alignItems: "center", gap: 6 }}>
+          ← Volver
+        </button>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+          <img src="/images/victor-monio-logo.jpg" alt="Victor Monió" style={{ width: 180, height: "auto", objectFit: "contain" }} />
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 28, marginBottom: 6 }}>{contextMsg.icon}</div>
+          <h2 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 800, color: "#fff" }}>{contextMsg.title}</h2>
+          <p style={{ margin: 0, fontSize: 13, color: "#666" }}>{contextMsg.desc}</p>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, padding: "28px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
+
+        {step === "form" && (
+          <>
+            <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+              <p style={{ margin: "0 0 16px", fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>Accede con tu teléfono</p>
+
+              <div style={{ marginBottom: 12 }}>
+                <label style={{ display: "block", fontSize: 11, color: "#888", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 700 }}>Tu nombre</label>
+                <input
+                  value={name} onChange={e => { setName(e.target.value); setError(""); }}
+                  placeholder="Nombre y apellido"
+                  style={{ width: "100%", padding: "13px 16px", border: "1.5px solid #E8E8E8", borderRadius: 12, fontSize: 15, fontFamily: "inherit", outline: "none", boxSizing: "border-box", background: "#FAFAFA" }}
+                />
+              </div>
+
+              <div style={{ marginBottom: 4 }}>
+                <label style={{ display: "block", fontSize: 11, color: "#888", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 700 }}>Teléfono móvil</label>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <div style={{ background: "#FAFAFA", border: "1.5px solid #E8E8E8", borderRadius: 12, padding: "13px 14px", fontSize: 15, color: "#888", fontWeight: 600, whiteSpace: "nowrap" }}>🇪🇸 +34</div>
+                  <input
+                    value={phone} onChange={e => { setPhone(e.target.value.replace(/\D/g, "")); setError(""); }}
+                    placeholder="6XX XXX XXX" type="tel" maxLength={9}
+                    style={{ flex: 1, padding: "13px 16px", border: "1.5px solid #E8E8E8", borderRadius: 12, fontSize: 15, fontFamily: "inherit", outline: "none", background: "#FAFAFA" }}
+                  />
+                </div>
+              </div>
+
+              {error && <p style={{ margin: "10px 0 0", fontSize: 13, color: "#C0392B", background: "#FFF0EE", borderRadius: 8, padding: "8px 12px" }}>{error}</p>}
+
+              <button
+                onClick={handleSendOtp}
+                disabled={loading}
+                style={{ width: "100%", marginTop: 16, background: "#1a1a1a", border: "none", borderRadius: 12, padding: "15px", color: "#fff", fontSize: 15, fontWeight: 800, cursor: loading ? "wait" : "pointer", fontFamily: "inherit", opacity: loading ? 0.7 : 1 }}
+              >
+                {loading ? "Enviando código..." : "Enviar código →"}
+              </button>
+
+              <p style={{ margin: "12px 0 0", fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.6 }}>
+                Te enviaremos un SMS con un código de verificación de 4 dígitos.
+              </p>
+            </div>
+
+            {/* Separador */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "4px 0" }}>
+              <div style={{ flex: 1, height: 1, background: "#E8E8E8" }} />
+              <span style={{ fontSize: 12, color: "#bbb", fontWeight: 600 }}>o</span>
+              <div style={{ flex: 1, height: 1, background: "#E8E8E8" }} />
+            </div>
+
+            {/* Acceso demo */}
+            <button
+              onClick={handleDemoAccess}
+              style={{ width: "100%", background: "rgba(184,154,90,0.1)", border: "1.5px solid rgba(184,154,90,0.35)", borderRadius: 12, padding: "14px", color: "#B89A5A", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}
+            >
+              ✦ Acceso rápido demo
+            </button>
+            <p style={{ margin: "-4px 0 0", fontSize: 11, color: "#bbb", textAlign: "center" }}>
+              Sólo para demostración comercial
+            </p>
+          </>
+        )}
+
+        {step === "otp" && (
+          <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#F8F7F5", border: "2px solid #B89A5A", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, margin: "0 auto 12px" }}>📱</div>
+              <p style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 800 }}>Código enviado</p>
+              <p style={{ margin: 0, fontSize: 13, color: "#888", lineHeight: 1.5 }}>
+                Hemos enviado un SMS al<br />
+                <strong style={{ color: "#1a1a1a" }}>+34 {phone}</strong>
+              </p>
+            </div>
+
+            <label style={{ display: "block", fontSize: 11, color: "#888", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8, fontWeight: 700 }}>Código de 4 dígitos</label>
+            <input
+              value={otp} onChange={e => { setOtp(e.target.value.replace(/\D/g, "").slice(0, 4)); setError(""); }}
+              placeholder="• • • •" type="tel" maxLength={4}
+              autoFocus
+              style={{ width: "100%", padding: "16px", border: "1.5px solid #E8E8E8", borderRadius: 12, fontSize: 28, fontFamily: "inherit", outline: "none", textAlign: "center", letterSpacing: 12, boxSizing: "border-box", background: "#FAFAFA", fontWeight: 800 }}
+            />
+
+            {error && <p style={{ margin: "10px 0 0", fontSize: 13, color: "#C0392B", background: "#FFF0EE", borderRadius: 8, padding: "8px 12px" }}>{error}</p>}
+
+            <button
+              onClick={handleVerifyOtp}
+              disabled={loading || otp.length < 4}
+              style={{ width: "100%", marginTop: 16, background: "#1a1a1a", border: "none", borderRadius: 12, padding: "15px", color: "#fff", fontSize: 15, fontWeight: 800, cursor: (loading || otp.length < 4) ? "default" : "pointer", fontFamily: "inherit", opacity: (loading || otp.length < 4) ? 0.5 : 1 }}
+            >
+              {loading ? "Verificando..." : "Acceder"}
+            </button>
+
+            <div style={{ marginTop: 16, textAlign: "center" }}>
+              <button onClick={() => { setStep("form"); setOtp(""); setError(""); }} style={{ background: "none", border: "none", color: "#888", fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
+                ← Cambiar número
+              </button>
+              <span style={{ color: "#ddd", margin: "0 10px" }}>·</span>
+              <button onClick={handleSendOtp} style={{ background: "none", border: "none", color: "#B89A5A", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+                Reenviar SMS
+              </button>
+            </div>
+
+            {/* Hint para la demo */}
+            <div style={{ marginTop: 16, background: "#F8F7F5", borderRadius: 10, padding: "10px 14px", border: "1px dashed #E0E0E0" }}>
+              <p style={{ margin: 0, fontSize: 11, color: "#aaa", textAlign: "center" }}>
+                Demo: introduce cualquier código de 4 dígitos
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// PROFILE VIEW (con sesión)
+// ============================================================
+function ProfileViewLoggedIn({ user, onLogout }) {
+  return (
+    <div style={{ paddingBottom: 80 }}>
+      {/* Header usuario */}
+      <div style={{ background: "#0e0e0e", padding: "32px 20px 28px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#2C2C2C", border: "2px solid #B89A5A", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, color: "#B89A5A", flexShrink: 0 }}>
+            {user.name[0].toUpperCase()}
+          </div>
+          <div>
+            <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff" }}>{user.name}</p>
+            <p style={{ margin: "2px 0 0", fontSize: 13, color: "#666" }}>📞 +34 {user.phone}</p>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: 20 }}>
+        {/* Acciones rápidas */}
+        <div style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+          {[
+            { icon: "◫", label: "Mis citas", sub: "Ver y gestionar reservas" },
+            { icon: "⭐", label: "Mis bonos", sub: "Sesiones disponibles" },
+            { icon: "✦", label: "Mi fidelización", sub: "Sellos y puntos acumulados" },
+            { icon: "◎", label: "Mis preferencias", sub: "Profesional y servicios habituales" },
+          ].map((item, i, arr) => (
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 18px", borderBottom: i < arr.length - 1 ? "1px solid #F5F5F5" : "none", cursor: "pointer" }}>
+              <span style={{ fontSize: 20, color: "#B89A5A", width: 28 }}>{item.icon}</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700 }}>{item.label}</p>
+                <p style={{ margin: 0, fontSize: 12, color: "#aaa" }}>{item.sub}</p>
+              </div>
+              <span style={{ color: "#ccc", fontSize: 16 }}>›</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Info negocio */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: 18, boxShadow: "0 2px 12px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+          <p style={{ margin: "0 0 12px", fontSize: 13, fontWeight: 800 }}>Victor Monió Barbería</p>
+          {[["Dirección", "Calle Colón 14, Valencia"], ["Teléfono", "963 000 000"], ["Horario L–V", "09:00–20:00"], ["Horario sábado", "09:00–15:00"], ["Dom. y Lun.", "Cerrado"]].map(([l, v]) => (
+            <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #F8F7F5" }}>
+              <span style={{ fontSize: 13, color: "#888" }}>{l}</span>
+              <span style={{ fontSize: 13, fontWeight: 700 }}>{v}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Cerrar sesión */}
+        <button
+          onClick={onLogout}
+          style={{ width: "100%", background: "none", border: "1.5px solid #E8E8E8", borderRadius: 12, padding: "13px", color: "#888", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// HOOK: SWIPE HORIZONTAL
+// ============================================================
+
+
+// ══ BusinessViews ══
+
+function AdminView({appointments,onAddAppointment}){
+  const [sec,setSec]=useState("dashboard");
+  const todayCitas=appointments.filter(a=>a.date===todayStr&&a.status!=="cancelled");
+  const ingresos=todayCitas.reduce((s,a)=>s+a.price,0);
+  const sections=[{id:"dashboard",icon:"◈",label:"Inicio"},{id:"agenda",icon:"◫",label:"Agenda"},{id:"appointments",icon:"✓",label:"Reservas"},{id:"clients",icon:"◎",label:"Clientes"},{id:"professionals",icon:"◐",label:"Equipo"},{id:"stats",icon:"◈",label:"Stats"},{id:"settings",icon:"⊙",label:"Config."}];
+  return(
+    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      <div style={{background:"#111",padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div>
+          <p style={{margin:0,fontSize:10,color:"#B89A5A",fontWeight:700,textTransform:"uppercase",letterSpacing:2}}>Panel de administración</p>
+          <p style={{margin:"2px 0 0",fontSize:16,fontWeight:800,color:"#fff"}}>Victor Monió Barbería</p>
+        </div>
+        <div style={{background:"rgba(184,154,90,0.15)",border:"1px solid rgba(184,154,90,0.3)",borderRadius:10,padding:"5px 12px"}}>
+          <p style={{margin:0,fontSize:11,color:"#B89A5A",fontWeight:700}}>Admin</p>
+        </div>
+      </div>
+      <div style={{display:"flex",overflowX:"auto",background:"#1a1a1a",padding:"0 4px"}}>
+        {sections.map(s=>(
+          <button key={s.id} onClick={()=>setSec(s.id)} style={{padding:"12px 14px",border:"none",background:"none",color:sec===s.id?"#B89A5A":"#555",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",borderBottom:`2px solid ${sec===s.id?"#B89A5A":"transparent"}`}}>
+            {s.icon} {s.label}
+          </button>
+        ))}
+      </div>
+      <div style={{flex:1,overflowY:"auto",background:"#F8F7F5"}}>
+        {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos}/>}
+        {sec==="agenda"&&<AdminAgenda appointments={appointments}/>}
+        {sec==="appointments"&&<AdminApts appointments={appointments}/>}
+        {sec==="clients"&&<AdminClients/>}
+        {sec==="professionals"&&<AdminProfs/>}
+        {sec==="stats"&&<AdminStats appointments={appointments}/>}
+        {sec==="settings"&&<AdminSettings/>}
+      </div>
+    </div>
+  );
+}
+
+function AdminDash({appointments,todayCitas,ingresos}){
+  const stats=[{l:"Citas hoy",v:todayCitas.length,u:"",c:"#1a1a1a"},{l:"Ingresos previstos",v:ingresos,u:"€",c:"#B89A5A"},{l:"Ocupación",v:Math.round((todayCitas.length/12)*100),u:"%",c:"#4CAF50"},{l:"Cancelaciones",v:0,u:"",c:"#E74C3C"}];
+  return(
+    <div style={{padding:20}}>
+      <p style={{margin:"0 0 16px",fontSize:13,color:"#888"}}>{new Date().toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"})}</p>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
+        {stats.map(s=><Card key={s.l} style={{textAlign:"center"}}><p style={{margin:"0 0 4px",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:1}}>{s.l}</p><p style={{margin:0,fontSize:28,fontWeight:800,color:s.c}}>{s.v}<span style={{fontSize:14}}>{s.u}</span></p></Card>)}
+      </div>
+      <Card>
+        <p style={{margin:"0 0 14px",fontSize:13,fontWeight:800}}>Agenda de hoy</p>
+        {todayCitas.map((a,i)=>{
+          const prof=professionals.find(p=>p.id===a.professionalId);
+          const svc=services.find(s=>s.id===a.serviceId);
+          return(
+            <div key={a.id} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<todayCitas.length-1?"1px solid #F5F5F5":"none"}}>
+              <span style={{fontSize:13,fontWeight:800,color:"#B89A5A",minWidth:42}}>{a.time}</span>
+              <Avatar initials={prof?.avatar||"?"} size={32}/>
+              <div style={{flex:1}}>
+                <p style={{margin:0,fontSize:13,fontWeight:700}}>{a.clientName}</p>
+                <p style={{margin:0,fontSize:11,color:"#888"}}>{svc?.name} · {prof?.name}</p>
+              </div>
+              <span style={{fontSize:12,fontWeight:700}}>{a.price} €</span>
+            </div>
+          );
+        })}
+      </Card>
+    </div>
+  );
+}
+
+function AdminAgenda({appointments}){
+  const [viewDate,setViewDate]=useState(todayStr);
+  const dayApts=appointments.filter(a=>a.date===viewDate&&a.status!=="cancelled");
+  const hours=Array.from({length:22},(_,i)=>{const h=Math.floor(i/2)+9;const m=i%2===0?"00":"30";return `${h.toString().padStart(2,"0")}:${m}`;});
+  return(
+    <div style={{padding:20}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+        <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Agenda</h3>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          <button onClick={()=>{const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()-1);setViewDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid #F0EDE8",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>←</button>
+          <span style={{fontSize:13,fontWeight:700}}>{formatDateLabel(viewDate)}</span>
+          <button onClick={()=>{const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()+1);setViewDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid #F0EDE8",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>→</button>
+        </div>
+      </div>
+      <div style={{overflowX:"auto"}}>
+        <div style={{minWidth:600,display:"grid",gridTemplateColumns:`60px repeat(${professionals.length},1fr)`,border:"1px solid #F0EDE8",borderRadius:12,overflow:"hidden",background:"#fff"}}>
+          <div style={{background:"#F8F7F5",padding:"10px 8px",borderRight:"1px solid #F0EDE8",borderBottom:"1px solid #F0EDE8"}}/>
+          {professionals.map(p=>(
+            <div key={p.id} style={{background:"#F8F7F5",padding:"10px 8px",borderRight:"1px solid #F0EDE8",borderBottom:"1px solid #F0EDE8",textAlign:"center"}}>
+              <Avatar initials={p.avatar} size={28}/><p style={{margin:"4px 0 0",fontSize:11,fontWeight:700}}>{p.name}</p>
+            </div>
+          ))}
+          {hours.map(hour=>(
+            <>
+              <div key={`h-${hour}`} style={{padding:"8px 6px",borderRight:"1px solid #F0EDE8",borderBottom:"1px solid #F8F7F5",fontSize:11,color:"#aaa",textAlign:"right"}}>{hour}</div>
+              {professionals.map(p=>{
+                const apt=dayApts.find(a=>a.professionalId===p.id&&a.time===hour);
+                const svc=apt?services.find(s=>s.id===apt.serviceId):null;
+                return(
+                  <div key={`${hour}-${p.id}`} style={{padding:"4px 6px",borderRight:"1px solid #F0EDE8",borderBottom:"1px solid #F8F7F5",minHeight:36}}>
+                    {apt&&<div style={{background:"#111",borderRadius:6,padding:"4px 8px",color:"#fff"}}><p style={{margin:0,fontSize:11,fontWeight:800}}>{apt.clientName}</p><p style={{margin:0,fontSize:10,color:"#B89A5A"}}>{svc?.name}</p></div>}
+                  </div>
+                );
+              })}
+            </>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AdminApts({appointments}){
+  return(
+    <div style={{padding:20}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+        <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Reservas</h3>
+        <button style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button>
+      </div>
+      {appointments.slice(0,15).map(a=>{
+        const prof=professionals.find(p=>p.id===a.professionalId);
+        const svc=services.find(s=>s.id===a.serviceId);
+        const sc={confirmed:{bg:"#EFF8F0",c:"#2E7D32"},completed:{bg:"#F0EDE8",c:"#888"},cancelled:{bg:"#FFF0EE",c:"#C0392B"}}[a.status]||{bg:"#F0EDE8",c:"#888"};
+        return(
+          <Card key={a.id} style={{marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+              <div><p style={{margin:"0 0 2px",fontSize:14,fontWeight:800}}>{a.clientName}</p><p style={{margin:0,fontSize:12,color:"#888"}}>{svc?.name} · {prof?.name}</p><p style={{margin:"4px 0 0",fontSize:12,color:"#aaa"}}>{formatDateLabel(a.date)} a las {a.time}</p></div>
+              <div style={{textAlign:"right"}}><span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c,display:"block",marginBottom:4}}>{{confirmed:"Confirmada",completed:"Completada",cancelled:"Cancelada"}[a.status]}</span><span style={{fontSize:14,fontWeight:800,color:"#B89A5A"}}>{a.price} €</span></div>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+
+const clientsDemo=[
+  {id:1,name:"Andrés Martínez",phone:"666111001",visits:18,total:540,lastVisit:"Ayer",notes:"Barba larga. Degradado al 1.5 en laterales. No tocar la parte de arriba.",professional:"Víctor"},
+  {id:2,name:"Javier Pérez",phone:"666111002",visits:12,total:288,lastVisit:"Hace 2 días",notes:"Skin fade. Siempre al cero en laterales. Le gusta bastante largo arriba.",professional:"Miguel"},
+  {id:3,name:"Ricardo López",phone:"666111003",visits:8,total:384,lastVisit:"Hoy",notes:"Fiel a la experiencia completa. Prefiere Víctor. Afeitado con navaja solo.",professional:"Víctor"},
+  {id:4,name:"Carmen Ruiz",phone:"666111004",visits:6,total:540,lastVisit:"Hoy",notes:"Balayage recurrente cada 3 meses. Pelo muy fino. Evitar decoloraciones agresivas.",professional:"Sara"},
+  {id:5,name:"Diego Vera",phone:"666111007",visits:9,total:180,lastVisit:"Hoy",notes:"Corte clásico. Degradado suave al 2. Nuca cuadrada.",professional:"Álex"},
+];
+
+function AdminClients(){
+  const [sel,setSel]=useState(null);
+  return(
+    <div style={{padding:20}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+        <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Clientes</h3>
+        <div style={{background:"#F8F7F5",borderRadius:20,padding:"4px 12px",fontSize:12,color:"#888"}}>{clientsDemo.length} clientes</div>
+      </div>
+      {sel?(
+        <div>
+          <button onClick={()=>setSel(null)} style={{background:"none",border:"none",color:"#888",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:12}}>← Volver</button>
+          <Card>
+            <div style={{display:"flex",gap:14,alignItems:"center",marginBottom:14}}>
+              <div style={{width:52,height:52,borderRadius:"50%",background:"#1a1a1a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,color:"#B89A5A",fontWeight:800}}>{sel.name[0]}</div>
+              <div><p style={{margin:0,fontSize:18,fontWeight:800}}>{sel.name}</p><p style={{margin:"2px 0 0",fontSize:12,color:"#888"}}>📞 {sel.phone}</p></div>
+            </div>
+            <Divider/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:14}}>
+              {[["Visitas",sel.visits],["Gasto total",`${sel.total} €`],["Último",sel.lastVisit],["Barbero",sel.professional]].map(([l,v])=>(
+                <div key={l}><p style={{margin:0,fontSize:11,color:"#aaa"}}>{l}</p><p style={{margin:"2px 0 0",fontSize:14,fontWeight:800}}>{v}</p></div>
+              ))}
+            </div>
+            <Divider/>
+            <p style={{margin:"0 0 6px",fontSize:11,fontWeight:700,color:"#888",textTransform:"uppercase",letterSpacing:1}}>Notas del barbero</p>
+            <div style={{background:"#FFFDF7",border:"1px solid #F0EDE8",borderRadius:10,padding:"10px 14px"}}>
+              <p style={{margin:0,fontSize:13,color:"#444",lineHeight:1.6,fontStyle:"italic"}}>"{sel.notes}"</p>
+            </div>
+          </Card>
+        </div>
+      ):(
+        clientsDemo.map(c=>(
+          <div key={c.id} onClick={()=>setSel(c)} style={{display:"flex",alignItems:"center",gap:14,padding:16,background:"#fff",borderRadius:14,marginBottom:10,cursor:"pointer",border:"1.5px solid #F0EDE8"}}>
+            <div style={{width:42,height:42,borderRadius:"50%",background:"#1a1a1a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,color:"#B89A5A",fontWeight:800}}>{c.name[0]}</div>
+            <div style={{flex:1}}><p style={{margin:0,fontSize:14,fontWeight:800}}>{c.name}</p><p style={{margin:"2px 0 0",fontSize:12,color:"#888"}}>{c.visits} visitas · {c.total} €</p></div>
+            <div style={{textAlign:"right"}}><p style={{margin:0,fontSize:11,color:"#aaa"}}>Último</p><p style={{margin:"2px 0 0",fontSize:12,fontWeight:700}}>{c.lastVisit}</p></div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+function AdminProfs(){
+  return(
+    <div style={{padding:20}}>
+      <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:800}}>Equipo</h3>
+      {professionals.map(p=>(
+        <Card key={p.id} style={{marginBottom:12}}>
+          <div style={{display:"flex",gap:14,alignItems:"center"}}>
+            <Avatar initials={p.avatar} size={52}/>
+            <div style={{flex:1}}>
+              <p style={{margin:0,fontSize:16,fontWeight:800}}>{p.name}</p>
+              <p style={{margin:"2px 0 4px",fontSize:12,color:"#888"}}>{p.role}</p>
+              <div style={{display:"flex",flexWrap:"wrap",gap:4}}>{p.specialties.map(s=><Badge key={s}>{s}</Badge>)}</div>
+            </div>
+            <div><Stars rating={p.rating} size={13}/><p style={{margin:"2px 0 0",fontSize:13,fontWeight:800,color:"#B89A5A",textAlign:"center"}}>{p.rating}</p></div>
+          </div>
+          <Divider/>
+          <div style={{display:"flex",gap:8}}>
+            <button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Ver agenda</button>
+            <button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Editar</button>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function AdminStats({appointments}){
+  const totalRevenue=appointments.filter(a=>a.status!=="cancelled").reduce((s,a)=>s+a.price,0);
+  const byService={};
+  appointments.forEach(a=>{const svc=services.find(s=>s.id===a.serviceId);const n=svc?.name||a.serviceId;byService[n]=(byService[n]||0)+1;});
+  const topServices=Object.entries(byService).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const byProf={};
+  appointments.filter(a=>a.status!=="cancelled").forEach(a=>{const p=professionals.find(pr=>pr.id===a.professionalId);byProf[p?.name||a.professionalId]=(byProf[p?.name||a.professionalId]||0)+1;});
+  return(
+    <div style={{padding:20}}>
+      <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:800}}>Estadísticas</h3>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
+        {[{l:"Facturación",v:`${totalRevenue} €`,c:"#B89A5A"},{l:"Citas",v:appointments.filter(a=>a.status!=="cancelled").length,c:"#4CAF50"},{l:"Ticket medio",v:`${Math.round(totalRevenue/Math.max(1,appointments.filter(a=>a.status!=="cancelled").length))} €`,c:"#1a1a1a"},{l:"Tasa cancel.",v:"0%",c:"#E74C3C"}].map(s=>(
+          <Card key={s.l} style={{textAlign:"center"}}><p style={{margin:"0 0 4px",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:1}}>{s.l}</p><p style={{margin:0,fontSize:22,fontWeight:800,color:s.c}}>{s.v}</p></Card>
+        ))}
+      </div>
+      <Card style={{marginBottom:16}}>
+        <p style={{margin:"0 0 12px",fontSize:13,fontWeight:800}}>Servicios más solicitados</p>
+        {topServices.map(([name,count])=>(
+          <div key={name}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}><span style={{fontSize:13,color:"#444"}}>{name}</span><span style={{fontSize:13,fontWeight:700}}>{count}</span></div>
+            <div style={{height:5,background:"#F0EDE8",borderRadius:3,marginBottom:10}}><div style={{height:"100%",width:`${(count/(topServices[0][1]||1))*100}%`,background:"#B89A5A",borderRadius:3}}/></div>
+          </div>
+        ))}
+      </Card>
+      <Card>
+        <p style={{margin:"0 0 12px",fontSize:13,fontWeight:800}}>Por profesional</p>
+        {Object.entries(byProf).sort((a,b)=>b[1]-a[1]).map(([name,count])=>{
+          const p=professionals.find(pr=>pr.name===name);
+          return(
+            <div key={name} style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
+              <Avatar initials={p?.avatar||name[0]} size={36}/>
+              <div style={{flex:1}}><p style={{margin:0,fontSize:13,fontWeight:700}}>{name}</p><div style={{height:4,background:"#F0EDE8",borderRadius:2,marginTop:4}}><div style={{height:"100%",width:`${(count/appointments.length)*100}%`,background:"#1a1a1a",borderRadius:2}}/></div></div>
+              <span style={{fontSize:13,fontWeight:800}}>{count}</span>
+            </div>
+          );
+        })}
+      </Card>
+    </div>
+  );
+}
+
+function AdminSettings(){
+  return(
+    <div style={{padding:20,paddingBottom:40}}>
+      <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:800}}>Configuración</h3>
+      <Card style={{marginBottom:16}}>
+        <p style={{margin:"0 0 14px",fontSize:13,fontWeight:800}}>Identidad del negocio</p>
+        {[["Nombre","Victor Monió"],["Subtítulo","Barbería"],["Eslogan","Desde 2013"],["Teléfono","963 000 000"],["WhatsApp","34963000000"],["Dirección","Calle Colón 14, Valencia"]].map(([l,v])=>(
+          <div key={l} style={{marginBottom:12}}>
+            <label style={{display:"block",fontSize:11,color:"#888",marginBottom:4,textTransform:"uppercase",letterSpacing:0.8}}>{l}</label>
+            <input defaultValue={v} style={{width:"100%",padding:"10px 12px",border:"1.5px solid #E8E8E8",borderRadius:10,fontSize:14,fontFamily:"inherit",outline:"none",boxSizing:"border-box"}}/>
+          </div>
+        ))}
+      </Card>
+      <Card style={{marginBottom:16}}>
+        <p style={{margin:"0 0 14px",fontSize:13,fontWeight:800}}>Horario semanal</p>
+        {["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"].map((day,i)=>{
+          const sch=businessConfig.schedule[i];
+          return(
+            <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:"1px solid #F8F7F5"}}>
+              <span style={{fontSize:13,fontWeight:700,width:40}}>{day}</span>
+              {sch?<span style={{fontSize:13,color:"#444"}}>{sch.open} – {sch.close}</span>:<span style={{fontSize:12,color:"#aaa",background:"#F8F7F5",padding:"2px 10px",borderRadius:20}}>Cerrado</span>}
+              <button style={{background:"none",border:"1.5px solid #F0EDE8",borderRadius:8,padding:"4px 10px",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Editar</button>
+            </div>
+          );
+        })}
+      </Card>
+      <Card style={{marginBottom:16}}>
+        <p style={{margin:"0 0 14px",fontSize:13,fontWeight:800}}>QR y NFC</p>
+        <div style={{textAlign:"center",padding:16}}>
+          <div style={{width:110,height:110,margin:"0 auto 12px",background:"#111",borderRadius:12,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:4}}>
+            <span style={{fontSize:32,color:"#B89A5A"}}>VM</span>
+            <span style={{fontSize:10,color:"#555"}}>QR Code</span>
+          </div>
+          <p style={{margin:"0 0 12px",fontSize:13,color:"#888"}}>Escanea y reserva tu próxima cita</p>
+          <div style={{display:"flex",gap:8,marginBottom:12}}>
+            {["QR Mostrador","QR Tarjeta","QR Redes"].map(t=><button key={t} style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:"8px 4px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{t}</button>)}
+          </div>
+          <div style={{background:"#111",borderRadius:10,padding:"12px 16px",textAlign:"left"}}>
+            <p style={{margin:"0 0 4px",fontSize:12,fontWeight:800,color:"#B89A5A"}}>📱 NFC</p>
+            <p style={{margin:0,fontSize:12,color:"#666",lineHeight:1.5}}>El enlace puede grabarse en una placa o tarjeta NFC para mostrador, espejo o escaparate.</p>
+          </div>
+        </div>
+      </Card>
+      <Btn style={{width:"100%"}}>Guardar cambios</Btn>
+    </div>
+  );
+}
+
+// ============================================================
+// LANDING
+// ============================================================
+// ============================================================
+// PORTADA SAAS — tres accesos claros
+// ============================================================
+
+
+// ══ ClientApp ══
+
+function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo }){
+  const [clientNav,setClientNav]=useState("home");
+  const [bookingService,setBookingService]=useState(null);
+  const [user,setUser]=useState(demoMode?{name:"Demo",phone:"000000000"}:null);
+  const [loginContext,setLoginContext]=useState("appointments");
+  const [showLogin,setShowLogin]=useState(false);
+  const [slideDir,setSlideDir]=useState(null);
+  const [animKey,setAnimKey]=useState(0);
+
+  const TAB_ORDER=["home","services","booking","appointments","profile"];
+
+  function handleNavWithReset(view,dir=null){
+    if(view!=="booking") setBookingService(null);
+    if(!demoMode&&(view==="appointments"||view==="profile")&&!user){
+      setLoginContext(view); setShowLogin(true); return;
+    }
+    setShowLogin(false);
+    if(dir){setSlideDir(dir);setAnimKey(k=>k+1);}
+    setClientNav(view);
+  }
+  function handleSwipeLeft(){
+    if(showLogin) return;
+    const cur=TAB_ORDER.indexOf(clientNav);
+    if(cur<TAB_ORDER.length-1) handleNavWithReset(TAB_ORDER[cur+1],"left");
+  }
+  function handleSwipeRight(){
+    if(showLogin) return;
+    const cur=TAB_ORDER.indexOf(clientNav);
+    if(cur>0) handleNavWithReset(TAB_ORDER[cur-1],"right");
+  }
+  const swipeHandlers=useSwipe(handleSwipeLeft,handleSwipeRight);
+
+  const slideStyle=slideDir?{animation:`slideIn${slideDir==="left"?"Left":"Right"} 0.28s cubic-bezier(0.25,0.46,0.45,0.94) both`}:{};
+  const topPad=demoMode?44:0;
+
+  return(
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:430,margin:"0 auto",background:"#F8F7F5",minHeight:"100vh",overflow:"hidden"}}>
+      <style>{`
+        @keyframes slideInLeft{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes slideInRight{from{transform:translateX(-40px);opacity:0}to{transform:translateX(0);opacity:1}}
+      `}</style>
+
+      {demoMode&&<DemoBanner label="Estás probando la app como cliente" onBack={onExitDemo}/>}
+
+      {showLogin?(
+        <div style={{paddingTop:topPad}}>
+          <LoginView context={loginContext} onLogin={u=>{setUser(u);setShowLogin(false);setClientNav(loginContext);}} onBack={()=>{setShowLogin(false);setClientNav("home");}}/>
+        </div>
+      ):(
+        <div key={animKey} style={{...slideStyle,minHeight:"100vh",paddingTop:topPad}} {...swipeHandlers}>
+          {clientNav==="home"&&<HomeView onNav={handleNavWithReset} appointments={appointments} onReservar={()=>setClientNav("booking")}/>}
+          {clientNav==="services"&&<ServicesView onBookService={s=>{setBookingService(s);setClientNav("booking");}}/>}
+          {clientNav==="booking"&&<BookingView key={bookingService?.id||"booking"} appointments={appointments} onAppointmentCreated={onAppointmentCreated} initialService={bookingService}/>}
+          {clientNav==="appointments"&&<AppointmentsView appointments={appointments}/>}
+          {clientNav==="profile"&&(user?<ProfileViewLoggedIn user={user} onLogout={()=>{if(!demoMode){setUser(null);setClientNav("home");}}}/>:<ProfileView/>)}
+        </div>
+      )}
+      <BottomNav active={showLogin?loginContext:clientNav} onNav={v=>handleNavWithReset(v)}/>
+    </div>
+  );
+}
+
+// ============================================================
+// BUSINESS APP — wrapper reutilizable (demo + producción)
+// ============================================================
+
+
+// ══ BusinessApp ══
+
+function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo, onReset }){
+  const topPad=demoMode?44:0;
+  return(
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:430,margin:"0 auto",height:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
+      {demoMode&&<DemoBanner label="Panel del negocio" onBack={onExitDemo} onReset={onReset}/>}
+      <div style={{flex:1,overflowY:"auto",paddingTop:topPad}}>
+        <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated}/>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// APP PRINCIPAL
+// ============================================================
+
+
+// ══ App ══
+
+export default function App(){
+  // mode: landing | demo | demoClient | demoBusiness | client | business | businessLogin
+  const [mode,setMode]=useState("landing");
+  const [appointments,setAppointments]=useState(initialAppointments);
+
+  function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
+  function handleResetDemo(){setAppointments(initialAppointments);}
+
+  const W="'Inter',-apple-system,BlinkMacSystemFont,sans-serif";
+
+  // ── LANDING
+  if(mode==="landing") return(
+    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh"}}>
+      <LandingPage
+        onDemo={()=>setMode("demo")}
+        onClient={()=>setMode("client")}
+        onBusiness={()=>setMode("businessLogin")}
+      />
+    </div>
+  );
+
+  // ── DEMO PORTAL
+  if(mode==="demo") return(
+    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh",maxWidth:430,margin:"0 auto"}}>
+      <DemoPortal
+        onDemoClient={()=>setMode("demoClient")}
+        onDemoBusiness={()=>setMode("demoBusiness")}
+        onBack={()=>setMode("landing")}
+      />
+    </div>
+  );
+
+  // ── DEMO CLIENTE
+  if(mode==="demoClient") return(
+    <ClientApp
+      appointments={appointments}
+      onAppointmentCreated={handleAppointmentCreated}
+      demoMode={true}
+      onExitDemo={()=>setMode("demo")}
+    />
+  );
+
+  // ── DEMO PELUQUERÍA
+  if(mode==="demoBusiness") return(
+    <BusinessApp
+      appointments={appointments}
+      onAppointmentCreated={handleAppointmentCreated}
+      demoMode={true}
+      onExitDemo={()=>setMode("demo")}
+      onReset={handleResetDemo}
+    />
+  );
+
+  // ── CLIENTE REAL
+  if(mode==="client") return(
+    <ClientApp
+      appointments={appointments}
+      onAppointmentCreated={handleAppointmentCreated}
+      demoMode={false}
+    />
+  );
+
+  // ── LOGIN PELUQUERÍA
+  if(mode==="businessLogin") return(
+    <div style={{fontFamily:W,maxWidth:430,margin:"0 auto",minHeight:"100vh"}}>
+      <BusinessLogin
+        onLogin={()=>setMode("business")}
+        onDemoAccess={()=>setMode("demoBusiness")}
+        onBack={()=>setMode("landing")}
+      />
+    </div>
+  );
+
+  // ── PELUQUERÍA REAL
+  if(mode==="business") return(
+    <BusinessApp
+      appointments={appointments}
+      onAppointmentCreated={handleAppointmentCreated}
+      demoMode={false}
+    />
+  );
+
+  return null;
+}
+
+
+
+// ══ RENDER ══
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(React.StrictMode, null, React.createElement(App)));
+
+  </script>
+</body>
+</html>
