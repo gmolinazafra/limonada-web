@@ -582,20 +582,7 @@ function DemoPortal({onDemoClient,onDemoBusiness,onBack}){
   );
 }
 
-function DemoBanner({label,onBack,onReset}){
-  return(
-    <div style={{position:'fixed',top:0,left:0,right:0,zIndex:300,background:'rgba(17,17,17,0.96)',backdropFilter:'blur(10px)',borderBottom:`1px solid ${T.goldBorder}`,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 16px',maxWidth:860,margin:'0 auto'}}>
-      <div style={{display:'flex',alignItems:'center',gap:8}}>
-        <span style={{background:T.gold,color:'#fff',fontSize:9,fontWeight:800,padding:'2px 9px',borderRadius:20,letterSpacing:1.2,textTransform:'uppercase'}}>DEMO</span>
-        <span style={{fontSize:12,color:'rgba(255,255,255,0.5)'}}>{label}</span>
-      </div>
-      <div style={{display:'flex',gap:8}}>
-        {onReset&&<button onClick={onReset} style={{background:'none',border:`1px solid ${T.goldBorder}`,borderRadius:8,padding:'4px 11px',color:T.gold,fontSize:11,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>Restablecer</button>}
-        <button onClick={onBack} style={{background:'none',border:'none',color:'rgba(255,255,255,0.4)',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>← Salir</button>
-      </div>
-    </div>
-  );
-}
+function DemoBanner(){return null;}
 
 function BusinessLogin({onLogin,onDemoAccess,onBack}){
   const [email,setEmail]=React.useState('');
@@ -627,8 +614,6 @@ function BusinessLogin({onLogin,onDemoAccess,onBack}){
   );
 }
 
-// DemoBanner eliminado por configuración — el menú hamburguesa lo reemplaza
-function DemoBanner(){return null;}
 
 
 
