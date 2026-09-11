@@ -313,7 +313,20 @@ const ORDER_CSS=`
 .ord-tl li.cur .dot{background:#C8860A;box-shadow:0 0 0 4px #F3E3C2}
 .ord-tl b{font-size:.85rem;display:block}
 .ord-tl small{color:#8A8275;font-size:.7rem}
-@media print{.ord-bar,.ord-overlay{display:none!important}}
+.novelty-pill-wrap{display:flex;justify-content:center;margin:14px 0 6px}
+.novelty-pill{background:#C8860A;color:#2A1B04;border:none;border-radius:30px;padding:9px 20px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);animation:noveltyPulse 2.4s ease-in-out infinite}
+.novelty-pill:hover{background:#e0980f}
+@keyframes noveltyPulse{0%,100%{box-shadow:0 6px 18px rgba(200,134,10,.35)}50%{box-shadow:0 6px 22px rgba(200,134,10,.7)}}
+.novelty-modal{background:#fff;color:#2C2620;border-radius:16px;max-width:560px;width:92%;max-height:88vh;overflow-y:auto;padding:28px 24px;position:relative;font-family:'Inter',sans-serif;line-height:1.55}
+.novelty-modal h2{font:600 1.25rem/1.35 'Playfair Display',Georgia,serif;margin:0 0 14px;padding-right:24px}
+.novelty-modal p{margin:0 0 12px;font-size:.95rem}
+.novelty-steps{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
+.novelty-steps li{background:#F7F3EE;border-radius:10px;padding:10px 14px;font-size:.9rem}
+.novelty-tagline{color:#2C4A3E;font-size:1.02rem}
+.novelty-brand{margin-top:16px;padding-top:14px;border-top:1px solid #E8E0D5;font-size:.85rem;color:#645f54}
+.novelty-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.5rem;line-height:1;cursor:pointer;color:#645f54;width:32px;height:32px}
+@media(max-width:700px){.novelty-modal{padding:22px 18px}.novelty-modal h2{font-size:1.1rem}}
+@media print{.novelty-pill-wrap,.ord-bar,.ord-overlay{display:none!important}}
 `;
 // ── Impresión de ticket (ventana aislada, compatible con impresora normal/térmica) ──
 function imprimirTicket(order,data){
@@ -2190,11 +2203,37 @@ Object.assign(ENGLISH,{"Lista de espera":"Waiting list","Cerrar lista de espera"
 function LanguageFlag({code}) {
   return code==="es"?<svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/></svg>:<svg width="30" height="20" viewBox="0 0 60 40" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" strokeWidth="8"/><path d="M0 0L30 20M60 40L30 20M60 0L30 20M0 40L30 20" stroke="#C8102E" strokeWidth="3"/><path d="M30 0V40M0 20H60" stroke="#fff" strokeWidth="13"/><path d="M30 0V40M0 20H60" stroke="#C8102E" strokeWidth="8"/></svg>;
 }
+function NoveltyModal({onClose}){
+  return(
+    <div className="ord-overlay" role="dialog" aria-modal="true" aria-label="Novedades" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+      <div className="novelty-modal">
+        <button type="button" className="novelty-close" aria-label="Cerrar" onClick={onClose}>×</button>
+        <h2>🍽️ ¿Y si tus clientes pudieran pedir directamente desde la mesa sin tener que esperar al camarero?</h2>
+        <p>Estamos incorporando una nueva función a nuestra Carta Digital con Maitre Bot. 📲✨</p>
+        <p>El cliente se sienta, escanea el QR o NFC de la mesa y consulta la carta como siempre.</p>
+        <ul className="novelty-steps">
+          <li>🛒 Añade platos y bebidas a su pedido.</li>
+          <li>🔐 El camarero autoriza la mesa al comenzar.</li>
+          <li>📲 El cliente pulsa "Enviar pedido".</li>
+          <li>🧾 Y el pedido llega directamente al restaurante y puede imprimirse automáticamente en cocina o barra.</li>
+        </ul>
+        <p>¿Quieren otra ronda de bebidas? 🍻<br/>¿Han decidido pedir postre? 🍰<br/>¿Un café después de comer? ☕</p>
+        <p>Pueden realizar nuevos pedidos desde su propio móvil sin tener que esperar a que vuelva el camarero.</p>
+        <p>Y el restaurante mantiene el control en todo momento: cada mesa tiene su propia sesión autorizada y los pedidos quedan registrados.</p>
+        <p>No se trata de sustituir al camarero. Se trata de quitarle desplazamientos innecesarios y permitirle dedicar más tiempo a atender al cliente.</p>
+        <p className="novelty-tagline"><strong>🤖 Carta Digital + Maitre Bot + Pedidos desde mesa</strong></p>
+        <p>Una carta digital que ya no solo enseña lo que tienes.<br/>Ahora también te ayuda a venderlo. 🍋</p>
+        <div className="novelty-brand">🌐 Limonada Web<br/><small>Exprimimos Internet para tu negocio.</small></div>
+      </div>
+    </div>
+  );
+}
 function CartaPublica({ data, fotos, onAdmin }) {
   const [language,setLanguage]=useState(()=>{try{return localStorage.getItem("carta-language")==="en"?"en":"es";}catch{return "es";}});
   const locale=React.useMemo(()=>({code:language,words:translationWords(data)}),[language,data]);
   const [audioOpen,setAudioOpen]=useState(false);
   const [waitlistOpen,setWaitlistOpen]=useState(()=>typeof window!=="undefined"&&new URLSearchParams(window.location?.search||"").has("espera"));
+  const [noveltyOpen,setNoveltyOpen]=useState(false);
   const waitlistButton=useRef(null);
   const menuReturnFilter=useRef("all");
   const closeSetMenu=()=>{setFilter("all");requestAnimationFrame(()=>document.querySelector('[data-menu-shortcut="'+menuReturnFilter.current+'"]')?.focus({preventScroll:true}));};
@@ -2249,6 +2288,8 @@ function CartaPublica({ data, fotos, onAdmin }) {
         <div className="menu-eyebrow">MÁLAGA · A LA MESA</div>
         <div style={{fontSize:12,color:"#fff3de",marginBottom:10}}>Carta demo · platos, vinos y precios de ejemplo</div>
         <h1>{r.nombre}</h1><p>{r.subtitulo}</p>
+        <div className="novelty-pill-wrap"><button type="button" className="novelty-pill" onClick={()=>setNoveltyOpen(true)}>🎉 Novedades</button></div>
+        {noveltyOpen&&<NoveltyModal onClose={()=>setNoveltyOpen(false)}/>}
         <details className="restaurant-info"><summary>Horario y contacto</summary>
           <div>{r.horario}</div><div>{r.direccion}</div><a href={"tel:"+r.telefono}>{r.telefono}</a>
         </details>
@@ -3081,7 +3122,7 @@ if(DEMO_PHOTOS.p1&&!DEMO_PHOTOS.d2)DEMO_PHOTOS.d2={...DEMO_PHOTOS.p1};
 Object.assign(DEMO_SECTIONS,window.LW_ORD.SECT_ADD);
 // ── Traducciones de todo lo nuevo (se integran en el sistema existente) ──
 Object.assign(ENGLISH,{
-"← Volver a la carta":"← Back to the menu","Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
+"← Volver a la carta":"← Back to the menu","🎉 Novedades":"🎉 What's new","Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
 "Carrito vacío. Añade platos desde la carta.":"Your basket is empty. Add dishes from the menu.",
 "Elige tamaño":"Choose size","Extras":"Extras","Extras de la hamburguesa":"Burger extras","Formato":"Serving","Hielo":"Ice","Con hielo":"With ice","Sin hielo":"No ice",
 "Elige hamburguesa":"Choose your burger","Elige patatas":"Choose your fries","Elige bebida":"Choose your drink",
