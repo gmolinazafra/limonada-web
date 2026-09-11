@@ -11,10 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8F7F5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    html, body { margin: 0; padding: 0; background: #0a0a0a; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
     #root { min-height: 100vh; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -1993,28 +1993,25 @@ function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExi
 
 
 // ══ APP ══
-function HamburgerMenu({onDemo, onBusiness, onClient}) {
+function HamburgerMenu({onClient, onDemo, onBusiness}) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{position:'fixed',top:0,right:0,zIndex:500}}>
-      <button
-        onClick={()=>setOpen(!open)}
-        style={{background:'rgba(17,17,17,0.92)',backdropFilter:'blur(8px)',border:'none',borderLeft:'1px solid rgba(184,154,90,0.2)',borderBottom:'1px solid rgba(184,154,90,0.2)',borderBottomLeftRadius:12,padding:'10px 14px',cursor:'pointer',display:'flex',flexDirection:'column',gap:5,alignItems:'center'}}
-      >
-        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',transition:'all 0.2s'}}/>
-        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',opacity:open?0:1,transition:'all 0.2s'}}/>
-        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',transition:'all 0.2s'}}/>
+    <div style={{position:'fixed',top:0,right:0,zIndex:600}}>
+      <button onClick={()=>setOpen(!open)} style={{background:'rgba(17,17,17,0.95)',backdropFilter:'blur(8px)',border:'none',borderLeft:'1px solid rgba(184,154,90,0.25)',borderBottom:'1px solid rgba(184,154,90,0.25)',borderBottomLeftRadius:12,padding:'11px 14px',cursor:'pointer',display:'flex',flexDirection:'column',gap:5,alignItems:'center'}}>
+        <span style={{display:'block',width:22,height:2,background:'#fff',transition:'all 0.2s',transform:open?'rotate(45deg) translate(5px,5px)':'none'}}/>
+        <span style={{display:'block',width:22,height:2,background:'#fff',opacity:open?0:1,transition:'opacity 0.2s'}}/>
+        <span style={{display:'block',width:22,height:2,background:'#fff',transition:'all 0.2s',transform:open?'rotate(-45deg) translate(5px,-5px)':'none'}}/>
       </button>
       {open && (
-        <div style={{position:'absolute',top:'100%',right:0,background:'rgba(17,17,17,0.97)',backdropFilter:'blur(12px)',border:'1px solid rgba(184,154,90,0.2)',borderRadius:'0 0 0 14px',overflow:'hidden',minWidth:200}}>
+        <div style={{position:'absolute',top:'100%',right:0,background:'rgba(14,14,14,0.98)',backdropFilter:'blur(16px)',border:'1px solid rgba(184,154,90,0.2)',borderRadius:'0 0 0 14px',overflow:'hidden',minWidth:210,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
           {[
             {label:'Vista Cliente',desc:'App de reservas',icon:'◎',action:()=>{onClient();setOpen(false);}},
-            {label:'Ver Demo',desc:'Prueba todas las funciones',icon:'✦',action:()=>{onDemo();setOpen(false);}},
+            {label:'Ver Demo',desc:'Selector de prueba',icon:'✦',action:()=>{onDemo();setOpen(false);}},
             {label:'Panel Peluquería',desc:'Gestión del negocio',icon:'◫',action:()=>{onBusiness();setOpen(false);}},
           ].map((item,i,arr)=>(
             <button key={item.label} onClick={item.action} style={{display:'block',width:'100%',background:'none',border:'none',borderBottom:i<arr.length-1?'1px solid rgba(255,255,255,0.06)':'none',padding:'14px 18px',textAlign:'left',cursor:'pointer',fontFamily:'inherit'}}>
               <div style={{display:'flex',alignItems:'center',gap:10}}>
-                <span style={{fontSize:18,color:'#B89A5A',width:24}}>{item.icon}</span>
+                <span style={{fontSize:18,color:'#B89A5A',width:24,flexShrink:0}}>{item.icon}</span>
                 <div>
                   <p style={{margin:0,fontSize:13,fontWeight:700,color:'#fff'}}>{item.label}</p>
                   <p style={{margin:0,fontSize:11,color:'#666'}}>{item.desc}</p>
@@ -2022,8 +2019,80 @@ function HamburgerMenu({onDemo, onBusiness, onClient}) {
               </div>
             </button>
           ))}
+          <div style={{padding:'10px 18px',borderTop:'1px solid rgba(255,255,255,0.06)'}}>
+            <p style={{margin:0,fontSize:10,color:'#444',textAlign:'center',letterSpacing:1}}>DEMO LIMONADA WEB</p>
+          </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// Wrapper desktop: móvil centrado con contexto comercial a los lados
+function DesktopWrapper({children, mode}) {
+  const features = [
+    {icon:'◈', text:'Tu marca, no la plataforma'},
+    {icon:'∞', text:'Reservas ilimitadas'},
+    {icon:'◫', text:'Agenda inteligente'},
+    {icon:'◎', text:'CRM de clientes'},
+    {icon:'⬡', text:'QR y NFC'},
+    {icon:'↺', text:'Recordatorios automáticos'},
+    {icon:'✦', text:'Sin comisión por reserva'},
+  ];
+  return (
+    <div style={{minHeight:'100vh',background:'#0a0a0a',display:'flex',alignItems:'stretch'}}>
+      {/* Columna izquierda */}
+      <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'60px 48px',maxWidth:360}}>
+        <p style={{margin:'0 0 8px',fontSize:10,letterSpacing:3,color:'#B89A5A',fontWeight:700,textTransform:'uppercase'}}>Demo comercial</p>
+        <h1 style={{margin:'0 0 12px',fontSize:28,fontWeight:800,color:'#fff',lineHeight:1.2}}>Tu peluquería<br/>en el móvil<br/>de tus clientes</h1>
+        <p style={{margin:'0 0 32px',fontSize:14,color:'#555',lineHeight:1.7}}>Reservas 24/7 con tu propia marca. Cuota fija, sin comisión por reserva.</p>
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          {features.map(f=>(
+            <div key={f.text} style={{display:'flex',alignItems:'center',gap:10}}>
+              <span style={{fontSize:14,color:'#B89A5A',width:20,flexShrink:0}}>{f.icon}</span>
+              <span style={{fontSize:13,color:'#777'}}>{f.text}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{marginTop:40,paddingTop:32,borderTop:'1px solid #1a1a1a'}}>
+          <p style={{margin:'0 0 6px',fontSize:11,color:'#444'}}>Una demo de</p>
+          <p style={{margin:0,fontSize:15,fontWeight:700,color:'#B89A5A'}}>Limonada Web</p>
+          <p style={{margin:'2px 0 0',fontSize:12,color:'#444'}}>limonadaweb.com</p>
+        </div>
+      </div>
+
+      {/* Móvil centrado */}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 0',flex:'0 0 auto'}}>
+        <div style={{width:430,height:'90vh',maxHeight:860,borderRadius:32,overflow:'hidden',boxShadow:'0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(184,154,90,0.15)',position:'relative',background:'#F8F7F5'}}>
+          <div style={{height:'100%',overflowY:'auto',overflowX:'hidden'}}>
+            {children}
+          </div>
+        </div>
+      </div>
+
+      {/* Columna derecha */}
+      <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'60px 48px',maxWidth:360}}>
+        <p style={{margin:'0 0 20px',fontSize:11,color:'#444',fontWeight:600,textTransform:'uppercase',letterSpacing:1.5}}>Estás viendo</p>
+        {[
+          {mode:'demoClient',label:'App Cliente',desc:'Cómo reserva un cliente desde su móvil',icon:'◎'},
+          {mode:'demoBusiness',label:'Panel Negocio',desc:'Gestión diaria para el propietario',icon:'◫'},
+        ].map(item=>(
+          <div key={item.mode} style={{marginBottom:12,padding:'16px 18px',background:mode===item.mode?'rgba(184,154,90,0.1)':'rgba(255,255,255,0.03)',border:`1px solid ${mode===item.mode?'rgba(184,154,90,0.4)':'rgba(255,255,255,0.06)'}`,borderRadius:14}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <span style={{fontSize:20,color:mode===item.mode?'#B89A5A':'#444'}}>{item.icon}</span>
+              <div>
+                <p style={{margin:0,fontSize:13,fontWeight:700,color:mode===item.mode?'#fff':'#555'}}>{item.label}</p>
+                <p style={{margin:0,fontSize:11,color:'#444',lineHeight:1.4}}>{item.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div style={{marginTop:24,padding:'16px 18px',background:'rgba(184,154,90,0.05)',border:'1px solid rgba(184,154,90,0.15)',borderRadius:14}}>
+          <p style={{margin:'0 0 6px',fontSize:11,color:'#B89A5A',fontWeight:700,textTransform:'uppercase',letterSpacing:1}}>¿Te interesa para tu negocio?</p>
+          <p style={{margin:'0 0 10px',fontSize:12,color:'#555',lineHeight:1.5}}>Configuramos tu app en 48h con tu marca, tus servicios y tu equipo.</p>
+          <a href="https://limonadaweb.com" target="_blank" style={{display:'block',background:'#B89A5A',color:'#fff',textDecoration:'none',borderRadius:10,padding:'10px 16px',fontSize:12,fontWeight:700,textAlign:'center'}}>Contactar →</a>
+        </div>
+      </div>
     </div>
   );
 }
@@ -2031,6 +2100,13 @@ function HamburgerMenu({onDemo, onBusiness, onClient}) {
 function App(){
   const [mode,setMode]=useState("demoClient");
   const [appointments,setAppointments]=useState(initialAppointments);
+  const [isDesktop,setIsDesktop]=useState(window.innerWidth>=900);
+
+  React.useEffect(()=>{
+    const handler=()=>setIsDesktop(window.innerWidth>=900);
+    window.addEventListener('resize',handler);
+    return()=>window.removeEventListener('resize',handler);
+  },[]);
 
   function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
   function handleResetDemo(){setAppointments(initialAppointments);}
@@ -2045,35 +2121,42 @@ function App(){
     />
   );
 
-  if(mode==="demo") return(
-    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh",maxWidth:430,margin:"0 auto"}}>
-      {menu}
+  let content;
+  if(mode==="demo") content=(
+    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100%",maxWidth:isDesktop?'100%':430,margin:"0 auto"}}>
       <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
     </div>
   );
-
-  if(mode==="demoClient") return(
+  else if(mode==="demoClient") content=(
     <div style={{fontFamily:W}}>
-      {menu}
       <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>
     </div>
   );
-
-  if(mode==="demoBusiness") return(
+  else if(mode==="demoBusiness") content=(
     <div style={{fontFamily:W}}>
-      {menu}
       <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>
     </div>
   );
-
-  if(mode==="businessLogin") return(
-    <div style={{fontFamily:W,maxWidth:430,margin:"0 auto",minHeight:"100vh"}}>
-      {menu}
+  else if(mode==="businessLogin") content=(
+    <div style={{fontFamily:W,minHeight:"100%"}}>
       <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
     </div>
   );
+  else content=null;
 
-  return null;
+  if(isDesktop) return(
+    <>
+      {menu}
+      <DesktopWrapper mode={mode}>{content}</DesktopWrapper>
+    </>
+  );
+
+  return(
+    <div style={{fontFamily:W}}>
+      {menu}
+      {content}
+    </div>
+  );
 }
 
 // ══ RENDER ══
