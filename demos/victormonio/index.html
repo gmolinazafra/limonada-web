@@ -1991,96 +1991,8 @@ function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExi
 // ============================================================
 
 
-// ══ App ══
 
-function App(){
-  // mode: landing | demo | demoClient | demoBusiness | client | business | businessLogin
-  const [mode,setMode]=useState("landing");
-  const [appointments,setAppointments]=useState(initialAppointments);
-
-  function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
-  function handleResetDemo(){setAppointments(initialAppointments);}
-
-  const W="'Inter',-apple-system,BlinkMacSystemFont,sans-serif";
-
-  // ── LANDING
-  if(mode==="landing") return(
-    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh"}}>
-      <LandingPage
-        onDemo={()=>setMode("demo")}
-        onClient={()=>setMode("client")}
-        onBusiness={()=>setMode("businessLogin")}
-      />
-    </div>
-  );
-
-  // ── DEMO PORTAL
-  if(mode==="demo") return(
-    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh",maxWidth:430,margin:"0 auto"}}>
-      <DemoPortal
-        onDemoClient={()=>setMode("demoClient")}
-        onDemoBusiness={()=>setMode("demoBusiness")}
-        onBack={()=>setMode("landing")}
-      />
-    </div>
-  );
-
-  // ── DEMO CLIENTE
-  if(mode==="demoClient") return(
-    <ClientApp
-      appointments={appointments}
-      onAppointmentCreated={handleAppointmentCreated}
-      demoMode={true}
-      onExitDemo={()=>setMode("demo")}
-    />
-  );
-
-  // ── DEMO PELUQUERÍA
-  if(mode==="demoBusiness") return(
-    <BusinessApp
-      appointments={appointments}
-      onAppointmentCreated={handleAppointmentCreated}
-      demoMode={true}
-      onExitDemo={()=>setMode("demo")}
-      onReset={handleResetDemo}
-    />
-  );
-
-  // ── CLIENTE REAL
-  if(mode==="client") return(
-    <ClientApp
-      appointments={appointments}
-      onAppointmentCreated={handleAppointmentCreated}
-      demoMode={false}
-    />
-  );
-
-  // ── LOGIN PELUQUERÍA
-  if(mode==="businessLogin") return(
-    <div style={{fontFamily:W,maxWidth:430,margin:"0 auto",minHeight:"100vh"}}>
-      <BusinessLogin
-        onLogin={()=>setMode("business")}
-        onDemoAccess={()=>setMode("demoBusiness")}
-        onBack={()=>setMode("landing")}
-      />
-    </div>
-  );
-
-  // ── PELUQUERÍA REAL
-  if(mode==="business") return(
-    <BusinessApp
-      appointments={appointments}
-      onAppointmentCreated={handleAppointmentCreated}
-      demoMode={false}
-    />
-  );
-
-  return null;
-}
-
-
-
-// ══ APP PRINCIPAL ══
+// ══ APP ══
 function HamburgerMenu({onDemo, onBusiness, onClient}) {
   const [open, setOpen] = useState(false);
   return (
@@ -2131,13 +2043,6 @@ function App(){
       onDemo={()=>setMode("demo")}
       onBusiness={()=>setMode("demoBusiness")}
     />
-  );
-
-  if(mode==="landing") return(
-    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh"}}>
-      {menu}
-      <LandingPage onDemo={()=>setMode("demo")} onClient={()=>setMode("demoClient")} onBusiness={()=>setMode("businessLogin")}/>
-    </div>
   );
 
   if(mode==="demo") return(
