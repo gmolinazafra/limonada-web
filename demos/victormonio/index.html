@@ -11,12 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #0a0a0a; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    html, body { margin: 0; padding: 0; background: #F8F7F5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
     #root { min-height: 100vh; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-    /* Contener fixed dentro del shell móvil en desktop */
-    #mobile-shell { contain: layout; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -2030,109 +2028,46 @@ function HamburgerMenu({onClient, onDemo, onBusiness}) {
 function App(){
   const [mode,setMode]=useState("demoClient");
   const [appointments,setAppointments]=useState(initialAppointments);
-  const [isDesktop,setIsDesktop]=useState(window.innerWidth>=900);
-
-  React.useEffect(()=>{
-    const h=()=>setIsDesktop(window.innerWidth>=900);
-    window.addEventListener('resize',h);
-    return()=>window.removeEventListener('resize',h);
-  },[]);
 
   function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
   function handleResetDemo(){setAppointments(initialAppointments);}
   const W="'Inter',-apple-system,BlinkMacSystemFont,sans-serif";
 
-  const features=[
-    {icon:'◈',text:'Tu marca, no la plataforma'},
-    {icon:'∞',text:'Reservas ilimitadas'},
-    {icon:'◫',text:'Agenda inteligente'},
-    {icon:'◎',text:'CRM de clientes'},
-    {icon:'⬡',text:'QR y NFC'},
-    {icon:'↺',text:'Recordatorios automáticos'},
-    {icon:'✦',text:'Sin comisión por reserva'},
-  ];
+  const menu = (
+    <HamburgerMenu
+      onClient={()=>setMode("demoClient")}
+      onDemo={()=>setMode("demo")}
+      onBusiness={()=>setMode("demoBusiness")}
+    />
+  );
 
-  // En móvil: pantalla completa normal
-  if(!isDesktop) return(
-    <div style={{fontFamily:W}}>
-      <HamburgerMenu onClient={()=>setMode("demoClient")} onDemo={()=>setMode("demo")} onBusiness={()=>setMode("demoBusiness")}/>
-      {mode==="demo" && <div style={{maxWidth:430,margin:'0 auto'}}><DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/></div>}
-      {mode==="demoClient" && <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>}
-      {mode==="demoBusiness" && <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>}
-      {mode==="businessLogin" && <div style={{maxWidth:430,margin:'0 auto'}}><BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/></div>}
+  // Igual que carta digital: max-width centrado, fondo neutro, sin caja de móvil
+  const wrapper = (content) => (
+    <div style={{fontFamily:W, background:'#F8F7F5', minHeight:'100vh'}}>
+      {menu}
+      <div style={{maxWidth:860, margin:'0 auto'}}>
+        {content}
+      </div>
     </div>
   );
 
-  // En desktop: layout de 3 columnas, el móvil en el centro como iframe visual
-  // La clave: el contenedor central tiene overflow:hidden y posición relativa
-  // Los elementos fixed dentro del app (BottomNav, DemoBanner, StyleBot) 
-  // se contienen usando transform en el wrapper (crea nuevo stacking context)
-  return(
-    <div style={{fontFamily:W,minHeight:'100vh',background:'#0a0a0a',display:'flex'}}>
-      <HamburgerMenu onClient={()=>setMode("demoClient")} onDemo={()=>setMode("demo")} onBusiness={()=>setMode("demoBusiness")}/>
-
-      {/* Columna izquierda */}
-      <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'60px 40px',minWidth:0}}>
-        <p style={{margin:'0 0 8px',fontSize:10,letterSpacing:3,color:'#B89A5A',fontWeight:700,textTransform:'uppercase'}}>Demo comercial</p>
-        <h2 style={{margin:'0 0 12px',fontSize:26,fontWeight:800,color:'#fff',lineHeight:1.25}}>Tu peluquería<br/>en el móvil<br/>de tus clientes</h2>
-        <p style={{margin:'0 0 28px',fontSize:13,color:'#555',lineHeight:1.7}}>Reservas 24/7 con tu propia marca.<br/>Cuota fija, sin comisión por reserva.</p>
-        <div style={{display:'flex',flexDirection:'column',gap:9}}>
-          {features.map(f=>(
-            <div key={f.text} style={{display:'flex',alignItems:'center',gap:10}}>
-              <span style={{fontSize:13,color:'#B89A5A',width:18,flexShrink:0}}>{f.icon}</span>
-              <span style={{fontSize:13,color:'#666'}}>{f.text}</span>
-            </div>
-          ))}
-        </div>
-        <div style={{marginTop:36,paddingTop:28,borderTop:'1px solid #1a1a1a'}}>
-          <p style={{margin:'0 0 4px',fontSize:11,color:'#444'}}>Una demo de</p>
-          <p style={{margin:0,fontSize:14,fontWeight:800,color:'#B89A5A'}}>Limonada Web</p>
-        </div>
-      </div>
-
-      {/* Centro: móvil simulado — uso iframe para aislar los fixed */}
-      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'32px 24px',flexShrink:0}}>
-        <div style={{width:390,height:'88vh',maxHeight:820,borderRadius:36,overflow:'hidden',boxShadow:'0 0 0 10px #1a1a1a, 0 0 0 11px #2a2a2a, 0 40px 80px rgba(0,0,0,0.7)',background:'#F8F7F5',position:'relative'}}>
-          <iframe
-            srcDoc={"<!DOCTYPE html><html><head><meta charset='UTF-8'><script>window.location='about:blank';</"+"script></head><body></body></html>"}
-            style={{display:'none'}}
-          />
-          {/* Contenedor scroll interno que aísla los fixed */}
-          <div id="mobile-shell" style={{width:'100%',height:'100%',overflowY:'auto',overflowX:'hidden',position:'relative',WebkitOverflowScrolling:'touch'}}>
-            {mode==="demo" && <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
-            {mode==="demoClient" && <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>}
-            {mode==="demoBusiness" && <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>}
-            {mode==="businessLogin" && <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
-          </div>
-        </div>
-        <p style={{margin:'14px 0 0',fontSize:11,color:'#333',textAlign:'center'}}>Desliza para explorar · Menú ☰ para cambiar vista</p>
-      </div>
-
-      {/* Columna derecha */}
-      <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'60px 40px',minWidth:0}}>
-        <p style={{margin:'0 0 16px',fontSize:10,color:'#444',fontWeight:700,textTransform:'uppercase',letterSpacing:1.5}}>Estás viendo</p>
-        {[
-          {mode:'demoClient',label:'App Cliente',desc:'Cómo reserva un cliente desde su móvil',icon:'◎'},
-          {mode:'demoBusiness',label:'Panel Negocio',desc:'Gestión diaria para el propietario',icon:'◫'},
-        ].map(item=>(
-          <div key={item.mode} onClick={()=>setMode(item.mode)} style={{marginBottom:10,padding:'14px 16px',background:mode===item.mode?'rgba(184,154,90,0.1)':'rgba(255,255,255,0.03)',border:`1px solid ${mode===item.mode?'rgba(184,154,90,0.4)':'rgba(255,255,255,0.06)'}`,borderRadius:12,cursor:'pointer'}}>
-            <div style={{display:'flex',alignItems:'center',gap:10}}>
-              <span style={{fontSize:18,color:mode===item.mode?'#B89A5A':'#444'}}>{item.icon}</span>
-              <div>
-                <p style={{margin:0,fontSize:13,fontWeight:700,color:mode===item.mode?'#fff':'#555'}}>{item.label}</p>
-                <p style={{margin:0,fontSize:11,color:'#444',lineHeight:1.4,marginTop:2}}>{item.desc}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div style={{marginTop:20,padding:'16px',background:'rgba(184,154,90,0.05)',border:'1px solid rgba(184,154,90,0.15)',borderRadius:12}}>
-          <p style={{margin:'0 0 4px',fontSize:11,color:'#B89A5A',fontWeight:700,textTransform:'uppercase',letterSpacing:1}}>¿Te interesa?</p>
-          <p style={{margin:'0 0 10px',fontSize:12,color:'#555',lineHeight:1.5}}>Tu app en 48h con tu marca, tus servicios y tu equipo.</p>
-          <a href="https://limonadaweb.com" target="_blank" style={{display:'block',background:'#B89A5A',color:'#fff',textDecoration:'none',borderRadius:8,padding:'9px 14px',fontSize:12,fontWeight:700,textAlign:'center'}}>Contactar →</a>
-        </div>
-      </div>
-    </div>
+  if(mode==="demo") return wrapper(
+    <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
   );
+
+  if(mode==="demoClient") return wrapper(
+    <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>
+  );
+
+  if(mode==="demoBusiness") return wrapper(
+    <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>
+  );
+
+  if(mode==="businessLogin") return wrapper(
+    <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
+  );
+
+  return null;
 }
 
 // ══ RENDER ══
