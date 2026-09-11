@@ -2080,6 +2080,97 @@ function App(){
 
 
 
+// ══ APP PRINCIPAL ══
+function HamburgerMenu({onDemo, onBusiness, onClient}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{position:'fixed',top:0,right:0,zIndex:500}}>
+      <button
+        onClick={()=>setOpen(!open)}
+        style={{background:'rgba(17,17,17,0.92)',backdropFilter:'blur(8px)',border:'none',borderLeft:'1px solid rgba(184,154,90,0.2)',borderBottom:'1px solid rgba(184,154,90,0.2)',borderBottomLeftRadius:12,padding:'10px 14px',cursor:'pointer',display:'flex',flexDirection:'column',gap:5,alignItems:'center'}}
+      >
+        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',transition:'all 0.2s'}}/>
+        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',opacity:open?0:1,transition:'all 0.2s'}}/>
+        <span style={{display:'block',width:22,height:2,background:open?'#B89A5A':'#fff',transition:'all 0.2s'}}/>
+      </button>
+      {open && (
+        <div style={{position:'absolute',top:'100%',right:0,background:'rgba(17,17,17,0.97)',backdropFilter:'blur(12px)',border:'1px solid rgba(184,154,90,0.2)',borderRadius:'0 0 0 14px',overflow:'hidden',minWidth:200}}>
+          {[
+            {label:'Vista Cliente',desc:'App de reservas',icon:'◎',action:()=>{onClient();setOpen(false);}},
+            {label:'Ver Demo',desc:'Prueba todas las funciones',icon:'✦',action:()=>{onDemo();setOpen(false);}},
+            {label:'Panel Peluquería',desc:'Gestión del negocio',icon:'◫',action:()=>{onBusiness();setOpen(false);}},
+          ].map((item,i,arr)=>(
+            <button key={item.label} onClick={item.action} style={{display:'block',width:'100%',background:'none',border:'none',borderBottom:i<arr.length-1?'1px solid rgba(255,255,255,0.06)':'none',padding:'14px 18px',textAlign:'left',cursor:'pointer',fontFamily:'inherit'}}>
+              <div style={{display:'flex',alignItems:'center',gap:10}}>
+                <span style={{fontSize:18,color:'#B89A5A',width:24}}>{item.icon}</span>
+                <div>
+                  <p style={{margin:0,fontSize:13,fontWeight:700,color:'#fff'}}>{item.label}</p>
+                  <p style={{margin:0,fontSize:11,color:'#666'}}>{item.desc}</p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function App(){
+  const [mode,setMode]=useState("demoClient");
+  const [appointments,setAppointments]=useState(initialAppointments);
+
+  function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
+  function handleResetDemo(){setAppointments(initialAppointments);}
+
+  const W="'Inter',-apple-system,BlinkMacSystemFont,sans-serif";
+
+  const menu = (
+    <HamburgerMenu
+      onClient={()=>setMode("demoClient")}
+      onDemo={()=>setMode("demo")}
+      onBusiness={()=>setMode("demoBusiness")}
+    />
+  );
+
+  if(mode==="landing") return(
+    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh"}}>
+      {menu}
+      <LandingPage onDemo={()=>setMode("demo")} onClient={()=>setMode("demoClient")} onBusiness={()=>setMode("businessLogin")}/>
+    </div>
+  );
+
+  if(mode==="demo") return(
+    <div style={{fontFamily:W,background:"#F8F7F5",minHeight:"100vh",maxWidth:430,margin:"0 auto"}}>
+      {menu}
+      <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
+    </div>
+  );
+
+  if(mode==="demoClient") return(
+    <div style={{fontFamily:W}}>
+      {menu}
+      <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>
+    </div>
+  );
+
+  if(mode==="demoBusiness") return(
+    <div style={{fontFamily:W}}>
+      {menu}
+      <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>
+    </div>
+  );
+
+  if(mode==="businessLogin") return(
+    <div style={{fontFamily:W,maxWidth:430,margin:"0 auto",minHeight:"100vh"}}>
+      {menu}
+      <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>
+    </div>
+  );
+
+  return null;
+}
+
 // ══ RENDER ══
 const rootEl = document.getElementById('root');
 const reactRoot = ReactDOM.createRoot(rootEl);
