@@ -402,38 +402,38 @@ function Section({label,style={}}){
 }
 function BusinessHeader({isOpen}){
   return(
-    <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center 35%',position:'relative',height:260}}>
-      <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.85) 100%)'}}/>
-      <div style={{position:'relative',zIndex:2,height:'100%',display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'0 20px 18px'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-          <div style={{display:'flex',alignItems:'center',gap:6}}>
-            <span style={{width:7,height:7,borderRadius:'50%',background:isOpen?'#4ADE80':'#F87171',display:'inline-block',boxShadow:`0 0 6px ${isOpen?'#4ADE80':'#F87171'}`}}/>
-            <span style={{fontSize:12,color:isOpen?'#4ADE80':'#F87171',fontWeight:700}}>{isOpen?'Abierto ahora':'Cerrado'}</span>
-          </div>
-          <div style={{display:'flex',alignItems:'center',gap:5}}>
-            <Stars rating={4.9} size={12}/>
-            <span style={{fontSize:13,fontWeight:800,color:T.gold}}>4.9</span>
-            <span style={{fontSize:11,color:'rgba(255,255,255,0.45)'}}>487 resenas</span>
-          </div>
-        </div>
-        <div style={{marginBottom:14}}>
-          <p style={{margin:'0 0 2px',fontSize:12,color:'rgba(255,255,255,0.65)'}}>Calle Sta. Ana 11</p>
-          <p style={{margin:0,fontSize:12,color:'rgba(255,255,255,0.5)'}}>Cartama, Malaga</p>
-        </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-          {[['Tel','Llamar'],['WA','WhatsApp'],['Map','Como llegar']].map(([ic,lb])=>(
-            <button key={lb} style={{background:'rgba(255,255,255,0.13)',backdropFilter:'blur(8px)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:T.radiusSm,padding:'9px 4px',color:'rgba(255,255,255,0.92)',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}
-              onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.22)'}
-              onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.13)'}
-            >{ic} {lb}</button>
-          ))}
-        </div>
-      </div>
+    <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center 35%',position:'relative',height:220}}>
+      <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)'}}/>
     </div>
   );
 }
 
-
+function BusinessInfo({isOpen}){
+  return(
+    <div style={{background:T.bgCard,padding:'14px 16px',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+        <div style={{display:'flex',alignItems:'center',gap:6}}>
+          <span style={{width:7,height:7,borderRadius:'50%',background:isOpen?'#2F8F57':'#D34B3F',display:'inline-block'}}/>
+          <span style={{fontSize:12,color:isOpen?'#2F8F57':'#D34B3F',fontWeight:700}}>{isOpen?'Abierto ahora':'Cerrado'}</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:4}}>
+          <Stars rating={4.9} size={12}/>
+          <span style={{fontSize:13,fontWeight:800,color:T.gold}}>4.9</span>
+          <span style={{fontSize:11,color:T.ink3,marginLeft:2}}>487 resenas</span>
+        </div>
+      </div>
+      <p style={{margin:'0 0 12px',fontSize:12,color:T.ink3}}>Calle Sta. Ana 11 · Cartama, Malaga</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+        {[['Tel','Llamar'],['WA','WhatsApp'],['Map','Como llegar']].map(([ic,lb])=>(
+          <button key={lb} style={{background:T.bg,border:'1px solid rgba(0,0,0,0.09)',borderRadius:T.radiusSm,padding:'8px 4px',color:T.ink2,fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}
+            onMouseEnter={e=>e.currentTarget.style.background='#EDE9E2'}
+            onMouseLeave={e=>e.currentTarget.style.background=T.bg}
+          >{ic} {lb}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function DemoBanner(){return null;}
 function LandingPage({onDemo,onClient,onBusiness}){
@@ -785,6 +785,7 @@ function HomeView({onNav,appointments,onReservar}){
   return(
     <div style={{paddingBottom:80,background:T.bg}}>
       <BusinessHeader isOpen={isOpen}/>
+      <BusinessInfo isOpen={isOpen}/>
       <div style={{padding:'20px 16px 0'}}>
         <button onClick={()=>onNav('booking')} style={{width:'100%',background:T.gold,border:'none',borderRadius:T.radius,padding:'17px',color:'#fff',fontSize:16,fontWeight:700,cursor:'pointer',letterSpacing:.5,fontFamily:'inherit',boxShadow:'0 4px 16px rgba(185,146,76,0.3)'}}>RESERVAR CITA</button>
       </div>
