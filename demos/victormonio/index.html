@@ -11,10 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #F8F7F5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    html, body { margin: 0; padding: 0; background: #F0EDE8; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
     #root { min-height: 100vh; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: #D4CFC8; border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -1941,7 +1941,7 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
   const topPad=demoMode?44:0;
 
   return(
-    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",margin:"0 auto",background:"#F8F7F5",minHeight:"100vh",overflow:"hidden"}}>
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:860,margin:"0 auto",background:"#F8F7F5",minHeight:"100vh",overflow:"hidden"}}>
       <style>{`
         @keyframes slideInLeft{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
         @keyframes slideInRight{from{transform:translateX(-40px);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -1977,7 +1977,7 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
 function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo, onReset }){
   const topPad=demoMode?44:0;
   return(
-    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",margin:"0 auto",height:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:860,margin:"0 auto",height:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
       {demoMode&&<DemoBanner label="Panel del negocio" onBack={onExitDemo} onReset={onReset}/>}
       <div style={{flex:1,overflowY:"auto",paddingTop:topPad}}>
         <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated}/>
@@ -1997,29 +1997,43 @@ function HamburgerMenu({onClient, onDemo, onBusiness}) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{position:'fixed',top:0,right:0,zIndex:600}}>
-      <button onClick={()=>setOpen(!open)} style={{background:'rgba(17,17,17,0.95)',backdropFilter:'blur(8px)',border:'none',borderLeft:'1px solid rgba(184,154,90,0.25)',borderBottom:'1px solid rgba(184,154,90,0.25)',borderBottomLeftRadius:12,padding:'11px 14px',cursor:'pointer',display:'flex',flexDirection:'column',gap:5,alignItems:'center'}}>
-        <span style={{display:'block',width:22,height:2,background:'#fff',transition:'all 0.2s',transform:open?'rotate(45deg) translate(5px,5px)':'none'}}/>
-        <span style={{display:'block',width:22,height:2,background:'#fff',opacity:open?0:1,transition:'opacity 0.2s'}}/>
-        <span style={{display:'block',width:22,height:2,background:'#fff',transition:'all 0.2s',transform:open?'rotate(-45deg) translate(5px,-5px)':'none'}}/>
+      <button
+        onClick={()=>setOpen(!open)}
+        aria-label="Menú"
+        style={{background:'#1a1a1a',border:'none',borderBottomLeftRadius:10,padding:'12px 14px',cursor:'pointer',display:'flex',flexDirection:'column',gap:5,alignItems:'center',boxShadow:'0 2px 12px rgba(0,0,0,0.2)'}}
+      >
+        <span style={{display:'block',width:20,height:2,background:'#B89A5A',transition:'all 0.2s',transform:open?'rotate(45deg) translate(4px,5px)':'none'}}/>
+        <span style={{display:'block',width:20,height:2,background:'#B89A5A',opacity:open?0:1,transition:'opacity 0.15s'}}/>
+        <span style={{display:'block',width:20,height:2,background:'#B89A5A',transition:'all 0.2s',transform:open?'rotate(-45deg) translate(4px,-5px)':'none'}}/>
       </button>
       {open && (
-        <div style={{position:'absolute',top:'100%',right:0,background:'rgba(14,14,14,0.98)',backdropFilter:'blur(16px)',border:'1px solid rgba(184,154,90,0.2)',borderRadius:'0 0 0 14px',overflow:'hidden',minWidth:210,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
-          {[
-            {label:'Vista Cliente',desc:'App de reservas',icon:'◎',action:()=>{onClient();setOpen(false);}},
-            {label:'Ver Demo',desc:'Selector de prueba',icon:'✦',action:()=>{onDemo();setOpen(false);}},
-            {label:'Panel Peluquería',desc:'Gestión del negocio',icon:'◫',action:()=>{onBusiness();setOpen(false);}},
-          ].map((item,i,arr)=>(
-            <button key={item.label} onClick={item.action} style={{display:'block',width:'100%',background:'none',border:'none',borderBottom:i<arr.length-1?'1px solid rgba(255,255,255,0.06)':'none',padding:'14px 18px',textAlign:'left',cursor:'pointer',fontFamily:'inherit'}}>
-              <div style={{display:'flex',alignItems:'center',gap:10}}>
-                <span style={{fontSize:18,color:'#B89A5A',width:24,flexShrink:0}}>{item.icon}</span>
-                <div>
-                  <p style={{margin:0,fontSize:13,fontWeight:700,color:'#fff'}}>{item.label}</p>
-                  <p style={{margin:0,fontSize:11,color:'#555'}}>{item.desc}</p>
+        <>
+          <div onClick={()=>setOpen(false)} style={{position:'fixed',inset:0,zIndex:-1}}/>
+          <div style={{position:'absolute',top:'100%',right:0,background:'#fff',border:'1px solid #F0EDE8',borderRadius:'0 0 0 12px',overflow:'hidden',minWidth:220,boxShadow:'0 8px 24px rgba(0,0,0,0.12)'}}>
+            {[
+              {label:'Vista Cliente',desc:'App de reservas del cliente',icon:'◎',action:()=>{onClient();setOpen(false);}},
+              {label:'Ver Demo',desc:'Selector de vista',icon:'✦',action:()=>{onDemo();setOpen(false);}},
+              {label:'Panel Peluquería',desc:'Gestión del negocio',icon:'◫',action:()=>{onBusiness();setOpen(false);}},
+            ].map((item,i,arr)=>(
+              <button key={item.label} onClick={item.action}
+                style={{display:'block',width:'100%',background:'none',border:'none',borderBottom:i<arr.length-1?'1px solid #F5F5F5':'none',padding:'13px 18px',textAlign:'left',cursor:'pointer',fontFamily:'inherit',transition:'background 0.15s'}}
+                onMouseEnter={e=>e.currentTarget.style.background='#FAFAFA'}
+                onMouseLeave={e=>e.currentTarget.style.background='none'}
+              >
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <span style={{fontSize:16,color:'#B89A5A',width:22,flexShrink:0}}>{item.icon}</span>
+                  <div>
+                    <p style={{margin:0,fontSize:13,fontWeight:700,color:'#1a1a1a'}}>{item.label}</p>
+                    <p style={{margin:'1px 0 0',fontSize:11,color:'#aaa'}}>{item.desc}</p>
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+            <div style={{padding:'8px 18px 10px',borderTop:'1px solid #F5F5F5',background:'#FAFAFA'}}>
+              <p style={{margin:0,fontSize:10,color:'#ccc',letterSpacing:1,textTransform:'uppercase'}}>Demo · Limonada Web</p>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
@@ -2031,14 +2045,18 @@ function App(){
   function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
   function handleResetDemo(){setAppointments(initialAppointments);}
   const W="'Inter',-apple-system,BlinkMacSystemFont,sans-serif";
+
   const menu=<HamburgerMenu onClient={()=>setMode("demoClient")} onDemo={()=>setMode("demo")} onBusiness={()=>setMode("demoBusiness")}/>;
+
   return(
-    <div style={{fontFamily:W,background:'#F8F7F5',minHeight:'100vh'}}>
+    <div style={{fontFamily:W,background:'#F0EDE8',minHeight:'100vh'}}>
       {menu}
-      {mode==="demo" && <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
-      {mode==="demoClient" && <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>}
-      {mode==="demoBusiness" && <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>}
-      {mode==="businessLogin" && <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
+      <div style={{maxWidth:860,margin:'0 auto',background:'#F8F7F5',minHeight:'100vh',boxShadow:'0 0 60px rgba(0,0,0,0.08)'}}>
+        {mode==="demo" && <DemoPortal onDemoClient={()=>setMode("demoClient")} onDemoBusiness={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
+        {mode==="demoClient" && <ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")}/>}
+        {mode==="demoBusiness" && <BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode("demo")} onReset={handleResetDemo}/>}
+        {mode==="businessLogin" && <BusinessLogin onLogin={()=>setMode("demoBusiness")} onDemoAccess={()=>setMode("demoBusiness")} onBack={()=>setMode("demoClient")}/>}
+      </div>
     </div>
   );
 }
