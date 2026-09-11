@@ -13,26 +13,16 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #F8F7F5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
     #root { min-height: 100vh; }
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
-    /* Ocultar scrollbar horizontal en contenedores scroll */
-    .scroll-x { -ms-overflow-style: none; scrollbar-width: none; }
-    .scroll-x::-webkit-scrollbar { display: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
-  <!-- React + ReactDOM -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-
-  <!-- Babel standalone -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-
-  <!-- App Victor Monió -->
-  <script type="text/babel">
+  <script type="text/babel" data-presets="react">
 // ══ appData ══
 const businessConfig = {
   id: "victormoniobarber",
@@ -2001,7 +1991,7 @@ function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExi
 
 // ══ App ══
 
-export default function App(){
+function App(){
   // mode: landing | demo | demoClient | demoBusiness | client | business | businessLogin
   const [mode,setMode]=useState("landing");
   const [appointments,setAppointments]=useState(initialAppointments);
@@ -2089,8 +2079,9 @@ export default function App(){
 
 
 // ══ RENDER ══
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(React.createElement(React.StrictMode, null, React.createElement(App)));
+const rootEl = document.getElementById('root');
+const reactRoot = ReactDOM.createRoot(rootEl);
+reactRoot.render(React.createElement(React.StrictMode, null, React.createElement(App)));
 
   </script>
 </body>
