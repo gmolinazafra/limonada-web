@@ -323,7 +323,22 @@ const ORDER_CSS=`
 .novelty-steps{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
 .novelty-steps li{background:#F7F3EE;border-radius:10px;padding:10px 14px;font-size:.9rem}
 .novelty-tagline{color:#2C4A3E;font-size:1.02rem}
+.novelty-packs-title{font:600 1.05rem/1.3 'Playfair Display',Georgia,serif;margin:22px 0 4px;padding-top:16px;border-top:1px solid #E8E0D5}
+.novelty-packs-intro{color:#645f54;font-size:.88rem;margin:0 0 14px}
+.novelty-packs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.novelty-pack{background:#F7F3EE;border:1px solid #E8E0D5;border-radius:12px;padding:12px 12px 14px;position:relative}
+.novelty-pack-featured{background:#2C4A3E;border-color:#2C4A3E}
+.novelty-pack-featured h4,.novelty-pack-featured li{color:#fff}
+.novelty-pack-badge{position:absolute;top:-9px;right:10px;background:#C8860A;color:#2A1B04;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px}
+.novelty-pack h4{margin:0 0 8px;font-size:.92rem;font-family:'Inter',sans-serif;font-weight:700}
+.novelty-pack ul{margin:0;padding-left:16px;font-size:.78rem;line-height:1.55;color:#4a453c}
+.novelty-pack-featured ul{color:#e7ecea}
+.novelty-packs-note{font-size:.82rem;color:#645f54;font-style:italic}
 .novelty-brand{margin-top:16px;padding-top:14px;border-top:1px solid #E8E0D5;font-size:.85rem;color:#645f54}
+.novelty-packs-title{font:600 1.05rem/1.3 'Playfair Display',Georgia,serif;margin:22px 0 4px;padding-top:16px;border-top:1px solid #E8E0D5}
+.novelty-packs-intro{color:#645f54;font-size:.88rem;margin:0 0 14px}
+.novelty-packs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+@media(max-width:640px){.novelty-packs{grid-template-columns:1fr}}
 .novelty-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.5rem;line-height:1;cursor:pointer;color:#645f54;width:32px;height:32px}
 @media(max-width:700px){.novelty-modal{padding:22px 18px}.novelty-modal h2{font-size:1.1rem}}
 @media print{.novelty-pill-wrap,.ord-bar,.ord-overlay{display:none!important}}
@@ -391,6 +406,7 @@ document.addEventListener("error",function(e){
   (btn||t).style.display="none";
 },true);
 
+// ─── Paquetes / precios (Limonada Web) ───────────────────────────────────
 // ─── DESAYUNOS v4: fotos corregidas, opciones y nuevos platos ────────────────
 var U4="?w=320&h=320&fit=crop&auto=format&q=78";
 var DES_V4={
@@ -2223,6 +2239,49 @@ function NoveltyModal({onClose}){
         <p>No se trata de sustituir al camarero. Se trata de quitarle desplazamientos innecesarios y permitirle dedicar más tiempo a atender al cliente.</p>
         <p className="novelty-tagline"><strong>🤖 Carta Digital + Maitre Bot + Pedidos desde mesa</strong></p>
         <p>Una carta digital que ya no solo enseña lo que tienes.<br/>Ahora también te ayuda a venderlo. 🍋</p>
+        <h3 className="novelty-packs-title">Elige tu pack</h3>
+        <p className="novelty-packs-intro">Empieza por lo que necesitas y crece cuando quieras.</p>
+        <div className="novelty-packs">
+          <div className="novelty-pack">
+            <h4>Carta Digital</h4>
+            <ul>
+              <li>Carta personalizada QR / NFC</li>
+              <li>Maitre Bot</li>
+              <li>Alérgenos</li>
+              <li>Idiomas y audio</li>
+              <li>Menús y reservas</li>
+              <li>Lista de espera</li>
+              <li>Panel de gestión</li>
+              <li>Sin publicidad</li>
+            </ul>
+          </div>
+          <div className="novelty-pack novelty-pack-featured">
+            <span className="novelty-pack-badge">Novedad</span>
+            <h4>Pedidos Directos</h4>
+            <ul>
+              <li>Sistema de pedidos propio</li>
+              <li>Domicilio y recogida</li>
+              <li>Carrito y extras</li>
+              <li>Zonas y tarifas de reparto</li>
+              <li>Gestión de pedidos</li>
+              <li>Flyers con QR de pedido incluidos</li>
+              <li>0 % comisión</li>
+            </ul>
+          </div>
+          <div className="novelty-pack">
+            <h4>Pedidos Pro</h4>
+            <ul>
+              <li>Todo lo de Pedidos Directos</li>
+              <li>Clientes e historial</li>
+              <li>Cupones y promociones</li>
+              <li>Combos y ofertas</li>
+              <li>Fidelización</li>
+              <li>Pack físico QR / NFC</li>
+              <li>0 % comisión</li>
+            </ul>
+          </div>
+        </div>
+        <p className="novelty-packs-note">Sigues usando tus plataformas de siempre para que te descubran: úsalas de escaparate y haz que tus clientes habituales te pidan directamente a ti.</p>
         <div className="novelty-brand">🌐 Limonada Web<br/><small>Exprimimos Internet para tu negocio.</small></div>
       </div>
     </div>
