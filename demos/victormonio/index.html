@@ -693,7 +693,7 @@ function StyleBot({onReservar}){
   const [upsell,setUpsell]=useState(false);
   const questions=[{q:"Que buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestanas"]},{q:"Tienes preferencia de barbero?",opts:["El primero libre","Victor","Miguel","Alex","Sara o Lucia"]},{q:"Cuanto tiempo tienes?",opts:["Menos de 30 min","30-45 min","45-60 min","Sin limite"]}];
   const prods=[{name:"Pomada mate Suavecito",desc:"Fijacion fuerte, acabado mate.",price:"18"},{name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22"},{name:"Cera de peinado",desc:"Fijacion media, brillo natural.",price:"15"},{name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14"},{name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19"}];
-  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);const day=new Date().getDay();if(day===2||day===4){setUpsell(true);}}}
+  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);const day=new Date().getDay();if(day===2||day===4||true){setUpsell(true);}}}
   function reset(){setMode(null);setStep(0);setAnswers({});setResult(null);setUpsell(false);}
   function close(){setOpen(false);reset();}
   return(
@@ -717,7 +717,7 @@ function StyleBot({onReservar}){
             {questions[step].opts.map(o=>(<button key={o} onClick={()=>handleAnswer(o)} style={{display:"block",width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"8px 12px",fontSize:13,textAlign:"left",cursor:"pointer",marginBottom:5,fontFamily:"inherit",color:T.ink}}>{o}</button>))}
           </>)}
           {mode==="service"&&result&&(<><div style={{background:T.bgDark,borderRadius:T.radiusSm,padding:12,marginBottom:10}}><p style={{margin:"0 0 2px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p><p style={{margin:"0 0 2px",fontSize:11,color:"rgba(255,255,255,0.45)"}}>con {result.professional}</p><p style={{margin:0,fontSize:11,color:T.gold,fontWeight:600}}>{result.duration} - {result.price}EUR</p></div>
-            <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
+            <button onClick={()=>{close();setTimeout(()=>onReservar(),50);}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
             <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Volver al menu</button>
             {upsell&&(<div style={{background:"#F0F7F4",border:"1px solid #2F8F5766",borderRadius:T.radiusSm,padding:"10px 12px",marginTop:8}}>
               <p style={{margin:"0 0 4px",fontSize:12,fontWeight:800,color:"#2F8F57"}}>✦ Disponible hoy — Martes y Jueves</p>
@@ -897,7 +897,7 @@ function ServicesView({onBookService}){
         <h2 style={{margin:'0 0 12px',fontSize:20,fontWeight:800,color:T.ink}}>Servicios</h2>
         <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar servicio..."
           style={{width:'100%',padding:'11px 16px',border:'1px solid rgba(0,0,0,0.1)',borderRadius:T.radiusSm,fontSize:14,fontFamily:'inherit',background:T.bg,outline:'none',boxSizing:'border-box',color:T.ink,marginBottom:10}}/>
-        <div style={{display:'flex',gap:6,flexWrap:'wrap',paddingBottom:4}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:6,paddingBottom:4}}>
           <button onClick={()=>setActiveCat('all')} style={{whiteSpace:'nowrap',padding:'6px 14px',borderRadius:20,border:`1px solid ${activeCat==='all'?T.ink:'rgba(0,0,0,0.1)'}`,background:activeCat==='all'?T.ink:'transparent',color:activeCat==='all'?'#fff':T.ink2,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Todos</button>
           {categories.map(c=>(
             <button key={c.id} onClick={()=>setActiveCat(c.id)} style={{whiteSpace:'nowrap',padding:'6px 14px',borderRadius:20,border:`1px solid ${activeCat===c.id?T.ink:'rgba(0,0,0,0.1)'}`,background:activeCat===c.id?T.ink:'transparent',color:activeCat===c.id?'#fff':T.ink2,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>{c.name}</button>
@@ -1282,6 +1282,7 @@ function AppointmentsView({appointments}){
 
 function AdminView({appointments,onAddAppointment}){
   const [sec,setSec]=useState("dashboard");
+  const [profFilter,setProfFilter]=useState(null);
   const todayCitas=appointments.filter(a=>a.date===todayStr&&a.status!=="cancelled");
   const ingresos=todayCitas.reduce((s,a)=>s+a.price,0);
   const secIds_=["dashboard","agenda","appointments","clients","professionals","products","stats","settings"];
@@ -1303,7 +1304,7 @@ function AdminView({appointments,onAddAppointment}){
         {sec==="agenda"&&<AdminAgenda appointments={appointments}/>}
         {sec==="appointments"&&<AdminApts appointments={appointments}/>}
         {sec==="clients"&&<AdminClients/>}
-        {sec==="professionals"&&<AdminProfs/>}
+        {sec==="professionals"&&<AdminProfs onNavAgenda={(profId)=>{setProfFilter(profId);setSec("agenda");}}/>}
         {sec==="products"&&<AdminProducts/>}
         {sec==="stats"&&<AdminStats appointments={appointments}/>}
         {sec==="settings"&&<AdminSettings/>}
@@ -1504,10 +1505,10 @@ function AdminClients(){
   );
 }
 
-function AdminProfs(){
+function AdminProfs({onNavAgenda}){
   return(
     <div style={{padding:20}}>
-      <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:800}}>Equipo</h3>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}><h3 style={{margin:0,fontSize:16,fontWeight:800}}>Equipo</h3><button style={{background:T.ink,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nuevo</button></div>
       {professionals.map(p=>(
         <Card key={p.id} style={{marginBottom:12}}>
           <div style={{display:"flex",gap:14,alignItems:"center"}}>
@@ -1521,7 +1522,7 @@ function AdminProfs(){
           </div>
           <Divider/>
           <div style={{display:"flex",gap:8}}>
-            <button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Ver agenda</button>
+            <button onClick={()=>onNavAgenda&&onNavAgenda(p.id)} style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Ver agenda</button>
             <button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Editar</button>
           </div>
         </Card>
