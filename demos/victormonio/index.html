@@ -11,7 +11,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;}
     html,body{margin:0;padding:0;background:#E8E4DD;font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
-    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint-pill{display:none!important;}} .bottom-nav{padding-bottom:0 !important;} @media(display-mode:standalone){.bottom-nav{padding-bottom:env(safe-area-inset-bottom,20px) !important;}} .stylebot-fab{position:fixed;z-index:900;background:none;border:none;padding:0;cursor:pointer;width:56px;height:56px;right:max(10px,calc(50% - 350px));bottom:105px;} .stylebot-popup{position:fixed;z-index:901;width:290px;right:max(10px,calc(50% - 350px));bottom:171px;} @media(display-mode:standalone){.stylebot-fab{bottom:145px !important;} .stylebot-popup{bottom:211px !important;}} @supports(bottom:env(safe-area-inset-bottom)){.stylebot-fab{bottom:calc(105px + env(safe-area-inset-bottom,0px));} .stylebot-popup{bottom:calc(171px + env(safe-area-inset-bottom,0px));}}
+    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint-pill{display:none!important;}} .bottom-nav{padding-bottom:0 !important;} @media(display-mode:standalone){.bottom-nav{padding-bottom:env(safe-area-inset-bottom,20px) !important;}} .stylebot-fab{position:fixed;z-index:900;background:none;border:none;padding:0;cursor:pointer;width:56px;height:56px;right:max(10px,calc(50% - 350px));bottom:120px;} .stylebot-popup{position:fixed;z-index:901;width:290px;right:max(10px,calc(50% - 350px));bottom:186px;} @media(display-mode:standalone){.stylebot-fab{bottom:145px !important;} .stylebot-popup{bottom:211px !important;}} @supports(bottom:env(safe-area-inset-bottom)){.stylebot-fab{bottom:calc(120px + env(safe-area-inset-bottom,0px));} .stylebot-popup{bottom:calc(186px + env(safe-area-inset-bottom,0px));}}
     ::-webkit-scrollbar{width:4px;}
     ::-webkit-scrollbar-thumb{background:#C8C3BB;border-radius:2px;}
     input,button,textarea{font-family:inherit;}
@@ -690,10 +690,11 @@ function StyleBot({onReservar}){
   const [step,setStep]=useState(0);
   const [answers,setAnswers]=useState({});
   const [result,setResult]=useState(null);
+  const [upsell,setUpsell]=useState(false);
   const questions=[{q:"Que buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestanas"]},{q:"Tienes preferencia de barbero?",opts:["El primero libre","Victor","Miguel","Alex","Sara o Lucia"]},{q:"Cuanto tiempo tienes?",opts:["Menos de 30 min","30-45 min","45-60 min","Sin limite"]}];
   const prods=[{name:"Pomada mate Suavecito",desc:"Fijacion fuerte, acabado mate.",price:"18"},{name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22"},{name:"Cera de peinado",desc:"Fijacion media, brillo natural.",price:"15"},{name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14"},{name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19"}];
-  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);}}
-  function reset(){setMode(null);setStep(0);setAnswers({});setResult(null);}
+  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);const day=new Date().getDay();if(day===2||day===4){setUpsell(true);}}}
+  function reset(){setMode(null);setStep(0);setAnswers({});setResult(null);setUpsell(false);}
   function close(){setOpen(false);reset();}
   return(
     <>
@@ -718,6 +719,11 @@ function StyleBot({onReservar}){
           {mode==="service"&&result&&(<><div style={{background:T.bgDark,borderRadius:T.radiusSm,padding:12,marginBottom:10}}><p style={{margin:"0 0 2px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p><p style={{margin:"0 0 2px",fontSize:11,color:"rgba(255,255,255,0.45)"}}>con {result.professional}</p><p style={{margin:0,fontSize:11,color:T.gold,fontWeight:600}}>{result.duration} - {result.price}EUR</p></div>
             <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
             <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Volver al menu</button>
+            {upsell&&(<div style={{background:"#F0F7F4",border:"1px solid #2F8F5766",borderRadius:T.radiusSm,padding:"10px 12px",marginTop:8}}>
+              <p style={{margin:"0 0 4px",fontSize:12,fontWeight:800,color:"#2F8F57"}}>✦ Disponible hoy — Martes y Jueves</p>
+              <p style={{margin:"0 0 8px",fontSize:12,color:T.ink2}}>Añade <strong>depilación de cejas</strong> con Lucía por solo <strong>12€</strong> más.</p>
+              <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:"#2F8F57",color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"9px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Sí, añadir cejas ✓</button>
+            </div>)}
           </>)}
           {mode==="products"&&(<><button onClick={()=>setMode(null)} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
             <div style={{display:"flex",flexDirection:"column",gap:8,maxHeight:260,overflowY:"auto"}}>
