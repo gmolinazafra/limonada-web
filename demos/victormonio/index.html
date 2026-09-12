@@ -932,7 +932,7 @@ function ServicesView({onBookService}){
         <h2 style={{margin:'0 0 12px',fontSize:20,fontWeight:800,color:T.ink}}>Servicios</h2>
         <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar servicio..."
           style={{width:'100%',padding:'11px 16px',border:'1px solid rgba(0,0,0,0.1)',borderRadius:T.radiusSm,fontSize:14,fontFamily:'inherit',background:T.bg,outline:'none',boxSizing:'border-box',color:T.ink,marginBottom:10}}/>
-        <div style={{display:'flex',gap:6,overflowX:'auto',paddingBottom:2}}>
+        <div style={{display:'flex',gap:6,flexWrap:'wrap',paddingBottom:4}}>
           <button onClick={()=>setActiveCat('all')} style={{whiteSpace:'nowrap',padding:'6px 14px',borderRadius:20,border:`1px solid ${activeCat==='all'?T.ink:'rgba(0,0,0,0.1)'}`,background:activeCat==='all'?T.ink:'transparent',color:activeCat==='all'?'#fff':T.ink2,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Todos</button>
           {categories.map(c=>(
             <button key={c.id} onClick={()=>setActiveCat(c.id)} style={{whiteSpace:'nowrap',padding:'6px 14px',borderRadius:20,border:`1px solid ${activeCat===c.id?T.ink:'rgba(0,0,0,0.1)'}`,background:activeCat===c.id?T.ink:'transparent',color:activeCat===c.id?'#fff':T.ink2,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>{c.name}</button>
