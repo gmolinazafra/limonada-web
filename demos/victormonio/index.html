@@ -1342,7 +1342,7 @@ function AdminAgenda({appointments}){
   useEffect(()=>{const h=()=>setIsDesktop(window.innerWidth>=768);window.addEventListener("resize",h);return()=>window.removeEventListener("resize",h);},[]);
   const dayApts=appointments.filter(a=>a.date===viewDate&&a.status!=="cancelled").sort((a,b)=>a.time.localeCompare(b.time));
   const ROW=40; // px por cada 30 min
-  const START=10*60; // 10:00 en minutos
+  const START=9*60;  // 09:00 en minutos
   const END=21*60;   // 21:00
   const totalRows=(END-START)/30;
   const profs=professionals;
@@ -1390,13 +1390,13 @@ function AdminAgenda({appointments}){
           <div style={{position:"relative"}}>
             {Array.from({length:totalRows},(_,i)=>(
               <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",display:"flex",alignItems:"flex-start",justifyContent:"flex-end",paddingRight:8,paddingTop:2,fontSize:11,fontWeight:i%2===0?700:400,color:i%2===0?T.ink2:"transparent"}}>
-                {i%2===0?`${String(10+Math.floor(i/2)).padStart(2,"0")}:00`:""}
+                {i%2===0?`${String(9+Math.floor(i/2)).padStart(2,"0")}:00`:""}
               </div>
             ))}
           </div>
           {/* Columnas por profesional */}
           {profs.map((p,pi)=>(
-            <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)"}}>
+            <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)",overflow:"hidden"}}>
               {/* Líneas de fondo */}
               {Array.from({length:totalRows},(_,i)=>(
                 <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",pointerEvents:"none"}}/>
