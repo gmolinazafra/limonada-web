@@ -11,7 +11,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;}
     html,body{margin:0;padding:0;background:#E8E4DD;font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
-    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint{display:none!important;}}
+    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint-pill{display:none!important;}}
     ::-webkit-scrollbar{width:4px;}
     ::-webkit-scrollbar-thumb{background:#C8C3BB;border-radius:2px;}
     input,button,textarea{font-family:inherit;}
@@ -401,11 +401,7 @@ function Section({label,style={}}){
   return <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6,...style}}>{label}</p>;
 }
 function BusinessHeader({isOpen}){
-  return(
-    <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center 35%',position:'relative',height:220}}>
-      <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)'}}/>
-    </div>
-  );
+  return(<div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center 35%',position:'relative',height:220}}><div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)'}}/></div>);
 }
 function BusinessInfo({isOpen}){
   return(
@@ -519,7 +515,7 @@ function BottomNav({active,onNav}){
     {id:'profile', icon:'◎', label:'Perfil'},
   ];
   return(
-    <div style={{ position:'fixed',bottom:0,left:0,right:0,background:T.bgCard,borderTop:'1px solid rgba(0,0,0,0.07)',display:'flex',zIndex:100,boxShadow:'0 -4px 20px rgba(0,0,0,0.06)'}}>
+    <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.bgCard,borderTop:'1px solid rgba(0,0,0,0.07)',display:'flex',zIndex:100,boxShadow:'0 -4px 20px rgba(0,0,0,0.06)'}}>
       {items.map(item=>{
         const isActive=active===item.id;
         if(item.cta) return(
@@ -694,91 +690,42 @@ function StyleBot({onReservar}){
   const [step,setStep]=useState(0);
   const [answers,setAnswers]=useState({});
   const [result,setResult]=useState(null);
-  const questions=[
-    {q:"Que buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestanas"]},
-    {q:"Tienes preferencia de barbero?",opts:["El primero libre","Victor","Miguel","Alex","Sara o Lucia"]},
-    {q:"Cuanto tiempo tienes?",opts:["Menos de 30 min","30-45 min","45-60 min","Sin limite"]},
-  ];
-  const prods=[
-    {name:"Pomada mate Suavecito",desc:"Fijacion fuerte, acabado mate.",price:"18"},
-    {name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22"},
-    {name:"Cera de peinado",desc:"Fijacion media, brillo natural.",price:"15"},
-    {name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14"},
-    {name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19"},
-  ];
-  function handleAnswer(ans){
-    const na={...answers,[step]:ans};setAnswers(na);
-    if(step<questions.length-1){setStep(step+1);}
-    else{
-      let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};
-      if(na[0]==="Solo barba") rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};
-      else if(na[0]==="Color o mechas") rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};
-      setResult(rec);
-    }
-  }
+  const questions=[{q:"Que buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestanas"]},{q:"Tienes preferencia de barbero?",opts:["El primero libre","Victor","Miguel","Alex","Sara o Lucia"]},{q:"Cuanto tiempo tienes?",opts:["Menos de 30 min","30-45 min","45-60 min","Sin limite"]}];
+  const prods=[{name:"Pomada mate Suavecito",desc:"Fijacion fuerte, acabado mate.",price:"18"},{name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22"},{name:"Cera de peinado",desc:"Fijacion media, brillo natural.",price:"15"},{name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14"},{name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19"}];
+  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);}}
   function reset(){setMode(null);setStep(0);setAnswers({});setResult(null);}
   function close(){setOpen(false);reset();}
   return(
     <>
-      <button onClick={()=>setOpen(v=>!v)} aria-label="Style Bot"
-        style={{position:"fixed",bottom:160,right:10,width:60,height:60,padding:0,border:"none",cursor:"pointer",zIndex:900,background:"none"}}>
+      <button onClick={()=>setOpen(v=>!v)} aria-label="Style Bot" style={{position:"fixed",bottom:160,right:10,width:60,height:60,padding:0,border:"none",cursor:"pointer",zIndex:900,background:"none"}}>
         <img src={BOT_IMG} alt="Style Bot" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
       </button>
-      {open&&(
-        <div style={{position:"fixed",bottom:230,right:10,width:290,background:T.bgCard,borderRadius:T.radiusLg,boxShadow:T.shadowMd,zIndex:901,overflow:"hidden",border:"1px solid rgba(0,0,0,0.07)"}}>
-          <div style={{background:T.bgDark,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <img src={BOT_IMG} alt="" style={{width:32,height:32,objectFit:"contain"}}/>
-              <div><p style={{margin:0,fontSize:12,fontWeight:800,color:"#fff"}}>STYLE BOT</p><p style={{margin:0,fontSize:10,color:T.gold}}>Tu asistente de imagen</p></div>
-            </div>
-            <button onClick={close} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontSize:20,cursor:"pointer",lineHeight:1}}>x</button>
-          </div>
-          <div style={{padding:14}}>
-            {mode===null&&(
-              <>
-                <div style={{background:"#F6F3EE",borderRadius:10,padding:"10px 14px",marginBottom:12}}>
-                  <p style={{margin:0,fontSize:13,color:T.ink,lineHeight:1.5}}>Hola, soy Style Bot tu asistente de imagen. En que te puedo ayudar?</p>
-                </div>
-                <button onClick={()=>setMode("service")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",marginBottom:8,fontFamily:"inherit",color:T.ink}}>
-                  <span style={{fontSize:18}}>✂</span>
-                  <div><p style={{margin:0,fontWeight:700,fontSize:13}}>Reservar un servicio</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Te ayudo a elegir el mejor para ti</p></div>
-                </button>
-                <button onClick={()=>setMode("products")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",fontFamily:"inherit",color:T.ink}}>
-                  <span style={{fontSize:18}}>●</span>
-                  <div><p style={{margin:0,fontWeight:700,fontSize:13}}>Ver nuestros productos</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Pomadas, aceites, ceras y mas</p></div>
-                </button>
-              </>
-            )}
-            {mode==="service"&&!result&&(
-              <>
-                <button onClick={()=>{setMode(null);setStep(0);setAnswers({});}} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
-                <div style={{height:2,background:"rgba(0,0,0,0.06)",borderRadius:1,marginBottom:10}}><div style={{height:"100%",width:`${((step+1)/questions.length)*100}%`,background:T.gold,borderRadius:1}}/></div>
-                <p style={{fontSize:13,fontWeight:700,color:T.ink,marginBottom:10}}>{questions[step].q}</p>
-                {questions[step].opts.map(o=>(<button key={o} onClick={()=>handleAnswer(o)} style={{display:"block",width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"8px 12px",fontSize:13,textAlign:"left",cursor:"pointer",marginBottom:5,fontFamily:"inherit",color:T.ink}}>{o}</button>))}
-              </>
-            )}
-            {mode==="service"&&result&&(
-              <>
-                <div style={{background:T.bgDark,borderRadius:T.radiusSm,padding:12,marginBottom:10}}>
-                  <p style={{margin:"0 0 2px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p>
-                  <p style={{margin:"0 0 2px",fontSize:11,color:"rgba(255,255,255,0.45)"}}>con {result.professional}</p>
-                  <p style={{margin:0,fontSize:11,color:T.gold,fontWeight:600}}>{result.duration} - {result.price}EUR</p>
-                </div>
-                <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
-                <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Volver al menu</button>
-              </>
-            )}
-            {mode==="products"&&(
-              <>
-                <button onClick={()=>setMode(null)} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
-                <div style={{display:"flex",flexDirection:"column",gap:8,maxHeight:260,overflowY:"auto"}}>
-                  {prods.map(p=>(<div key={p.name} style={{background:T.bg,borderRadius:T.radiusSm,padding:"10px 12px",border:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",justifyContent:"space-between"}}><p style={{margin:"0 0 3px",fontSize:13,fontWeight:700,color:T.ink,flex:1,paddingRight:8}}>{p.name}</p><span style={{fontSize:13,fontWeight:800,color:T.gold}}>{p.price}EUR</span></div><p style={{margin:0,fontSize:11,color:T.ink3}}>{p.desc}</p></div>))}
-                </div>
-              </>
-            )}
-          </div>
+      {open&&(<div style={{position:"fixed",bottom:230,right:10,width:290,background:T.bgCard,borderRadius:T.radiusLg,boxShadow:T.shadowMd,zIndex:901,overflow:"hidden",border:"1px solid rgba(0,0,0,0.07)"}}>
+        <div style={{background:T.bgDark,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}><img src={BOT_IMG} alt="" style={{width:32,height:32,objectFit:"contain"}}/><div><p style={{margin:0,fontSize:12,fontWeight:800,color:"#fff"}}>STYLE BOT</p><p style={{margin:0,fontSize:10,color:T.gold}}>Tu asistente de imagen</p></div></div>
+          <button onClick={close} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontSize:20,cursor:"pointer",lineHeight:1}}>x</button>
         </div>
-      )}
+        <div style={{padding:14}}>
+          {mode===null&&(<><div style={{background:"#F6F3EE",borderRadius:10,padding:"10px 14px",marginBottom:12}}><p style={{margin:0,fontSize:13,color:T.ink,lineHeight:1.5}}>Hola, soy Style Bot tu asistente de imagen. En que te puedo ayudar?</p></div>
+            <button onClick={()=>setMode("service")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",marginBottom:8,fontFamily:"inherit",color:T.ink}}><span style={{fontSize:18}}>✂</span><div><p style={{margin:0,fontWeight:700,fontSize:13}}>Reservar un servicio</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Te ayudo a elegir el mejor para ti</p></div></button>
+            <button onClick={()=>setMode("products")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",fontFamily:"inherit",color:T.ink}}><span style={{fontSize:18}}>●</span><div><p style={{margin:0,fontWeight:700,fontSize:13}}>Ver nuestros productos</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Pomadas, aceites, ceras y mas</p></div></button>
+          </>)}
+          {mode==="service"&&!result&&(<><button onClick={()=>{setMode(null);setStep(0);setAnswers({});}} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
+            <div style={{height:2,background:"rgba(0,0,0,0.06)",borderRadius:1,marginBottom:10}}><div style={{height:"100%",width:`${((step+1)/questions.length)*100}%`,background:T.gold,borderRadius:1}}/></div>
+            <p style={{fontSize:13,fontWeight:700,color:T.ink,marginBottom:10}}>{questions[step].q}</p>
+            {questions[step].opts.map(o=>(<button key={o} onClick={()=>handleAnswer(o)} style={{display:"block",width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"8px 12px",fontSize:13,textAlign:"left",cursor:"pointer",marginBottom:5,fontFamily:"inherit",color:T.ink}}>{o}</button>))}
+          </>)}
+          {mode==="service"&&result&&(<><div style={{background:T.bgDark,borderRadius:T.radiusSm,padding:12,marginBottom:10}}><p style={{margin:"0 0 2px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p><p style={{margin:"0 0 2px",fontSize:11,color:"rgba(255,255,255,0.45)"}}>con {result.professional}</p><p style={{margin:0,fontSize:11,color:T.gold,fontWeight:600}}>{result.duration} - {result.price}EUR</p></div>
+            <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
+            <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Volver al menu</button>
+          </>)}
+          {mode==="products"&&(<><button onClick={()=>setMode(null)} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
+            <div style={{display:"flex",flexDirection:"column",gap:8,maxHeight:260,overflowY:"auto"}}>
+              {prods.map(p=>(<div key={p.name} style={{background:T.bg,borderRadius:T.radiusSm,padding:"10px 12px",border:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",justifyContent:"space-between"}}><p style={{margin:"0 0 3px",fontSize:13,fontWeight:700,color:T.ink,flex:1,paddingRight:8}}>{p.name}</p><span style={{fontSize:13,fontWeight:800,color:T.gold}}>{p.price}EUR</span></div><p style={{margin:0,fontSize:11,color:T.ink3}}>{p.desc}</p></div>))}
+            </div>
+          </>)}
+        </div>
+      </div>)}
     </>
   );
 }
@@ -882,36 +829,20 @@ function ProductsView(){
     {name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22",cat:"Barba"},
     {name:"Balsamo de barba",desc:"Hidrata y suaviza la barba.",price:"19",cat:"Barba"},
     {name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14",cat:"Barba"},
-    {name:"Balsamo post-afeitado",desc:"Calma la irritacion. Con aloe vera.",price:"19",cat:"Cuidado"},
-    {name:"Serum hidratante",desc:"Hidratacion profunda para piel seca.",price:"24",cat:"Cuidado"},
+    {name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19",cat:"Cuidado"},
+    {name:"Serum hidratante",desc:"Hidratacion profunda.",price:"24",cat:"Cuidado"},
   ];
   const cats=["Todos","Cabello","Barba","Cuidado"];
   const [cat,setCat]=useState("Todos");
   const filtered=cat==="Todos"?items:items.filter(i=>i.cat===cat);
   return(
-    <div style={{paddingBottom:80,background:T.bg}}>
+    <div style={{paddingBottom:80}}>
       <SectionHero/>
-      <div style={{padding:"20px 16px 12px",background:T.bgCard,borderBottom:"1px solid rgba(0,0,0,0.07)",position:"sticky",top:0,zIndex:10}}>
-        <h2 style={{margin:"0 0 12px",fontSize:20,fontWeight:800,color:T.ink}}>Productos</h2>
-        <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>
-          {cats.map(c=>(<button key={c} onClick={()=>setCat(c)} style={{whiteSpace:"nowrap",padding:"6px 14px",borderRadius:20,border:`1px solid ${cat===c?T.ink:"rgba(0,0,0,0.1)"}`,background:cat===c?T.ink:"transparent",color:cat===c?"#fff":T.ink2,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{c}</button>))}
-        </div>
+      <div style={{padding:"20px 16px 12px",background:T.bgCard,borderBottom:"1px solid rgba(0,0,0,0.07)"}}>
+        <h2 style={{margin:"0 0 12px",fontSize:20,fontWeight:800}}>Productos</h2>
+        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{cats.map(c=>(<button key={c} onClick={()=>setCat(c)} style={{padding:"6px 14px",borderRadius:20,border:`1px solid ${cat===c?T.ink:"rgba(0,0,0,0.1)"}`,background:cat===c?T.ink:"transparent",color:cat===c?"#fff":T.ink2,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{c}</button>))}</div>
       </div>
-      <div style={{padding:"16px"}}>
-        {filtered.map(p=>(
-          <Card key={p.name} style={{marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12}}>
-            <div style={{flex:1}}>
-              <p style={{margin:"0 0 3px",fontSize:14,fontWeight:700,color:T.ink}}>{p.name}</p>
-              <p style={{margin:"0 0 6px",fontSize:12,color:T.ink2,lineHeight:1.4}}>{p.desc}</p>
-              <span style={{fontSize:10,background:T.bg,padding:"2px 10px",borderRadius:20,color:T.ink3,fontWeight:600}}>{p.cat}</span>
-            </div>
-            <div style={{textAlign:"right",flexShrink:0}}>
-              <p style={{margin:"0 0 6px",fontSize:16,fontWeight:800,color:T.ink}}>{p.price}EUR</p>
-              <button style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Comprar</button>
-            </div>
-          </Card>
-        ))}
-      </div>
+      <div style={{padding:16}}>{filtered.map(p=>(<Card key={p.name} style={{marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12}}><div style={{flex:1}}><p style={{margin:"0 0 3px",fontSize:14,fontWeight:700}}>{p.name}</p><p style={{margin:"0 0 6px",fontSize:12,color:T.ink2}}>{p.desc}</p><span style={{fontSize:10,background:T.bg,padding:"2px 10px",borderRadius:20,color:T.ink3,fontWeight:600}}>{p.cat}</span></div><div style={{textAlign:"right",flexShrink:0}}><p style={{margin:"0 0 6px",fontSize:16,fontWeight:800}}>{p.price}EUR</p><button style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Comprar</button></div></Card>))}</div>
     </div>
   );
 }
@@ -1040,9 +971,7 @@ function BookingView({appointments,onAppointmentCreated,initialService}){
     const prof=professionals.find(p=>p.id===confirmResult.professionalId);
     const svc=services.find(s=>s.id===confirmResult.serviceId);
     return(
-    <div style={{paddingBottom:80}}>
-      <SectionHero/>
-      <div style={{padding:20,textAlign:"center"}}>
+      <div style={{padding:20,paddingBottom:80,textAlign:"center"}}>
         <div style={{background:"#111",borderRadius:20,padding:"40px 20px",marginBottom:20,color:"#fff"}}>
           <div style={{width:60,height:60,borderRadius:"50%",background:"rgba(184,154,90,0.15)",border:"2px solid #B89A5A",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,margin:"0 auto 16px",color:"#B89A5A"}}>✓</div>
           <h2 style={{margin:"0 0 8px",fontSize:24,fontWeight:800}}>¡Cita reservada!</h2>
@@ -1066,7 +995,6 @@ function BookingView({appointments,onAppointmentCreated,initialService}){
           <Btn variant="ghost" style={{width:"100%"}} onClick={reset}>Nueva reserva</Btn>
         </div>
         <p style={{fontSize:11,color:"#aaa",marginTop:16,lineHeight:1.7}}>Cancelación gratuita hasta 24h antes de la cita.</p>
-      </div>
       </div>
     );
   }
@@ -1343,7 +1271,6 @@ function AdminView({appointments,onAddAppointment}){
         {sec==="clients"&&<AdminClients/>}
         {sec==="professionals"&&<AdminProfs/>}
         {sec==="stats"&&<AdminStats appointments={appointments}/>}
-        {sec==="products"&&<AdminProducts/>}
         {sec==="settings"&&<AdminSettings/>}
       </div>
     </div>
@@ -1393,28 +1320,14 @@ function AdminAgenda({appointments}){
           <button onClick={()=>{const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()+1);setViewDate(d.toISOString().split("T")[0]);}} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>Sig</button>
         </div>
       </div>
-      {dayApts.length===0
-        ?<p style={{textAlign:"center",color:T.ink3,padding:"40px 0"}}>Sin citas este dia</p>
+      {dayApts.length===0?<p style={{textAlign:"center",color:T.ink3,padding:"40px 0"}}>Sin citas este dia</p>
         :<div style={{display:"flex",flexDirection:"column",gap:10}}>
           {dayApts.map(a=>{
             const prof=professionals.find(p=>p.id===a.professionalId);
             const svc=services.find(s=>s.id===a.serviceId);
-            return(
-              <Card key={a.id} style={{padding:"14px 16px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:12}}>
-                  <span style={{fontSize:15,fontWeight:800,color:T.gold,minWidth:44}}>{a.time}</span>
-                  <Avatar initials={prof?prof.avatar:"?"} size={34}/>
-                  <div style={{flex:1,minWidth:0}}>
-                    <p style={{margin:0,fontSize:13,fontWeight:700,color:T.ink}}>{a.clientName}</p>
-                    <p style={{margin:"2px 0 0",fontSize:11,color:T.ink2}}>{svc?svc.name:a.serviceId}</p>
-                  </div>
-                  <span style={{fontSize:13,fontWeight:800,color:T.ink}}>{a.price}EUR</span>
-                </div>
-              </Card>
-            );
+            return(<Card key={a.id} style={{padding:"14px 16px"}}><div style={{display:"flex",alignItems:"center",gap:12}}><span style={{fontSize:15,fontWeight:800,color:T.gold,minWidth:44}}>{a.time}</span><Avatar initials={prof?prof.avatar:"?"} size={34}/><div style={{flex:1,minWidth:0}}><p style={{margin:0,fontSize:13,fontWeight:700,color:T.ink}}>{a.clientName}</p><p style={{margin:"2px 0 0",fontSize:11,color:T.ink2}}>{svc?svc.name:a.serviceId}</p></div><span style={{fontSize:13,fontWeight:800,color:T.ink}}>{a.price}EUR</span></div></Card>);
           })}
-        </div>
-      }
+        </div>}
     </div>
   );
 }
@@ -1569,34 +1482,13 @@ function AdminProducts(){
     {id:5,name:"Balsamo post-afeitado",price:"19",stock:7,cat:"Cuidado"},
     {id:6,name:"Serum hidratante",price:"24",stock:3,cat:"Cuidado"},
   ]);
-  return(
-    <div style={{padding:20}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Productos</h3>
-        <button style={{background:T.ink,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nuevo</button>
-      </div>
-      {items.map(item=>(
-        <Card key={item.id} style={{marginBottom:10}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div style={{flex:1}}>
-              <p style={{margin:"0 0 3px",fontSize:14,fontWeight:700,color:T.ink}}>{item.name}</p>
-              <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                <span style={{fontSize:10,background:T.bg,padding:"2px 10px",borderRadius:20,color:T.ink3,fontWeight:600}}>{item.cat}</span>
-                <span style={{fontSize:12,color:item.stock<5?T.err:T.ok,fontWeight:600}}>Stock: {item.stock}</span>
-              </div>
-            </div>
-            <div style={{textAlign:"right"}}>
-              <p style={{margin:"0 0 6px",fontSize:16,fontWeight:800,color:T.gold}}>{item.price}EUR</p>
-              <div style={{display:"flex",gap:6}}>
-                <button style={{background:T.bg,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"4px 10px",fontSize:11,cursor:"pointer",fontFamily:"inherit",color:T.ink}}>Editar</button>
-                <button onClick={()=>setItems(prev=>prev.filter(i=>i.id!==item.id))} style={{background:"#FEF0EF",border:"1px solid rgba(211,75,63,0.2)",borderRadius:8,padding:"4px 10px",fontSize:11,cursor:"pointer",fontFamily:"inherit",color:T.err}}>Quitar</button>
-              </div>
-            </div>
-          </div>
-        </Card>
-      ))}
+  return(<div style={{padding:20}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+      <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Productos</h3>
+      <button style={{background:T.ink,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nuevo</button>
     </div>
-  );
+    {items.map(item=>(<Card key={item.id} style={{marginBottom:10}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1}}><p style={{margin:"0 0 3px",fontSize:14,fontWeight:700}}>{item.name}</p><div style={{display:"flex",gap:8}}><span style={{fontSize:10,background:T.bg,padding:"2px 10px",borderRadius:20,color:T.ink3,fontWeight:600}}>{item.cat}</span><span style={{fontSize:12,color:item.stock<5?T.err:T.ok,fontWeight:600}}>Stock: {item.stock}</span></div></div><div style={{textAlign:"right"}}><p style={{margin:"0 0 6px",fontSize:16,fontWeight:800,color:T.gold}}>{item.price}EUR</p><div style={{display:"flex",gap:6}}><button style={{background:T.bg,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"4px 10px",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Editar</button><button onClick={()=>setItems(p=>p.filter(i=>i.id!==item.id))} style={{background:"#FEF0EF",border:"1px solid rgba(211,75,63,0.2)",borderRadius:8,padding:"4px 10px",fontSize:11,cursor:"pointer",fontFamily:"inherit",color:T.err}}>Quitar</button></div></div></div></Card>))}
+  </div>);
 }
 
 function AdminSettings(){
@@ -1718,13 +1610,11 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
           {clientNav==="profile"&&(user?<ProfileViewLoggedIn user={user} onLogout={()=>{if(!demoMode){setUser(null);setClientNav("home");}}}/>:<ProfileView/>)}
         </div>
       )}
-      {swipeHint&&(
-        <div className="swipe-hint" style={{position:'fixed',bottom:200,left:'50%',transform:'translateX(-50%)',zIndex:800,background:'rgba(17,17,17,0.88)',backdropFilter:'blur(10px)',borderRadius:24,padding:'9px 20px',display:'flex',alignItems:'center',gap:8,boxShadow:'0 4px 16px rgba(0,0,0,0.25)',pointerEvents:'none',whiteSpace:'nowrap'}}>
-          <span style={{fontSize:16}}>👈</span>
-          <span style={{fontSize:12,fontWeight:600,color:'#fff',letterSpacing:.3}}>Desliza para cambiar de sección</span>
-          <span style={{fontSize:16}}>👉</span>
-        </div>
-      )}
+      {swipeHint&&(<div className="swipe-hint-pill" style={{position:'fixed',bottom:200,left:'50%',transform:'translateX(-50%)',zIndex:800,background:'rgba(17,17,17,0.88)',borderRadius:24,padding:'9px 20px',display:'flex',alignItems:'center',gap:8,boxShadow:'0 4px 16px rgba(0,0,0,0.25)',pointerEvents:'none',whiteSpace:'nowrap'}}>
+        <span style={{fontSize:16}}>👈</span>
+        <span style={{fontSize:12,fontWeight:600,color:'#fff',letterSpacing:.3}}>Desliza para cambiar de sección</span>
+        <span style={{fontSize:16}}>👉</span>
+      </div>)}
       <StyleBot onReservar={()=>handleNavWithReset('booking')}/>
       <BottomNav active={showLogin?loginContext:clientNav} onNav={v=>handleNavWithReset(v)}/>
     </div>
