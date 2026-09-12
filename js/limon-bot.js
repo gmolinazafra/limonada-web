@@ -23,6 +23,7 @@
   /* ================================================================ CSS */
   var css = "\
 :root{--lb-yellow:#FFD21E;--lb-green:#33B34A;--lb-green-deep:#1F8F35;--lb-ink:#0E2A15;--lb-paper:#FFFFFF;--lb-mist:#F4F6EF;--lb-line:#E3E8DC;--lb-shadow:0 18px 50px rgba(14,42,21,.18)}\
+#lb-root,#lb-root *{box-sizing:border-box}\
 #lb-root{position:fixed;right:20px;bottom:18px;z-index:2147483000;font-family:inherit;color:var(--lb-ink);-webkit-font-smoothing:antialiased}\
 #lb-launch{position:relative;width:118px;height:118px;border:0;padding:0;margin:0;background:none;cursor:pointer;outline:none;display:block}\
 #lb-launch img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 12px 18px rgba(14,42,21,.28));animation:lb-float 3.6s ease-in-out infinite;transition:transform .25s ease}\
@@ -31,10 +32,10 @@
 @keyframes lb-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}\
 #lb-nudge{position:absolute;right:104px;bottom:74px;background:var(--lb-paper);border:2px solid var(--lb-green);border-radius:16px 16px 4px 16px;padding:9px 13px;font-size:14px;font-weight:600;white-space:nowrap;box-shadow:0 8px 24px rgba(14,42,21,.14);opacity:0;transform:translateY(6px) scale(.96);transition:opacity .3s,transform .3s;pointer-events:none}\
 #lb-nudge.on{opacity:1;transform:none}\
-#lb-panel{position:fixed;right:20px;bottom:18px;width:390px;max-width:calc(100vw - 24px);height:640px;max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);background:var(--lb-paper);border-radius:22px;box-shadow:var(--lb-shadow);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(16px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .22s ease,transform .22s ease}\
+#lb-panel{position:fixed;margin:0;padding:0;left:auto;top:auto;right:20px;bottom:18px;width:390px;max-width:calc(100vw - 24px);height:640px;max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);background:var(--lb-paper);border-radius:22px;box-shadow:var(--lb-shadow);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(16px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .22s ease,transform .22s ease}\
 #lb-root.open #lb-panel{opacity:1;transform:none;pointer-events:auto}\
 #lb-root.open #lb-launch,#lb-root.open #lb-nudge{display:none}\
-#lb-head{display:flex;align-items:center;gap:12px;padding:14px 14px 12px 16px;background:linear-gradient(135deg,var(--lb-yellow) 0%,#FFE270 100%);border-bottom:1px solid rgba(14,42,21,.08)}\
+#lb-head{position:static;margin:0;width:auto;height:auto;box-shadow:none;border-radius:22px 22px 0 0;display:flex;align-items:center;gap:12px;padding:14px 14px 12px 16px;background:linear-gradient(135deg,var(--lb-yellow) 0%,#FFE270 100%);border-bottom:1px solid rgba(14,42,21,.08)}\
 #lb-head img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(14,42,21,.25))}\
 #lb-head .lb-t{flex:1;min-width:0;line-height:1.15}\
 #lb-head .lb-t b{display:block;font-size:16px;font-weight:700}\
@@ -52,7 +53,7 @@
 .lb-msg .lb-b{font-size:14.5px;line-height:1.5;padding:10px 13px;border-radius:16px;max-width:82%;overflow-wrap:anywhere;white-space:pre-wrap}\
 .lb-msg.bot .lb-b{background:var(--lb-paper);border:1px solid var(--lb-line);border-top-left-radius:6px}\
 .lb-msg.user{justify-content:flex-end}\
-.lb-msg.user .lb-b{background:var(--lb-yellow);border-bottom-right-radius:6px;font-weight:500}\
+.lb-msg.user .lb-b{background:var(--lb-ink);color:#fff;border-bottom-right-radius:6px;font-weight:500}\
 .lb-msg .lb-b a{color:var(--lb-green-deep);font-weight:600;text-decoration:underline;text-underline-offset:2px}\
 .lb-chips{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 14px 37px}\
 .lb-chip{border:1.5px solid var(--lb-green);background:var(--lb-paper);color:var(--lb-green-deep);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:600;cursor:pointer;transition:background .15s,color .15s,transform .15s;font-family:inherit;text-decoration:none}\
@@ -72,7 +73,7 @@
 #lb-send svg{width:20px;height:20px}\
 #lb-foot{font-size:11px;text-align:center;color:rgba(14,42,21,.5);padding:0 12px 9px;background:var(--lb-paper)}\
 #lb-foot a{color:inherit;text-decoration:underline}\
-@media (max-width:520px){#lb-root{right:12px;bottom:12px}#lb-launch{width:96px;height:96px}#lb-nudge{right:86px;bottom:60px}#lb-panel{right:0;bottom:0;left:0;top:0;width:auto;max-width:none;height:auto;max-height:none;border-radius:0}}\
+@media (max-width:520px){#lb-root{right:12px;bottom:12px}#lb-launch{width:96px;height:96px}#lb-nudge{right:86px;bottom:60px}#lb-panel{right:0;bottom:0;left:0;top:0;width:auto;max-width:none;height:auto;max-height:none;border-radius:0}#lb-head{border-radius:0}}\
 @media (prefers-reduced-motion:reduce){#lb-launch img,.lb-typing i{animation:none}#lb-panel,#lb-nudge{transition:none}}\
 ";
   var style = document.createElement("style");
@@ -331,12 +332,12 @@
   root.innerHTML =
     '<div id="lb-nudge" role="status">' + esc(CFG.nudge) + "</div>" +
     '<button id="lb-launch" type="button" aria-label="Abrir chat con ' + esc(CFG.name) + '"><img src="' + CFG.img + '" alt="' + esc(CFG.name) + ', asistente de Limonada Web" width="118" height="118" loading="lazy"></button>' +
-    '<section id="lb-panel" role="dialog" aria-label="Chat con ' + esc(CFG.name) + '" aria-hidden="true">' +
-      '<header id="lb-head"><img src="' + CFG.imgMini + '" alt=""><div class="lb-t"><b>' + esc(CFG.name) + '</b><span>Asistente de Limonada Web</span></div><div class="lb-acts"><button type="button" id="lb-reset" aria-label="Empezar de nuevo" title="Empezar de nuevo">' + ICON_RESET + '</button><button type="button" id="lb-close" aria-label="Cerrar chat" title="Cerrar">' + ICON_X + "</button></div></header>" +
+    '<div id="lb-panel" role="dialog" aria-label="Chat con ' + esc(CFG.name) + '" aria-hidden="true">' +
+      '<div id="lb-head"><img src="' + CFG.imgMini + '" alt=""><div class="lb-t"><b>' + esc(CFG.name) + '</b><span>Asistente de Limonada Web</span></div><div class="lb-acts"><button type="button" id="lb-reset" aria-label="Empezar de nuevo" title="Empezar de nuevo">' + ICON_RESET + '</button><button type="button" id="lb-close" aria-label="Cerrar chat" title="Cerrar">' + ICON_X + "</button></div></div>" +
       '<div id="lb-log" aria-live="polite"></div>' +
       '<form id="lb-form"><textarea id="lb-in" rows="1" placeholder="Escribe aquí…" aria-label="Tu mensaje" maxlength="800"></textarea><button id="lb-send" type="submit" aria-label="Enviar">' + ICON_SEND + "</button></form>" +
       '<div id="lb-foot">Asistente de Limonada Web · <a href="/politica-privacidad">Privacidad</a></div>' +
-    "</section>";
+    "</div>";
   document.body.appendChild(root);
 
   var $ = function (id) { return document.getElementById(id); };
@@ -403,7 +404,8 @@
   function renderHistory() {
     log.innerHTML = "";
     if (!S.log.length) {
-      var w = { text: "¡Hola! Soy **Limón**, del equipo de Limonada Web. Cuéntame qué negocio tienes o qué te gustaría mejorar y te digo cómo lo resolveríamos.", chips: chips("Quiero una web", "Una app o software", "Automatizar / IA", "Protección de datos (RGPD)") };
+      var h = new Date().getHours(), sal = h < 6 ? "Buenas noches" : h < 14 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";
+      var w = { text: sal + ". Soy **Limón**, el asistente de Limonada Web. Cuéntame qué negocio tienes o qué te gustaría mejorar y te digo cómo lo resolveríamos.", chips: chips("Quiero una web", "Una app o software", "Automatizar / IA", "Protección de datos (RGPD)") };
       S.pending = "intent";
       addMsg("bot", w.text); addChips(w);
       S.log.push({ role: "bot", text: w.text, chips: w.chips }); save();
