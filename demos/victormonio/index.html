@@ -1284,7 +1284,7 @@ function AdminView({appointments,onAddAppointment}){
   const sections=[{id:"dashboard",icon:"◈",label:"Inicio"},{id:"agenda",icon:"◫",label:"Agenda"},{id:"appointments",icon:"✓",label:"Reservas"},{id:"clients",icon:"◎",label:"Clientes"},{id:"professionals",icon:"◐",label:"Equipo"},{id:"products",icon:"◉",label:"Productos"},{id:"stats",icon:"◈",label:"Estadísticas"},{id:"settings",icon:"⊙",label:"Configuración"}];
   return(
     <div style={{display:"flex",flexDirection:"column",minHeight:"100vh"}}>
-      <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:"cover",backgroundPosition:"center center",position:"relative",height:160,flexShrink:0}}><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,rgba(0,0,0,0.0),rgba(0,0,0,0.3))"}}/>      </div>
+      <div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:"cover",backgroundPosition:"center center",position:"relative",height:220,flexShrink:0}}><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,rgba(0,0,0,0.0),rgba(0,0,0,0.3))"}}/>      </div>
       <div style={{display:"flex",flexWrap:"wrap",background:"#1a1a1a",padding:"2px 0"}}>
         {sections.map(s=>(
           <button key={s.id} onClick={()=>setSec(s.id)} style={{padding:"11px 10px",border:"none",background:"none",color:sec===s.id?"#B89A5A":"rgba(255,255,255,0.55)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",borderBottom:`2px solid ${sec===s.id?"#B89A5A":"transparent"}`,flex:"1 0 22%",textAlign:"center"}}>
