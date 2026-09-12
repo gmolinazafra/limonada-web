@@ -31,7 +31,7 @@
 @keyframes lb-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}\
 #lb-nudge{position:absolute;right:104px;bottom:74px;background:var(--lb-paper);border:2px solid var(--lb-green);border-radius:16px 16px 4px 16px;padding:9px 13px;font-size:14px;font-weight:600;white-space:nowrap;box-shadow:0 8px 24px rgba(14,42,21,.14);opacity:0;transform:translateY(6px) scale(.96);transition:opacity .3s,transform .3s;pointer-events:none}\
 #lb-nudge.on{opacity:1;transform:none}\
-#lb-panel{position:absolute;right:0;bottom:0;width:390px;max-width:calc(100vw - 20px);height:620px;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);background:var(--lb-paper);border-radius:22px;box-shadow:var(--lb-shadow);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(16px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .22s ease,transform .22s ease}\
+#lb-panel{position:fixed;right:20px;bottom:18px;width:390px;max-width:calc(100vw - 24px);height:640px;max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);background:var(--lb-paper);border-radius:22px;box-shadow:var(--lb-shadow);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(16px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .22s ease,transform .22s ease}\
 #lb-root.open #lb-panel{opacity:1;transform:none;pointer-events:auto}\
 #lb-root.open #lb-launch,#lb-root.open #lb-nudge{display:none}\
 #lb-head{display:flex;align-items:center;gap:12px;padding:14px 14px 12px 16px;background:linear-gradient(135deg,var(--lb-yellow) 0%,#FFE270 100%);border-bottom:1px solid rgba(14,42,21,.08)}\
@@ -40,10 +40,12 @@
 #lb-head .lb-t b{display:block;font-size:16px;font-weight:700}\
 #lb-head .lb-t span{display:block;font-size:12px;opacity:.75;margin-top:2px}\
 #lb-head .lb-t span::before{content:\"\";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lb-green);margin-right:6px;vertical-align:1px}\
+#lb-head .lb-acts{display:flex;gap:6px}\
 #lb-head button{width:34px;height:34px;border:0;border-radius:10px;background:rgba(14,42,21,.08);color:var(--lb-ink);cursor:pointer;display:grid;place-items:center;transition:background .15s}\
 #lb-head button:hover{background:rgba(14,42,21,.16)}\
 #lb-head button svg{width:18px;height:18px}\
-#lb-log{flex:1;overflow-y:auto;padding:18px 16px 8px;background:var(--lb-mist);overscroll-behavior:contain}\
+#lb-log{flex:1 1 auto;min-height:0;overflow-y:auto;padding:18px 16px 8px;background:var(--lb-mist);overscroll-behavior:contain}\
+#lb-form,#lb-foot,#lb-head{flex:0 0 auto}\
 .lb-msg{display:flex;gap:9px;margin:0 0 14px}\
 .lb-msg.bot{align-items:flex-start}\
 .lb-msg.bot .lb-av{width:28px;height:28px;flex:0 0 28px;object-fit:contain;margin-top:2px}\
@@ -70,7 +72,7 @@
 #lb-send svg{width:20px;height:20px}\
 #lb-foot{font-size:11px;text-align:center;color:rgba(14,42,21,.5);padding:0 12px 9px;background:var(--lb-paper)}\
 #lb-foot a{color:inherit;text-decoration:underline}\
-@media (max-width:520px){#lb-root{right:12px;bottom:12px}#lb-launch{width:96px;height:96px}#lb-nudge{right:86px;bottom:60px}#lb-root.open{inset:0}#lb-panel{width:100vw;max-width:100vw;height:100%;max-height:100%;border-radius:0}}\
+@media (max-width:520px){#lb-root{right:12px;bottom:12px}#lb-launch{width:96px;height:96px}#lb-nudge{right:86px;bottom:60px}#lb-panel{right:0;bottom:0;left:0;top:0;width:auto;max-width:none;height:auto;max-height:none;border-radius:0}}\
 @media (prefers-reduced-motion:reduce){#lb-launch img,.lb-typing i{animation:none}#lb-panel,#lb-nudge{transition:none}}\
 ";
   var style = document.createElement("style");
@@ -319,6 +321,7 @@
 
   /* ================================================================ DOM */
   var ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var ICON_RESET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
   var ICON_SEND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
   var ICON_WA = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2 .6 2.7.5a2.3 2.3 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3z"/></svg>';
   var ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
@@ -329,7 +332,7 @@
     '<div id="lb-nudge" role="status">' + esc(CFG.nudge) + "</div>" +
     '<button id="lb-launch" type="button" aria-label="Abrir chat con ' + esc(CFG.name) + '"><img src="' + CFG.img + '" alt="' + esc(CFG.name) + ', asistente de Limonada Web" width="118" height="118" loading="lazy"></button>' +
     '<section id="lb-panel" role="dialog" aria-label="Chat con ' + esc(CFG.name) + '" aria-hidden="true">' +
-      '<header id="lb-head"><img src="' + CFG.imgMini + '" alt=""><div class="lb-t"><b>' + esc(CFG.name) + '</b><span>Asistente de Limonada Web</span></div><button type="button" id="lb-close" aria-label="Cerrar chat">' + ICON_X + "</button></header>" +
+      '<header id="lb-head"><img src="' + CFG.imgMini + '" alt=""><div class="lb-t"><b>' + esc(CFG.name) + '</b><span>Asistente de Limonada Web</span></div><div class="lb-acts"><button type="button" id="lb-reset" aria-label="Empezar de nuevo" title="Empezar de nuevo">' + ICON_RESET + '</button><button type="button" id="lb-close" aria-label="Cerrar chat" title="Cerrar">' + ICON_X + "</button></div></header>" +
       '<div id="lb-log" aria-live="polite"></div>' +
       '<form id="lb-form"><textarea id="lb-in" rows="1" placeholder="Escribe aquí…" aria-label="Tu mensaje" maxlength="800"></textarea><button id="lb-send" type="submit" aria-label="Enviar">' + ICON_SEND + "</button></form>" +
       '<div id="lb-foot">Asistente de Limonada Web · <a href="/politica-privacidad">Privacidad</a></div>' +
@@ -337,7 +340,7 @@
   document.body.appendChild(root);
 
   var $ = function (id) { return document.getElementById(id); };
-  var launch = $("lb-launch"), panel = $("lb-panel"), log = $("lb-log"), form = $("lb-form"), input = $("lb-in"), send = $("lb-send"), nudge = $("lb-nudge"), closeBtn = $("lb-close");
+  var launch = $("lb-launch"), panel = $("lb-panel"), log = $("lb-log"), form = $("lb-form"), input = $("lb-in"), send = $("lb-send"), nudge = $("lb-nudge"), closeBtn = $("lb-close"), resetBtn = $("lb-reset");
   var busy = false, opened = false;
 
   function md(text) {
@@ -361,6 +364,7 @@
     wrap.appendChild(b);
     log.appendChild(wrap);
     scroll();
+    b.wrap = wrap;
     return b;
   }
 
@@ -394,6 +398,7 @@
   }
   function clearChips() { var c = log.querySelectorAll(".lb-chips"); for (var i = 0; i < c.length; i++) c[i].remove(); }
   function scroll() { log.scrollTop = log.scrollHeight; }
+  function scrollTo(el) { if (el) log.scrollTop = Math.max(0, el.offsetTop - 12); }
 
   function renderHistory() {
     log.innerHTML = "";
@@ -413,10 +418,12 @@
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) { bubble.innerHTML = md(text); return done(); }
     var i = 0, step = Math.max(2, Math.round(text.length / 60));
+    scrollTo(bubble.wrap);
     (function tick() {
       i = Math.min(text.length, i + step);
       bubble.innerHTML = md(text.slice(0, i));
-      scroll();
+      // Si la respuesta es más alta que la caja, se queda anclada arriba; si cabe, sigue al final
+      if (bubble.wrap.offsetTop + bubble.wrap.offsetHeight <= log.scrollTop + log.clientHeight + 40) scroll(); else scrollTo(bubble.wrap);
       if (i < text.length) setTimeout(tick, 18); else done();
     })();
   }
@@ -437,7 +444,8 @@
       typeOut(bubble, r.text, function () {
         addChips(r);
         S.log.push({ role: "bot", text: r.text, chips: r.chips || null, wa: r.wa || null, mail: r.mail || null }); save();
-        busy = false; send.disabled = false; scroll();
+        busy = false; send.disabled = false;
+        if (bubble.wrap.offsetHeight > log.clientHeight - 90) scrollTo(bubble.wrap); else scroll();
         if (window.innerWidth > 520) input.focus();
       });
     }, think);
@@ -457,8 +465,16 @@
   function close() { opened = false; root.classList.remove("open"); panel.setAttribute("aria-hidden", "true"); launch.focus(); }
   function autosize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 120) + "px"; }
 
+  function reset() {
+    if (busy) return;
+    S = { log: [], intent: null, sector: null, situation: null, pain: null, name: null, rec: false, fallbacks: 0, stage: "start", pending: null };
+    save();
+    renderHistory();
+    if (window.innerWidth > 520) input.focus();
+  }
   launch.addEventListener("click", open);
   closeBtn.addEventListener("click", close);
+  resetBtn.addEventListener("click", reset);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && opened) close(); });
   form.addEventListener("submit", function (e) { e.preventDefault(); ask(input.value); });
   input.addEventListener("input", autosize);
@@ -471,7 +487,7 @@
     setTimeout(function () { nudge.classList.remove("on"); }, CFG.nudgeDelay + 9000);
   }
 
-  window.LimonBot = { open: open, close: close, ask: function (t) { open(); ask(t); } };
+  window.LimonBot = { open: open, close: close, reset: reset, ask: function (t) { open(); ask(t); } };
   document.addEventListener("click", function (e) {
     var el = e.target.closest && e.target.closest("[data-limon]");
     if (!el) return;
