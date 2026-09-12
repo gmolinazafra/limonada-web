@@ -1341,14 +1341,15 @@ function AdminAgenda({appointments}){
   const [isDesktop,setIsDesktop]=useState(window.innerWidth>=768);
   useEffect(()=>{const h=()=>setIsDesktop(window.innerWidth>=768);window.addEventListener("resize",h);return()=>window.removeEventListener("resize",h);},[]);
   const dayApts=appointments.filter(a=>a.date===viewDate&&a.status!=="cancelled").sort((a,b)=>a.time.localeCompare(b.time));
-  const hours=[];for(let h=10;h<21;h++){hours.push(`${String(h).padStart(2,"0")}:00`);hours.push(`${String(h).padStart(2,"0")}:30`);}
+  const ROW=40; // px por cada 30 min
+  const START=10*60; // 10:00 en minutos
+  const END=21*60;   // 21:00
+  const totalRows=(END-START)/30;
   const profs=professionals;
   function prevDay(){const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()-1);setViewDate(d.toISOString().split("T")[0]);}
   function nextDay(){const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()+1);setViewDate(d.toISOString().split("T")[0]);}
-  function aptAt(profId,time){return dayApts.find(a=>a.professionalId===profId&&a.time===time);}
-  function aptSpan(apt){const svc=services.find(s=>s.id===apt.serviceId);return Math.max(1,Math.round((svc?svc.duration:30)/30));}
-  const covered=new Set();
-  dayApts.forEach(a=>{const span=aptSpan(a);const i=hours.indexOf(a.time);for(let k=1;k<span;k++){if(hours[i+k])covered.add(a.professionalId+"|"+hours[i+k]);}});
+  function toMin(t){const [h,m]=t.split(":").map(Number);return h*60+m;}
+  const colors=["#B9924C","#5B8DEF","#2F8F57","#D34B3F","#8B5CF6"];
   const nav=(
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
       <h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Agenda</h3>
@@ -1378,31 +1379,46 @@ function AdminAgenda({appointments}){
     <div style={{padding:20}}>
       {nav}
       <div style={{background:T.bgCard,borderRadius:T.radius,border:"1px solid rgba(0,0,0,0.07)",overflow:"hidden"}}>
-        <div style={{display:"grid",gridTemplateColumns:`64px repeat(${profs.length},1fr)`,borderBottom:"1px solid rgba(0,0,0,0.07)",background:T.bg}}>
-          <div style={{padding:"10px 8px"}}/>
-          {profs.map(p=>(<div key={p.id} style={{padding:"10px 8px",textAlign:"center",borderLeft:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><Avatar initials={p.avatar} size={28}/><span style={{fontSize:11,fontWeight:700,color:T.ink}}>{p.name}</span></div></div>))}
+        {/* Cabecera */}
+        <div style={{display:"grid",gridTemplateColumns:`60px repeat(${profs.length},1fr)`,borderBottom:"1px solid rgba(0,0,0,0.08)",background:T.bg}}>
+          <div/>
+          {profs.map((p,i)=>(<div key={p.id} style={{padding:"10px 6px",textAlign:"center",borderLeft:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><Avatar initials={p.avatar} size={28}/><span style={{fontSize:11,fontWeight:700,color:T.ink}}>{p.name}</span></div></div>))}
         </div>
-        {hours.map((h,hi)=>(
-          <div key={h} style={{display:"grid",gridTemplateColumns:`64px repeat(${profs.length},1fr)`,borderBottom:hi%2===1?"1px solid rgba(0,0,0,0.07)":"1px dashed rgba(0,0,0,0.04)",minHeight:36}}>
-            <div style={{padding:"4px 8px",fontSize:11,fontWeight:hi%2===0?700:400,color:hi%2===0?T.ink2:T.ink3,display:"flex",alignItems:"center"}}>{hi%2===0?h:""}</div>
-            {profs.map(p=>{
-              const key=p.id+"|"+h;
-              if(covered.has(key))return <div key={p.id} style={{borderLeft:"1px solid rgba(0,0,0,0.06)"}}/>;
-              const apt=aptAt(p.id,h);
-              if(!apt)return <div key={p.id} style={{borderLeft:"1px solid rgba(0,0,0,0.06)"}}/>;
-              const svc=services.find(s=>s.id===apt.serviceId);
-              const span=aptSpan(apt);
-              return(
-                <div key={p.id} style={{borderLeft:"1px solid rgba(0,0,0,0.06)",padding:3,gridRow:`span 1`}}>
-                  <div style={{background:T.ink,color:"#fff",borderRadius:8,padding:"6px 8px",height:`${span*36-6}px`,overflow:"hidden",display:"flex",flexDirection:"column",justifyContent:"center",boxSizing:"border-box"}}>
-                    <p style={{margin:0,fontSize:11,fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{apt.clientName}</p>
-                    <p style={{margin:"2px 0 0",fontSize:10,color:"rgba(255,255,255,0.6)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{svc?svc.name:""} · {apt.price}EUR</p>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Cuerpo: columnas con posicionamiento absoluto */}
+        <div style={{display:"grid",gridTemplateColumns:`60px repeat(${profs.length},1fr)`,position:"relative",height:totalRows*ROW}}>
+          {/* Columna de horas */}
+          <div style={{position:"relative"}}>
+            {Array.from({length:totalRows},(_,i)=>(
+              <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",display:"flex",alignItems:"flex-start",justifyContent:"flex-end",paddingRight:8,paddingTop:2,fontSize:11,fontWeight:i%2===0?700:400,color:i%2===0?T.ink2:"transparent"}}>
+                {i%2===0?`${String(10+Math.floor(i/2)).padStart(2,"0")}:00`:""}
+              </div>
+            ))}
           </div>
-        ))}
+          {/* Columnas por profesional */}
+          {profs.map((p,pi)=>(
+            <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)"}}>
+              {/* Líneas de fondo */}
+              {Array.from({length:totalRows},(_,i)=>(
+                <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",pointerEvents:"none"}}/>
+              ))}
+              {/* Citas */}
+              {dayApts.filter(a=>a.professionalId===p.id).map(a=>{
+                const svc=services.find(s=>s.id===a.serviceId);
+                const dur=svc?svc.duration:30;
+                const top=((toMin(a.time)-START)/30)*ROW;
+                const h=(dur/30)*ROW-4;
+                const col=colors[pi%colors.length];
+                return(
+                  <div key={a.id} style={{position:"absolute",top:top+2,left:4,right:4,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:8,padding:"4px 8px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:h>50?"center":"flex-start",zIndex:2}}>
+                    <p style={{margin:0,fontSize:11,fontWeight:700,color:T.ink,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.clientName}</p>
+                    {h>40&&<p style={{margin:"2px 0 0",fontSize:10,color:T.ink2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{svc?svc.name:""} · {a.price}€</p>}
+                    {h>60&&<p style={{margin:"2px 0 0",fontSize:10,color:col,fontWeight:700}}>{a.time} · {dur} min</p>}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
