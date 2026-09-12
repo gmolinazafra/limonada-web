@@ -1651,7 +1651,7 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
 function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo, onReset }){
   
   return(
-    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",width:"100%",minHeight:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:"480px",margin:"0 auto",minHeight:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
       
       <div style={{flex:1}}>
         <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated}/>
@@ -1715,7 +1715,7 @@ function App(){
   return(
     <div style={{fontFamily:F,background:'#E8E4DD',minHeight:'100vh'}}>
       {menu}
-      <div style={{width:'100%',background:T.bg,minHeight:'100vh',boxShadow:'0 0 60px rgba(0,0,0,0.07)'}}>
+      <div style={{maxWidth:'480px',margin:'0 auto',background:T.bg,minHeight:'100vh',position:'relative',boxShadow:'0 0 60px rgba(0,0,0,0.07)'}}>
         {mode==='demo'&&<DemoPortal onDemoClient={()=>setMode('demoClient')} onDemoBusiness={()=>setMode('demoBusiness')} onBack={()=>setMode('demoClient')}/>}
         {mode==='demoClient'&&<ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')}/>}
         {mode==='demoBusiness'&&<BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')} onReset={handleResetDemo}/>}
