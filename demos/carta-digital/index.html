@@ -341,6 +341,11 @@ const ORDER_CSS=`
 @media(max-width:640px){.novelty-packs{grid-template-columns:1fr}}
 .novelty-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.5rem;line-height:1;cursor:pointer;color:#645f54;width:32px;height:32px}
 @media(max-width:700px){.novelty-modal{padding:22px 18px}.novelty-modal h2{font-size:1.1rem}}
+.mb-row-bot{display:flex;align-items:flex-end;gap:8px;align-self:flex-start;max-width:92%}
+.mb-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:0 0 28px;background:#fff;border:1px solid #E8E0D5;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.mb-row-bot .mb-msg-bot{max-width:100%;border-radius:16px 16px 16px 4px}
+.mb-row-bot .mb-typing{border-radius:16px 16px 16px 4px}
+.mb-chat .mb-msg-user{background:#111;color:#fff;border-radius:16px 16px 4px 16px}
 @media print{.novelty-pill-wrap,.ord-bar,.ord-overlay{display:none!important}}
 `;
 // ── Impresión de ticket (ventana aislada, compatible con impresora normal/térmica) ──
@@ -477,7 +482,10 @@ function aplicarDesayunosV4(data){
   return Object.assign({},data,{demoContentVersion:5,platos:platos});
 }
 
-return{DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
+function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
+
+return{mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -1459,7 +1467,7 @@ function AllergenSelector({ onConfirm }) {
 
 function MessageItem({ msg, fotos, onVerPlato, onChip, onAllergenConfirm, onBudget }) {
   const locale=React.useContext(MenuLanguage);
-  if (msg.type === "bot")  return localizeTree((<div className="mb-msg-bot">{msg.text}</div>), locale);
+  if (msg.type === "bot")  return localizeTree((<div className="mb-row-bot"><img className="mb-avatar" src={MAITRE_LOGO_HDR} alt="" aria-hidden="true" /><div className="mb-msg-bot">{msg.text}</div></div>), locale);
   if (msg.type === "user") return localizeTree((<div className="mb-msg-user" data-no-translate>{msg.text}</div>), locale);
   if (msg.type === "disclaimer") return localizeTree((<div className="mb-disclaimer">⚠️ {msg.text}</div>), locale);
 
@@ -1551,34 +1559,42 @@ function MaitreBot({ data, fotos, onVerPlato }) {
     setShowHint(false);
     if (!inited.current) {
       inited.current = true;
-      const welcome = "Hola 👋 Soy Maitre.\nConozco nuestra carta y puedo ayudarte a elegir según lo que te apetezca, tu presupuesto o tus intolerancias.\n\n¿Qué te apetece hoy?";
-      setTimeout(() => {
-        addMsg({ type:"bot", text: welcome });
+      setTimeout(() => botRespond(() => {
+        addMsg({ type:"bot", text: window.LW_ORD.mbSaludo() });
+        addMsg({ type:"bot", text: "Soy Maitre, tu asistente de mesa. Conozco nuestra carta y puedo ayudarte a elegir según lo que te apetezca, tu presupuesto o tus intolerancias.\n\n¿Qué te apetece hoy?" });
         addMsg({ type:"chips", chips: INITIAL_CHIPS });
-      }, 280);
+      }), 250);
     }
     requestAnimationFrame(()=>closeRef.current?.focus({preventScroll:true}));
   }, [open]);
 
   // Auto-scroll al último mensaje
   useEffect(() => {
-    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (chatRef.current) chatRef.current.scrollTop = pinTop.current ? 0 : chatRef.current.scrollHeight;
   }, [msgs, isTyping]);
 
-  const addMsg = msg => setMsgs(prev => [...prev, { id: Date.now() + Math.random(), ...msg }]);
+  const pinTop = useRef(true);
+  const addRef = useRef(null);
+  addRef.current = msg => setMsgs(prev => [...prev, { id: Date.now() + Math.random(), ...msg }]);
+  const addMsg = msg => addRef.current(msg);
 
-  const botRespond = (cb, delay=680) => {
+  const botRespond = (cb, delay) => {
+    const buf=[]; const prev=addRef.current;
+    addRef.current = m => buf.push({ id: Date.now() + Math.random(), ...m });
+    cb(); addRef.current = prev;
+    const len = buf.reduce((a,m)=>a+(m.type==="bot"?(m.text||"").length:0),0);
     setIsTyping(true);
-    setTimeout(() => { setIsTyping(false); cb(); }, delay);
+    setTimeout(() => { setIsTyping(false); setMsgs(p => [...p, ...buf]); }, delay||window.LW_ORD.mbDelay(len));
   };
 
   const handleReset = () => {
+    pinTop.current = true;
     setMsgs([]); setInputVal(""); setIsTyping(false); setBudget(null); setWineContext("");
     inited.current = true;
-    setTimeout(() => {
+    botRespond(() => {
       addMsg({ type:"bot",   text:"¡Empecemos de nuevo! 😊 ¿En qué puedo ayudarte?" });
       addMsg({ type:"chips", chips: INITIAL_CHIPS });
-    }, 180);
+    });
   };
 
   const handleVerPlato = id => {
@@ -1597,6 +1613,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
     });
   };
   const handleChip = (value, label) => {
+    pinTop.current = false;
     addMsg({ type:"user", text: label });
     if(value.startsWith("wine:")){answerWine(value==="wine:start"?"vino":value.slice(5),value==="wine:start");return;}
     setWineContext("");
@@ -1713,6 +1730,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
   };
 
   const handleSend = () => {
+    pinTop.current = false;
     if (!inputVal.trim()) return;
     const text = inputVal.trim();
     setInputVal("");
@@ -1794,9 +1812,9 @@ function MaitreBot({ data, fotos, onVerPlato }) {
               />
             ))}
             {isTyping && (
-              <div className="mb-typing" aria-label="Maitre está escribiendo">
+              <div className="mb-row-bot"><img className="mb-avatar" src={MAITRE_LOGO_HDR} alt="" aria-hidden="true" /><div className="mb-typing" aria-label="Maitre está escribiendo">
                 <div className="mb-dot" /><div className="mb-dot" /><div className="mb-dot" />
-              </div>
+              </div></div>
             )}
           </div>
 
@@ -3181,7 +3199,7 @@ if(DEMO_PHOTOS.p1&&!DEMO_PHOTOS.d2)DEMO_PHOTOS.d2={...DEMO_PHOTOS.p1};
 Object.assign(DEMO_SECTIONS,window.LW_ORD.SECT_ADD);
 // ── Traducciones de todo lo nuevo (se integran en el sistema existente) ──
 Object.assign(ENGLISH,{
-"← Volver a la carta":"← Back to the menu","🎉 Novedades":"🎉 What's new","Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
+"← Volver a la carta":"← Back to the menu","Buenos días 👋":"Good morning 👋","Buenas tardes 👋":"Good afternoon 👋","Buenas noches 👋":"Good evening 👋","Soy Maitre, tu asistente de mesa. Conozco nuestra carta y puedo ayudarte a elegir según lo que te apetezca, tu presupuesto o tus intolerancias.\n\n¿Qué te apetece hoy?":"I'm Maitre, your table assistant. I know our menu and can help you choose based on what you fancy, your budget or your intolerances.\n\nWhat would you like today?","🎉 Novedades":"🎉 What's new","Añadir":"Add","Agotado":"Sold out","Añadir al pedido":"Add to order","Tu pedido":"Your order","Ver pedido":"View order",
 "Carrito vacío. Añade platos desde la carta.":"Your basket is empty. Add dishes from the menu.",
 "Elige tamaño":"Choose size","Extras":"Extras","Extras de la hamburguesa":"Burger extras","Formato":"Serving","Hielo":"Ice","Con hielo":"With ice","Sin hielo":"No ice",
 "Elige hamburguesa":"Choose your burger","Elige patatas":"Choose your fries","Elige bebida":"Choose your drink",
