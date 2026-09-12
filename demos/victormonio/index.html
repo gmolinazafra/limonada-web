@@ -11,7 +11,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;}
     html,body{margin:0;padding:0;background:#E8E4DD;font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
-    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint-pill{display:none!important;}} .bottom-nav{padding-bottom:0 !important;} @media(display-mode:standalone){.bottom-nav{padding-bottom:env(safe-area-inset-bottom,20px) !important;}} .stylebot-fab{position:fixed;z-index:900;background:none;border:none;padding:0;cursor:pointer;width:56px;height:56px;right:max(10px,calc(50% - 350px));bottom:105px;} .stylebot-popup{position:fixed;z-index:901;width:290px;right:max(10px,calc(50% - 350px));bottom:171px;} @media(display-mode:standalone){.stylebot-fab{bottom:165px !important;} .stylebot-popup{bottom:231px !important;}} @supports(bottom:env(safe-area-inset-bottom)){.stylebot-fab{bottom:calc(105px + env(safe-area-inset-bottom,0px));} .stylebot-popup{bottom:calc(171px + env(safe-area-inset-bottom,0px));}}
+    #root{min-height:100vh;} @media(min-width:768px){.swipe-hint-pill{display:none!important;}} .bottom-nav{padding-bottom:0 !important;} @media(display-mode:standalone){.bottom-nav{padding-bottom:env(safe-area-inset-bottom,20px) !important;}} .sb-dot{width:7px;height:7px;border-radius:50%;background:#B9924C;display:inline-block;animation:sbBounce 1.2s infinite ease-in-out;} @keyframes sbBounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}} .stylebot-fab{position:fixed;z-index:900;background:none;border:none;padding:0;cursor:pointer;width:56px;height:56px;right:max(10px,calc(50% - 350px));bottom:105px;} .stylebot-popup{position:fixed;z-index:901;width:290px;right:max(10px,calc(50% - 350px));bottom:171px;} @media(display-mode:standalone){.stylebot-fab{bottom:165px !important;} .stylebot-popup{bottom:231px !important;}} @supports(bottom:env(safe-area-inset-bottom)){.stylebot-fab{bottom:calc(105px + env(safe-area-inset-bottom,0px));} .stylebot-popup{bottom:calc(171px + env(safe-area-inset-bottom,0px));}}
     ::-webkit-scrollbar{width:4px;}
     ::-webkit-scrollbar-thumb{background:#C8C3BB;border-radius:2px;}
     input,button,textarea{font-family:inherit;}
@@ -686,51 +686,177 @@ function ProfileViewLoggedIn({user,onLogout}){
 
 function StyleBot({onReservar}){
   const [open,setOpen]=useState(false);
-  const [mode,setMode]=useState(null);
-  const [step,setStep]=useState(0);
-  const [answers,setAnswers]=useState({});
-  const [result,setResult]=useState(null);
-  const [upsell,setUpsell]=useState(false);
-  const questions=[{q:"Que buscas hoy?",opts:["Corte de pelo","Corte + barba","Solo barba","Color o mechas","Cejas o pestanas"]},{q:"Tienes preferencia de barbero?",opts:["El primero libre","Victor","Miguel","Alex","Sara o Lucia"]},{q:"Cuanto tiempo tienes?",opts:["Menos de 30 min","30-45 min","45-60 min","Sin limite"]}];
-  const prods=[{name:"Pomada mate Suavecito",desc:"Fijacion fuerte, acabado mate.",price:"18"},{name:"Aceite de barba",desc:"Nutre y acondiciona la barba.",price:"22"},{name:"Cera de peinado",desc:"Fijacion media, brillo natural.",price:"15"},{name:"Champu para barba",desc:"Limpieza suave especifica.",price:"14"},{name:"Balsamo post-afeitado",desc:"Calma la irritacion.",price:"19"}];
-  function handleAnswer(ans){const na={...answers,[step]:ans};setAnswers(na);if(step<questions.length-1){setStep(step+1);}else{let rec={service:"Corte + Barba",professional:"Miguel",duration:"45 min",price:"27"};if(na[0]==="Solo barba")rec={service:"Arreglo de barba",professional:"Victor",duration:"20 min",price:"14"};else if(na[0]==="Color o mechas")rec={service:"Balayage",professional:"Sara",duration:"2 horas",price:"Desde 90"};setResult(rec);const day=new Date().getDay();if(day===2||day===4||true){setUpsell(true);}}}
-  function reset(){setMode(null);setStep(0);setAnswers({});setResult(null);setUpsell(false);}
-  function close(){setOpen(false);reset();}
+  const [msgs,setMsgs]=useState([]);
+  const [typing,setTyping]=useState(false);
+  const [chips,setChips]=useState([]);
+  const [ctx,setCtx]=useState({});
+  const endRef=useRef(null);
+  const day=new Date().getDay();
+  const hour=new Date().getHours();
+  const isEstDay=day===2||day===4;
+  const greet=hour<12?"Buenos días":hour<20?"Buenas tardes":"Buenas noches";
+
+  useEffect(()=>{if(endRef.current)endRef.current.scrollIntoView({behavior:"smooth"});},[msgs,typing]);
+  useEffect(()=>{if(open&&msgs.length===0)start();},[open]);
+
+  function botSay(text,newChips,delay){
+    setTyping(true);setChips([]);
+    setTimeout(()=>{setTyping(false);setMsgs(m=>[...m,{from:"bot",text}]);if(newChips)setChips(newChips);},delay||Math.min(400+text.length*12,1600));
+  }
+  function userSay(text){setMsgs(m=>[...m,{from:"user",text}]);setChips([]);}
+
+  function start(){
+    setMsgs([]);setCtx({});
+    botSay(`${greet}. Soy Style, el asistente de Victor Monió. Estoy aquí para ayudarte a encontrar tu look, reservar tu cita o resolver cualquier duda. ¿Qué te apetece?`,
+      [{t:"Quiero reservar",a:"book"},{t:"Aconséjame un look",a:"advice"},{t:"Ver productos",a:"products"},{t:"Horarios y dónde estáis",a:"info"}]);
+  }
+
+  function handle(chip){
+    userSay(chip.t);
+    const a=chip.a;
+    if(a==="book") return askService();
+    if(a==="advice") return advice1();
+    if(a==="products") return products();
+    if(a==="info") return info();
+    if(a==="restart") return start();
+    if(a==="svc"){setCtx(c=>({...c,svc:chip.v}));return askProf(chip.v);}
+    if(a==="prof"){setCtx(c=>({...c,prof:chip.v}));return askWhen(chip.v);}
+    if(a==="when"){setCtx(c=>({...c,when:chip.v}));return recommend(chip.v);}
+    if(a==="addCejas"){setCtx(c=>({...c,cejas:true}));return finish(true);}
+    if(a==="noCejas") return finish(false);
+    if(a==="go"){setOpen(false);setTimeout(()=>onReservar(),80);return;}
+    if(a==="adv"){setCtx(c=>({...c,adv:chip.v}));return advice2(chip.v);}
+    if(a==="adv2"){return advice3(chip.v);}
+    if(a==="prod"){return prodDetail(chip.v);}
+  }
+
+  function askService(){
+    botSay("Perfecto. Cuéntame qué tienes en mente y te propongo lo mejor.",
+      [{t:"Corte de pelo",a:"svc",v:"corte"},{t:"Corte + barba",a:"svc",v:"corte_barba"},{t:"Solo barba",a:"svc",v:"barba"},{t:"Color o mechas",a:"svc",v:"color"},{t:"Cejas / estética",a:"svc",v:"estetica"}]);
+  }
+  function askProf(svc){
+    const map={corte:"Para un corte, cualquiera del equipo te lo clava. ¿Tienes preferencia?",corte_barba:"Corte y barba, buena elección. Víctor y Miguel son los especialistas en barba.",barba:"Para barba pura, Víctor es el maestro con la navaja.",color:"Color es cosa de Sara, nuestra colorista. ¿Te va bien con ella o prefieres ver más opciones?",estetica:"Para cejas y estética, Lucía es nuestra esteticién."};
+    const profs=svc==="color"?[{t:"Sara",a:"prof",v:"sara"},{t:"El primero libre",a:"prof",v:"any"}]:
+                svc==="estetica"?[{t:"Lucía",a:"prof",v:"lucia"},{t:"El primero libre",a:"prof",v:"any"}]:
+                svc==="barba"?[{t:"Víctor",a:"prof",v:"victor"},{t:"Miguel",a:"prof",v:"miguel"},{t:"El primero libre",a:"prof",v:"any"}]:
+                [{t:"Víctor",a:"prof",v:"victor"},{t:"Miguel",a:"prof",v:"miguel"},{t:"Álex",a:"prof",v:"alex"},{t:"El primero libre",a:"prof",v:"any"}];
+    botSay(map[svc]||"¿Con quién prefieres?",profs);
+  }
+  function askWhen(prof){
+    const name={victor:"Víctor",miguel:"Miguel",alex:"Álex",sara:"Sara",lucia:"Lucía",any:"el primero libre"}[prof];
+    botSay(`Genial, con ${name}. ¿Cuándo te viene bien?`,
+      [{t:"Hoy mismo",a:"when",v:"hoy"},{t:"Mañana",a:"when",v:"manana"},{t:"Esta semana",a:"when",v:"semana"},{t:"Elijo yo el día",a:"when",v:"libre"}]);
+  }
+  function recommend(when){
+    const c=ctx;
+    const svcName={corte:"Corte de pelo",corte_barba:"Corte + Barba",barba:"Arreglo de barba",color:"Balayage",estetica:"Laminado de cejas"}[c.svc]||"Corte";
+    const price={corte:"17€",corte_barba:"27€",barba:"14€",color:"desde 90€",estetica:"38€"}[c.svc]||"17€";
+    const dur={corte:"30 min",corte_barba:"45 min",barba:"20 min",color:"2 h",estetica:"45 min"}[c.svc]||"30 min";
+    const slot=when==="hoy"?"hoy a las 11:45":when==="manana"?"mañana a las 10:00":when==="semana"?"el jueves a las 17:30":"el día que elijas";
+    botSay(`Te propongo: ${svcName} · ${dur} · ${price}. Hay hueco ${slot}. ¿Te encaja?`,null);
+    setTimeout(()=>{
+      if(isEstDay&&c.svc!=="estetica"){
+        botSay("Por cierto, hoy está Lucía en el salón. Si quieres, te añado depilación de cejas a la misma cita por solo 12€. Es rápido y te deja el look mucho más definido.",
+          [{t:"Sí, añádelo",a:"addCejas"},{t:"No, solo el servicio",a:"noCejas"}],900);
+      } else {
+        setChips([{t:"Reservar ahora",a:"go"},{t:"Cambiar algo",a:"book"},{t:"Empezar de nuevo",a:"restart"}]);
+      }
+    },1800);
+  }
+  function finish(cejas){
+    botSay(cejas?"Perfecto, lo dejo apuntado. Te llevo al calendario para que confirmes fecha y hora.":"Sin problema. Te llevo al calendario para confirmar la cita.",
+      [{t:"Ir a reservar",a:"go"},{t:"Empezar de nuevo",a:"restart"}]);
+  }
+
+  function advice1(){
+    botSay("Me encanta. Para aconsejarte bien necesito hacerme una idea de ti. ¿Qué forma tiene tu cara?",
+      [{t:"Redonda",a:"adv",v:"redonda"},{t:"Alargada",a:"adv",v:"alargada"},{t:"Cuadrada",a:"adv",v:"cuadrada"},{t:"Ovalada",a:"adv",v:"ovalada"},{t:"No lo sé",a:"adv",v:"nose"}]);
+  }
+  function advice2(face){
+    const tips={
+      redonda:"Para cara redonda, lo que mejor funciona es dar altura arriba y llevar los laterales cortos. Un fade medio con volumen en la parte superior alarga visualmente el rostro. La barba, si la llevas, mejor definida en la mandíbula.",
+      alargada:"Con cara alargada, evita demasiado volumen arriba. Un corte con más peso en los laterales y flequillo o textura hacia adelante equilibra. La barba corta y ancha en las mejillas funciona muy bien.",
+      cuadrada:"La cara cuadrada agradece suavizar líneas. Un corte con textura y cierto desorden arriba, laterales no demasiado rapados. Barba de tres días o media que redondee un poco la mandíbula.",
+      ovalada:"Tienes la cara más versátil. Prácticamente cualquier corte te queda bien: fade clásico, pompadour, texturizado... Es cuestión de tu estilo de vida y de cuánto tiempo quieras dedicarle cada mañana.",
+      nose:"No pasa nada. Nuestro equipo lo ve en un segundo cuando te sientes en el sillón. Lo mejor que puedo decirte: ven con una foto de referencia o dinos qué NO te gusta, y a partir de ahí construimos."
+    };
+    botSay(tips[face],null);
+    setTimeout(()=>botSay("¿Cuánto tiempo quieres dedicarle al peinado cada día?",
+      [{t:"Nada, que se peine solo",a:"adv2",v:"low"},{t:"Un par de minutos",a:"adv2",v:"mid"},{t:"Lo que haga falta",a:"adv2",v:"high"}],700),2200);
+  }
+  function advice3(effort){
+    const rec={low:"Entonces un corte corto tipo crop o fade con textura arriba. Un toque de cera mate y listo. Sin secador, sin complicaciones.",mid:"Un corte medio con algo de volumen arriba te da margen para jugar. Pomada o cera de fijación media, dos minutos y perfecto.",high:"Genial, así podemos ir a algo con más personalidad: pompadour, quiff, un peinado hacia atrás con volumen... Con un buen producto de fijación fuerte y secador se puede hacer de todo."}[effort];
+    botSay(rec,null);
+    setTimeout(()=>botSay("¿Quieres que te reserve una cita para probarlo? Te recomiendo mencionárselo al barbero para que lo adapte a tu pelo.",
+      [{t:"Sí, reservar",a:"book"},{t:"Ver productos recomendados",a:"products"},{t:"Empezar de nuevo",a:"restart"}],700),2400);
+  }
+
+  function products(){
+    botSay("Tenemos una selección pequeña pero muy buena. ¿Qué buscas?",
+      [{t:"Fijación para el pelo",a:"prod",v:"hair"},{t:"Cuidado de barba",a:"prod",v:"beard"},{t:"Piel y after-shave",a:"prod",v:"skin"},{t:"Volver al menú",a:"restart"}]);
+  }
+  function prodDetail(cat){
+    const info={
+      hair:"Para el pelo: Pomada mate Suavecito (18€) es la más vendida, fijación fuerte y acabado natural. Si prefieres brillo, la Cera de peinado (15€). Ambas se quitan con agua.",
+      beard:"Para barba: el Aceite de barba (22€) hidrata y quita el picor, y el Champú específico (14€) limpia sin resecar. Combinados hacen milagros.",
+      skin:"Para la piel: Bálsamo post-afeitado con aloe (19€), calma la irritación al instante. Y el Sérum hidratante (24€) si tienes la piel seca."
+    }[cat];
+    botSay(info+" Los tienes en la pestaña Productos, o te los llevas directamente en el salón.",
+      [{t:"Ver otra categoría",a:"products"},{t:"Reservar cita",a:"book"},{t:"Volver al menú",a:"restart"}]);
+  }
+
+  function info(){
+    const open=day>=1&&day<=5&&hour>=10&&hour<21;
+    botSay(`Estamos en Calle Sta. Ana 11, Cártama (Málaga). Abrimos de lunes a viernes de 10:00 a 21:00. ${open?"Ahora mismo estamos abiertos.":"Ahora estamos cerrados, pero puedes reservar para cuando quieras."} Los martes y jueves también está Lucía para estética.`,
+      [{t:"Cómo llegar",a:"maps"},{t:"Reservar cita",a:"book"},{t:"Volver al menú",a:"restart"}]);
+  }
+
+  function close(){setOpen(false);}
+
   return(
     <>
       <button onClick={()=>setOpen(v=>!v)} aria-label="Style Bot" className="stylebot-fab">
         <img src={BOT_IMG} alt="Style Bot" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
       </button>
-      {open&&(<div className="stylebot-popup" style={{width:290,background:T.bgCard,borderRadius:T.radiusLg,boxShadow:T.shadowMd,zIndex:901,overflow:"hidden",border:"1px solid rgba(0,0,0,0.07)"}}>
-        <div style={{background:T.bgDark,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}><img src={BOT_IMG} alt="" style={{width:32,height:32,objectFit:"contain"}}/><div><p style={{margin:0,fontSize:12,fontWeight:800,color:"#fff"}}>STYLE BOT</p><p style={{margin:0,fontSize:10,color:T.gold}}>Tu asistente de imagen</p></div></div>
-          <button onClick={close} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontSize:20,cursor:"pointer",lineHeight:1}}>x</button>
-        </div>
-        <div style={{padding:14}}>
-          {mode===null&&(<><div style={{background:"#F6F3EE",borderRadius:10,padding:"10px 14px",marginBottom:12}}><p style={{margin:0,fontSize:13,color:T.ink,lineHeight:1.5}}>Hola, soy Style Bot tu asistente de imagen. En que te puedo ayudar?</p></div>
-            <button onClick={()=>setMode("service")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",marginBottom:8,fontFamily:"inherit",color:T.ink}}><span style={{fontSize:18}}>✂</span><div><p style={{margin:0,fontWeight:700,fontSize:13}}>Reservar un servicio</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Te ayudo a elegir el mejor para ti</p></div></button>
-            <button onClick={()=>setMode("products")} style={{display:"flex",alignItems:"center",gap:10,width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"11px 13px",textAlign:"left",cursor:"pointer",fontFamily:"inherit",color:T.ink}}><span style={{fontSize:18}}>●</span><div><p style={{margin:0,fontWeight:700,fontSize:13}}>Ver nuestros productos</p><p style={{margin:0,fontSize:11,color:T.ink3}}>Pomadas, aceites, ceras y mas</p></div></button>
-          </>)}
-          {mode==="service"&&!result&&(<><button onClick={()=>{setMode(null);setStep(0);setAnswers({});}} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
-            <div style={{height:2,background:"rgba(0,0,0,0.06)",borderRadius:1,marginBottom:10}}><div style={{height:"100%",width:`${((step+1)/questions.length)*100}%`,background:T.gold,borderRadius:1}}/></div>
-            <p style={{fontSize:13,fontWeight:700,color:T.ink,marginBottom:10}}>{questions[step].q}</p>
-            {questions[step].opts.map(o=>(<button key={o} onClick={()=>handleAnswer(o)} style={{display:"block",width:"100%",background:T.bg,border:"1px solid rgba(0,0,0,0.08)",borderRadius:T.radiusSm,padding:"8px 12px",fontSize:13,textAlign:"left",cursor:"pointer",marginBottom:5,fontFamily:"inherit",color:T.ink}}>{o}</button>))}
-          </>)}
-          {mode==="service"&&result&&(<><div style={{background:T.bgDark,borderRadius:T.radiusSm,padding:12,marginBottom:10}}><p style={{margin:"0 0 2px",fontWeight:800,fontSize:14,color:"#fff"}}>{result.service}</p><p style={{margin:"0 0 2px",fontSize:11,color:"rgba(255,255,255,0.45)"}}>con {result.professional}</p><p style={{margin:0,fontSize:11,color:T.gold,fontWeight:600}}>{result.duration} - {result.price}EUR</p></div>
-            <button onClick={()=>{close();setTimeout(()=>onReservar(),50);}} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"11px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:6}}>RESERVAR AHORA</button>
-            <button onClick={reset} style={{width:"100%",background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Volver al menu</button>
-            {upsell&&(<div style={{background:"#F0F7F4",border:"1px solid #2F8F5766",borderRadius:T.radiusSm,padding:"10px 12px",marginTop:8}}>
-              <p style={{margin:"0 0 4px",fontSize:12,fontWeight:800,color:"#2F8F57"}}>✦ Disponible hoy — Martes y Jueves</p>
-              <p style={{margin:"0 0 8px",fontSize:12,color:T.ink2}}>Añade <strong>depilación de cejas</strong> con Lucía por solo <strong>12€</strong> más.</p>
-              <button onClick={()=>{onReservar();close();}} style={{width:"100%",background:"#2F8F57",color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"9px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Sí, añadir cejas ✓</button>
-            </div>)}
-          </>)}
-          {mode==="products"&&(<><button onClick={()=>setMode(null)} style={{background:"none",border:"none",color:T.ink3,fontSize:12,cursor:"pointer",fontFamily:"inherit",padding:"0 0 8px"}}>Volver</button>
-            <div style={{display:"flex",flexDirection:"column",gap:8,maxHeight:260,overflowY:"auto"}}>
-              {prods.map(p=>(<div key={p.name} style={{background:T.bg,borderRadius:T.radiusSm,padding:"10px 12px",border:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",justifyContent:"space-between"}}><p style={{margin:"0 0 3px",fontSize:13,fontWeight:700,color:T.ink,flex:1,paddingRight:8}}>{p.name}</p><span style={{fontSize:13,fontWeight:800,color:T.gold}}>{p.price}EUR</span></div><p style={{margin:0,fontSize:11,color:T.ink3}}>{p.desc}</p></div>))}
+      {open&&(<div className="stylebot-popup" style={{width:320,maxWidth:"calc(100vw - 20px)",background:T.bgCard,borderRadius:T.radiusLg,boxShadow:"0 12px 40px rgba(0,0,0,0.18)",overflow:"hidden",border:"1px solid rgba(0,0,0,0.07)",display:"flex",flexDirection:"column",maxHeight:"70vh"}}>
+        <div style={{background:T.bgDark,padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <img src={BOT_IMG} alt="" style={{width:34,height:34,objectFit:"contain"}}/>
+            <div>
+              <p style={{margin:0,fontSize:12,fontWeight:800,color:"#fff",letterSpacing:.5}}>STYLE</p>
+              <p style={{margin:0,fontSize:10,color:T.gold,display:"flex",alignItems:"center",gap:4}}><span style={{width:6,height:6,borderRadius:"50%",background:"#2F8F57",display:"inline-block"}}/>Asistente IA · en línea</p>
             </div>
-          </>)}
+          </div>
+          <button onClick={close} style={{background:"none",border:"none",color:"rgba(255,255,255,0.5)",fontSize:22,cursor:"pointer",lineHeight:1,padding:"0 4px"}}>×</button>
         </div>
+        <div style={{flex:1,overflowY:"auto",padding:"14px 12px",display:"flex",flexDirection:"column",gap:8,background:"#F6F3EE"}}>
+          {msgs.map((m,i)=>(
+            <div key={i} style={{display:"flex",justifyContent:m.from==="user"?"flex-end":"flex-start"}}>
+              {m.from==="bot"&&<img src={BOT_IMG} alt="" style={{width:22,height:22,objectFit:"contain",marginRight:6,marginTop:2,flexShrink:0}}/>}
+              <div style={{maxWidth:"82%",background:m.from==="user"?T.ink:"#fff",color:m.from==="user"?"#fff":T.ink,padding:"9px 12px",borderRadius:m.from==="user"?"14px 14px 3px 14px":"14px 14px 14px 3px",fontSize:13,lineHeight:1.5,boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>{m.text}</div>
+            </div>
+          ))}
+          {typing&&(
+            <div style={{display:"flex",alignItems:"center"}}>
+              <img src={BOT_IMG} alt="" style={{width:22,height:22,objectFit:"contain",marginRight:6,flexShrink:0}}/>
+              <div style={{background:"#fff",padding:"10px 14px",borderRadius:"14px 14px 14px 3px",display:"flex",gap:4,boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>
+                <span className="sb-dot" style={{animationDelay:"0s"}}/><span className="sb-dot" style={{animationDelay:".15s"}}/><span className="sb-dot" style={{animationDelay:".3s"}}/>
+              </div>
+            </div>
+          )}
+          <div ref={endRef}/>
+        </div>
+        {chips.length>0&&!typing&&(
+          <div style={{padding:"8px 12px 12px",display:"flex",flexWrap:"wrap",gap:6,background:"#F6F3EE",borderTop:"1px solid rgba(0,0,0,0.05)",flexShrink:0}}>
+            {chips.map((c,i)=>(
+              <button key={i} onClick={()=>c.a==="maps"?window.open("https://maps.google.com/?q=Calle+Sta+Ana+11+Cartama","_blank"):handle(c)}
+                style={{background:"#fff",border:`1.5px solid ${T.gold}`,color:T.ink,borderRadius:20,padding:"7px 13px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}
+                onMouseEnter={e=>{e.currentTarget.style.background=T.gold;e.currentTarget.style.color="#fff";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="#fff";e.currentTarget.style.color=T.ink;}}
+              >{c.t}</button>
+            ))}
+          </div>
+        )}
       </div>)}
     </>
   );
