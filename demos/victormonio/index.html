@@ -820,7 +820,16 @@ function HomeView({onNav,appointments,onReservar}){
       <div style={{padding:'24px 16px 0'}}>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>NUESTRO TRABAJO</p>
         <div style={{borderRadius:T.radius,overflow:'hidden',boxShadow:T.shadowMd,background:'#000',marginBottom:20}}>
-          <video controls playsInline preload="metadata" poster={HERO_IMG} style={{width:'100%',display:'block',maxHeight:300,objectFit:'cover'}}><source src="/videos/victor_monio.mp4" type="video/mp4"/>Tu navegador no soporta el video.</video>
+          <div style={{position:'relative',paddingBottom:'177%',height:0,overflow:'hidden',background:'#000'}}>
+          <iframe
+            src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F887766227437128%2F&show_text=false&width=267&t=0"
+            style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none'}}
+            scrolling="no"
+            frameBorder="0"
+            allowFullScreen={true}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          />
+        </div>
         </div>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>SÍGUENOS</p>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:24}}>
