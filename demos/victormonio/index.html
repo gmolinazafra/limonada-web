@@ -401,7 +401,7 @@ function Section({label,style={}}){
   return <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6,...style}}>{label}</p>;
 }
 function BusinessHeader({isOpen}){
-  return(<div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center top',position:'relative',height:220}}><div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)'}}/></div>);
+  return(<div style={{backgroundImage:`url("${HERO_IMG}")`,backgroundSize:'cover',backgroundPosition:'center center',position:'relative',height:280}}><div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)'}}/></div>);
 }
 function BusinessInfo({isOpen}){
   return(
@@ -820,15 +820,10 @@ function HomeView({onNav,appointments,onReservar}){
       <div style={{padding:'24px 16px 0'}}>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>NUESTRO TRABAJO</p>
         <div style={{borderRadius:T.radius,overflow:'hidden',boxShadow:T.shadowMd,background:'#000',marginBottom:20}}>
-          <div style={{position:'relative',paddingBottom:'177%',height:0,overflow:'hidden',background:'#000'}}>
-          <iframe
-            src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F887766227437128%2F&show_text=false&width=267&t=0"
-            style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none'}}
-            scrolling="no"
-            frameBorder="0"
-            allowFullScreen={true}
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          />
+          <div style={{background:'#111',borderRadius:T.radius,padding:'32px 20px',textAlign:'center',color:'#fff'}}>
+          <p style={{margin:'0 0 8px',fontSize:32}}>▶</p>
+          <p style={{margin:'0 0 4px',fontSize:14,fontWeight:700}}>Nuestro trabajo en vídeo</p>
+          <p style={{margin:0,fontSize:12,color:'rgba(255,255,255,0.5)'}}>Próximamente</p>
         </div>
         </div>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>SÍGUENOS</p>
