@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -192,7 +192,7 @@
     footer .links{display:flex;gap:18px}
 
 
-    .showcasegrid{display:grid;grid-template-columns:.82fr 1.18fr;gap:22px;align-items:stretch}
+    .showcasegrid{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:22px;align-items:stretch}
     .showcase{
       border:1px solid var(--line);border-radius:22px;background:#fff;overflow:hidden;
       box-shadow:0 16px 50px rgba(16,24,40,.06)
@@ -318,6 +318,7 @@
       .rgpd-clients{grid-template-columns:1fr}
     }
 
+    @media(max-width:1100px){.showcasegrid{grid-template-columns:1fr 1fr}}
     @media(max-width:920px){.showcasegrid{grid-template-columns:1fr}.browser{width:calc(100% + 380px)}.browser-static{width:calc(100% - 28px);margin-right:0}}
 
     @media(max-width:920px){
@@ -575,12 +576,26 @@
       <div class="sectionhead">
         <div>
           <div class="kicker">Muestras reales</div>
-          <h2 style="margin-top:16px">Dos trabajos. Dos negocios muy distintos.</h2>
+          <h2 style="margin-top:16px">Tres trabajos. Tres negocios muy distintos.</h2>
         </div>
-        <p>Mejor enseñar que prometer. Estas dos muestras están publicadas y se pueden abrir para ver cómo resolvemos proyectos de distinto tamaño y sector.</p>
+        <p>Mejor enseñar que prometer. Estas tres muestras están publicadas y se pueden abrir para ver cómo resolvemos proyectos de distinto tamaño y sector.</p>
       </div>
 
       <div class="showcasegrid">
+        <article class="showcase">
+          <div class="showcase-preview phone-stage">
+            <div class="phone" aria-hidden="true">
+              <iframe loading="lazy" title="Vista previa app barbería Limonada Web" src="https://www.limonadaweb.com/demos/victormonio/"></iframe>
+            </div>
+          </div>
+          <div class="showcase-copy">
+            <div class="livebadge">Demo online</div>
+            <h3>App de reservas para barbería</h3>
+            <p>App completa para peluquerías y barberías: reservas online, gestión de citas, equipo, productos y panel de administración. Con asistente virtual integrado.</p>
+            <a class="showcase-link" target="_blank" rel="noopener" href="https://www.limonadaweb.com/demos/victormonio/">Abrir la app ↗</a>
+          </div>
+        </article>
+
         <article class="showcase">
           <div class="showcase-preview phone-stage">
             <div class="phone" aria-hidden="true">
