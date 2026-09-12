@@ -820,10 +820,14 @@ function HomeView({onNav,appointments,onReservar}){
       <div style={{padding:'24px 16px 0'}}>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>NUESTRO TRABAJO</p>
         <div style={{borderRadius:T.radius,overflow:'hidden',boxShadow:T.shadowMd,background:'#000',marginBottom:20}}>
-          <div style={{background:'#111',borderRadius:T.radius,padding:'32px 20px',textAlign:'center',color:'#fff'}}>
-          <p style={{margin:'0 0 8px',fontSize:32}}>▶</p>
-          <p style={{margin:'0 0 4px',fontSize:14,fontWeight:700}}>Nuestro trabajo en vídeo</p>
-          <p style={{margin:0,fontSize:12,color:'rgba(255,255,255,0.5)'}}>Próximamente</p>
+          <div style={{position:'relative',paddingBottom:'177.77%',height:0,overflow:'hidden',borderRadius:T.radius}}>
+          <iframe
+            src="https://www.youtube.com/embed/k4su9tJc9vk"
+            style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none'}}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen={true}
+            title="Victor Monio Barberia"
+          />
         </div>
         </div>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>SÍGUENOS</p>
