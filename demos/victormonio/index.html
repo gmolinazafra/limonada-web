@@ -419,7 +419,7 @@ function BusinessInfo({isOpen}){
       </div>
       <p style={{margin:'0 0 12px',fontSize:12,color:T.ink3}}>Calle Sta. Ana 11 · Cartama, Malaga</p>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-        {[['Tel','Llamar'],['WA','WhatsApp'],['Map','Como llegar']].map(([ic,lb])=>(
+        {[['📞','Llamar'],['💬','WhatsApp'],['📍','Como llegar']].map(([ic,lb])=>(
           <button key={lb} style={{background:T.bg,border:'1px solid rgba(0,0,0,0.09)',borderRadius:T.radiusSm,padding:'8px 4px',color:T.ink2,fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>{ic} {lb}</button>
         ))}
       </div>
