@@ -820,7 +820,7 @@ function HomeView({onNav,appointments,onReservar}){
       <div style={{padding:'24px 16px 0'}}>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>NUESTRO TRABAJO</p>
         <div style={{borderRadius:T.radius,overflow:'hidden',boxShadow:T.shadowMd,background:'#000',marginBottom:20}}>
-          <video src="/videos/victor_monio.mp4" controls playsInline poster={HERO_IMG} style={{width:'100%',display:'block',maxHeight:300,objectFit:'cover'}}/>
+          <video controls playsInline preload="metadata" poster={HERO_IMG} style={{width:'100%',display:'block',maxHeight:300,objectFit:'cover'}}><source src="/videos/victor_monio.mp4" type="video/mp4"/>Tu navegador no soporta el video.</video>
         </div>
         <p style={{margin:'0 0 12px',fontSize:10,fontWeight:700,color:T.ink3,textTransform:'uppercase',letterSpacing:1.6}}>SÍGUENOS</p>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:24}}>
@@ -1651,7 +1651,7 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
 function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo, onReset }){
   
   return(
-    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:"600px",margin:"0 auto",minHeight:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
+    <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:"760px",margin:"0 auto",minHeight:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
       
       <div style={{flex:1}}>
         <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated}/>
@@ -1715,7 +1715,7 @@ function App(){
   return(
     <div style={{fontFamily:F,background:'#E8E4DD',minHeight:'100vh'}}>
       {menu}
-      <div style={{maxWidth:'600px',margin:'0 auto',background:T.bg,minHeight:'100vh',position:'relative',boxShadow:'0 0 60px rgba(0,0,0,0.07)'}}>
+      <div style={{maxWidth:'760px',margin:'0 auto',background:T.bg,minHeight:'100vh',position:'relative',boxShadow:'0 0 60px rgba(0,0,0,0.07)'}}>
         {mode==='demo'&&<DemoPortal onDemoClient={()=>setMode('demoClient')} onDemoBusiness={()=>setMode('demoBusiness')} onBack={()=>setMode('demoClient')}/>}
         {mode==='demoClient'&&<ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')}/>}
         {mode==='demoBusiness'&&<BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')} onReset={handleResetDemo}/>}
