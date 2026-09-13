@@ -50,6 +50,20 @@
   .nota{background:var(--papel-alto);border:1px solid var(--linea);border-left:4px solid var(--hoja);
         border-radius:10px;padding:16px 18px;margin:0 0 20px;font-size:15.5px}
   footer{border-top:1px solid var(--linea);padding:28px 0;color:var(--gris);font-size:14px}
+  @media(max-width:640px){
+    body{font-size:16px}
+    .wrap{padding:0 18px}
+    .encabezado{padding:32px 0 6px}
+    h1{font-size:28px}
+    h2{font-size:19px;margin:30px 0 10px}
+    table{display:block;overflow-x:auto;white-space:nowrap}
+    .datos td:first-child{width:auto}
+    table.datos{white-space:normal}
+    th,td{padding:10px 12px}
+    .pie-grid{flex-direction:column;gap:10px;text-align:center}
+    .barra{height:60px}
+    .barra a.volver{font-size:13.5px}
+  }
   .pie-grid{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
   footer a{text-decoration:none;font-weight:500}
 </style>
