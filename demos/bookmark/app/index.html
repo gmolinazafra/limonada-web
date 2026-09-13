@@ -17,7 +17,7 @@
     --tinta:#0E3B32; --tinta-suave:#2C5C51; --hoja:#4A8B3B;
     --papel:#F5F0E4; --papel-alto:#FFFDF6;
     --rojo:#C0453C; --ambar:#E8A93B; --azul:#3A6E9B;
-    --gris:#8C8778; --linea:rgba(14,59,50,.14);
+    --gris:#6E6A5C; --linea:rgba(14,59,50,.14);
     --sombra:0 10px 30px rgba(14,59,50,.13); --r:14px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -58,14 +58,14 @@
         box-shadow:inset -7px 0 12px rgba(0,0,0,.17),inset 3px 0 5px rgba(255,255,255,.2);
         transition:transform .18s ease}
   .lomo:active{transform:translateY(-7px)}
-  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:12.5px;
-             max-height:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-             text-shadow:0 1px 2px rgba(0,0,0,.3)}
-  .lomo .nervio{position:absolute;left:5px;right:5px;height:2px;background:rgba(255,255,255,.28)}
-  .lomo .nervio.a{top:13px}.lomo .nervio.b{bottom:13px}
-  .lomo .marca-pag{position:absolute;left:50%;transform:translateX(-50%);width:9px;background:var(--papel);
-        top:-13px;border-radius:2px 2px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-  .lomo .linea-pag{position:absolute;left:0;right:0;height:2px;background:rgba(255,255,255,.85)}
+  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:13px;
+             max-height:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;z-index:3;
+             text-shadow:0 1px 3px rgba(0,0,0,.45)}
+  .lomo .marca-pag{position:absolute;right:9px;top:-15px;width:10px;height:22px;background:var(--papel);
+        border-radius:2px 2px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.28);z-index:1}
+  .lomo .leido{position:absolute;left:0;right:0;bottom:0;background:rgba(255,255,255,.2);
+        border-top:2px solid rgba(255,255,255,.9);z-index:2;pointer-events:none;
+        border-radius:0 0 3px 3px;transition:height .45s cubic-bezier(.3,1.2,.4,1)}
   .lomo.nuevo{background:var(--papel-alto);border:2px dashed var(--linea);box-shadow:none;
               color:var(--tinta-suave);height:150px}
   .lomo.nuevo span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:600;font-size:12.5px}
@@ -417,20 +417,13 @@ function Lomo({
     onClick: onPulsar,
     "aria-label": libro.titulo + ', página ' + libro.pagina_actual
   }, React.createElement("span", {
-    className: "marca-pag",
-    style: {
-      height: 13 + alto * (1 - pct) * 0.9 + 'px'
-    }
-  }), React.createElement("span", {
-    className: "nervio a"
+    className: "marca-pag"
   }), React.createElement("span", {
     className: "tit"
   }, libro.titulo), React.createElement("span", {
-    className: "nervio b"
-  }), React.createElement("span", {
-    className: "linea-pag",
+    className: "leido",
     style: {
-      top: alto * pct + 'px'
+      height: Math.round(alto * pct) + 'px'
     }
   }));
 }
@@ -455,7 +448,7 @@ function Inicio({
     className: "marca"
   }, React.createElement("span", {
     className: "cinta-logo"
-  }), "Book", React.createElement("em", null, "Mark")), React.createElement("div", {
+  }), React.createElement("span", null, "Book", React.createElement("em", null, "Mark"))), React.createElement("div", {
     className: "top-der"
   }, datos.racha > 0 && React.createElement("div", {
     className: "racha"

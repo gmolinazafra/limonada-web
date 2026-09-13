@@ -21,7 +21,7 @@
     --tinta:#0E3B32; --tinta-suave:#2C5C51; --hoja:#4A8B3B;
     --papel:#F5F0E4; --papel-alto:#FFFDF6;
     --rojo:#C0453C; --ambar:#E8A93B; --azul:#3A6E9B;
-    --gris:#8C8778; --linea:rgba(14,59,50,.14);
+    --gris:#6E6A5C; --linea:rgba(14,59,50,.14);
     --sombra:0 14px 40px rgba(14,59,50,.14);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -82,12 +82,14 @@
         box-shadow:inset -7px 0 12px rgba(0,0,0,.17),inset 3px 0 5px rgba(255,255,255,.2);
         transition:transform .2s ease}
   .lomo:hover,.lomo.activo{transform:translateY(-9px)}
-  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:12px;
-        max-height:140px;overflow:hidden;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.3)}
-  .lomo .cintita{position:absolute;left:50%;transform:translateX(-50%);width:9px;background:var(--papel);
-        top:-12px;border-radius:2px 2px 0 0;transition:height .45s cubic-bezier(.3,1.2,.4,1)}
-  .lomo .raya{position:absolute;left:0;right:0;height:2px;background:rgba(255,255,255,.85);
-        transition:top .45s cubic-bezier(.3,1.2,.4,1)}
+  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:13px;
+        letter-spacing:.005em;max-height:138px;overflow:hidden;white-space:nowrap;position:relative;z-index:3;
+        text-shadow:0 1px 3px rgba(0,0,0,.45)}
+  .lomo .cintita{position:absolute;right:9px;top:-15px;width:10px;height:22px;background:var(--papel);
+        border-radius:2px 2px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.28);z-index:1}
+  .lomo .leido{position:absolute;left:0;right:0;bottom:0;background:rgba(255,255,255,.2);
+        border-top:2px solid rgba(255,255,255,.9);z-index:2;pointer-events:none;
+        border-radius:0 0 3px 3px;transition:height .45s cubic-bezier(.3,1.2,.4,1)}
   .balda{height:9px;background:linear-gradient(180deg,#A9754A,#8A5C38);border-radius:2px;
          box-shadow:0 8px 16px rgba(14,59,50,.2);margin:0 0 22px}
   .panel{background:rgba(14,59,50,.05);border-radius:14px;padding:16px;text-align:center}
@@ -175,7 +177,7 @@
 
 <header>
   <div class="wrap barra">
-    <a class="marca" href="#inicio"><span class="cinta"></span>Book<em>Mark</em></a>
+    <a class="marca" href="#inicio"><span class="cinta"></span><span>Book<em>Mark</em></span></a>
     <nav>
       <a href="#como">Cómo funciona</a>
       <a href="#precio">Precio</a>
@@ -411,9 +413,9 @@
       b.style.background = l.c;
       b.setAttribute('aria-label', l.t + ', página ' + l.p);
       b.innerHTML =
-        '<span class="cintita" style="height:' + (12 + 172 * (1 - pct) * 0.9) + 'px"></span>' +
+        '<span class="cintita"></span>' +
         '<span class="tit">' + l.t + '</span>' +
-        '<span class="raya" style="top:' + (172 * pct) + 'px"></span>';
+        '<span class="leido" style="height:' + Math.round(172 * pct) + 'px"></span>';
       b.addEventListener('click', function(){ actual = i; refrescar(); });
       cont.appendChild(b);
     });
