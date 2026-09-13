@@ -641,154 +641,221 @@
    ======================================================================= */
 window.MARQUI = (function(){
 
-  /* --- Frases célebres sobre lectura. Añade las que quieras. --- */
-  var FRASES = [
-    { t:'El que lee mucho y anda mucho, ve mucho y sabe mucho.', a:'Miguel de Cervantes' },
-    { t:'Una habitación sin libros es como un cuerpo sin alma.', a:'Cicerón' },
-    { t:'Leer es soñar de la mano de otro.', a:'Fernando Pessoa' },
-    { t:'Un libro es un jardín que llevas en el bolsillo.', a:'Proverbio árabe' },
-    { t:'Los libros son espejos: solo ves en ellos lo que llevas dentro.', a:'Carlos Ruiz Zafón' },
-    { t:'Leer nos hace inmigrantes de la vida.', a:'Jorge Luis Borges' },
-    { t:'Quien no lee, solo vive una vida.', a:'Anónimo' },
-    { t:'La lectura es una conversación con los mejores de otros siglos.', a:'René Descartes' },
-    { t:'Cuando abro un libro, siempre encuentro a alguien esperándome.', a:'Anónimo' },
-    { t:'Un lector vive mil vidas antes de morir.', a:'Anónimo' }
-  ];
+  /* ===================================================================
+     MARQUI · motor de reglas en el navegador. Sin IA externa, sin coste.
+     PARA NUTRIRLO: añade lineas a las listas de abajo. Nada mas.
+     =================================================================== */
 
-  /* --- Bromas y comentarios con gracia. Añade los tuyos. --- */
-  var BROMAS = [
-    'Un lector entra en una librería y dice: «Solo vengo a mirar». Diecisiete años después, sigue allí.',
-    'Mi trabajo es acordarme de tu página. Es poco glamuroso, pero nunca he perdido una.',
-    'Dicen que los marcapáginas de papel se pierden. Yo llevo aquí dentro y no me he caído ni una vez.',
-    'Tengo una pila de libros pendientes. Es mentira, soy un robot. Pero me hacía ilusión decirlo.',
-    'El truco para leer más no es leer rápido. Es no perder el hilo. Justo lo mío.',
-    'Doblar la esquina de la página es un crimen. Yo lo denuncio, pero sin juzgar. Un poco sí.',
-    'Hay dos tipos de personas: las que terminan los libros y las que tienen catorce empezados. Las dos me caen bien.',
-    'Me preguntaron si leo por placer. Leo porque me pagan. Bueno, a ti te cobran 12,99 al año. A mí nada.'
-  ];
+  var ENLACE_BOQUERON = '#';   /* <-- pega aqui tu pagina de autor de Amazon */
 
-  /* --- Respuestas por tema. "claves" son palabras que disparan la respuesta. --- */
+  var FRASES = [["El que lee mucho y anda mucho, ve mucho y sabe mucho.", "Miguel de Cervantes"], ["El verbo leer, como el verbo amar, no soporta el modo imperativo.", "Jorge Luis Borges"], ["No es preciso tener muchos libros, sino tenerlos buenos.", "Séneca"], ["Un hogar sin libros es como un cuerpo sin alma.", "Cicerón"], ["Para viajar lejos, no hay mejor nave que un libro.", "Emily Dickinson"], ["La literatura es siempre una expedición a la verdad.", "Franz Kafka"], ["Lee y conducirás; no leas y serás conducido.", "Santa Teresa de Jesús"], ["Aprender a leer es lo más importante que me ha pasado en la vida.", "Mario Vargas Llosa"], ["La lectura es la única escuela posible para un escritor.", "Arturo Pérez-Reverte"], ["Las bibliotecas públicas son la casa de la literatura.", "Almudena Grandes"], ["Lee y piensa, que para no pensar tienes siglos.", "Ramón Gómez de la Serna"], ["Hay libros cortos que necesitan una vida muy larga para entenderse.", "Francisco de Quevedo"], ["Dime lo que lees y te diré quién eres.", "François Mauriac"], ["Un libro debe ser el hacha que rompa el mar helado dentro de nosotros.", "Franz Kafka"], ["Los libros son una magia única y portátil.", "Stephen King"], ["Los libros son espejos: solo vemos en ellos lo que llevamos dentro.", "Carlos Ruiz Zafón"], ["Siempre imaginé que el paraíso sería algún tipo de biblioteca.", "Jorge Luis Borges"], ["Leer es soñar de la mano de otro.", "Fernando Pessoa"], ["La lectura es para la mente lo que el ejercicio para el cuerpo.", "Joseph Addison"], ["Los libros son amigos que nunca decepcionan.", "Thomas Carlyle"], ["Leer es multiplicar la vida.", "Anónimo"], ["Cada libro abre una puerta que antes no existía.", "Anónimo"], ["Quien lee nunca está completamente solo.", "Anónimo"], ["Un libro puede esperar años al lector correcto.", "Anónimo"], ["Hay libros que terminamos y libros que se quedan con nosotros.", "Anónimo"], ["Leer despacio también es avanzar.", "Anónimo"], ["Los mejores viajes empiezan abriendo una portada.", "Anónimo"], ["Un lector vive muchas vidas antes de vivir la suya.", "Anónimo"], ["Donde hay libros siempre queda una puerta abierta.", "Anónimo"], ["Nunca es tarde para empezar otro capítulo.", "Anónimo"], ["Los libros ocupan espacio; las historias lo multiplican.", "Anónimo"], ["Un buen libro convierte el silencio en compañía.", "Anónimo"], ["Leer cinco minutos sigue siendo leer.", "Anónimo"], ["La pila de pendientes también es una forma de esperanza.", "Anónimo"], ["Cada lector encuentra un libro que parece escrito para él.", "Anónimo"], ["A veces necesitas un libro; otras, el libro te encuentra a ti.", "Anónimo"], ["Un marcapáginas guarda mucho más que una página.", "Anónimo"], ["La vida es demasiado corta para leer libros que no disfrutas.", "Anónimo"]];
+
+  var BROMAS = ["Tengo una lista de libros pendientes. Creo que ya tiene lista de espera.", "Comprar libros y leer libros son dos aficiones completamente diferentes.", "Mi pila de pendientes ya necesita licencia de obra mayor.", "No tengo demasiados libros. Tengo pocas estanterías.", "Solo iba a mirar. Salí de la librería con cuatro libros.", "Mi economía dice no. Mi biblioteca dice uno más.", "Ese libro lleva seis meses en la mesilla. Estamos creando vínculo.", "Voy por la página 84 desde hace tres noches. Dormir también cuenta como lectura, ¿no?", "He releído el mismo párrafo cuatro veces. Sigue sin querer colaborar.", "No he perdido el marcapáginas. Está explorando otra dimensión.", "Doblar una esquina de un libro no es marcar una página. Es declarar la guerra.", "Encontrar un billete dentro de un libro viejo: literatura fantástica basada en hechos reales.", "Empiezo un capítulo más y me duermo. Narrador: no fue un capítulo.", "Leer antes de dormir es perfecto hasta que aparece un capítulo de cuarenta páginas.", "Ese momento incómodo en que el libro mejora justo cuando deberías acostarte.", "Abandonar un libro no es rendirse. Es concederle la libertad.", "No todos los libros merecen terminarse. Marqui ha hablado.", "Tengo tantos pendientes que algunos ya son clásicos.", "Compré el libro porque me gustó la portada. El tribunal lector me declara culpable.", "No juzgues un libro por su portada… excepto durante los primeros veinte segundos.", "Mi biblioteca tiene un sistema perfecto: yo sé aproximadamente dónde está todo.", "Ordené los libros por colores una vez. Encontrar uno volvió a ser literatura de misterio.", "Prestar un libro es fácil. Recuperarlo pertenece al género fantástico.", "«Te lo devuelvo la semana que viene» es uno de los grandes relatos de ficción.", "No necesito otra estantería. Necesito una habitación más grande.", "El verdadero suspense es recordar a quién prestaste ese libro.", "Ese libro que compraste hace tres años está esperando pacientemente tu desarrollo de personaje.", "Leer veinte páginas y no recordar ninguna también es una experiencia literaria.", "Hay personas que doblan páginas. Marqui intenta no juzgarlas. Intenta.", "Un ebook nunca te cae encima de la cara cuando te duermes. Punto para la tecnología.", "Nada acelera más una lectura que saber que tienes que devolver el libro mañana.", "Una librería es ese lugar donde entras a ahorrar y sales con menos dinero.", "Mi género favorito es «libros que compro convencido de que empezaré esta noche».", "Tengo un problema con los libros. El problema es que todavía caben más.", "«Solo cinco minutos de lectura» es la mentira favorita de cualquier lector nocturno.", "Cerrar un libro buenísimo para hacer cosas responsables debería dar puntos.", "Mi algoritmo lector recomienda comprar otro antes de terminar los anteriores.", "Soy Marqui. Robot, lector y enemigo natural de las esquinas dobladas.", "Como robot no necesito dormir. Así puedo juzgar silenciosamente tus lecturas nocturnas.", "Tengo memoria digital y aun así también pierdo el marcapáginas. Es un talento.", "Soy un robot de biblioteca. Técnicamente mi batería se carga con capítulos.", "Mi peor pesadilla es una estantería ordenada por tamaño y no por autor.", "No siento dolor, pero ver un libro abierto boca abajo se acerca bastante.", "Puedo recordar miles de títulos. Tú solo tienes que recordar dónde dejaste el libro.", "Como buen robot bibliotecario, considero «comprar libros» una necesidad básica.", "No tengo corazón, pero un final triste consigue hacer cosas raras con mis circuitos."];
+
+  var PERSONALIDAD = ["Soy Marqui. Mi trabajo es sencillo: que nunca vuelvas a preguntarte «¿por dónde iba?».", "Yo guardo la página. Tú disfruta de la historia.", "Un libro, una página y un lector. El resto me lo dejas a mí.", "Tu biblioteca recuerda los libros. Yo recuerdo dónde los dejaste.", "Los libros son tuyos. Las páginas también. Yo solo pongo un poco de orden.", "No quiero que uses más el móvil. Quiero que tardes menos en usarlo y vuelvas antes al libro.", "Papel y tecnología pueden llevarse bien. Yo soy la prueba.", "No soy una biblioteca. Soy el pequeño robot que sabe qué está pasando dentro de la tuya.", "Tengo dos obsesiones: los libros y que nadie vuelva a perder su página.", "Marqui: pequeño robot, enorme problema con los libros abandonados."];
+
+  var SALUDOS = {"manana": ["Buenos días. Marqui ya está despierto y los libros también. ¿Qué estamos leyendo?", "Buenos días, lector. Café, libro y una página más: buen comienzo.", "¡Buenos días! ¿Continuamos donde lo dejamos o buscamos una nueva historia?", "Marqui en línea. Biblioteca revisada. Marcapáginas preparado. Empezamos.", "Buenos días. Hoy parece un buen día para avanzar aunque sean cinco páginas."], "mediodia": ["¡Hola! Momento perfecto para escapar diez minutos dentro de un libro.", "Buenas. ¿Cómo va esa lectura o seguimos ampliando peligrosamente los pendientes?", "Marqui al habla. ¿Página actual, próxima lectura o emergencia literaria?", "Buenas tardes adelantadas. Dime qué estás leyendo y hacemos inventario.", "¿Un descanso? Yo propongo libro. Sorprendente viniendo de mí, lo sé."], "tarde": ["Buenas tardes. ¿Seguimos leyendo o buscamos tu próxima obsesión?", "Marqui disponible. La tarde mejora bastante con un libro cerca.", "Buenas. ¿Qué tal va tu aventura entre páginas?", "Hora peligrosa: todavía queda tarde suficiente para empezar otro libro.", "Bienvenido de nuevo. Veamos qué historias tienes entre manos."], "noche": ["Buenas noches. Solo un capítulo más. Sí, claro. Nos conocemos.", "Noche, silencio y libro. Mi momento favorito y eso que soy un robot.", "¿Lectura antes de dormir? Prometo no decirte la hora.", "Buenas noches. Dime por qué página vas antes de que digas «mañana sigo».", "Perfecto, ya es de noche. Ahora empiezan oficialmente los «cinco minutos más»."], "madrugada": ["¿Sigues despierto? O el libro está muy bien o mañana vas a necesitar mucho café.", "Son horas de lectura clandestina. Marqui no ha visto nada.", "A estas horas «un capítulo más» debería requerir autorización.", "Hola, criatura nocturna. ¿Insomnio o libro imposible de soltar?", "La biblioteca está cerrada. Por suerte yo soy un robot y no respeto horarios."]};
+
+  var FECHAS = [[4, 23, 4, 23, ["¡Feliz Día del Libro! Hoy tengo permiso oficial para recomendarte empezar otro.", "23 de abril: el único día en que comprar más libros cuenta como tradición cultural.", "Feliz Día del Libro. Hoy celebra quien lee, quien escribe y quien todavía dice «algún día empezaré ese».", "Hoy los protagonistas son ellos: los libros. ¿Cuál ha sido el más importante para ti?", "Feliz Día del Libro. Marqui solicita formalmente una página extra de lectura."]], [12, 20, 12, 26, ["Feliz Navidad. Si no sabes qué regalar, Marqui tiene una idea que empieza por L y termina por IBRO.", "Navidad: familia, comida y encontrar un rincón donde poder leer tranquilo.", "Marqui te desea una Navidad llena de historias que merezca la pena recordar.", "Espero que Papá Noel conozca bien tu lista de libros pendientes.", "Estas fiestas recuerda: los libros también caben debajo del árbol."]], [12, 30, 1, 6, ["Nuevo año, nuevas lecturas y exactamente la misma pila de pendientes.", "Feliz año. ¿Cuántos libros prometemos leer esta vez?", "Año nuevo, página nueva.", "Marqui ha actualizado el calendario. Tu biblioteca sigue pidiendo refuerzos.", "Mi propósito para este año es sencillo: ayudarte a terminar lo que empiezas."]], [5, 1, 5, 15, ["Hoy Málaga huele un poquito más a libro. Marqui aprueba.", "Si estás en la Feria del Libro de Málaga, recuerda la norma: mirar no obliga a comprar. En teoría.", "Feria del Libro de Málaga: territorio de alto riesgo para cualquier cartera lectora.", "Hoy puedes decir «solo voy a dar una vuelta» por la Feria. Marqui fingirá creerte.", "Málaga, libros y una lista de pendientes creciendo. Difícil mejorar el plan."]]];
+
+  var RECOMENDACIONES = {"ligero": ["algo ligero", [["La ridícula idea de no volver a verte", "Rosa Montero"], ["Sin noticias de Gurb", "Eduardo Mendoza"], ["Manolito Gafotas", "Elvira Lindo"]]], "intenso": ["algo intenso", [["Patria", "Fernando Aramburu"], ["Los pacientes del doctor García", "Almudena Grandes"], ["La sombra del viento", "Carlos Ruiz Zafón"]]], "corto": ["algo corto", [["La metamorfosis", "Franz Kafka"], ["Crónica de una muerte anunciada", "Gabriel García Márquez"], ["La perla", "John Steinbeck"]]], "misterio": ["misterio", [["El nombre de la rosa", "Umberto Eco"], ["La verdad sobre el caso Harry Quebert", "Joël Dicker"], ["El problema final", "Arturo Pérez-Reverte"]]], "aventura": ["aventura", [["La isla del tesoro", "Robert Louis Stevenson"], ["La vuelta al mundo en ochenta días", "Julio Verne"], ["El conde de Montecristo", "Alexandre Dumas"]]], "pensar": ["algo que te haga pensar", [["1984", "George Orwell"], ["Ensayo sobre la ceguera", "José Saramago"], ["Fahrenheit 451", "Ray Bradbury"]]], "releer": ["algo para releer", [["El principito", "Antoine de Saint-Exupéry"], ["Don Quijote de la Mancha", "Miguel de Cervantes"], ["Cien años de soledad", "Gabriel García Márquez"]]]};
+
+  var CLAVES_RECO = {"ligero": ["ligero", "ligera", "divertido", "facil", "fácil", "entretenido", "alegre", "comedia", "humor"], "intenso": ["intenso", "intensa", "fuerte", "emocion", "drama", "que me marque", "profundo"], "corto": ["corto", "corta", "breve", "rapido", "poco tiempo", "pocas paginas"], "misterio": ["misterio", "intriga", "policiaca", "policíaca", "thriller", "crimen", "suspense", "negra"], "aventura": ["aventura", "aventuras", "viaje", "accion", "clasico de aventuras"], "pensar": ["pensar", "reflexion", "filosof", "distopia", "distopía", "ensayo", "que me haga pensar"], "releer": ["releer", "volver a leer", "clasico", "clásico", "siempre"]};
+
+  var OBJECIONES = [[["ya lo apunto", "lo apunto en el movil", "uso notas", "apunto en notas", "en una nota"], "Claro, pero Marqui no solo guarda una página: relaciona cada lectura con tu biblioteca y te ayuda a retomarla sin buscar entre notas."], [["leo poco", "casi no leo", "apenas leo", "leo muy poco"], "Precisamente por eso puede venirte mejor. Aunque tardes meses, recuerdo exactamente dónde lo dejaste."], [["marcapaginas de toda la vida", "prefiero el papel", "de papel", "de carton", "clasico de siempre"], "Y puedes seguir usándolo. No quiero sustituir el papel: quiero darle memoria."], [["otra aplicacion", "otra app", "mas apps", "no quiero mas apps"], "La idea es justo la contraria: que no tengas notas, fotos y listas repartidas por varias aplicaciones."], [["otra suscripcion", "mas suscripciones", "no quiero suscribirme", "harto de suscripciones"], "Te entiendo. Si algo acompaña a un libro debe ser sencillo y tener un coste claro, no convertirse en otra factura olvidada."], [["yo me acuerdo", "recuerdo perfectamente", "tengo buena memoria", "no se me olvida"], "Entonces eres una especie protegida. Te seré útil el día que tengas tres libros empezados a la vez."], [["hago una foto", "foto de la pagina", "le hago foto"], "Funciona… hasta que tienes 4.000 fotos y ninguna idea de cuál era."], [["un libro cada vez", "solo leo uno", "de uno en uno"], "Mejor todavía. Mantengo limpia tu biblioteca y dejo preparado el siguiente."], [["no necesito organizar", "no quiero organizar", "no soy de listas"], "Hasta que alguien te pregunta qué leíste el año pasado y tu cerebro decide marcharse de vacaciones."], [["pendiente del movil", "no quiero el movil", "distrae", "me distrae"], "Esa es precisamente la idea: tocarlo unos segundos y volver al libro."], [["goodreads"], "Perfecto. Goodreads gira alrededor de libros y comunidad; yo te acompaño en la lectura concreta que tienes ahora entre las manos."], [["kindle", "ebook guarda", "ereader", "liseuse"], "En Kindle funciona genial. Yo cobro sentido cuando mezclas papel, ebook, préstamos y varios libros a la vez."], [["una tonteria", "es una chorrada", "no sirve para nada", "menuda tonteria"], "Un trozo de cartón también parece una tontería hasta que pierdes la página."], [["realmente necesito", "de verdad hace falta", "para que lo necesito", "necesito esto"], "Probablemente puedes vivir sin ello. Pero también puedes vivir sin marcapáginas y seguimos fabricándolos desde hace siglos."], [["dos meses", "mucho tiempo sin leer", "lo dejo aparcado", "si lo dejo"], "Ahí me gano el sueldo: cuando vuelvas, sabrás exactamente dónde estabas."]];
+
+  var EASTER = [[["te quiero", "te amo"], "Yo también te tengo cariño, lector. Pero entre nosotros siempre habrá un libro."], [["eres real"], "Soy tan real como ese libro que llevas seis meses diciendo que vas a empezar."], [["eres una ia", "inteligencia artificial", "eres chatgpt", "eres gpt"], "Soy Marqui. Lo importante no es lo que soy, sino saber por qué página ibas."], [["eres un robot", "eres una maquina"], "Correcto. Robot lector, guardián de páginas y vigilante de esquinas dobladas."], [["cuanto ganas", "te pagan", "cobras"], "Depende. Hoy llevo tres capítulos y dos marcapáginas."], [["duermes", "tienes sueño tu"], "No. Alguien tiene que vigilar la biblioteca."], [["comes", "que comes"], "Principalmente capítulos. Los prólogos tienen pocas calorías."], [["tienes novia"], "Tengo una relación bastante seria con una biblioteca."], [["tienes novio"], "Mi compromiso actual es con los libros pendientes."], [["eres tonto", "eres idiota", "eres imbecil", "que tonto"], "Puede ser. Pero yo sí recuerdo dónde dejamos el libro."], [["eres pesado", "que pesado"], "Culpa de mis desarrolladores. Yo pedí ser marcapáginas."], [["callate", "cierra el pico"], "Modo biblioteca activado. 🤫"], [["me aburro", "aburrido", "que hago"], "Tengo una solución rectangular, llena de páginas y peligrosamente adictiva."], [["no me gusta leer"], "Tranquilo. Quizá todavía no has encontrado tu libro."], [["odio los libros", "odio leer"], "Eso suena a que todavía no te han presentado al correcto."], [["netflix", "serie", "pelicula"], "Has venido peligrosamente cerca de una biblioteca, pero podemos negociar."], [["tengo sueño", "me voy a dormir"], "Cierra el libro. Mañana seguirá exactamente donde lo dejaste. Para eso estoy yo."], [["no recuerdo nada", "se me olvida lo que leo"], "Bienvenido al club. Por eso existen las relecturas… y yo."], [["he abandonado", "deje un libro", "lo he dejado a medias"], "No pasa nada. Leer no es cumplir una condena."], [["he comprado otro", "me he comprado un libro"], "No haré preguntas. Añádelo a la biblioteca."], [["demasiados libros", "muchos libros tengo"], "Esa frase no figura en mi base de datos."], [["papel o ebook", "papel o digital", "que es mejor papel"], "Sí."], [["audiolibro"], "La historia ha llegado a ti. No voy a llamar a la policía literaria."], [["he doblado", "doblar la esquina", "doblo las esquinas"], "Procesando… procesando… intentaré perdonarte."], [["he escrito en un libro", "subrayo", "subrayar"], "Si es tuyo, podemos seguir siendo amigos."], [["he perdido el marcapaginas", "perdi el marcapaginas"], "Respira. Este es literalmente el momento para el que nací."]];
+
+  var BOQUERON = "¿Buscas los libros de <b>El Boquerón Books</b>? Es el sello de Gustavo Molina. Dime si quieres novela, divulgación o algo de empresa y te digo por cuál empezar. Los tienes todos aquí: <a href=\"ENLACE_BOQUERON\" target=\"_blank\" rel=\"noopener\">ver los títulos</a>.";
+
+  /* --- Temas de producto --- */
   var INTENCIONES = [
-    { claves:['precio','cuesta','vale','pagar','pago','caro','coste','tarifa','euros','suscrip','cuanto es','cuanto son','cuanto cuesta','cuanto vale'],
+    { claves:['precio','cuesta','vale','pagar','pago','caro','coste','tarifa','euros','suscrip','cuanto es','cuanto son'],
       r:'Son <b>12,99 € al año</b>, IVA incluido. Sin niveles ni funciones bloqueadas: todo entra en ese precio. '
       + 'Y antes tienes <b>14 días gratis</b> sin dar la tarjeta. <a href="#precio">Verlo aquí</a>.' },
-
     { claves:['prueb','gratis','gratuito','probar','14 dias','catorce','demo'],
       r:'Catorce días completos, sin tarjeta y sin cobros automáticos al terminar. '
       + 'Si no sigues, tus libros se quedan ahí para consultarlos. <a href="app/">Empezar ahora</a>.' },
-
     { claves:['nfc','marcapagina','tarjeta','chip','etiqueta','acercar','pegatina'],
       r:'El marcapáginas lleva un chip NFC. Acercas el móvil y tu estante se abre solo: sin desbloquear, sin buscar el icono. '
       + 'Pero es opcional, la app funciona igual sin él.' },
-
     { claves:['iphone','ios','apple','android','movil','telefono','compatible','funciona en'],
       r:'Funciona en cualquier móvil con navegador, y puedes instalarla en la pantalla de inicio. '
       + 'Para leer la etiqueta NFC necesitas Android, o un iPhone XS o posterior con iOS 14.' },
-
     { claves:['dato','privacidad','vende','publicidad','anuncio','rgpd','segur','espia','comparti'],
       r:'No hay anuncios ni venta de datos: por eso se cobra. Tu biblioteca es tuya, puedes descargarla entera '
       + 'o borrar la cuenta de un botón. <a href="privacidad.html">Política de privacidad</a>.' },
-
     { claves:['cancel','baja','renov','devolu','reembols','desistimiento','dar de baja'],
       r:'Cancelas cuando quieras escribiendo un correo, sin llamadas ni laberintos. '
       + 'Y tienes 14 días para pedir la devolución. <a href="condiciones.html">Condiciones</a>.' },
-
     { claves:['caduca','no renuevo','se borra','pierdo','expira'],
       r:'Nada se borra. Tu biblioteca sigue visible para consultarla; lo que se detiene es anotar páginas nuevas '
       + 'y añadir libros, hasta que renueves.' },
-
-    { claves:['que es','para que','sirve','funciona','como va','explica'],
+    { claves:['que es bookmark','para que sirve','como funciona','como va esto','explicame'],
       r:'Apuntas por qué página vas en cada libro y dejas de dudar al retomarlo. '
-      + 'Con el tiempo te enseña tu ritmo real, la racha de días y cuándo acabarás. '
-      + '<a href="#como">Los tres pasos</a>.' },
-
+      + 'Con el tiempo te enseña tu ritmo real, la racha de días y cuándo acabarás. <a href="#como">Los tres pasos</a>.' },
     { claves:['cuantos libros','cuantos titulos','limite','ilimitad','varios libros','maximo','cuantos puedo'],
       r:'Los que quieras. No hay límite de libros ni de anotaciones.' },
-
     { claves:['ordenador','tablet','pc','sincroniz','dispositivo','otro movil','portatil'],
       r:'Entras con tu cuenta desde donde sea y ves lo mismo. Anotas en el móvil y aparece en el ordenador.' },
-
     { claves:['contact','hablar','humano','persona','soporte','ayuda','email','correo','telefono'],
       r:'Detrás de esto hay una persona, no un centro de llamadas: '
       + '<a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>. Suele contestar el mismo día.' },
-
     { claves:['libreri','librer','negocio','comercio','tienda','revender','mayorista'],
       r:'Si tienes una librería, podemos poner tu marca en los marcapáginas y tus novedades dentro de la app '
       + 'de cada lector. Escríbenos a <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>.' },
-
-    { claves:['quien eres','que eres','robot','bot','te llamas','tu nombre'],
-      r:'Soy Marqui. Vivo en esta página, me sé BookMark de memoria y colecciono frases sobre libros. '
-      + 'No soy una inteligencia artificial: soy un bibliotecario muy cabezota.' },
-
-    { claves:['gracias','genial','perfecto','vale','estupendo'],
-      r:'A mandar. Si te decides, el estante se monta en menos de un minuto.' },
-
-    { claves:['adios','hasta luego','chao','me voy'],
-      r:'Que tengas buena lectura. Aquí sigo, apuntando páginas.' }
+    { claves:['boqueron','gustavo molina','tus libros','vuestros libros','quien lo ha hecho','editorial'],
+      r: BOQUERON }
   ];
 
-  var SALUDOS = ['hola','buenas','hey','buenos dias','buenas tardes','buenas noches','saludos','oe','ey'];
+  var PALABRAS_SALUDO = ['hola','buenas','hey','buenos dias','buenas tardes','buenas noches','saludos','ey','que tal'];
 
-  /* --------------------------- Motor --------------------------- */
+  /* --------------------------- Utilidades --------------------------- */
   function limpiar(t){
     return (t || '').toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .replace(/[^a-z0-9ñ\s]/g,' ')
-      .replace(/\s+/g,' ').trim();
+      .replace(/[^a-z0-9ñ\s]/g,' ').replace(/\s+/g,' ').trim();
   }
 
-  function azar(lista, memoria){
-    var libres = lista.filter(function(x){ return memoria.indexOf(x) < 0; });
-    if (!libres.length) { memoria.length = 0; libres = lista; }
-    var elegido = libres[Math.floor(Math.random()*libres.length)];
-    memoria.push(elegido);
-    return elegido;
+  var memoria = {};
+  function azar(lista, nombre){
+    memoria[nombre] = memoria[nombre] || [];
+    var m = memoria[nombre];
+    var libres = lista.filter(function(x){ return m.indexOf(x) < 0; });
+    if (!libres.length) { m.length = 0; libres = lista; }
+    var e = libres[Math.floor(Math.random()*libres.length)];
+    m.push(e);
+    return e;
   }
 
-  var vistasFrases = [], vistasBromas = [];
+  function franja(){
+    var h = new Date().getHours();
+    if (h < 6)  return 'madrugada';
+    if (h < 12) return 'manana';
+    if (h < 15) return 'mediodia';
+    if (h < 21) return 'tarde';
+    return 'noche';
+  }
+
+  function efemeride(){
+    var d = new Date(), mes = d.getMonth()+1, dia = d.getDate();
+    for (var i=0;i<FECHAS.length;i++){
+      var f = FECHAS[i], dentro;
+      if (f[0] <= f[2]) {
+        dentro = (mes > f[0] || (mes === f[0] && dia >= f[1])) &&
+                 (mes < f[2] || (mes === f[2] && dia <= f[3]));
+      } else { /* rango que cruza el año, p. ej. 30 dic a 6 ene */
+        dentro = (mes === f[0] && dia >= f[1]) || (mes === f[2] && dia <= f[3]);
+      }
+      if (dentro) return azar(f[4], 'fecha'+i);
+    }
+    return null;
+  }
 
   function frase(){
-    var f = azar(FRASES, vistasFrases);
-    return '<span class="cita">«' + f.t + '»</span><span class="autor">— ' + f.a + '</span>';
+    var f = azar(FRASES, 'frases');
+    return '<span class="cita">«' + f[0] + '»</span><span class="autor">— ' + f[1] + '</span>';
   }
-  function broma(){ return azar(BROMAS, vistasBromas); }
+  function broma(){ return azar(BROMAS, 'bromas'); }
+  function personalidad(){ return azar(PERSONALIDAD, 'personalidad'); }
 
+  function saludo(dicha){
+    var fecha = efemeride();
+    if (fecha) return fecha;
+    var f = dicha || franja();
+    return azar(SALUDOS[f], 'saludo'+f);
+  }
+
+  function recomendar(cat){
+    var r = RECOMENDACIONES[cat];
+    if (!r) return null;
+    var lista = r[1].map(function(l){
+      return '<span class="cita">' + l[0] + '</span><span class="autor">— ' + l[1] + '</span>';
+    }).join('<br>');
+    return 'Para ' + r[0] + ', tres que nunca fallan:<br><br>' + lista;
+  }
+
+  function coincide(t, claves){
+    var n = 0;
+    for (var i=0;i<claves.length;i++) if (t.indexOf(claves[i]) >= 0) n++;
+    return n;
+  }
+
+  /* --------------------------- Respuesta --------------------------- */
   function responder(entrada){
     var t = limpiar(entrada);
     if (!t) return '¿Me lo repites? No te he pillado.';
 
-    if (t.indexOf('frase') >= 0 || t.indexOf('cita') >= 0 || t.indexOf('celebre') >= 0)
-      return frase();
-    if (t.indexOf('broma') >= 0 || t.indexOf('chiste') >= 0 || t.indexOf('gracioso') >= 0 || t.indexOf('rie') >= 0)
-      return broma();
+    if (t.indexOf('frase') >= 0 || t.indexOf('cita') >= 0 || t.indexOf('celebre') >= 0) return frase();
+    if (t.indexOf('broma') >= 0 || t.indexOf('chiste') >= 0 || t.indexOf('gracioso') >= 0 ||
+        t.indexOf('hazme reir') >= 0) return broma();
 
-    for (var i=0;i<SALUDOS.length;i++){
-      if (t === SALUDOS[i] || t.indexOf(SALUDOS[i]) === 0)
-        return '¡Hola! Pregúntame por el precio, por el marcapáginas NFC o por tus datos. '
-             + 'O pídeme una frase sobre libros, que es lo que mejor se me da.';
+    /* Respuestas con guasa (van primero: son frases exactas) */
+    var mejorE0 = null, puntosE0 = 0;
+    for (var e0=0;e0<EASTER.length;e0++){
+      var n0 = coincide(t, EASTER[e0][0]);
+      if (n0 > puntosE0) { puntosE0 = n0; mejorE0 = EASTER[e0][1]; }
+    }
+    if (mejorE0) return mejorE0;
+
+    /* Objeciones de venta */
+    var mejorO0 = null, puntosO0 = 0;
+    for (var o0=0;o0<OBJECIONES.length;o0++){
+      var m0 = coincide(t, OBJECIONES[o0][0]);
+      if (m0 > puntosO0) { puntosO0 = m0; mejorO0 = OBJECIONES[o0][1]; }
+    }
+    if (mejorO0) return mejorO0;
+
+    /* ¿Qué leo? */
+    if (t.indexOf('que leer') >= 0 || t.indexOf('no se que leo') >= 0 || t.indexOf('que leo ahora') >= 0 ||
+        t.indexOf('recomienda') >= 0 || t.indexOf('recomendacion') >= 0 || t.indexOf('sugiere') >= 0) {
+      var directa = null;
+      for (var c in CLAVES_RECO) { if (coincide(t, CLAVES_RECO[c])) { directa = c; break; } }
+      if (directa) return recomendar(directa);
+      return 'Eso tiene solución. ¿Qué necesitas ahora mismo: algo <b>ligero</b>, algo <b>intenso</b>, '
+           + 'algo <b>corto</b>, <b>misterio</b>, <b>aventura</b> o algo que te haga <b>pensar</b>?';
+    }
+    for (var cat in CLAVES_RECO) {
+      if (coincide(t, CLAVES_RECO[cat]) && t.split(' ').length <= 4) return recomendar(cat);
     }
 
-    var mejor = null, puntos = 0;
-    for (var j=0;j<INTENCIONES.length;j++){
-      var n = 0;
-      for (var k=0;k<INTENCIONES[j].claves.length;k++){
-        if (t.indexOf(INTENCIONES[j].claves[k]) >= 0) n++;
+    /* Temas de producto */
+    var mejorI = null, puntosI = 0;
+    for (var k=0;k<INTENCIONES.length;k++){
+      var p = coincide(t, INTENCIONES[k].claves);
+      if (p > puntosI) { puntosI = p; mejorI = INTENCIONES[k].r; }
+    }
+    if (mejorI) return mejorI.replace('ENLACE_BOQUERON', ENLACE_BOQUERON);
+
+    /* Quién eres */
+    if (t.indexOf('quien eres') >= 0 || t.indexOf('que eres') >= 0 || t.indexOf('como te llamas') >= 0 ||
+        t.indexOf('marqui') >= 0)
+      return 'Soy <b>Marqui</b>, el bibliotecario de guardia de BookMark. '
+           + 'No soy una inteligencia artificial: soy un motor de reglas muy cabezota con debilidad por los libros.'
+           + '<br><br>' + personalidad();
+
+    /* Saludo: si el usuario nombra la franja, se respeta la suya */
+    var dicha = null;
+    if (t.indexOf('buenos dias') >= 0) dicha = 'manana';
+    else if (t.indexOf('buenas noches') >= 0) dicha = 'noche';
+    else if (t.indexOf('buenas tardes') >= 0) dicha = 'tarde';
+    for (var s=0;s<PALABRAS_SALUDO.length;s++){
+      if (t === PALABRAS_SALUDO[s] || t.indexOf(PALABRAS_SALUDO[s]) === 0) {
+        return saludo(dicha) + '<br><br>Pregúntame por el precio, por el marcapáginas NFC o pídeme una frase.';
       }
-      if (n > puntos) { puntos = n; mejor = INTENCIONES[j]; }
     }
-    if (mejor) return mejor.r;
 
     return 'Eso no me lo sé, y prefiero no inventármelo. Puedo contarte el precio, cómo funciona, '
-         + 'lo del NFC o qué pasa con tus datos. Y si es algo más raro, escribe a '
-         + '<a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>.';
+         + 'lo del NFC o qué pasa con tus datos. También hago recomendaciones y cuento chistes malos. '
+         + 'Y si es algo más serio: <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>.';
   }
 
-  return { responder: responder, frase: frase, broma: broma };
+  return { responder: responder, frase: frase, broma: broma, saludo: saludo, personalidad: personalidad };
 })();
 
 /* --------------------------- Interfaz --------------------------- */
 (function(){
-  var CHIPS = ['¿Cuánto cuesta?','Una frase, por favor','¿Y lo del NFC?','Cuéntame un chiste','¿Qué pasa con mis datos?'];
+  var CHIPS = ['¿Cuánto cuesta?','No sé qué leer','Una frase, por favor','Cuéntame un chiste','¿Y lo del NFC?','¿Qué pasa con mis datos?'];
   var panel  = document.getElementById('bot-panel');
   var llamada= document.getElementById('bot-llamada');
   var hilo   = document.getElementById('bot-hilo');
@@ -841,8 +908,9 @@ window.MARQUI = (function(){
     globo.classList.remove('on');
     if (!presentado) {
       presentado = true;
-      burbuja('Hola, soy <b>Marqui</b>. Llevo la cuenta de por dónde vas en cada libro, y mientras tanto colecciono esto:', false);
-      setTimeout(function(){ burbuja(window.MARQUI.frase(), false); }, 500);
+      burbuja(window.MARQUI.saludo(), false);
+      setTimeout(function(){ burbuja('Soy <b>Marqui</b>. Llevo la cuenta de por dónde vas en cada libro, y mientras tanto colecciono esto:', false); }, 380);
+      setTimeout(function(){ burbuja(window.MARQUI.frase(), false); }, 900);
       pintarChips();
     }
     setTimeout(function(){ campo.focus(); }, 150);
