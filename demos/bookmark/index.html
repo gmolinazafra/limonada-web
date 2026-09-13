@@ -3,754 +3,441 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>BookMark · Tu biblioteca digital</title>
-<meta name="description" content="Acerca el móvil a tu marcapáginas y sigue leyendo por donde lo dejaste. BookMark, de Limonada Web.">
+<title>BookMark · El marcapáginas que se acuerda por ti</title>
+<meta name="description" content="Anota por qué página vas en tres segundos y recupera el hilo de cada libro. Racha de lectura, ritmo y biblioteca sincronizada. 14 días gratis, después 12,99 € al año.">
+<link rel="canonical" href="https://www.limonadaweb.com/demos/bookmark/">
 <meta name="theme-color" content="#0E3B32">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BookMark · El marcapáginas que se acuerda por ti">
+<meta property="og:description" content="Pulsa el libro, escribe la página, sigue leyendo. Tu biblioteca contigo en cualquier dispositivo.">
+<meta property="og:url" content="https://www.limonadaweb.com/demos/bookmark/">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --tinta:#0E3B32;
-    --tinta-suave:#2C5C51;
-    --hoja:#4A8B3B;
-    --papel:#F5F0E4;
-    --papel-alto:#FFFDF6;
-    --rojo:#C0453C;
-    --ambar:#E8A93B;
-    --azul:#3A6E9B;
-    --gris:#8C8778;
-    --linea:rgba(14,59,50,.14);
-    --sombra:0 10px 30px rgba(14,59,50,.13);
-    --r:14px;
+    --tinta:#0E3B32; --tinta-suave:#2C5C51; --hoja:#4A8B3B;
+    --papel:#F5F0E4; --papel-alto:#FFFDF6;
+    --rojo:#C0453C; --ambar:#E8A93B; --azul:#3A6E9B;
+    --gris:#8C8778; --linea:rgba(14,59,50,.14);
+    --sombra:0 14px 40px rgba(14,59,50,.14);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0}
-  body{
-    background:var(--papel);
-    color:var(--tinta);
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
-    font-size:16px;line-height:1.5;
-    min-height:100dvh;
-    overscroll-behavior-y:none;
-  }
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--papel);color:var(--tinta);
+       font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.6}
   button{font-family:inherit;font-size:inherit;color:inherit;border:0;background:none;cursor:pointer}
-  input{font-family:inherit;font-size:inherit;color:inherit}
-  :focus-visible{outline:2.5px solid var(--hoja);outline-offset:2px;border-radius:4px}
+  a{color:inherit}
+  :focus-visible{outline:2.5px solid var(--hoja);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .estrecho{max-width:680px;margin:0 auto}
 
-  .app{max-width:460px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;
-       padding:0 20px env(safe-area-inset-bottom) 20px}
-
-  /* ---------- Cabecera ---------- */
-  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 0 6px}
-  .marca{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.02em;font-size:17px}
+  /* ---------- Barra ---------- */
+  header{position:sticky;top:0;z-index:40;background:rgba(245,240,228,.92);
+         backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+  .barra{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .marca{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.02em;
+         text-decoration:none}
   .marca em{font-style:normal;color:var(--hoja)}
-  .cinta-logo{width:15px;height:22px;background:var(--tinta);border-radius:3px 3px 0 0;position:relative;flex:none}
-  .cinta-logo::after{content:"";position:absolute;left:0;right:0;bottom:-6px;
-    border-left:7.5px solid var(--tinta);border-right:7.5px solid var(--tinta);border-bottom:6px solid transparent}
-  .racha{display:flex;align-items:center;gap:6px;background:var(--papel-alto);border:1px solid var(--linea);
-         border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
-  .racha b{color:var(--hoja)}
+  .cinta{width:16px;height:24px;background:var(--tinta);border-radius:3px 3px 0 0;position:relative;flex:none}
+  .cinta::after{content:"";position:absolute;left:0;right:0;bottom:-7px;
+    border-left:8px solid var(--tinta);border-right:8px solid var(--tinta);border-bottom:7px solid transparent}
+  .barra nav{display:flex;align-items:center;gap:22px;font-size:15px}
+  .barra nav a{text-decoration:none;color:var(--tinta-suave);font-weight:500}
+  .btn{display:inline-block;background:var(--tinta);color:var(--papel-alto);border-radius:12px;
+       padding:13px 22px;font-weight:600;font-size:15.5px;text-decoration:none;box-shadow:var(--sombra);
+       transition:transform .15s ease}
+  .btn:active{transform:translateY(1px)}
+  .btn.verde{background:var(--hoja)}
+  .btn.fantasma{background:transparent;color:var(--tinta);border:1.5px solid var(--linea);box-shadow:none}
+  .btn.grande{padding:17px 30px;font-size:17px}
+  @media(max-width:780px){.barra nav a{display:none}.barra nav .btn{padding:10px 16px;font-size:14.5px}}
 
-  /* ---------- Saludo ---------- */
-  .saludo{font-family:'Literata',Georgia,serif;font-size:25px;line-height:1.25;font-weight:600;
-          margin:14px 0 4px;letter-spacing:-.015em}
-  .sub{color:var(--gris);font-size:14.5px;margin:0 0 20px;max-width:36ch}
+  /* ---------- Hero ---------- */
+  .hero{padding:64px 0 40px}
+  .hero-grid{display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center}
+  h1{font-family:'Literata',Georgia,serif;font-size:clamp(38px,5.2vw,60px);line-height:1.08;
+     font-weight:700;letter-spacing:-.03em;margin:0 0 20px}
+  .entradilla{font-size:19.5px;color:var(--tinta-suave);margin:0 0 30px;max-width:30ch}
+  .acciones{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .micro{font-size:14.5px;color:var(--gris);margin:16px 0 0}
+  @media(max-width:900px){
+    .hero{padding:40px 0 24px}
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .entradilla{max-width:none}
+  }
 
-  /* ---------- Estante ---------- */
-  .estante{position:relative;padding:26px 0 0}
-  .lomos{display:flex;gap:11px;align-items:flex-end;overflow-x:auto;padding:0 2px 14px;
-         scroll-snap-type:x proximity;scrollbar-width:none}
-  .lomos::-webkit-scrollbar{display:none}
-  .balda{height:9px;background:linear-gradient(180deg,#A9754A,#8A5C38);border-radius:2px;
-         box-shadow:0 7px 14px rgba(14,59,50,.18);margin-bottom:26px}
-
-  .lomo{flex:none;width:52px;height:186px;border-radius:4px 4px 3px 3px;position:relative;
-        display:flex;align-items:center;justify-content:center;scroll-snap-align:start;
+  /* ---------- Demo ---------- */
+  .demo{background:var(--papel-alto);border:1px solid var(--linea);border-radius:22px;padding:22px;
+        box-shadow:var(--sombra);position:relative}
+  .demo-etq{position:absolute;top:-13px;left:22px;background:var(--hoja);color:#fff;font-size:12.5px;
+        font-weight:600;padding:4px 12px;border-radius:99px}
+  .demo h2{font-family:'Literata',Georgia,serif;font-size:17px;margin:4px 0 2px;font-weight:600}
+  .demo .pista{font-size:13.5px;color:var(--gris);margin:0 0 16px}
+  .lomos{display:flex;gap:10px;align-items:flex-end;justify-content:center}
+  .lomo{width:50px;height:172px;border-radius:4px 4px 3px 3px;position:relative;display:flex;
+        align-items:center;justify-content:center;cursor:pointer;
         box-shadow:inset -7px 0 12px rgba(0,0,0,.17),inset 3px 0 5px rgba(255,255,255,.2);
-        transition:transform .18s ease}
-  .lomo:active{transform:translateY(-7px)}
-  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:12.5px;
-             letter-spacing:.01em;max-height:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-             text-shadow:0 1px 2px rgba(0,0,0,.3)}
-  .lomo .nervio{position:absolute;left:5px;right:5px;height:2px;background:rgba(255,255,255,.28)}
-  .lomo .nervio.a{top:13px}.lomo .nervio.b{bottom:13px}
-  .lomo .marca-pag{position:absolute;left:50%;transform:translateX(-50%);width:9px;background:var(--papel);
-        top:-13px;border-radius:2px 2px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-  .lomo .linea-pag{position:absolute;left:0;right:0;height:2px;background:rgba(255,255,255,.85)}
+        transition:transform .2s ease}
+  .lomo:hover,.lomo.activo{transform:translateY(-9px)}
+  .lomo .tit{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:600;font-size:12px;
+        max-height:140px;overflow:hidden;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .lomo .cintita{position:absolute;left:50%;transform:translateX(-50%);width:9px;background:var(--papel);
+        top:-12px;border-radius:2px 2px 0 0;transition:height .45s cubic-bezier(.3,1.2,.4,1)}
+  .lomo .raya{position:absolute;left:0;right:0;height:2px;background:rgba(255,255,255,.85);
+        transition:top .45s cubic-bezier(.3,1.2,.4,1)}
+  .balda{height:9px;background:linear-gradient(180deg,#A9754A,#8A5C38);border-radius:2px;
+         box-shadow:0 8px 16px rgba(14,59,50,.2);margin:0 0 22px}
+  .panel{background:rgba(14,59,50,.05);border-radius:14px;padding:16px;text-align:center}
+  .panel .cual{font-family:'Literata',Georgia,serif;font-size:15px;font-weight:600;margin:0 0 6px}
+  .panel .num{font-family:'Literata',Georgia,serif;font-size:46px;font-weight:700;line-height:1;
+        font-variant-numeric:tabular-nums;margin:0}
+  .panel .de{font-size:13px;color:var(--gris);margin:2px 0 12px}
+  .barrita{height:6px;background:rgba(14,59,50,.12);border-radius:99px;overflow:hidden;margin:0 0 14px}
+  .barrita i{display:block;height:100%;background:var(--hoja);border-radius:99px;
+        transition:width .45s cubic-bezier(.3,1.2,.4,1)}
+  .mas{display:flex;gap:8px}
+  .mas button{flex:1;background:var(--papel-alto);border:1px solid var(--linea);border-radius:10px;
+        padding:11px 0;font-weight:600;font-size:14.5px}
+  .mas button:active{background:rgba(74,139,59,.15)}
 
-  .lomo.nuevo{background:var(--papel-alto);border:2px dashed var(--linea);box-shadow:none;
-              color:var(--tinta-suave);height:150px}
-  .lomo.nuevo span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:600;font-size:12.5px}
+  /* ---------- Secciones ---------- */
+  section{padding:70px 0}
+  section.tinte{background:var(--papel-alto);border-block:1px solid var(--linea)}
+  h2.tit{font-family:'Literata',Georgia,serif;font-size:clamp(27px,3.4vw,36px);line-height:1.2;
+     font-weight:700;letter-spacing:-.02em;margin:0 0 14px}
+  .intro{color:var(--tinta-suave);font-size:18px;margin:0 0 40px;max-width:56ch}
 
-  /* ---------- Tarjetas de lista ---------- */
-  .bloque{margin:26px 0 0}
-  .bloque h2{font-family:'Literata',Georgia,serif;font-size:15.5px;font-weight:600;margin:0 0 10px}
-  .fila{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--papel-alto);
-        border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
-  .canto{width:6px;height:34px;border-radius:3px;flex:none}
-  .fila .info{flex:1;min-width:0}
-  .fila .info strong{display:block;font-family:'Literata',Georgia,serif;font-size:15px;font-weight:600;
-        white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .fila .info small{color:var(--gris);font-size:12.5px}
-  .fila .pg{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;color:var(--tinta-suave)}
+  .pasos{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;counter-reset:paso}
+  .paso{counter-increment:paso}
+  .paso .n{font-family:'Literata',Georgia,serif;font-size:15px;font-weight:600;color:var(--hoja);
+        display:block;margin:0 0 8px}
+  .paso .n::before{content:"Paso " counter(paso)}
+  .paso h3{font-family:'Literata',Georgia,serif;font-size:19px;margin:0 0 7px;font-weight:600}
+  .paso p{margin:0;color:var(--tinta-suave);font-size:16px}
+  @media(max-width:780px){.pasos{grid-template-columns:1fr;gap:28px}}
 
-  /* ---------- Vista libro ---------- */
-  .volver{display:inline-flex;align-items:center;gap:7px;color:var(--tinta-suave);font-weight:500;
-          font-size:14.5px;padding:16px 0 6px}
-  .libro-cab{display:flex;gap:16px;align-items:flex-start;margin:6px 0 22px}
-  .portada{width:62px;height:92px;border-radius:3px 6px 6px 3px;flex:none;position:relative;
-           box-shadow:var(--sombra);display:flex;align-items:flex-end;padding:8px 7px}
-  .portada::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:rgba(0,0,0,.2);
-           border-radius:3px 0 0 3px}
-  .libro-cab h1{font-family:'Literata',Georgia,serif;font-size:21px;line-height:1.25;margin:0 0 3px;
-           font-weight:600;letter-spacing:-.01em}
-  .libro-cab p{margin:0;color:var(--gris);font-size:14px}
+  .rasgos{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .rasgo{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:24px}
+  section.tinte .rasgo{background:var(--papel)}
+  .rasgo h3{font-family:'Literata',Georgia,serif;font-size:18.5px;margin:0 0 7px;font-weight:600}
+  .rasgo p{margin:0;color:var(--tinta-suave);font-size:15.5px}
+  .rasgo .dato{font-family:'Literata',Georgia,serif;font-size:32px;font-weight:700;color:var(--hoja);
+        display:block;line-height:1;margin:0 0 10px}
+  @media(max-width:680px){.rasgos{grid-template-columns:1fr}}
 
-  .lector{background:var(--papel-alto);border:1px solid var(--linea);border-radius:18px;padding:20px;
-          text-align:center;box-shadow:var(--sombra)}
-  .lector .etq{color:var(--gris);font-size:13.5px;margin:0}
-  .pagina-num{font-family:'Literata',Georgia,serif;font-size:60px;font-weight:700;line-height:1;
-        margin:6px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-  .de-total{color:var(--gris);font-size:13.5px;margin:0 0 16px}
-  .barra{height:7px;background:rgba(14,59,50,.1);border-radius:99px;overflow:hidden;margin:0 0 6px}
-  .barra i{display:block;height:100%;background:var(--hoja);border-radius:99px;transition:width .45s ease}
-  .pct{font-size:12.5px;color:var(--gris);margin:0}
+  /* ---------- NFC ---------- */
+  .nfc{display:grid;grid-template-columns:1fr 300px;gap:50px;align-items:center}
+  .tarjeta-nfc{background:var(--tinta);border-radius:18px;padding:30px 24px;color:var(--papel-alto);
+        text-align:center;box-shadow:var(--sombra);position:relative;overflow:hidden}
+  .tarjeta-nfc .ondas{font-size:38px;line-height:1;margin:0 0 12px;opacity:.9}
+  .tarjeta-nfc strong{font-family:'Literata',Georgia,serif;font-size:20px;display:block;margin:0 0 6px}
+  .tarjeta-nfc span{font-size:14.5px;color:rgba(245,240,228,.72)}
+  @media(max-width:880px){.nfc{grid-template-columns:1fr;gap:30px}}
 
-  .rapidos{display:flex;gap:8px;margin:18px 0 0}
-  .rapidos button{flex:1;background:rgba(74,139,59,.1);color:var(--tinta);border-radius:11px;padding:11px 0;
-        font-weight:600;font-size:14.5px}
-  .rapidos button:active{background:rgba(74,139,59,.22)}
+  /* ---------- Precio ---------- */
+  .precio-caja{background:var(--tinta);color:var(--papel-alto);border-radius:24px;padding:40px 34px;
+        max-width:460px;margin:0 auto;text-align:center;box-shadow:var(--sombra)}
+  .precio-caja .cifra{font-family:'Literata',Georgia,serif;font-size:64px;font-weight:700;line-height:1;
+        letter-spacing:-.03em;margin:8px 0 2px}
+  .precio-caja .cada{font-size:15.5px;color:rgba(245,240,228,.72);margin:0 0 26px}
+  .precio-caja ul{list-style:none;padding:0;margin:0 0 28px;text-align:left}
+  .precio-caja li{padding:9px 0 9px 28px;position:relative;font-size:15.5px;color:rgba(245,240,228,.92);
+        border-top:1px solid rgba(245,240,228,.14)}
+  .precio-caja li:first-child{border-top:0}
+  .precio-caja li::before{content:"✓";position:absolute;left:0;top:9px;color:var(--hoja);font-weight:700}
+  .precio-caja .btn{width:100%;box-shadow:none}
+  .precio-nota{text-align:center;color:var(--gris);font-size:14.5px;margin:18px auto 0;max-width:44ch}
 
-  .teclado{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0 0}
-  .teclado button{background:var(--papel-alto);border:1px solid var(--linea);border-radius:12px;
-        padding:15px 0;font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
-  .teclado button:active{background:rgba(14,59,50,.07)}
-  .teclado .aux{font-size:14.5px;font-weight:600;color:var(--tinta-suave)}
-  .entrada{font-family:'Literata',Georgia,serif;font-size:34px;font-weight:600;text-align:center;
-        padding:10px 0 2px;font-variant-numeric:tabular-nums;min-height:52px}
-  .entrada.vacio{color:var(--gris)}
+  /* ---------- FAQ ---------- */
+  details{border-bottom:1px solid var(--linea);padding:4px 0}
+  summary{cursor:pointer;list-style:none;padding:18px 30px 18px 0;font-weight:600;font-size:17px;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:4px;top:16px;font-size:23px;font-weight:400;
+        color:var(--hoja);transition:transform .2s ease}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{margin:0 0 20px;color:var(--tinta-suave);font-size:16px;max-width:66ch}
 
-  .cta{display:block;width:100%;background:var(--tinta);color:var(--papel-alto);border-radius:13px;
-       padding:16px;font-weight:600;font-size:16px;margin:14px 0 0;box-shadow:var(--sombra)}
-  .cta:disabled{opacity:.35;box-shadow:none}
-  .cta.sec{background:transparent;color:var(--tinta-suave);box-shadow:none;border:1px solid var(--linea);
-       font-weight:500;font-size:14.5px;padding:13px}
-
-  .ritmo{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0 0}
-  .ritmo div{background:var(--papel-alto);border:1px solid var(--linea);border-radius:12px;padding:12px 9px;
-        text-align:center}
-  .ritmo b{display:block;font-family:'Literata',Georgia,serif;font-size:19px;font-weight:600;
-        font-variant-numeric:tabular-nums}
-  .ritmo small{color:var(--gris);font-size:11.5px;line-height:1.3;display:block;margin-top:2px}
-
-  /* ---------- Formulario ---------- */
-  .campo{margin:0 0 14px}
-  .campo label{display:block;font-size:13.5px;font-weight:500;color:var(--tinta-suave);margin:0 0 6px}
-  .campo input{width:100%;background:var(--papel-alto);border:1px solid var(--linea);border-radius:11px;
-        padding:13px 14px;font-size:16px}
-  .campo input:focus{outline:none;border-color:var(--hoja);box-shadow:0 0 0 3px rgba(74,139,59,.16)}
-  .colores{display:flex;gap:9px;flex-wrap:wrap}
-  .colores button{width:36px;height:36px;border-radius:9px;border:2.5px solid transparent}
-  .colores button[aria-pressed="true"]{border-color:var(--tinta);transform:scale(1.06)}
-
-  /* ---------- Librería ---------- */
-  .libreria{background:var(--tinta);color:var(--papel-alto);border-radius:18px;padding:20px;margin:30px 0 0}
-  .libreria h2{font-family:'Literata',Georgia,serif;font-size:16.5px;margin:0 0 4px;font-weight:600}
-  .libreria>p{margin:0 0 15px;font-size:13.5px;color:rgba(245,240,228,.72);line-height:1.45}
-  .novedad{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid rgba(245,240,228,.16)}
-  .novedad .mini{width:30px;height:44px;border-radius:2px 4px 4px 2px;flex:none}
-  .novedad .n-info{flex:1;min-width:0}
-  .novedad strong{display:block;font-family:'Literata',Georgia,serif;font-size:14.5px;font-weight:600}
-  .novedad small{color:rgba(245,240,228,.66);font-size:12.5px}
-  .novedad .res{background:var(--hoja);color:#fff;border-radius:9px;padding:8px 13px;font-size:13px;
-        font-weight:600;flex:none}
-
-  .pie{text-align:center;color:var(--gris);font-size:12.5px;padding:26px 0 30px;line-height:1.6}
-  .pie a{color:var(--tinta-suave);font-weight:600;text-decoration:none}
-  .pie button{color:var(--gris);text-decoration:underline;font-size:12.5px}
-
-  .vacio-msg{background:var(--papel-alto);border:1px dashed var(--linea);border-radius:var(--r);
-        padding:22px;text-align:center;color:var(--gris);font-size:14.5px}
-
-  .aviso{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
-        background:var(--tinta);color:var(--papel-alto);padding:12px 20px;border-radius:999px;
-        font-size:14px;font-weight:500;box-shadow:var(--sombra);pointer-events:none;
-        transition:opacity .25s ease,transform .25s ease;z-index:50;max-width:88vw;text-align:center}
-  .aviso.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  /* ---------- Cierre y pie ---------- */
+  .cierre{text-align:center;padding:80px 0}
+  .cierre h2{font-family:'Literata',Georgia,serif;font-size:clamp(28px,4vw,42px);line-height:1.15;
+        font-weight:700;letter-spacing:-.025em;margin:0 0 16px}
+  .cierre p{color:var(--tinta-suave);font-size:18px;margin:0 0 28px}
+  footer{border-top:1px solid var(--linea);padding:34px 0;color:var(--gris);font-size:14.5px}
+  .pie-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer a{color:var(--tinta-suave);text-decoration:none;font-weight:500}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<div id="root"></div>
 
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<header>
+  <div class="wrap barra">
+    <a class="marca" href="#inicio"><span class="cinta"></span>Book<em>Mark</em></a>
+    <nav>
+      <a href="#como">Cómo funciona</a>
+      <a href="#precio">Precio</a>
+      <a href="#dudas">Dudas</a>
+      <a class="btn" href="app/">Entrar</a>
+    </nav>
+  </div>
+</header>
 
-<script>
-/* Lógica pura fuera de Babel (patrón Limonada Web) */
-window.BM = (function(){
-  var K = 'lw_bookmark_';
-  var VERSION = 3;
+<main id="inicio">
 
-  var COLORES = ['#C0453C','#E8A93B','#3A6E9B','#0E3B32','#4A8B3B','#7B4B8A','#B5652F','#2C5C51'];
+  <!-- HERO -->
+  <div class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <h1>El marcapáginas que se acuerda por ti.</h1>
+        <p class="entradilla">Pulsa el libro, escribe la página y vuelve a leer. Tres segundos, y nunca más esa duda de por dónde ibas.</p>
+        <div class="acciones">
+          <a class="btn grande verde" href="app/">Probar gratis 14 días</a>
+          <a class="btn grande fantasma" href="#como">Ver cómo va</a>
+        </div>
+        <p class="micro">Sin tarjeta para empezar. Después, 12,99 € al año.</p>
+      </div>
 
-  function hoy(){ var d=new Date(); d.setHours(0,0,0,0); return d; }
-  function iso(d){ return d.toISOString().slice(0,10); }
-  function diasAtras(n){ var d=hoy(); d.setDate(d.getDate()-n); return iso(d); }
+      <!-- Demo real, sin registro -->
+      <div class="demo" id="demo">
+        <span class="demo-etq">Pruébalo aquí</span>
+        <h2>Tu estante</h2>
+        <p class="pista">Toca un lomo y anota por dónde vas.</p>
+        <div class="lomos" id="lomos"></div>
+        <div class="balda"></div>
+        <div class="panel">
+          <p class="cual" id="d-titulo">El infinito en un junco</p>
+          <p class="num" id="d-pagina">187</p>
+          <p class="de" id="d-total">de 452 páginas</p>
+          <div class="barrita"><i id="d-barra" style="width:41%"></i></div>
+          <div class="mas">
+            <button data-mas="1">+1</button>
+            <button data-mas="10">+10</button>
+            <button data-mas="25">+25</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  function semilla(){
-    return {
-      version: VERSION,
-      libreria: { nombre:'Librería La Alameda', ciudad:'Málaga', whatsapp:'34600000000' },
-      libros:[
-        { id:'l1', titulo:'El infinito en un junco', autor:'Irene Vallejo', total:452, pagina:187,
-          color:'#C0453C', estado:'en_curso',
-          sesiones:[{f:diasAtras(9),p:40},{f:diasAtras(6),p:88},{f:diasAtras(4),p:121},
-                    {f:diasAtras(2),p:156},{f:diasAtras(1),p:187}] },
-        { id:'l2', titulo:'Patria', autor:'Fernando Aramburu', total:648, pagina:34,
-          color:'#3A6E9B', estado:'en_curso',
-          sesiones:[{f:diasAtras(3),p:12},{f:diasAtras(1),p:34}] },
-        { id:'l3', titulo:'Sapiens', autor:'Yuval Noah Harari', total:496, pagina:311,
-          color:'#E8A93B', estado:'en_curso',
-          sesiones:[{f:diasAtras(14),p:210},{f:diasAtras(8),p:265},{f:diasAtras(5),p:311}] },
-        { id:'l4', titulo:'La sombra del viento', autor:'Carlos Ruiz Zafón', total:576, pagina:576,
-          color:'#0E3B32', estado:'terminado',
-          sesiones:[{f:diasAtras(40),p:300},{f:diasAtras(28),p:576}] },
-        { id:'l5', titulo:'Los renglones torcidos de Dios', autor:'Torcuato Luca de Tena', total:496, pagina:0,
-          color:'#7B4B8A', estado:'pendiente', sesiones:[] }
-      ],
-      novedades:[
-        { titulo:'Las hijas de la criada', autor:'Sonsoles Ónega', color:'#B5652F' },
-        { titulo:'Los pacientes del doctor García', autor:'Almudena Grandes', color:'#2C5C51' }
-      ]
-    };
-  }
+  <!-- CÓMO FUNCIONA -->
+  <section class="tinte" id="como">
+    <div class="wrap">
+      <h2 class="tit">Se usa con una mano y sin pensar</h2>
+      <p class="intro">Está hecho para el momento exacto en que cierras el libro: medio dormido, con el móvil en la otra mano.</p>
+      <div class="pasos">
+        <div class="paso">
+          <span class="n"></span>
+          <h3>Abres tu estante</h3>
+          <p>Desde el acceso directo del móvil o acercándolo a tu marcapáginas. Tus libros en curso están arriba, sin buscar nada.</p>
+        </div>
+        <div class="paso">
+          <span class="n"></span>
+          <h3>Tocas el libro</h3>
+          <p>Te dice por qué página ibas y cuánto te queda. Si retomas después de semanas, el dato está ahí esperándote.</p>
+        </div>
+        <div class="paso">
+          <span class="n"></span>
+          <h3>Anotas y cierras</h3>
+          <p>Teclado grande o los botones de +10 y +25 páginas. Se guarda solo, en todos tus dispositivos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  function cargar(){
-    try{
-      var raw = localStorage.getItem(K+'datos');
-      if(!raw) return semilla();
-      var d = JSON.parse(raw);
-      if(!d || d.version !== VERSION) return semilla();
-      return d;
-    }catch(e){ return semilla(); }
-  }
+  <!-- QUÉ APORTA -->
+  <section>
+    <div class="wrap">
+      <h2 class="tit">Lo que aparece cuando llevas unas semanas</h2>
+      <p class="intro">No es un registro por registrar. Cada vez que anotas una página, BookMark aprende cómo lees.</p>
+      <div class="rasgos">
+        <div class="rasgo">
+          <span class="dato">12 días</span>
+          <h3>Tu racha</h3>
+          <p>Los días seguidos que has leído algo. Es el motivo por el que mucha gente abre la app antes de dormir.</p>
+        </div>
+        <div class="rasgo">
+          <span class="dato">34 pág.</span>
+          <h3>Tu ritmo real</h3>
+          <p>La media de páginas que avanzas cada vez que te sientas a leer. Sin estimaciones inventadas: tus números.</p>
+        </div>
+        <div class="rasgo">
+          <span class="dato">3 oct.</span>
+          <h3>Cuándo lo acabarás</h3>
+          <p>Con tu ritmo y las páginas que quedan, la fecha en que terminarás el libro que tienes entre manos.</p>
+        </div>
+        <div class="rasgo">
+          <span class="dato">∞</span>
+          <h3>Todo tu histórico</h3>
+          <p>Los leídos, los que esperan turno y los que dejaste a medias. Tu biblioteca entera en una pantalla.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  function guardar(d){
-    try{ localStorage.setItem(K+'datos', JSON.stringify(d)); }catch(e){}
-  }
+  <!-- NFC -->
+  <section class="tinte">
+    <div class="wrap nfc">
+      <div>
+        <h2 class="tit">Y si quieres, sin abrir nada</h2>
+        <p class="intro" style="margin-bottom:22px">Un marcapáginas con chip NFC dentro. Lo dejas en la mesilla o entre las páginas, acercas el móvil y tu estante se abre solo. Ni desbloquear, ni buscar el icono, ni escribir.</p>
+        <p style="color:var(--gris);font-size:15.5px;margin:0">Funciona en Android y en iPhone desde el XS. La app no lo necesita: es un atajo, no un requisito.</p>
+      </div>
+      <div class="tarjeta-nfc">
+        <p class="ondas">📖</p>
+        <strong>Marcapáginas BookMark</strong>
+        <span>Acércalo y sigue leyendo</span>
+      </div>
+    </div>
+  </section>
 
-  function reiniciar(){
-    try{ localStorage.removeItem(K+'datos'); }catch(e){}
-  }
+  <!-- PRECIO -->
+  <section id="precio">
+    <div class="wrap">
+      <h2 class="tit" style="text-align:center">Un precio y ya está</h2>
+      <p class="intro" style="text-align:center;margin-inline:auto">Sin niveles, sin funciones bloqueadas, sin anuncios.</p>
+      <div class="precio-caja">
+        <div class="cifra">12,99 €</div>
+        <p class="cada">al año · IVA incluido</p>
+        <ul>
+          <li>Libros ilimitados en tu estante</li>
+          <li>Sincronizado en móvil, tablet y ordenador</li>
+          <li>Racha, ritmo y fecha estimada de fin</li>
+          <li>Acceso con marcapáginas NFC</li>
+          <li>Tus datos son tuyos y puedes borrarlos</li>
+        </ul>
+        <a class="btn grande verde" href="app/">Empezar los 14 días gratis</a>
+      </div>
+      <p class="precio-nota">No pedimos tarjeta para probar. Si no renuevas, tus libros siguen ahí para consultarlos.</p>
+    </div>
+  </section>
 
-  /* Racha: días consecutivos con lectura, contando desde hoy o ayer */
-  function racha(libros){
-    var set = {};
-    libros.forEach(function(l){ (l.sesiones||[]).forEach(function(s){ set[s.f]=true; }); });
-    var dias = Object.keys(set).sort().reverse();
-    if(!dias.length) return 0;
-    if(dias[0] !== iso(hoy()) && dias[0] !== diasAtras(1)) return 0;
-    var n = 0, cursor = new Date(dias[0]+'T00:00:00');
-    while(set[iso(cursor)]){ n++; cursor.setDate(cursor.getDate()-1); }
-    return n;
-  }
+  <!-- FAQ -->
+  <section class="tinte" id="dudas">
+    <div class="wrap estrecho">
+      <h2 class="tit">Dudas razonables</h2>
+      <details open>
+        <summary>¿Necesito el marcapáginas NFC para usarlo?</summary>
+        <p>No. BookMark funciona entero desde el navegador del móvil o instalado como aplicación. El marcapáginas es un atajo cómodo, nada más.</p>
+      </details>
+      <details>
+        <summary>¿Funciona en iPhone?</summary>
+        <p>Sí. La app va en cualquier navegador moderno. Para la parte del NFC necesitas un iPhone XS o posterior con iOS 14 o superior, que leen etiquetas sin abrir ninguna aplicación.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa con mis libros si no renuevo?</summary>
+        <p>Siguen en tu cuenta y puedes consultarlos cuando quieras. Lo que se detiene es anotar páginas nuevas y añadir libros, hasta que renueves.</p>
+      </details>
+      <details>
+        <summary>¿Puedo llevarme mis datos?</summary>
+        <p>Sí. Puedes pedir una copia de tu biblioteca o el borrado completo de la cuenta desde los ajustes, y se ejecuta sin preguntas.</p>
+      </details>
+      <details>
+        <summary>¿En qué se diferencia de apuntarlo en el móvil?</summary>
+        <p>En que no tienes que decidir dónde apuntarlo ni buscarlo después. Y en lo que aparece con el tiempo: tu ritmo real de lectura, la racha de días y cuándo vas a terminar cada libro.</p>
+      </details>
+      <details>
+        <summary>¿Hay publicidad o venden mis datos de lectura?</summary>
+        <p>No. Esa es precisamente la razón de cobrar 12,99 € al año en lugar de regalar la app.</p>
+      </details>
+    </div>
+  </section>
 
-  /* Media de páginas por sesión en los últimos 30 días */
-  function ritmo(libro){
-    var ses = (libro.sesiones||[]).slice(-8);
-    if(ses.length < 2) return 0;
-    var total = 0, cuenta = 0, prev = null;
-    ses.forEach(function(s){
-      if(prev !== null && s.p > prev){ total += (s.p - prev); cuenta++; }
-      prev = s.p;
-    });
-    return cuenta ? Math.round(total/cuenta) : 0;
-  }
+  <!-- CIERRE -->
+  <div class="cierre wrap">
+    <h2>¿Por qué página ibas?</h2>
+    <p>Dos semanas gratis para no volver a dudarlo.</p>
+    <a class="btn grande verde" href="app/">Crear mi estante</a>
+  </div>
 
-  function finEstimado(libro){
-    var r = ritmo(libro);
-    if(!r || !libro.total || libro.pagina >= libro.total) return null;
-    var sesionesRestantes = Math.ceil((libro.total - libro.pagina)/r);
-    var d = hoy(); d.setDate(d.getDate() + sesionesRestantes * 2);
-    return d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});
-  }
+</main>
 
-  function saludo(){
-    var h = new Date().getHours();
-    if(h < 6)  return 'Se ha hecho de noche leyendo.';
-    if(h < 13) return 'Buenos días. ¿Seguimos?';
-    if(h < 20) return 'Buenas tardes. ¿Por dónde ibas?';
-    return 'Buenas noches. Un rato de lectura.';
-  }
+<footer>
+  <div class="wrap pie-grid">
+    <span>BookMark, un producto de <a href="https://www.limonadaweb.com" target="_blank" rel="noopener">Limonada Web</a></span>
+    <span><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="condiciones.html">Condiciones</a></span>
+  </div>
+</footer>
 
-  function marcar(datos, id, pagina){
-    var libros = datos.libros.map(function(l){
-      if(l.id !== id) return l;
-      var ses = (l.sesiones||[]).filter(function(s){ return s.f !== iso(hoy()); });
-      ses.push({ f: iso(hoy()), p: pagina });
-      var estado = l.estado;
-      if(l.total && pagina >= l.total) estado = 'terminado';
-      else if(estado !== 'en_curso') estado = 'en_curso';
-      return Object.assign({}, l, { pagina: pagina, estado: estado, sesiones: ses });
-    });
-    return Object.assign({}, datos, { libros: libros });
-  }
-
-  function anadir(datos, libro){
-    var nuevo = {
-      id: 'l' + Date.now().toString(36),
-      titulo: libro.titulo,
-      autor: libro.autor || '',
-      total: libro.total || 0,
-      pagina: 0,
-      color: libro.color || COLORES[0],
-      estado: 'en_curso',
-      sesiones: []
-    };
-    return Object.assign({}, datos, { libros: datos.libros.concat([nuevo]) });
-  }
-
-  function eliminar(datos, id){
-    return Object.assign({}, datos, {
-      libros: datos.libros.filter(function(l){ return l.id !== id; })
-    });
-  }
-
-  return {
-    COLORES: COLORES, cargar: cargar, guardar: guardar, reiniciar: reiniciar,
-    racha: racha, ritmo: ritmo, finEstimado: finEstimado, saludo: saludo,
-    marcar: marcar, anadir: anadir, eliminar: eliminar
-  };
-})();
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"BookMark",
+  "applicationCategory":"LifestyleApplication",
+  "operatingSystem":"Web, Android, iOS",
+  "description":"Aplicación para anotar por qué página vas en cada libro, con racha de lectura, ritmo y biblioteca sincronizada.",
+  "inLanguage":"es",
+  "offers":{"@type":"Offer","price":"12.99","priceCurrency":"EUR"},
+  "publisher":{"@type":"Organization","name":"Limonada Web","url":"https://www.limonadaweb.com"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Necesito el marcapáginas NFC para usarlo?","acceptedAnswer":{"@type":"Answer","text":"No. BookMark funciona entero desde el navegador del móvil o instalado como aplicación. El marcapáginas es un atajo cómodo, nada más."}},
+    {"@type":"Question","name":"¿Funciona en iPhone?","acceptedAnswer":{"@type":"Answer","text":"Sí. Para la parte del NFC necesitas un iPhone XS o posterior con iOS 14 o superior."}},
+    {"@type":"Question","name":"¿Qué pasa con mis libros si no renuevo?","acceptedAnswer":{"@type":"Answer","text":"Siguen en tu cuenta y puedes consultarlos. Se detiene anotar páginas nuevas y añadir libros hasta que renueves."}},
+    {"@type":"Question","name":"¿Hay publicidad o venden mis datos de lectura?","acceptedAnswer":{"@type":"Answer","text":"No. Esa es la razón de cobrar 12,99 € al año en lugar de regalar la app."}}
+  ]
+}
 </script>
 
 <script>
-const {
-  useState,
-  useEffect,
-  useRef,
-  useMemo
-} = React;
-const BM = window.BM;
-function Aviso({
-  texto
-}) {
-  return React.createElement("div", {
-    className: 'aviso' + (texto ? ' on' : '')
-  }, texto);
-}
-function Lomo({
-  libro,
-  onPulsar
-}) {
-  const pct = libro.total ? Math.min(libro.pagina / libro.total, 1) : 0;
-  const alto = 186;
-  const cintaAlto = 13 + alto * (1 - pct) * 0.9;
-  return React.createElement("button", {
-    className: "lomo",
-    style: {
-      background: libro.color
-    },
-    onClick: onPulsar,
-    "aria-label": `${libro.titulo}, página ${libro.pagina}`
-  }, React.createElement("span", {
-    className: "marca-pag",
-    style: {
-      height: cintaAlto + 'px'
-    }
-  }), React.createElement("span", {
-    className: "nervio a"
-  }), React.createElement("span", {
-    className: "tit"
-  }, libro.titulo), React.createElement("span", {
-    className: "nervio b"
-  }), React.createElement("span", {
-    className: "linea-pag",
-    style: {
-      top: alto * pct + 'px'
-    }
-  }));
-}
-function Estante({
-  libros,
-  onAbrir,
-  onNuevo
-}) {
-  return React.createElement("div", {
-    className: "estante"
-  }, React.createElement("div", {
-    className: "lomos"
-  }, libros.map(l => React.createElement(Lomo, {
-    key: l.id,
-    libro: l,
-    onPulsar: () => onAbrir(l.id)
-  })), React.createElement("button", {
-    className: "lomo nuevo",
-    onClick: onNuevo,
-    "aria-label": "Añadir un libro"
-  }, React.createElement("span", null, "+ Añadir libro"))), React.createElement("div", {
-    className: "balda"
-  }));
-}
-function Inicio({
-  datos,
-  onAbrir,
-  onNuevo,
-  onReiniciar
-}) {
-  const enCurso = datos.libros.filter(l => l.estado === 'en_curso');
-  const pendientes = datos.libros.filter(l => l.estado === 'pendiente');
-  const terminados = datos.libros.filter(l => l.estado === 'terminado');
-  const racha = BM.racha(datos.libros);
-  const saludo = useMemo(() => BM.saludo(), []);
-  return React.createElement(React.Fragment, null, React.createElement("div", {
-    className: "top"
-  }, React.createElement("div", {
-    className: "marca"
-  }, React.createElement("span", {
-    className: "cinta-logo"
-  }), "Book", React.createElement("em", null, "Mark")), racha > 0 && React.createElement("div", {
-    className: "racha"
-  }, "🔥 ", React.createElement("b", null, racha), " ", racha === 1 ? 'día' : 'días')), React.createElement("h1", {
-    className: "saludo"
-  }, saludo), React.createElement("p", {
-    className: "sub"
-  }, enCurso.length > 0 ? 'Elige el libro y dime por qué página vas.' : 'Aún no tienes ningún libro empezado. Añade el primero.'), enCurso.length > 0 && React.createElement(Estante, {
-    libros: enCurso,
-    onAbrir: onAbrir,
-    onNuevo: onNuevo
-  }), enCurso.length === 0 && React.createElement("div", {
-    className: "vacio-msg"
-  }, "Tu estante está vacío.", React.createElement("div", {
-    style: {
-      marginTop: 14
-    }
-  }, React.createElement("button", {
-    className: "cta",
-    onClick: onNuevo
-  }, "Añadir mi primer libro"))), pendientes.length > 0 && React.createElement("div", {
-    className: "bloque"
-  }, React.createElement("h2", null, "Esperando turno"), pendientes.map(l => React.createElement("button", {
-    key: l.id,
-    className: "fila",
-    onClick: () => onAbrir(l.id)
-  }, React.createElement("span", {
-    className: "canto",
-    style: {
-      background: l.color
-    }
-  }), React.createElement("span", {
-    className: "info"
-  }, React.createElement("strong", null, l.titulo), React.createElement("small", null, l.autor)), React.createElement("span", {
-    className: "pg"
-  }, "Empezar")))), terminados.length > 0 && React.createElement("div", {
-    className: "bloque"
-  }, React.createElement("h2", null, "Leídos"), terminados.map(l => React.createElement("button", {
-    key: l.id,
-    className: "fila",
-    onClick: () => onAbrir(l.id)
-  }, React.createElement("span", {
-    className: "canto",
-    style: {
-      background: l.color
-    }
-  }), React.createElement("span", {
-    className: "info"
-  }, React.createElement("strong", null, l.titulo), React.createElement("small", null, l.autor)), React.createElement("span", {
-    className: "pg"
-  }, l.total, " pág.")))), React.createElement(Libreria, {
-    datos: datos
-  }), React.createElement("div", {
-    className: "pie"
-  }, "Demo de ", React.createElement("a", {
-    href: "https://www.limonadaweb.com",
-    target: "_blank",
-    rel: "noopener"
-  }, "Limonada Web"), React.createElement("br", null), "Los datos se guardan solo en este navegador.", React.createElement("br", null), React.createElement("button", {
-    onClick: onReiniciar,
-    style: {
-      marginTop: 8
-    }
-  }, "Reiniciar la demo")));
-}
-function Libreria({
-  datos
-}) {
-  const lib = datos.libreria;
-  return React.createElement("div", {
-    className: "libreria"
-  }, React.createElement("h2", null, lib.nombre), React.createElement("p", null, "Tu marcapáginas es de esta librería. Estas son sus novedades de esta semana en ", lib.ciudad, "."), datos.novedades.map((n, i) => React.createElement("div", {
-    className: "novedad",
-    key: i
-  }, React.createElement("span", {
-    className: "mini",
-    style: {
-      background: n.color
-    }
-  }), React.createElement("span", {
-    className: "n-info"
-  }, React.createElement("strong", null, n.titulo), React.createElement("small", null, n.autor)), React.createElement("a", {
-    className: "res",
-    href: 'https://wa.me/' + lib.whatsapp + '?text=' + encodeURIComponent('Hola, quiero reservar «' + n.titulo + '»'),
-    target: "_blank",
-    rel: "noopener"
-  }, "Reservar"))));
-}
-function VistaLibro({
-  libro,
-  onVolver,
-  onMarcar,
-  onEliminar
-}) {
-  const [entrada, setEntrada] = useState('');
-  const pct = libro.total ? Math.min(libro.pagina / libro.total, 1) : 0;
-  const r = BM.ritmo(libro);
-  const fin = BM.finEstimado(libro);
-  const restantes = libro.total ? Math.max(libro.total - libro.pagina, 0) : null;
-  function pulsar(d) {
-    if (entrada.length >= 4) return;
-    setEntrada(entrada === '' && d === '0' ? '' : entrada + d);
+(function(){
+  var LIBROS = [
+    { t:'El infinito en un junco', p:187, total:452, c:'#C0453C' },
+    { t:'Patria',                  p:34,  total:648, c:'#3A6E9B' },
+    { t:'Sapiens',                 p:311, total:496, c:'#E8A93B' },
+    { t:'La sombra del viento',    p:92,  total:576, c:'#0E3B32' }
+  ];
+  var actual = 0;
+  var cont = document.getElementById('lomos');
+  var elTitulo = document.getElementById('d-titulo');
+  var elPagina = document.getElementById('d-pagina');
+  var elTotal  = document.getElementById('d-total');
+  var elBarra  = document.getElementById('d-barra');
+
+  function pintarLomos(){
+    cont.innerHTML = '';
+    LIBROS.forEach(function(l, i){
+      var pct = Math.min(l.p / l.total, 1);
+      var b = document.createElement('button');
+      b.className = 'lomo' + (i === actual ? ' activo' : '');
+      b.style.background = l.c;
+      b.setAttribute('aria-label', l.t + ', página ' + l.p);
+      b.innerHTML =
+        '<span class="cintita" style="height:' + (12 + 172 * (1 - pct) * 0.9) + 'px"></span>' +
+        '<span class="tit">' + l.t + '</span>' +
+        '<span class="raya" style="top:' + (172 * pct) + 'px"></span>';
+      b.addEventListener('click', function(){ actual = i; refrescar(); });
+      cont.appendChild(b);
+    });
   }
-  function borrar() {
-    setEntrada(entrada.slice(0, -1));
+
+  function refrescar(){
+    var l = LIBROS[actual];
+    elTitulo.textContent = l.t;
+    elPagina.textContent = l.p;
+    elTotal.textContent  = 'de ' + l.total + ' páginas';
+    elBarra.style.width  = Math.round(Math.min(l.p / l.total, 1) * 100) + '%';
+    pintarLomos();
   }
-  function sumar(n) {
-    const destino = libro.total ? Math.min(libro.pagina + n, libro.total) : libro.pagina + n;
-    onMarcar(libro.id, destino);
-  }
-  function confirmar() {
-    const n = parseInt(entrada, 10);
-    if (isNaN(n)) return;
-    onMarcar(libro.id, n);
-    setEntrada('');
-  }
-  const excede = libro.total > 0 && parseInt(entrada, 10) > libro.total;
-  return React.createElement(React.Fragment, null, React.createElement("button", {
-    className: "volver",
-    onClick: onVolver
-  }, "← Mi estante"), React.createElement("div", {
-    className: "libro-cab"
-  }, React.createElement("div", {
-    className: "portada",
-    style: {
-      background: libro.color
-    }
-  }), React.createElement("div", null, React.createElement("h1", null, libro.titulo), React.createElement("p", null, libro.autor))), React.createElement("div", {
-    className: "lector"
-  }, React.createElement("p", {
-    className: "etq"
-  }, libro.pagina > 0 ? 'Vas por la página' : 'Todavía sin empezar'), React.createElement("div", {
-    className: "pagina-num"
-  }, libro.pagina), libro.total > 0 && React.createElement("p", {
-    className: "de-total"
-  }, "de ", libro.total, " páginas"), libro.total > 0 && React.createElement(React.Fragment, null, React.createElement("div", {
-    className: "barra"
-  }, React.createElement("i", {
-    style: {
-      width: pct * 100 + '%'
-    }
-  })), React.createElement("p", {
-    className: "pct"
-  }, Math.round(pct * 100), "% leído", restantes > 0 ? ` · te quedan ${restantes} páginas` : ' · libro terminado')), React.createElement("div", {
-    className: "rapidos"
-  }, React.createElement("button", {
-    onClick: () => sumar(1)
-  }, "+1"), React.createElement("button", {
-    onClick: () => sumar(10)
-  }, "+10"), React.createElement("button", {
-    onClick: () => sumar(25)
-  }, "+25"))), (r > 0 || fin) && React.createElement("div", {
-    className: "ritmo"
-  }, React.createElement("div", null, React.createElement("b", null, r || '—'), React.createElement("small", null, "páginas por sesión")), React.createElement("div", null, React.createElement("b", null, (libro.sesiones || []).length), React.createElement("small", null, "veces retomado")), React.createElement("div", null, React.createElement("b", null, fin || '—'), React.createElement("small", null, "lo acabarías"))), React.createElement("div", {
-    className: 'entrada' + (entrada ? '' : ' vacio')
-  }, entrada || 'Escribe la página'), React.createElement("div", {
-    className: "teclado"
-  }, ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(d => React.createElement("button", {
-    key: d,
-    onClick: () => pulsar(d)
-  }, d)), React.createElement("button", {
-    className: "aux",
-    onClick: borrar
-  }, "Borrar"), React.createElement("button", {
-    onClick: () => pulsar('0')
-  }, "0"), React.createElement("button", {
-    className: "aux",
-    onClick: () => setEntrada('')
-  }, "Limpiar")), React.createElement("button", {
-    className: "cta",
-    disabled: !entrada || excede,
-    onClick: confirmar
-  }, excede ? `El libro solo tiene ${libro.total} páginas` : 'Guardar la página'), React.createElement("button", {
-    className: "cta sec",
-    onClick: () => onEliminar(libro.id)
-  }, "Quitar de mi estante"), React.createElement("div", {
-    className: "pie"
-  }));
-}
-function Anadir({
-  onVolver,
-  onGuardar
-}) {
-  const [titulo, setTitulo] = useState('');
-  const [autor, setAutor] = useState('');
-  const [total, setTotal] = useState('');
-  const [color, setColor] = useState(BM.COLORES[0]);
-  const ref = useRef(null);
-  useEffect(() => {
-    if (ref.current) ref.current.focus();
-  }, []);
-  return React.createElement(React.Fragment, null, React.createElement("button", {
-    className: "volver",
-    onClick: onVolver
-  }, "← Mi estante"), React.createElement("h1", {
-    className: "saludo",
-    style: {
-      marginBottom: 18
-    }
-  }, "¿Qué estás leyendo?"), React.createElement("div", {
-    className: "campo"
-  }, React.createElement("label", {
-    htmlFor: "t"
-  }, "Título"), React.createElement("input", {
-    id: "t",
-    ref: ref,
-    value: titulo,
-    onChange: e => setTitulo(e.target.value),
-    placeholder: "El infinito en un junco"
-  })), React.createElement("div", {
-    className: "campo"
-  }, React.createElement("label", {
-    htmlFor: "a"
-  }, "Autor"), React.createElement("input", {
-    id: "a",
-    value: autor,
-    onChange: e => setAutor(e.target.value),
-    placeholder: "Irene Vallejo"
-  })), React.createElement("div", {
-    className: "campo"
-  }, React.createElement("label", {
-    htmlFor: "p"
-  }, "Páginas (opcional)"), React.createElement("input", {
-    id: "p",
-    inputMode: "numeric",
-    value: total,
-    onChange: e => setTotal(e.target.value.replace(/\D/g, '')),
-    placeholder: "452"
-  })), React.createElement("div", {
-    className: "campo"
-  }, React.createElement("label", null, "Color del lomo"), React.createElement("div", {
-    className: "colores"
-  }, BM.COLORES.map(c => React.createElement("button", {
-    key: c,
-    style: {
-      background: c
-    },
-    "aria-pressed": color === c,
-    "aria-label": 'Color ' + c,
-    onClick: () => setColor(c)
-  })))), React.createElement("button", {
-    className: "cta",
-    disabled: !titulo.trim(),
-    onClick: () => onGuardar({
-      titulo: titulo.trim(),
-      autor: autor.trim(),
-      total: parseInt(total, 10) || 0,
-      color
-    })
-  }, "Ponerlo en el estante"), React.createElement("div", {
-    className: "pie"
-  }));
-}
-function App() {
-  const [datos, setDatos] = useState(() => BM.cargar());
-  const [vista, setVista] = useState({
-    p: 'inicio'
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-mas]'), function(btn){
+    btn.addEventListener('click', function(){
+      var l = LIBROS[actual];
+      l.p = Math.min(l.p + parseInt(btn.getAttribute('data-mas'), 10), l.total);
+      refrescar();
+    });
   });
-  const [aviso, setAviso] = useState('');
-  const timer = useRef(null);
-  useEffect(() => {
-    BM.guardar(datos);
-  }, [datos]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [vista]);
-  function avisar(texto) {
-    setAviso(texto);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setAviso(''), 2600);
-  }
-  function marcar(id, pagina) {
-    const libro = datos.libros.find(l => l.id === id);
-    const siguiente = BM.marcar(datos, id, pagina);
-    setDatos(siguiente);
-    const ahora = siguiente.libros.find(l => l.id === id);
-    if (ahora.estado === 'terminado' && libro.estado !== 'terminado') {
-      avisar('Terminado. Enhorabuena.');
-      setVista({
-        p: 'inicio'
-      });
-    } else {
-      avisar('Guardado en la página ' + pagina);
-    }
-  }
-  function guardarNuevo(libro) {
-    const siguiente = BM.anadir(datos, libro);
-    setDatos(siguiente);
-    setVista({
-      p: 'inicio'
-    });
-    avisar('«' + libro.titulo + '» está en tu estante');
-  }
-  function eliminar(id) {
-    setDatos(BM.eliminar(datos, id));
-    setVista({
-      p: 'inicio'
-    });
-    avisar('Quitado del estante');
-  }
-  function reiniciar() {
-    BM.reiniciar();
-    setDatos(BM.cargar());
-    setVista({
-      p: 'inicio'
-    });
-    avisar('Demo reiniciada');
-  }
-  const libro = vista.p === 'libro' ? datos.libros.find(l => l.id === vista.id) : null;
-  return React.createElement("div", {
-    className: "app"
-  }, vista.p === 'inicio' && React.createElement(Inicio, {
-    datos: datos,
-    onAbrir: id => setVista({
-      p: 'libro',
-      id
-    }),
-    onNuevo: () => setVista({
-      p: 'anadir'
-    }),
-    onReiniciar: reiniciar
-  }), vista.p === 'libro' && libro && React.createElement(VistaLibro, {
-    libro: libro,
-    onVolver: () => setVista({
-      p: 'inicio'
-    }),
-    onMarcar: marcar,
-    onEliminar: eliminar
-  }), vista.p === 'anadir' && React.createElement(Anadir, {
-    onVolver: () => setVista({
-      p: 'inicio'
-    }),
-    onGuardar: guardarNuevo
-  }), React.createElement(Aviso, {
-    texto: aviso
-  }));
-}
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App, null));
+
+  refrescar();
+})();
 </script>
 </body>
 </html>
