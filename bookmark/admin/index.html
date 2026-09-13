@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel · BookMark</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E3B32">
+<link rel="icon" type="image/png" sizes="32x32" href="../img/bookmark-icono-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--tinta:#0E3B32;--tinta-suave:#2C5C51;--hoja:#4A8B3B;--papel:#F5F0E4;--papel-alto:#FFFDF6;
+        --rojo:#C0453C;--ambar:#E8A93B;--azul:#3A6E9B;--gris:#6E6A5C;--linea:rgba(14,59,50,.14);
+        --sombra:0 10px 30px rgba(14,59,50,.12)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papel);color:var(--tinta);
+       font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:15.5px;line-height:1.55}
+  button{font-family:inherit;font-size:inherit;color:inherit;border:0;background:none;cursor:pointer}
+  input,select{font-family:inherit;font-size:inherit;color:inherit}
+  a{color:var(--tinta-suave)}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+
+  header{background:var(--tinta);color:var(--papel-alto)}
+  .barra{display:flex;align-items:center;gap:13px;height:66px}
+  .barra img{height:34px;width:auto}
+  .barra b{font-family:'Literata',Georgia,serif;font-size:17px;font-weight:600}
+  .barra .quien{margin-left:auto;font-size:13.5px;color:rgba(245,240,228,.72)}
+  .barra button{color:var(--papel-alto);font-size:13.5px;border:1px solid rgba(245,240,228,.3);
+        border-radius:9px;padding:7px 13px;font-weight:500}
+
+  h1{font-family:'Literata',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-.02em;margin:30px 0 4px}
+  .sub{color:var(--gris);font-size:14.5px;margin:0 0 26px}
+  h2{font-family:'Literata',Georgia,serif;font-size:18px;font-weight:600;margin:34px 0 12px}
+
+  .rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:13px}
+  .dato{background:var(--papel-alto);border:1px solid var(--linea);border-radius:15px;padding:17px}
+  .dato .n{font-family:'Literata',Georgia,serif;font-size:30px;font-weight:700;line-height:1;
+        font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .dato .e{font-size:12.5px;color:var(--gris);margin-top:5px;display:block}
+  .dato.verde .n{color:var(--hoja)}
+  .dato.ambar .n{color:#B07C13}
+  .dato.rojo .n{color:var(--rojo)}
+
+  .grafica{background:var(--papel-alto);border:1px solid var(--linea);border-radius:15px;padding:20px}
+  .barras{display:flex;align-items:flex-end;gap:3px;height:130px;margin:0 0 8px}
+  .barras div{flex:1;background:rgba(74,139,59,.25);border-radius:3px 3px 0 0;position:relative;min-height:2px}
+  .barras div i{position:absolute;left:0;right:0;bottom:0;background:var(--hoja);border-radius:3px 3px 0 0}
+  .ejes{display:flex;justify-content:space-between;font-size:11.5px;color:var(--gris)}
+  .leyenda{font-size:12.5px;color:var(--gris);margin:10px 0 0}
+  .leyenda b{color:var(--hoja)}
+
+  table{width:100%;border-collapse:collapse;background:var(--papel-alto);border:1px solid var(--linea);
+        border-radius:14px;overflow:hidden;font-size:14px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--linea);white-space:nowrap}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;
+     background:rgba(14,59,50,.05);color:var(--tinta-suave)}
+  tr:last-child td{border-bottom:0}
+  td.num{font-variant-numeric:tabular-nums}
+  .tabla-scroll{overflow-x:auto;border-radius:14px}
+  .etq{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+  .etq.suscrito{background:rgba(74,139,59,.15);color:#2F6B22}
+  .etq.prueba{background:rgba(232,169,59,.2);color:#8A5E06}
+  .etq.caducado{background:rgba(192,69,60,.14);color:#8E332C}
+
+  .caja{background:var(--papel-alto);border:1px solid var(--linea);border-radius:15px;padding:20px;
+        max-width:520px}
+  .caja label{display:block;font-size:13px;font-weight:500;color:var(--tinta-suave);margin:0 0 6px}
+  .caja input,.caja select{width:100%;background:var(--papel);border:1px solid var(--linea);
+        border-radius:10px;padding:11px 13px;margin:0 0 12px}
+  .caja input:focus,.caja select:focus{outline:none;border-color:var(--hoja);box-shadow:0 0 0 3px rgba(74,139,59,.15)}
+  .btn{background:var(--tinta);color:var(--papel-alto);border-radius:11px;padding:12px 20px;font-weight:600}
+  .btn.claro{background:transparent;color:var(--tinta-suave);border:1px solid var(--linea);font-weight:500}
+
+  .aviso{border-radius:11px;padding:12px 15px;font-size:14px;margin:0 0 14px}
+  .aviso.bien{background:rgba(74,139,59,.12);border:1px solid rgba(74,139,59,.35)}
+  .aviso.mal{background:rgba(192,69,60,.1);border:1px solid rgba(192,69,60,.3);color:#8E332C}
+
+  .acceso{max-width:380px;margin:9vh auto;padding:0 22px}
+  .acceso img{width:170px;display:block;margin:0 auto 22px}
+  .cargando{padding:60px 0;text-align:center;color:var(--gris)}
+  footer{color:var(--gris);font-size:13px;padding:40px 0 34px}
+</style>
+</head>
+<body>
+<div id="app"><div class="cargando">Comprobando sesión…</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  var SB = window.supabase.createClient(
+    'https://busqdxmrcdhbhlfpvovv.supabase.co',
+    'sb_publishable_83PUk1CiXeetuYX8d0jESg_qLCF4Xt0',
+    { auth:{ persistSession:true, autoRefreshToken:true } }
+  );
+  var app = document.getElementById('app');
+
+  function eur(c){ return (c/100).toLocaleString('es-ES',{style:'currency',currency:'EUR'}); }
+  function fecha(s){ return s ? new Date(s).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—'; }
+  function dia(s){ return new Date(s).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'}); }
+  function esc(s){ return (s||'').replace(/[<>&]/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]; }); }
+
+  /* ----------------------------- Acceso ----------------------------- */
+  function pantallaAcceso(error){
+    app.innerHTML =
+      '<div class="acceso">' +
+        '<img src="../img/bookmark-logo@1x.png" alt="BookMark">' +
+        (error ? '<div class="aviso mal">' + esc(error) + '</div>' : '') +
+        '<div class="caja">' +
+          '<label for="e">Email de administrador</label><input id="e" type="email" autocomplete="email">' +
+          '<label for="p">Contraseña</label><input id="p" type="password" autocomplete="current-password">' +
+          '<button class="btn" id="entrar" style="width:100%">Entrar al panel</button>' +
+        '</div>' +
+        '<footer style="text-align:center">Panel privado de BookMark</footer>' +
+      '</div>';
+    document.getElementById('entrar').addEventListener('click', entrar);
+    document.getElementById('p').addEventListener('keydown', function(ev){ if(ev.key==='Enter') entrar(); });
+  }
+
+  async function entrar(){
+    var email = document.getElementById('e').value.trim();
+    var pass  = document.getElementById('p').value;
+    if (!email || !pass) return;
+    app.innerHTML = '<div class="cargando">Entrando…</div>';
+    var r = await SB.auth.signInWithPassword({ email: email, password: pass });
+    if (r.error) { pantallaAcceso('Email o contraseña incorrectos.'); return; }
+    arrancar();
+  }
+
+  /* ----------------------------- Panel ----------------------------- */
+  async function arrancar(){
+    app.innerHTML = '<div class="cargando">Cargando datos…</div>';
+    var ses = await SB.auth.getSession();
+    if (!ses.data.session) { pantallaAcceso(); return; }
+
+    var admin = await SB.rpc('fn_soy_admin');
+    if (admin.error || admin.data !== true) {
+      app.innerHTML =
+        '<div class="acceso">' +
+          '<img src="../img/bookmark-logo@1x.png" alt="BookMark">' +
+          '<div class="aviso mal">Esta cuenta no tiene permiso de administrador.</div>' +
+          '<button class="btn claro" id="salir" style="width:100%">Cerrar sesión</button>' +
+        '</div>';
+      document.getElementById('salir').addEventListener('click', async function(){
+        await SB.auth.signOut(); pantallaAcceso();
+      });
+      return;
+    }
+
+    var res = await Promise.all([
+      SB.rpc('panel_resumen'),
+      SB.rpc('panel_series', { p_dias: 30 }),
+      SB.rpc('panel_usuarios', { p_limite: 200 }),
+      SB.rpc('panel_pagos', { p_limite: 50 })
+    ]);
+    var fallo = res.find(function(x){ return x.error; });
+    if (fallo) { app.innerHTML = '<div class="wrap"><div class="aviso mal" style="margin-top:40px">'
+      + esc(fallo.error.message) + '</div></div>'; return; }
+
+    pintar(ses.data.session.user.email, res[0].data, res[1].data, res[2].data, res[3].data);
+  }
+
+  function pintar(email, r, series, usuarios, pagos){
+    var maxAltas = Math.max.apply(null, series.map(function(d){ return d.lecturas; }).concat([1]));
+
+    var barras = series.map(function(d){
+      var h = Math.round((d.lecturas / maxAltas) * 100);
+      return '<div title="' + dia(d.dia) + ': ' + d.lecturas + ' lecturas, ' + d.altas + ' altas">'
+           + '<i style="height:' + h + '%"></i></div>';
+    }).join('');
+
+    var filasU = usuarios.map(function(u){
+      return '<tr>'
+        + '<td>' + esc(u.email) + '</td>'
+        + '<td><span class="etq ' + u.estado + '">' + u.estado + '</span></td>'
+        + '<td class="num">' + u.libros + '</td>'
+        + '<td>' + fecha(u.creado_en) + '</td>'
+        + '<td>' + (u.estado === 'suscrito' ? fecha(u.suscripcion_hasta) : fecha(u.prueba_hasta)) + '</td>'
+        + '<td>' + (u.ultima_lectura ? fecha(u.ultima_lectura) : '—') + '</td>'
+        + '</tr>';
+    }).join('') || '<tr><td colspan="6" style="color:var(--gris)">Todavía no hay usuarios registrados.</td></tr>';
+
+    var filasP = pagos.map(function(p){
+      return '<tr>'
+        + '<td>' + fecha(p.creado_en) + '</td>'
+        + '<td>' + esc(p.email || '—') + '</td>'
+        + '<td class="num">' + eur(p.importe_centimos) + '</td>'
+        + '<td>' + fecha(p.periodo_hasta) + '</td>'
+        + '<td style="color:var(--gris);font-size:12.5px">' + esc((p.stripe_session_id||'').slice(0,22)) + '</td>'
+        + '</tr>';
+    }).join('') || '<tr><td colspan="5" style="color:var(--gris)">Ningún cobro registrado todavía.</td></tr>';
+
+    app.innerHTML =
+      '<header><div class="wrap barra">' +
+        '<img src="../img/bookmark-icono-96.png" alt=""><b>BookMark · Panel</b>' +
+        '<span class="quien">' + esc(email) + '</span>' +
+        '<button id="salir">Salir</button>' +
+      '</div></header>' +
+
+      '<div class="wrap">' +
+        '<h1>Cómo va el negocio</h1>' +
+        '<p class="sub">Datos en vivo de tu base. El dinero real y las facturas se ven en Stripe.</p>' +
+
+        '<div class="rejilla">' +
+          '<div class="dato verde"><span class="n">' + r.suscritos + '</span><span class="e">suscripciones activas</span></div>' +
+          '<div class="dato ambar"><span class="n">' + r.en_prueba + '</span><span class="e">en periodo de prueba</span></div>' +
+          '<div class="dato rojo"><span class="n">' + r.caducados + '</span><span class="e">caducados</span></div>' +
+          '<div class="dato"><span class="n">' + r.usuarios_total + '</span><span class="e">usuarios en total</span></div>' +
+          '<div class="dato verde"><span class="n">' + eur(r.ingresos_total) + '</span><span class="e">ingresos acumulados</span></div>' +
+          '<div class="dato"><span class="n">' + eur(r.ingresos_30d) + '</span><span class="e">últimos 30 días</span></div>' +
+          '<div class="dato"><span class="n">' + r.altas_30d + '</span><span class="e">altas en 30 días</span></div>' +
+          '<div class="dato"><span class="n">' + r.activos_7d + '</span><span class="e">lectores activos (7 días)</span></div>' +
+          '<div class="dato ambar"><span class="n">' + r.vencen_30d + '</span><span class="e">vencen en 30 días</span></div>' +
+          '<div class="dato"><span class="n">' + r.libros_total + '</span><span class="e">libros en las estanterías</span></div>' +
+        '</div>' +
+
+        '<h2>Actividad de los últimos 30 días</h2>' +
+        '<div class="grafica">' +
+          '<div class="barras">' + barras + '</div>' +
+          '<div class="ejes"><span>' + dia(series[0].dia) + '</span><span>' + dia(series[series.length-1].dia) + '</span></div>' +
+          '<p class="leyenda">Cada barra es un día: <b>páginas anotadas</b>. Pasa el ratón para ver también las altas.</p>' +
+        '</div>' +
+
+        '<h2>Usuarios</h2>' +
+        '<div class="tabla-scroll"><table><thead><tr>' +
+          '<th>Email</th><th>Estado</th><th>Libros</th><th>Alta</th><th>Vence</th><th>Última lectura</th>' +
+        '</tr></thead><tbody>' + filasU + '</tbody></table></div>' +
+
+        '<h2>Cobros</h2>' +
+        '<div class="tabla-scroll"><table><thead><tr>' +
+          '<th>Fecha</th><th>Email</th><th>Importe</th><th>Cubre hasta</th><th>Referencia</th>' +
+        '</tr></thead><tbody>' + filasP + '</tbody></table></div>' +
+
+        '<h2>Conceder suscripción a mano</h2>' +
+        '<div class="caja">' +
+          '<div id="msg"></div>' +
+          '<label for="em">Email del usuario (debe estar registrado)</label>' +
+          '<input id="em" type="email" placeholder="lector@email.com">' +
+          '<label for="ms">Meses a añadir</label>' +
+          '<select id="ms"><option value="12">12 meses</option><option value="6">6 meses</option>' +
+          '<option value="3">3 meses</option><option value="1">1 mes</option></select>' +
+          '<button class="btn" id="dar">Conceder</button>' +
+        '</div>' +
+
+        '<footer>Si el cobro no aparece aquí tras un pago, revisa los registros del webhook en Supabase → Edge Functions.</footer>' +
+      '</div>';
+
+    document.getElementById('salir').addEventListener('click', async function(){
+      await SB.auth.signOut(); pantallaAcceso();
+    });
+
+    document.getElementById('dar').addEventListener('click', async function(){
+      var msg = document.getElementById('msg');
+      var em  = document.getElementById('em').value.trim();
+      var ms  = parseInt(document.getElementById('ms').value, 10);
+      if (!em) return;
+      msg.innerHTML = '';
+      var r2 = await SB.rpc('panel_dar_suscripcion', { p_email: em, p_meses: ms });
+      if (r2.error) { msg.innerHTML = '<div class="aviso mal">' + esc(r2.error.message) + '</div>'; return; }
+      msg.innerHTML = '<div class="aviso bien">Concedido. ' + esc(em) + ' tiene acceso hasta el '
+                    + fecha(r2.data.hasta) + '.</div>';
+      setTimeout(arrancar, 1400);
+    });
+  }
+
+  SB.auth.getSession().then(function(s){
+    if (s.data.session) arrancar(); else pantallaAcceso();
+  });
+})();
+</script>
+</body>
+</html>
