@@ -115,7 +115,7 @@
   .pantallas{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:start}
   .movil{background:var(--tinta);border-radius:30px;padding:9px;box-shadow:var(--sombra);
          max-width:250px;margin:0 auto}
-  .movil .lienzo{background:var(--papel);border-radius:23px;padding:16px 13px;min-height:394px;
+  .movil .lienzo{background:var(--papel);border-radius:23px;padding:16px 13px;min-height:352px;
          display:flex;flex-direction:column}
   .movil .cab{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
   .movil .cab b{font-size:12.5px;font-weight:700;letter-spacing:-.01em}
@@ -128,8 +128,10 @@
   .pie-movil{text-align:center;font-size:14.5px;color:var(--tinta-suave);margin:16px 0 0;font-weight:500}
 
   .tapas{display:flex;gap:7px;align-items:flex-end;justify-content:center;margin:6px 0 0}
-  .tapa{width:58px;border-radius:2px 4px 4px 2px;box-shadow:0 5px 12px rgba(14,59,50,.26);display:block}
-  .tapa.chica{width:46px}
+  .tapa{width:52px;height:auto;max-height:78px;object-fit:cover;object-position:top;
+        border-radius:2px 4px 4px 2px;box-shadow:0 5px 12px rgba(14,59,50,.26);display:block}
+  .tapa.chica{width:44px}
+  .tapa.grande{width:88px;max-height:132px}
   .estanteria{height:7px;background:linear-gradient(180deg,#A9754A,#8A5C38);border-radius:2px;
          box-shadow:0 6px 12px rgba(14,59,50,.2);margin:0 0 14px}
 
@@ -216,6 +218,63 @@
   footer{border-top:1px solid var(--linea);padding:34px 0;color:var(--gris);font-size:14.5px}
   .pie-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
   footer a{color:var(--tinta-suave);text-decoration:none;font-weight:500}
+  /* ---------- Marqui, el bot ---------- */
+  .bot-llamada{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:flex-end;gap:10px}
+  .bot-globo{background:var(--papel-alto);border:1px solid var(--linea);border-radius:14px 14px 4px 14px;
+        padding:10px 14px;font-size:14px;box-shadow:var(--sombra);max-width:210px;line-height:1.4;
+        opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+  .bot-globo.on{opacity:1;transform:translateY(0)}
+  .bot-boton{width:72px;height:72px;border-radius:50%;background:var(--papel-alto);border:2px solid var(--tinta);
+        box-shadow:var(--sombra);padding:0;overflow:hidden;flex:none;transition:transform .2s ease}
+  .bot-boton:hover{transform:translateY(-4px) rotate(-3deg)}
+  .bot-boton img{width:112%;height:auto;display:block;margin:6% 0 0 -6%}
+  .bot-punto{position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;
+        background:var(--hoja);border:2.5px solid var(--papel)}
+
+  .bot-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:355px;max-width:calc(100vw - 32px);
+        background:var(--papel);border:1px solid var(--linea);border-radius:20px;box-shadow:0 24px 60px rgba(14,59,50,.28);
+        display:none;flex-direction:column;overflow:hidden;max-height:min(620px,calc(100dvh - 40px))}
+  .bot-panel.on{display:flex}
+  .bot-cab{background:var(--tinta);color:var(--papel-alto);padding:13px 16px;display:flex;align-items:center;gap:11px}
+  .bot-cab img{width:42px;height:auto;flex:none}
+  .bot-cab b{font-family:'Literata',Georgia,serif;font-size:15.5px;font-weight:600;display:block;line-height:1.2}
+  .bot-cab small{font-size:12px;color:rgba(245,240,228,.7)}
+  .bot-cerrar{margin-left:auto;color:var(--papel-alto);font-size:22px;line-height:1;padding:4px 6px;opacity:.75}
+  .bot-cerrar:hover{opacity:1}
+  .bot-hilo{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;
+        scrollbar-width:thin}
+  .burbuja{max-width:84%;padding:11px 14px;border-radius:15px;font-size:14.5px;line-height:1.5;
+        animation:asomar .28s ease}
+  @keyframes asomar{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  .burbuja.bot{background:var(--papel-alto);border:1px solid var(--linea);border-bottom-left-radius:5px;
+        align-self:flex-start}
+  .burbuja.yo{background:var(--tinta);color:var(--papel-alto);border-bottom-right-radius:5px;align-self:flex-end}
+  .burbuja .cita{font-family:'Literata',Georgia,serif;font-style:italic;display:block;margin:0 0 5px}
+  .burbuja .autor{font-size:12.5px;color:var(--gris);display:block}
+  .burbuja a{color:var(--hoja);font-weight:600}
+  .escribiendo{display:flex;gap:4px;align-self:flex-start;background:var(--papel-alto);border:1px solid var(--linea);
+        padding:13px 15px;border-radius:15px;border-bottom-left-radius:5px}
+  .escribiendo i{width:7px;height:7px;border-radius:50%;background:var(--gris);animation:latir 1.1s infinite}
+  .escribiendo i:nth-child(2){animation-delay:.18s}
+  .escribiendo i:nth-child(3){animation-delay:.36s}
+  @keyframes latir{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+  .bot-chips{display:flex;gap:7px;flex-wrap:wrap;padding:0 16px 12px}
+  .bot-chips button{background:var(--papel-alto);border:1px solid var(--linea);border-radius:999px;
+        padding:8px 13px;font-size:13px;font-weight:500;color:var(--tinta-suave)}
+  .bot-chips button:hover{border-color:var(--hoja);color:var(--tinta)}
+  .bot-pie{border-top:1px solid var(--linea);padding:11px;display:flex;gap:8px;background:var(--papel-alto)}
+  .bot-pie input{flex:1;border:1px solid var(--linea);border-radius:11px;padding:11px 13px;font-size:15px;
+        background:var(--papel)}
+  .bot-pie input:focus{outline:none;border-color:var(--hoja);box-shadow:0 0 0 3px rgba(74,139,59,.15)}
+  .bot-pie button{background:var(--tinta);color:var(--papel-alto);border-radius:11px;padding:0 15px;
+        font-weight:600;font-size:14.5px}
+  @media(max-width:520px){
+    .bot-panel{right:10px;left:10px;bottom:10px;width:auto;max-height:calc(100dvh - 20px)}
+    .bot-llamada{right:14px;bottom:14px}
+    .bot-boton{width:62px;height:62px}
+    .bot-globo{max-width:160px;font-size:13px}
+  }
+
   @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -355,8 +414,7 @@
             <div class="lienzo">
               <div class="cab"><b>Book<i>Mark</i></b><span class="fuego">🔥 12 días</span></div>
               <div class="tapas" style="margin-bottom:14px">
-                <img class="tapa" src="img/portada-ventaja-invisible.jpg" alt="" width="280" height="420"
-                     style="width:76px" loading="lazy">
+                <img class="tapa grande" src="img/portada-ventaja-invisible.jpg" alt="" width="280" height="420" loading="lazy">
               </div>
               <div class="ficha">
                 <p class="cual">Vas por la página</p>
@@ -553,5 +611,264 @@
   refrescar();
 })();
 </script>
+<!-- ======================= MARQUI, EL BOT ======================= -->
+<div class="bot-llamada" id="bot-llamada">
+  <span class="bot-globo" id="bot-globo"></span>
+  <button class="bot-boton" id="bot-abrir" aria-label="Abrir el asistente de BookMark" style="position:relative">
+    <img src="img/bot-lector-mini.png" alt="" width="120" height="130">
+    <span class="bot-punto"></span>
+  </button>
+</div>
+
+<div class="bot-panel" id="bot-panel" role="dialog" aria-label="Marqui, asistente de BookMark">
+  <div class="bot-cab">
+    <img src="img/bot-lector-mini.png" alt="" width="120" height="130">
+    <span><b>Marqui</b><small>Bibliotecario de guardia</small></span>
+    <button class="bot-cerrar" id="bot-cerrar" aria-label="Cerrar">×</button>
+  </div>
+  <div class="bot-hilo" id="bot-hilo" aria-live="polite"></div>
+  <div class="bot-chips" id="bot-chips"></div>
+  <div class="bot-pie">
+    <input id="bot-texto" type="text" placeholder="Pregúntame lo que quieras…" autocomplete="off">
+    <button id="bot-enviar">Enviar</button>
+  </div>
+</div>
+
+<script>
+/* =======================================================================
+   MARQUI · motor de reglas en el navegador. Sin IA externa, sin backend.
+   PARA NUTRIRLO: añade líneas a FRASES, BROMAS o INTENCIONES. Nada más.
+   ======================================================================= */
+window.MARQUI = (function(){
+
+  /* --- Frases célebres sobre lectura. Añade las que quieras. --- */
+  var FRASES = [
+    { t:'El que lee mucho y anda mucho, ve mucho y sabe mucho.', a:'Miguel de Cervantes' },
+    { t:'Una habitación sin libros es como un cuerpo sin alma.', a:'Cicerón' },
+    { t:'Leer es soñar de la mano de otro.', a:'Fernando Pessoa' },
+    { t:'Un libro es un jardín que llevas en el bolsillo.', a:'Proverbio árabe' },
+    { t:'Los libros son espejos: solo ves en ellos lo que llevas dentro.', a:'Carlos Ruiz Zafón' },
+    { t:'Leer nos hace inmigrantes de la vida.', a:'Jorge Luis Borges' },
+    { t:'Quien no lee, solo vive una vida.', a:'Anónimo' },
+    { t:'La lectura es una conversación con los mejores de otros siglos.', a:'René Descartes' },
+    { t:'Cuando abro un libro, siempre encuentro a alguien esperándome.', a:'Anónimo' },
+    { t:'Un lector vive mil vidas antes de morir.', a:'Anónimo' }
+  ];
+
+  /* --- Bromas y comentarios con gracia. Añade los tuyos. --- */
+  var BROMAS = [
+    'Un lector entra en una librería y dice: «Solo vengo a mirar». Diecisiete años después, sigue allí.',
+    'Mi trabajo es acordarme de tu página. Es poco glamuroso, pero nunca he perdido una.',
+    'Dicen que los marcapáginas de papel se pierden. Yo llevo aquí dentro y no me he caído ni una vez.',
+    'Tengo una pila de libros pendientes. Es mentira, soy un robot. Pero me hacía ilusión decirlo.',
+    'El truco para leer más no es leer rápido. Es no perder el hilo. Justo lo mío.',
+    'Doblar la esquina de la página es un crimen. Yo lo denuncio, pero sin juzgar. Un poco sí.',
+    'Hay dos tipos de personas: las que terminan los libros y las que tienen catorce empezados. Las dos me caen bien.',
+    'Me preguntaron si leo por placer. Leo porque me pagan. Bueno, a ti te cobran 12,99 al año. A mí nada.'
+  ];
+
+  /* --- Respuestas por tema. "claves" son palabras que disparan la respuesta. --- */
+  var INTENCIONES = [
+    { claves:['precio','cuesta','vale','pagar','pago','caro','coste','tarifa','euros','suscrip','cuanto es','cuanto son','cuanto cuesta','cuanto vale'],
+      r:'Son <b>12,99 € al año</b>, IVA incluido. Sin niveles ni funciones bloqueadas: todo entra en ese precio. '
+      + 'Y antes tienes <b>14 días gratis</b> sin dar la tarjeta. <a href="#precio">Verlo aquí</a>.' },
+
+    { claves:['prueb','gratis','gratuito','probar','14 dias','catorce','demo'],
+      r:'Catorce días completos, sin tarjeta y sin cobros automáticos al terminar. '
+      + 'Si no sigues, tus libros se quedan ahí para consultarlos. <a href="app/">Empezar ahora</a>.' },
+
+    { claves:['nfc','marcapagina','tarjeta','chip','etiqueta','acercar','pegatina'],
+      r:'El marcapáginas lleva un chip NFC. Acercas el móvil y tu estante se abre solo: sin desbloquear, sin buscar el icono. '
+      + 'Pero es opcional, la app funciona igual sin él.' },
+
+    { claves:['iphone','ios','apple','android','movil','telefono','compatible','funciona en'],
+      r:'Funciona en cualquier móvil con navegador, y puedes instalarla en la pantalla de inicio. '
+      + 'Para leer la etiqueta NFC necesitas Android, o un iPhone XS o posterior con iOS 14.' },
+
+    { claves:['dato','privacidad','vende','publicidad','anuncio','rgpd','segur','espia','comparti'],
+      r:'No hay anuncios ni venta de datos: por eso se cobra. Tu biblioteca es tuya, puedes descargarla entera '
+      + 'o borrar la cuenta de un botón. <a href="privacidad.html">Política de privacidad</a>.' },
+
+    { claves:['cancel','baja','renov','devolu','reembols','desistimiento','dar de baja'],
+      r:'Cancelas cuando quieras escribiendo un correo, sin llamadas ni laberintos. '
+      + 'Y tienes 14 días para pedir la devolución. <a href="condiciones.html">Condiciones</a>.' },
+
+    { claves:['caduca','no renuevo','se borra','pierdo','expira'],
+      r:'Nada se borra. Tu biblioteca sigue visible para consultarla; lo que se detiene es anotar páginas nuevas '
+      + 'y añadir libros, hasta que renueves.' },
+
+    { claves:['que es','para que','sirve','funciona','como va','explica'],
+      r:'Apuntas por qué página vas en cada libro y dejas de dudar al retomarlo. '
+      + 'Con el tiempo te enseña tu ritmo real, la racha de días y cuándo acabarás. '
+      + '<a href="#como">Los tres pasos</a>.' },
+
+    { claves:['cuantos libros','cuantos titulos','limite','ilimitad','varios libros','maximo','cuantos puedo'],
+      r:'Los que quieras. No hay límite de libros ni de anotaciones.' },
+
+    { claves:['ordenador','tablet','pc','sincroniz','dispositivo','otro movil','portatil'],
+      r:'Entras con tu cuenta desde donde sea y ves lo mismo. Anotas en el móvil y aparece en el ordenador.' },
+
+    { claves:['contact','hablar','humano','persona','soporte','ayuda','email','correo','telefono'],
+      r:'Detrás de esto hay una persona, no un centro de llamadas: '
+      + '<a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>. Suele contestar el mismo día.' },
+
+    { claves:['libreri','librer','negocio','comercio','tienda','revender','mayorista'],
+      r:'Si tienes una librería, podemos poner tu marca en los marcapáginas y tus novedades dentro de la app '
+      + 'de cada lector. Escríbenos a <a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>.' },
+
+    { claves:['quien eres','que eres','robot','bot','te llamas','tu nombre'],
+      r:'Soy Marqui. Vivo en esta página, me sé BookMark de memoria y colecciono frases sobre libros. '
+      + 'No soy una inteligencia artificial: soy un bibliotecario muy cabezota.' },
+
+    { claves:['gracias','genial','perfecto','vale','estupendo'],
+      r:'A mandar. Si te decides, el estante se monta en menos de un minuto.' },
+
+    { claves:['adios','hasta luego','chao','me voy'],
+      r:'Que tengas buena lectura. Aquí sigo, apuntando páginas.' }
+  ];
+
+  var SALUDOS = ['hola','buenas','hey','buenos dias','buenas tardes','buenas noches','saludos','oe','ey'];
+
+  /* --------------------------- Motor --------------------------- */
+  function limpiar(t){
+    return (t || '').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9ñ\s]/g,' ')
+      .replace(/\s+/g,' ').trim();
+  }
+
+  function azar(lista, memoria){
+    var libres = lista.filter(function(x){ return memoria.indexOf(x) < 0; });
+    if (!libres.length) { memoria.length = 0; libres = lista; }
+    var elegido = libres[Math.floor(Math.random()*libres.length)];
+    memoria.push(elegido);
+    return elegido;
+  }
+
+  var vistasFrases = [], vistasBromas = [];
+
+  function frase(){
+    var f = azar(FRASES, vistasFrases);
+    return '<span class="cita">«' + f.t + '»</span><span class="autor">— ' + f.a + '</span>';
+  }
+  function broma(){ return azar(BROMAS, vistasBromas); }
+
+  function responder(entrada){
+    var t = limpiar(entrada);
+    if (!t) return '¿Me lo repites? No te he pillado.';
+
+    if (t.indexOf('frase') >= 0 || t.indexOf('cita') >= 0 || t.indexOf('celebre') >= 0)
+      return frase();
+    if (t.indexOf('broma') >= 0 || t.indexOf('chiste') >= 0 || t.indexOf('gracioso') >= 0 || t.indexOf('rie') >= 0)
+      return broma();
+
+    for (var i=0;i<SALUDOS.length;i++){
+      if (t === SALUDOS[i] || t.indexOf(SALUDOS[i]) === 0)
+        return '¡Hola! Pregúntame por el precio, por el marcapáginas NFC o por tus datos. '
+             + 'O pídeme una frase sobre libros, que es lo que mejor se me da.';
+    }
+
+    var mejor = null, puntos = 0;
+    for (var j=0;j<INTENCIONES.length;j++){
+      var n = 0;
+      for (var k=0;k<INTENCIONES[j].claves.length;k++){
+        if (t.indexOf(INTENCIONES[j].claves[k]) >= 0) n++;
+      }
+      if (n > puntos) { puntos = n; mejor = INTENCIONES[j]; }
+    }
+    if (mejor) return mejor.r;
+
+    return 'Eso no me lo sé, y prefiero no inventármelo. Puedo contarte el precio, cómo funciona, '
+         + 'lo del NFC o qué pasa con tus datos. Y si es algo más raro, escribe a '
+         + '<a href="mailto:hola@limonadaweb.com">hola@limonadaweb.com</a>.';
+  }
+
+  return { responder: responder, frase: frase, broma: broma };
+})();
+
+/* --------------------------- Interfaz --------------------------- */
+(function(){
+  var CHIPS = ['¿Cuánto cuesta?','Una frase, por favor','¿Y lo del NFC?','Cuéntame un chiste','¿Qué pasa con mis datos?'];
+  var panel  = document.getElementById('bot-panel');
+  var llamada= document.getElementById('bot-llamada');
+  var hilo   = document.getElementById('bot-hilo');
+  var chips  = document.getElementById('bot-chips');
+  var campo  = document.getElementById('bot-texto');
+  var globo  = document.getElementById('bot-globo');
+  var abierto = false, presentado = false;
+
+  function burbuja(html, mia){
+    var d = document.createElement('div');
+    d.className = 'burbuja ' + (mia ? 'yo' : 'bot');
+    d.innerHTML = html;
+    hilo.appendChild(d);
+    hilo.scrollTop = hilo.scrollHeight;
+  }
+
+  function pensando(html){
+    var p = document.createElement('div');
+    p.className = 'escribiendo';
+    p.innerHTML = '<i></i><i></i><i></i>';
+    hilo.appendChild(p);
+    hilo.scrollTop = hilo.scrollHeight;
+    setTimeout(function(){
+      p.remove();
+      burbuja(html, false);
+    }, 420 + Math.random()*380);
+  }
+
+  function pintarChips(){
+    chips.innerHTML = '';
+    CHIPS.forEach(function(texto){
+      var b = document.createElement('button');
+      b.textContent = texto;
+      b.addEventListener('click', function(){ mandar(texto); });
+      chips.appendChild(b);
+    });
+  }
+
+  function mandar(texto){
+    if (!texto.trim()) return;
+    burbuja(texto.replace(/</g,'&lt;'), true);
+    campo.value = '';
+    pensando(window.MARQUI.responder(texto));
+  }
+
+  function abrir(){
+    abierto = true;
+    panel.classList.add('on');
+    llamada.style.display = 'none';
+    globo.classList.remove('on');
+    if (!presentado) {
+      presentado = true;
+      burbuja('Hola, soy <b>Marqui</b>. Llevo la cuenta de por dónde vas en cada libro, y mientras tanto colecciono esto:', false);
+      setTimeout(function(){ burbuja(window.MARQUI.frase(), false); }, 500);
+      pintarChips();
+    }
+    setTimeout(function(){ campo.focus(); }, 150);
+  }
+
+  function cerrar(){
+    abierto = false;
+    panel.classList.remove('on');
+    llamada.style.display = 'flex';
+  }
+
+  document.getElementById('bot-abrir').addEventListener('click', abrir);
+  document.getElementById('bot-cerrar').addEventListener('click', cerrar);
+  document.getElementById('bot-enviar').addEventListener('click', function(){ mandar(campo.value); });
+  campo.addEventListener('keydown', function(e){ if (e.key === 'Enter') mandar(campo.value); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && abierto) cerrar(); });
+
+  // Aviso discreto pasados unos segundos, una sola vez por visita
+  setTimeout(function(){
+    if (abierto) return;
+    globo.innerHTML = '¿Te cuento una frase sobre libros?';
+    globo.classList.add('on');
+    setTimeout(function(){ globo.classList.remove('on'); }, 7000);
+  }, 6000);
+})();
+</script>
+
 </body>
 </html>
