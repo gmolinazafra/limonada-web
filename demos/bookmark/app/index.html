@@ -6,6 +6,9 @@
 <title>BookMark · Tu biblioteca digital</title>
 <meta name="description" content="Acerca el móvil a tu marcapáginas y sigue leyendo por donde lo dejaste. 12,99 € al año.">
 <meta name="theme-color" content="#0E3B32">
+<link rel="icon" type="image/png" sizes="32x32" href="../img/bookmark-icono-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../img/bookmark-icono-96.png">
+<link rel="apple-touch-icon" href="../img/bookmark-icono-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BookMark">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -33,9 +36,7 @@
   .top{display:flex;align-items:center;justify-content:space-between;padding:18px 0 6px}
   .marca{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.02em;font-size:17px}
   .marca em{font-style:normal;color:var(--hoja)}
-  .cinta-logo{width:15px;height:22px;background:var(--tinta);border-radius:3px 3px 0 0;position:relative;flex:none}
-  .cinta-logo::after{content:"";position:absolute;left:0;right:0;bottom:-6px;
-    border-left:7.5px solid var(--tinta);border-right:7.5px solid var(--tinta);border-bottom:6px solid transparent}
+  .marca img{height:34px;width:auto;display:block;flex:none}
   .top-der{display:flex;align-items:center;gap:8px}
   .racha{display:flex;align-items:center;gap:6px;background:var(--papel-alto);border:1px solid var(--linea);
          border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
@@ -133,8 +134,7 @@
 
   .acceso{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:30px 0}
   .acceso .hero{text-align:center;margin:0 0 26px}
-  .acceso .hero .cinta-logo{width:30px;height:44px;margin:0 auto 14px;display:block}
-  .acceso .hero .cinta-logo::after{border-left-width:15px;border-right-width:15px;border-bottom-width:12px;bottom:-12px}
+  .acceso .hero img{width:210px;height:auto;margin:0 auto;display:block}
   .acceso h1{font-family:'Literata',Georgia,serif;font-size:30px;font-weight:700;margin:22px 0 6px;letter-spacing:-.02em}
   .acceso .hero p{color:var(--gris);font-size:15px;margin:0;max-width:30ch;margin-inline:auto}
   .tabs{display:flex;gap:6px;background:rgba(14,59,50,.07);border-radius:12px;padding:4px;margin:0 0 18px}
@@ -336,9 +336,16 @@ function Acceso({
     className: "acceso"
   }, React.createElement("div", {
     className: "hero"
-  }, React.createElement("span", {
-    className: "cinta-logo"
-  }), React.createElement("h1", null, "BookMark"), React.createElement("p", null, "Tu biblioteca te espera por donde la dejaste.")), React.createElement("div", {
+  }, React.createElement("img", {
+    src: "../img/bookmark-logo@1x.png",
+    alt: "BookMark, tu biblioteca digital",
+    width: "320",
+    height: "327"
+  }), React.createElement("p", {
+    style: {
+      marginTop: 14
+    }
+  }, "Tu biblioteca te espera por donde la dejaste.")), React.createElement("div", {
     className: "tabs"
   }, React.createElement("button", {
     "aria-selected": modo === 'entrar',
@@ -446,8 +453,11 @@ function Inicio({
     className: "top"
   }, React.createElement("div", {
     className: "marca"
-  }, React.createElement("span", {
-    className: "cinta-logo"
+  }, React.createElement("img", {
+    src: "../img/bookmark-icono-96.png",
+    alt: "",
+    width: "96",
+    height: "96"
   }), React.createElement("span", null, "Book", React.createElement("em", null, "Mark"))), React.createElement("div", {
     className: "top-der"
   }, datos.racha > 0 && React.createElement("div", {

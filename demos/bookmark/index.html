@@ -7,11 +7,15 @@
 <meta name="description" content="Anota por qué página vas en tres segundos y recupera el hilo de cada libro. Racha de lectura, ritmo y biblioteca sincronizada. 14 días gratis, después 12,99 € al año.">
 <link rel="canonical" href="https://www.limonadaweb.com/demos/bookmark/">
 <meta name="theme-color" content="#0E3B32">
+<link rel="icon" type="image/png" sizes="32x32" href="img/bookmark-icono-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="img/bookmark-icono-96.png">
+<link rel="apple-touch-icon" href="img/bookmark-icono-180.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BookMark · El marcapáginas que se acuerda por ti">
 <meta property="og:description" content="Pulsa el libro, escribe la página, sigue leyendo. Tu biblioteca contigo en cualquier dispositivo.">
 <meta property="og:url" content="https://www.limonadaweb.com/demos/bookmark/">
 <meta property="og:locale" content="es_ES">
+<meta property="og:image" content="https://www.limonadaweb.com/demos/bookmark/img/bookmark-logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,11 +45,12 @@
   .marca{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.02em;
          text-decoration:none}
   .marca em{font-style:normal;color:var(--hoja)}
-  .cinta{width:16px;height:24px;background:var(--tinta);border-radius:3px 3px 0 0;position:relative;flex:none}
-  .cinta::after{content:"";position:absolute;left:0;right:0;bottom:-7px;
-    border-left:8px solid var(--tinta);border-right:8px solid var(--tinta);border-bottom:7px solid transparent}
+  .marca img{height:38px;width:auto;display:block;flex:none}
+  .logo-pie{height:66px;width:auto;display:block;margin:0 0 14px}
   .barra nav{display:flex;align-items:center;gap:22px;font-size:15px}
   .barra nav a{text-decoration:none;color:var(--tinta-suave);font-weight:500}
+  .barra nav a.btn{color:var(--papel-alto);font-weight:600}
+  .barra nav a.btn.fantasma{color:var(--tinta)}
   .btn{display:inline-block;background:var(--tinta);color:var(--papel-alto);border-radius:12px;
        padding:13px 22px;font-weight:600;font-size:15.5px;text-decoration:none;box-shadow:var(--sombra);
        transition:transform .15s ease}
@@ -134,7 +139,6 @@
   .nfc{display:grid;grid-template-columns:1fr 300px;gap:50px;align-items:center}
   .tarjeta-nfc{background:var(--tinta);border-radius:18px;padding:30px 24px;color:var(--papel-alto);
         text-align:center;box-shadow:var(--sombra);position:relative;overflow:hidden}
-  .tarjeta-nfc .ondas{font-size:38px;line-height:1;margin:0 0 12px;opacity:.9}
   .tarjeta-nfc strong{font-family:'Literata',Georgia,serif;font-size:20px;display:block;margin:0 0 6px}
   .tarjeta-nfc span{font-size:14.5px;color:rgba(245,240,228,.72)}
   @media(max-width:880px){.nfc{grid-template-columns:1fr;gap:30px}}
@@ -177,7 +181,7 @@
 
 <header>
   <div class="wrap barra">
-    <a class="marca" href="#inicio"><span class="cinta"></span><span>Book<em>Mark</em></span></a>
+    <a class="marca" href="#inicio"><img src="img/bookmark-icono-96.png" alt="" width="96" height="96"><span>Book<em>Mark</em></span></a>
     <nav>
       <a href="#como">Cómo funciona</a>
       <a href="#precio">Precio</a>
@@ -288,7 +292,7 @@
         <p style="color:var(--gris);font-size:15.5px;margin:0">Funciona en Android y en iPhone desde el XS. La app no lo necesita: es un atajo, no un requisito.</p>
       </div>
       <div class="tarjeta-nfc">
-        <p class="ondas">📖</p>
+        <img src="img/bookmark-icono-180.png" alt="" width="180" height="180" style="width:92px;height:auto;margin:0 auto 14px;display:block">
         <strong>Marcapáginas BookMark</strong>
         <span>Acércalo y sigue leyendo</span>
       </div>
@@ -358,7 +362,7 @@
 
 <footer>
   <div class="wrap pie-grid">
-    <span>BookMark, un producto de <a href="https://www.limonadaweb.com" target="_blank" rel="noopener">Limonada Web</a></span>
+    <span style="display:flex;align-items:center;gap:14px"><img class="logo-pie" src="img/bookmark-logo@1x.png" alt="BookMark, tu biblioteca digital" width="320" height="327" style="margin:0">BookMark, un producto de <a href="https://www.limonadaweb.com" target="_blank" rel="noopener">Limonada Web</a></span>
     <span><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="condiciones.html">Condiciones</a></span>
   </div>
 </footer>
