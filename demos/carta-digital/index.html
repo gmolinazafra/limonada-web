@@ -523,7 +523,7 @@ const MF=(function(){
   const pan=()=>[bot("¿Qué pan prefieres?"),chips([C("🥖","Pan de cristal","pan_Pan de cristal"),C("🫓","Mollete","pan_Mollete"),C("🌾","Integral","pan_Integral")])];
   const punto=()=>[bot("¿Cómo te lo hago? 🔥"),chips([C("🔴","Vuelta y vuelta","pt_Vuelta y vuelta"),C("🟠","Poco hecho","pt_Poco hecho"),C("🟡","Al punto","pt_Al punto"),C("🟤","Hecho","pt_Hecho"),C("⚫","Muy hecho","pt_Muy hecho")])];
   const tapas=()=>[bot(S.pend.tapas?"¿Otra tapa? 🍢":"Te propongo unas tapas para picar 🍢 Elige y sigo apuntando."),
-    chips([C("🥔","Croquetas","ta_p2"),C("🍞","Pan, tomate y jamón","ta_p1"),C("🍆","Berenjenas con miel","ta_demo2-berenjena"),C("🥗","Ensaladilla","ta_demo2-ensaladilla"),C("🦑","Calamares","ta_demo2-calamares"),C("🧀","Tabla de quesos","ta_demo2-quesos"),C("🐙","Pulpo","ta_p3"),C("✅","Ya está","ta_fin")])];
+    chips([C("🥔","Croquetas","ta_t1"),C("🥗","Ensaladilla","ta_t2"),C("🦑","Calamares","ta_t3"),C("🍆","Berenjenas con miel","ta_t4"),C("🐙","Pulpo","ta_t5"),C("🦐","Gambas al ajillo","ta_t6"),C("🥪","Montadito de pringá","ta_t7"),C("🍟","Bravas","ta_t8"),C("🍳","Pincho de tortilla","ta_t9"),C("🐖","Jamón de bellota","ta_t10"),C("🐟","Boquerones en vinagre","ta_t11"),C("🥣","Salmorejo","ta_t12"),C("✅","Ya está","ta_fin")])];
   const rapido=()=>[bot("¿Hamburguesa, pizza o nuestro menú hamburguesa (con patatas y bebida)? 🍔"),chips([C("🍔","Hamburguesa","r_hb"),C("🍕","Pizza","r_pz"),C("🍟","Menú hamburguesa","r_cb")])];
   const inicio=()=>{
     const m=S.momento;
@@ -544,6 +544,7 @@ const MF=(function(){
     const v=value.replace(/^mf:/,"");
     const [key,arg]=[v.split("_")[0],v.slice(v.indexOf("_")+1)];
     const P=S.pend;
+    const despuesBebida=()=>P.modo==="tapas"?tapas():P.modo==="rapido"?rapido():entrante();
     if(v==="si"||v==="mas")return inicio();
     if(v==="reset"){S={momento:momento(),items:[],pend:{}};return start();}
     if(v==="menu")return{menu:true};
@@ -556,7 +557,7 @@ const MF=(function(){
     if(v==="db_inf")return infusion();
     if(key==="i"){add(platos,"demo2-infusion",null,null,"Infusión · "+arg);return P.cafeFinal?resumen():S.momento==="merienda"?dulce():comidaDes();}
     if(v==="db_zumo")return[bot("¿Normal o grande? 🍊"),chips([C("🥤","Normal (25 cl)","z_Normal"),C("🧃","Grande (40 cl)","z_Grande")])];
-    if(key==="z"){add(platos,"d8",[arg]);return S.momento==="merienda"?dulce():comidaDes();}
+    if(key==="z"){add(platos,"d8",[arg]);if(P.zumoMesa){P.zumoMesa=false;return despuesBebida();}return S.momento==="merienda"?dulce():comidaDes();}
     if(v==="db_combi"){P.combi=true;add(platos,"d8",["Normal"]);return[bot("Nuestro combinado lleva zumo de naranja natural, café y tostada 🍊☕🍞 ¿Cómo quieres el café?"),cafeDes()[1]];}
     // ── Desayuno: comida ──
     if(v==="f_tostada")return tostadaCon();
@@ -573,9 +574,9 @@ const MF=(function(){
     if(v==="tipo_completa")return bebidaMesa();
     if(v==="tipo_tapas"){P.modo="tapas";return bebidaMesa();}
     if(v==="tipo_rapido"){P.modo="rapido";return bebidaMesa();}
-    const despuesBebida=()=>P.modo==="tapas"?tapas():P.modo==="rapido"?rapido():entrante();
     if(v==="b_agua"){add(platos,"p16");return despuesBebida();}
-    if(v==="b_refresco"){add(platos,"demo2-refresco");return despuesBebida();}
+    if(v==="b_refresco")return[bot("¿Cuál te apetece? 🥤"),chips(REFRESCO_SABORES.map(n=>C("🥤",n,"rf_"+n)).concat([C("🍊","Zumo de naranja natural","rf_natural")]))];
+    if(key==="rf"){if(arg==="natural"){P.zumoMesa=true;return[bot("¿Normal o grande? 🍊"),chips([C("🥤","Normal (25 cl)","z_Normal"),C("🧃","Grande (40 cl)","z_Grande")])];}add(platos,"demo2-refresco",[arg]);return despuesBebida();}
     if(v==="b_cerveza"){add(platos,"p15");return despuesBebida();}
     if(v==="b_vino")return vino();
     if(key==="v"){const m={tinto:["demo2-joven","demo2-ribera"],blanco:["demo2-verdejo","demo2-albarino"],rosado:["demo2-rosado",null],cava:[null,"demo2-cava"]}[arg];P.vino=m;
@@ -593,7 +594,9 @@ const MF=(function(){
     if(key==="d"){if(arg!=="no")add(platos,arg);return cafeFinal();}
     if(key==="c"){P.cafeFinal=true;if(arg==="inf")return infusion();if(arg!=="no"){const m={solo:["demo2-cafe",null],leche:["demo2-cafe-leche",null],cortado:["demo2-cafe","Cortado"]}[arg];add(platos,m[0],null,null,m[1]?"Café cortado":null);}return resumen();}
     // ── Tapas ──
-    if(key==="ta"){if(arg==="fin")return resumen();add(platos,arg);P.tapas=true;return tapas();}
+    if(key==="ta"){if(arg==="fin")return resumen();P.tapas=true;if(arg==="t8")return[bot("¿Con salsa brava, alioli o mixta? 🌶️"),chips([C("🌶️","Brava","tb_Brava"),C("🧄","Alioli","tb_Alioli"),C("🔀","Mixta","tb_Mixta")])];if(arg==="t9")return[bot("¿La tortilla jugosa o cuajada? 🍳"),chips([C("💧","Jugosa","tt_Jugosa"),C("🔥","Cuajada","tt_Cuajada")])];add(platos,arg);return tapas();}
+    if(key==="tb"){add(platos,"t8",[arg]);return tapas();}
+    if(key==="tt"){add(platos,"t9",[arg]);return tapas();}
     // ── Rápido ──
     if(v==="r_hb")return[bot("¿Normal o doble? 🍔"),chips([C("🍔","Normal","hb_Normal"),C("🍔🍔","Doble","hb_Doble")])];
     if(key==="hb"){P.hb=[arg];return[bot("¿Le ponemos algún extra?"),chips([C("🧀","Queso","hbx_Queso"),C("🥓","Bacon","hbx_Bacon"),C("🍳","Huevo","hbx_Huevo"),C("🧅","Cebolla caramelizada","hbx_Cebolla"),C("➡️","Sin extras","hbx_no")])];}
@@ -609,10 +612,54 @@ const MF=(function(){
   return{start,step,momento};
 })();
 
+
+// ─── TAPAS v6: nueva sección "Tapas" con 12 tapas ────────────────────────────
+var TAPAS_V6={
+  categoria:{id:"tapas",nombre:"Tapas"},
+  photoMap:{t1:"p2",t2:"demo2-ensaladilla",t3:"demo2-calamares",t4:"demo2-berenjena",t5:"p3",t6:"p9",t10:"p1",t12:"p4"},
+  nuevos:[
+    {id:"t1",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de croquetas de ib\u00e9rico (3 uds)",descripcion:"Cremosas por dentro, crujientes por fuera. Bechamel de jam\u00f3n ib\u00e9rico.",precio:4.50,alergenos:["gluten","lacteos","huevos"],destacado:true,activo:true},
+    {id:"t2",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de ensaladilla de la casa",descripcion:"Patata, zanahoria, at\u00fan y mayonesa suave, con picos.",precio:3.80,alergenos:["pescado","huevos","gluten"],destacado:false,activo:true},
+    {id:"t3",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de calamares a la andaluza",descripcion:"Calamar rebozado con lim\u00f3n y alioli suave.",precio:5.50,alergenos:["moluscos","gluten","huevos"],destacado:false,activo:true},
+    {id:"t4",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de berenjenas con miel de ca\u00f1a",descripcion:"Berenjena crujiente con miel de ca\u00f1a y s\u00e9samo.",precio:4.00,alergenos:["gluten","sesamo"],destacado:false,activo:true},
+    {id:"t5",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de pulpo a la gallega",descripcion:"Pulpo cocido con piment\u00f3n, sal gorda y AOVE sobre cachelos.",precio:6.50,alergenos:["moluscos"],destacado:false,activo:true},
+    {id:"t6",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de gambas al ajillo",descripcion:"Gambas salteadas con ajo, guindilla y aceite de oliva.",precio:6.90,alergenos:["crustaceos"],destacado:false,activo:true},
+    {id:"t7",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Montadito de pring\u00e1",descripcion:"Pan tostado con pring\u00e1 del puchero. Un cl\u00e1sico malague\u00f1o.",precio:3.50,alergenos:["gluten"],destacado:false,activo:true},
+    {id:"t8",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Patatas bravas",descripcion:"Patatas fritas con salsa brava casera y alioli.",precio:4.50,alergenos:["huevos"],destacado:false,activo:true,
+      grupos:[{id:"gt8-salsa",nombre:"Salsa",tipo:"single",obligatorio:true,opciones:[{id:"t8-brava",nombre:"Brava",precio:0},{id:"t8-alioli",nombre:"Alioli",precio:0},{id:"t8-mixta",nombre:"Mixta",precio:0}]}]},
+    {id:"t9",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Pincho de tortilla de patatas",descripcion:"Tortilla jugosa de patata y cebolla, hecha al momento.",precio:3.20,alergenos:["huevos"],destacado:false,activo:true,
+      grupos:[{id:"gt9-punto",nombre:"Punto",tipo:"single",obligatorio:true,opciones:[{id:"t9-jugosa",nombre:"Jugosa",precio:0},{id:"t9-cuajada",nombre:"Cuajada",precio:0}]}]},
+    {id:"t10",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Tapa de jam\u00f3n ib\u00e9rico de bellota",descripcion:"Cortado a cuchillo, con picos de pan.",precio:9.00,alergenos:["gluten"],destacado:true,activo:true},
+    {id:"t11",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Boquerones en vinagre",descripcion:"Marinados en vinagre con ajo y perejil.",precio:4.50,alergenos:["pescado"],destacado:false,activo:true},
+    {id:"t12",categoriaId:"tapas",seccionCarta:"tapas",nombre:"Salmorejo cordob\u00e9s",descripcion:"Con huevo duro y taquitos de jam\u00f3n.",precio:4.20,alergenos:["gluten","huevos"],destacado:false,activo:true}
+  ],
+  SECTIONS:{t1:"tapas",t2:"tapas",t3:"tapas",t4:"tapas",t5:"tapas",t6:"tapas",t7:"tapas",t8:"tapas",t9:"tapas",t10:"tapas",t11:"tapas",t12:"tapas"},
+  EN:{t1:["Ib\u00e9rico croquettes tapa (3 pcs)","Creamy inside, crispy outside. Ib\u00e9rico ham b\u00e9chamel."],t2:["House Russian salad tapa","Potato, carrot, tuna and light mayonnaise, with breadsticks."],t3:["Andalusian-style squid tapa","Battered squid with lemon and mild aioli."],t4:["Aubergine with cane honey tapa","Crispy aubergine with cane honey and sesame."],t5:["Galician-style octopus tapa","Boiled octopus with paprika, coarse salt and olive oil on potatoes."],t6:["Garlic prawns tapa","Prawns saut\u00e9ed with garlic, chilli and olive oil."],t7:["Pring\u00e1 montadito","Toasted bread with slow-cooked stew meat. A M\u00e1laga classic."],t8:["Patatas bravas","Fried potatoes with homemade spicy sauce and aioli."],t9:["Spanish omelette pincho","Juicy potato and onion omelette, made to order."],t10:["Acorn-fed Ib\u00e9rico ham tapa","Hand-carved, with breadsticks."],t11:["Anchovies in vinegar","Marinated in vinegar with garlic and parsley."],t12:["Cordoban salmorejo","With boiled egg and diced ham."]},
+  EN_WORDS:{"Elige refresco":"Choose your soft drink","Zumo de naranja natural":"Fresh orange juice","Tapas":"Tapas","Salsa":"Sauce","Brava":"Spicy","Alioli":"Aioli","Mixta":"Mixed","Punto":"Doneness","Jugosa":"Juicy","Cuajada":"Well set"}
+};
+var REFRESCO_SABORES=["Coca-Cola","Coca-Cola Zero","Fanta naranja","Fanta lim\u00f3n","Aquarius","Nestea","Zumo de pi\u00f1a","Zumo de melocot\u00f3n","Mosto","T\u00f3nica"];
+var REFRESCO_GRUPO={id:"g-sabor",nombre:"Elige refresco",tipo:"single",obligatorio:true,opciones:REFRESCO_SABORES.map(function(n,i){return{id:"sab"+i,nombre:n,precio:0};})};
+function aplicarTapasV6(data){
+  var cats=data.categorias.slice();
+  if(!cats.some(function(c){return c.id==="tapas";})){
+    var i=cats.findIndex(function(c){return c.id==="entrantes";});
+    cats.splice(i>=0?i+1:cats.length,0,TAPAS_V6.categoria);
+  }
+  var ids={}; data.platos.forEach(function(p){ids[p.id]=1;});
+  var platos=data.platos.slice();
+  TAPAS_V6.nuevos.forEach(function(p){ if(!ids[p.id]) platos.push(p); });
+  platos=platos.map(function(p){
+    if((p.id==="demo2-refresco"||p.id==="bb1") && !(p.grupos||[]).some(function(g){return g.id==="g-sabor";}))
+      return Object.assign({},p,{grupos:[REFRESCO_GRUPO].concat(p.grupos||[])});
+    return p;
+  });
+  return Object.assign({},data,{demoContentVersion:7,categorias:cats,platos:platos});
+}
+
 function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
 function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
 
-return{MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+return{TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -716,7 +763,7 @@ DATOS_DEMO.platos.push(...EXTRA_DEMO_PLATOS);
 DATOS_DEMO.demoContentVersion = 2;
 const MENU_FILTERS = [
   ["all","Todos"], ["chef","Sugerencia del chef"], ["recommended","Recomendados"],
-  ["desayunos","Desayunos"], ["entrantes","Entrantes"], ["cuchareo","Cucharas y guisos"], ["carnes","Carnes"],
+  ["desayunos","Desayunos"], ["entrantes","Entrantes"], ["tapas","Tapas"], ["cuchareo","Cucharas y guisos"], ["carnes","Carnes"],
   ["pescados","Pescados"], ["mariscos","Mariscos"], ["verde","Verde"],
   ["postres","Postres"], ["vinos","Vinos"], ["bebidas","Bebidas"], ["daily","Plato del día"]
 ];
@@ -3328,6 +3375,7 @@ Object.assign(DEMO_SECTIONS,window.LW_ORD.DES_V4.SECTIONS);
 Object.assign(DISH_ENGLISH,window.LW_ORD.DES_V4.EN);
 Object.assign(ENGLISH,window.LW_ORD.DES_V4.EN_WORDS);
 DATOS_DEMO.platos.push(...window.LW_ORD.DES_V4.nuevos.filter(n=>!DATOS_DEMO.platos.some(p=>p.id===n.id)));
+{const T=window.LW_ORD.TAPAS_V6;Object.assign(DEMO_SECTIONS,T.SECTIONS);Object.assign(DISH_ENGLISH,T.EN);Object.assign(ENGLISH,T.EN_WORDS);DATOS_DEMO.platos.push(...T.nuevos.filter(n=>!DATOS_DEMO.platos.some(p=>p.id===n.id)));Object.entries(T.photoMap).forEach(([k,v])=>{if(DEMO_PHOTOS[v]&&!DEMO_PHOTOS[k])DEMO_PHOTOS[k]={...DEMO_PHOTOS[v]};});}
 if(DEMO_PHOTOS.p1&&!DEMO_PHOTOS.d2)DEMO_PHOTOS.d2={...DEMO_PHOTOS.p1};
 Object.assign(DEMO_SECTIONS,window.LW_ORD.SECT_ADD);
 // ── Traducciones de todo lo nuevo (se integran en el sistema existente) ──
@@ -4108,6 +4156,10 @@ function App() {
         }
         if ((cartaData.demoContentVersion || 0) < 5 && window.LW_ORD?.aplicarDesayunosV4) {
           cartaData = window.LW_ORD.aplicarDesayunosV4(cartaData);
+          await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
+        }
+        if ((cartaData.demoContentVersion || 0) < 7 && window.LW_ORD?.aplicarTapasV6) {
+          cartaData = window.LW_ORD.aplicarTapasV6(cartaData);
           await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
         }
         if(!cartaData.wineDetailsVersion){
