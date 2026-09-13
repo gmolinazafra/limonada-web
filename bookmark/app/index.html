@@ -178,6 +178,66 @@
         font-weight:500;box-shadow:var(--sombra);pointer-events:none;transition:opacity .25s ease,transform .25s ease;
         z-index:50;max-width:88vw;text-align:center}
   .aviso.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- Móviles: que la ficha quepa sin scroll ---------- */
+  @media(max-width:640px){
+    .app{padding:0 16px env(safe-area-inset-bottom) 16px}
+    .top{padding:14px 0 4px}
+    .saludo{font-size:22px;margin:10px 0 3px}
+    .sub{font-size:14px;margin:0 0 14px}
+
+    .estante{padding:20px 0 0}
+    .lomo{width:48px;height:168px}
+    .lomo .tit{font-size:12px;max-height:132px}
+    .balda{margin-bottom:18px}
+
+    .volver{padding:12px 0 4px}
+    .libro-cab{gap:13px;margin:4px 0 14px}
+    .portada{width:52px;height:78px}
+    .libro-cab h1{font-size:18.5px}
+    .libro-cab p{font-size:13.5px}
+
+    .lector{padding:15px;border-radius:16px}
+    .pagina-num{font-size:46px;margin:3px 0 0}
+    .de-total{margin:0 0 11px;font-size:12.5px}
+    .lector .etq{font-size:12.5px}
+    .rapidos{margin:13px 0 0;gap:7px}
+    .rapidos button{padding:10px 0;font-size:14px}
+
+    .entrada{font-size:27px;min-height:40px;padding:7px 0 0}
+    .teclado{gap:7px;margin:9px 0 0}
+    .teclado button{padding:12px 0;font-size:19px;border-radius:11px}
+    .teclado .aux{font-size:13.5px}
+
+    .cta{padding:14px;font-size:15.5px;margin:11px 0 0;border-radius:12px}
+    .cta.sec{padding:11px;font-size:14px}
+    .ritmo{margin:14px 0 0;gap:7px}
+    .ritmo div{padding:10px 6px}
+    .ritmo b{font-size:17px}
+    .ritmo small{font-size:10.5px}
+
+    .fila{padding:11px 12px}
+    .bloque{margin:20px 0 0}
+    .pie{padding:20px 0 24px}
+
+    .acceso{padding:20px 0}
+    .acceso .hero{margin:0 0 20px}
+    .acceso .hero img{width:158px}
+    .acceso .hero p{font-size:14.5px}
+    .campo{margin:0 0 11px}
+    .campo input{padding:12px 13px}
+    .tabs{margin:0 0 14px}
+  }
+  /* Pantallas bajas: recortar todavía más para que el teclado sea alcanzable */
+  @media(max-height:720px){
+    .pagina-num{font-size:40px}
+    .teclado button{padding:10px 0;font-size:18px}
+    .entrada{font-size:24px;min-height:34px}
+    .libro-cab{margin:4px 0 10px}
+    .acceso .hero img{width:132px}
+    .acceso .hero{margin:0 0 14px}
+  }
+
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -647,9 +707,7 @@ function VistaLibro({
     onClick: () => sumar(10)
   }, "+10"), React.createElement("button", {
     onClick: () => sumar(25)
-  }, "+25"))), (libro.ritmo_medio > 0 || libro.total_sesiones > 0) && React.createElement("div", {
-    className: "ritmo"
-  }, React.createElement("div", null, React.createElement("b", null, libro.ritmo_medio || '—'), React.createElement("small", null, "páginas por sesión")), React.createElement("div", null, React.createElement("b", null, libro.total_sesiones), React.createElement("small", null, "veces retomado")), React.createElement("div", null, React.createElement("b", null, libro.progreso != null ? Math.round(libro.progreso) + '%' : '—'), React.createElement("small", null, "completado"))), bloqueado ? React.createElement("div", {
+  }, "+25"))), bloqueado ? React.createElement("div", {
     className: "banner",
     style: {
       marginTop: 18
@@ -673,7 +731,9 @@ function VistaLibro({
     className: "cta",
     disabled: !entrada || excede,
     onClick: confirmar
-  }, excede ? 'El libro solo tiene ' + total + ' páginas' : 'Guardar la página')), libro.estado === 'terminado' && !bloqueado && React.createElement("button", {
+  }, excede ? 'El libro solo tiene ' + total + ' páginas' : 'Guardar la página')), (libro.ritmo_medio > 0 || libro.total_sesiones > 0) && React.createElement("div", {
+    className: "ritmo"
+  }, React.createElement("div", null, React.createElement("b", null, libro.ritmo_medio || '—'), React.createElement("small", null, "páginas por sesión")), React.createElement("div", null, React.createElement("b", null, libro.total_sesiones), React.createElement("small", null, "veces retomado")), React.createElement("div", null, React.createElement("b", null, libro.progreso != null ? Math.round(libro.progreso) + '%' : '—'), React.createElement("small", null, "completado"))), libro.estado === 'terminado' && !bloqueado && React.createElement("button", {
     className: "cta sec",
     onClick: () => onEstado(libro.id, 'en_curso')
   }, "Volver a leerlo"), React.createElement("button", {
