@@ -189,7 +189,6 @@
 
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <script>
 /* Lógica pura fuera de Babel (patrón Limonada Web) */
@@ -330,350 +329,428 @@ window.BM = (function(){
 })();
 </script>
 
-<script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef, useMemo } = React;
+<script>
+const {
+  useState,
+  useEffect,
+  useRef,
+  useMemo
+} = React;
 const BM = window.BM;
-
-function Aviso({ texto }){
-  return <div className={'aviso' + (texto ? ' on' : '')}>{texto}</div>;
+function Aviso({
+  texto
+}) {
+  return React.createElement("div", {
+    className: 'aviso' + (texto ? ' on' : '')
+  }, texto);
 }
-
-function Lomo({ libro, onPulsar }){
+function Lomo({
+  libro,
+  onPulsar
+}) {
   const pct = libro.total ? Math.min(libro.pagina / libro.total, 1) : 0;
   const alto = 186;
-  const cintaAlto = 13 + (alto * (1 - pct) * 0.9);
-  return (
-    <button className="lomo" style={{ background: libro.color }} onClick={onPulsar}
-            aria-label={`${libro.titulo}, página ${libro.pagina}`}>
-      <span className="marca-pag" style={{ height: cintaAlto + 'px' }}></span>
-      <span className="nervio a"></span>
-      <span className="tit">{libro.titulo}</span>
-      <span className="nervio b"></span>
-      <span className="linea-pag" style={{ top: (alto * pct) + 'px' }}></span>
-    </button>
-  );
+  const cintaAlto = 13 + alto * (1 - pct) * 0.9;
+  return React.createElement("button", {
+    className: "lomo",
+    style: {
+      background: libro.color
+    },
+    onClick: onPulsar,
+    "aria-label": `${libro.titulo}, página ${libro.pagina}`
+  }, React.createElement("span", {
+    className: "marca-pag",
+    style: {
+      height: cintaAlto + 'px'
+    }
+  }), React.createElement("span", {
+    className: "nervio a"
+  }), React.createElement("span", {
+    className: "tit"
+  }, libro.titulo), React.createElement("span", {
+    className: "nervio b"
+  }), React.createElement("span", {
+    className: "linea-pag",
+    style: {
+      top: alto * pct + 'px'
+    }
+  }));
 }
-
-function Estante({ libros, onAbrir, onNuevo }){
-  return (
-    <div className="estante">
-      <div className="lomos">
-        {libros.map(l => <Lomo key={l.id} libro={l} onPulsar={() => onAbrir(l.id)} />)}
-        <button className="lomo nuevo" onClick={onNuevo} aria-label="Añadir un libro">
-          <span>+ Añadir libro</span>
-        </button>
-      </div>
-      <div className="balda"></div>
-    </div>
-  );
+function Estante({
+  libros,
+  onAbrir,
+  onNuevo
+}) {
+  return React.createElement("div", {
+    className: "estante"
+  }, React.createElement("div", {
+    className: "lomos"
+  }, libros.map(l => React.createElement(Lomo, {
+    key: l.id,
+    libro: l,
+    onPulsar: () => onAbrir(l.id)
+  })), React.createElement("button", {
+    className: "lomo nuevo",
+    onClick: onNuevo,
+    "aria-label": "Añadir un libro"
+  }, React.createElement("span", null, "+ Añadir libro"))), React.createElement("div", {
+    className: "balda"
+  }));
 }
-
-function Inicio({ datos, onAbrir, onNuevo, onReiniciar }){
-  const enCurso   = datos.libros.filter(l => l.estado === 'en_curso');
+function Inicio({
+  datos,
+  onAbrir,
+  onNuevo,
+  onReiniciar
+}) {
+  const enCurso = datos.libros.filter(l => l.estado === 'en_curso');
   const pendientes = datos.libros.filter(l => l.estado === 'pendiente');
   const terminados = datos.libros.filter(l => l.estado === 'terminado');
   const racha = BM.racha(datos.libros);
   const saludo = useMemo(() => BM.saludo(), []);
-
-  return (
-    <>
-      <div className="top">
-        <div className="marca"><span className="cinta-logo"></span>Book<em>Mark</em></div>
-        {racha > 0 && (
-          <div className="racha">🔥 <b>{racha}</b> {racha === 1 ? 'día' : 'días'}</div>
-        )}
-      </div>
-
-      <h1 className="saludo">{saludo}</h1>
-      <p className="sub">
-        {enCurso.length > 0
-          ? 'Elige el libro y dime por qué página vas.'
-          : 'Aún no tienes ningún libro empezado. Añade el primero.'}
-      </p>
-
-      {enCurso.length > 0 && <Estante libros={enCurso} onAbrir={onAbrir} onNuevo={onNuevo} />}
-
-      {enCurso.length === 0 && (
-        <div className="vacio-msg">
-          Tu estante está vacío.
-          <div style={{marginTop:14}}>
-            <button className="cta" onClick={onNuevo}>Añadir mi primer libro</button>
-          </div>
-        </div>
-      )}
-
-      {pendientes.length > 0 && (
-        <div className="bloque">
-          <h2>Esperando turno</h2>
-          {pendientes.map(l => (
-            <button key={l.id} className="fila" onClick={() => onAbrir(l.id)}>
-              <span className="canto" style={{ background: l.color }}></span>
-              <span className="info"><strong>{l.titulo}</strong><small>{l.autor}</small></span>
-              <span className="pg">Empezar</span>
-            </button>
-          ))}
-        </div>
-      )}
-
-      {terminados.length > 0 && (
-        <div className="bloque">
-          <h2>Leídos</h2>
-          {terminados.map(l => (
-            <button key={l.id} className="fila" onClick={() => onAbrir(l.id)}>
-              <span className="canto" style={{ background: l.color }}></span>
-              <span className="info"><strong>{l.titulo}</strong><small>{l.autor}</small></span>
-              <span className="pg">{l.total} pág.</span>
-            </button>
-          ))}
-        </div>
-      )}
-
-      <Libreria datos={datos} />
-
-      <div className="pie">
-        Demo de <a href="https://www.limonadaweb.com" target="_blank" rel="noopener">Limonada Web</a><br />
-        Los datos se guardan solo en este navegador.<br />
-        <button onClick={onReiniciar} style={{marginTop:8}}>Reiniciar la demo</button>
-      </div>
-    </>
-  );
+  return React.createElement(React.Fragment, null, React.createElement("div", {
+    className: "top"
+  }, React.createElement("div", {
+    className: "marca"
+  }, React.createElement("span", {
+    className: "cinta-logo"
+  }), "Book", React.createElement("em", null, "Mark")), racha > 0 && React.createElement("div", {
+    className: "racha"
+  }, "🔥 ", React.createElement("b", null, racha), " ", racha === 1 ? 'día' : 'días')), React.createElement("h1", {
+    className: "saludo"
+  }, saludo), React.createElement("p", {
+    className: "sub"
+  }, enCurso.length > 0 ? 'Elige el libro y dime por qué página vas.' : 'Aún no tienes ningún libro empezado. Añade el primero.'), enCurso.length > 0 && React.createElement(Estante, {
+    libros: enCurso,
+    onAbrir: onAbrir,
+    onNuevo: onNuevo
+  }), enCurso.length === 0 && React.createElement("div", {
+    className: "vacio-msg"
+  }, "Tu estante está vacío.", React.createElement("div", {
+    style: {
+      marginTop: 14
+    }
+  }, React.createElement("button", {
+    className: "cta",
+    onClick: onNuevo
+  }, "Añadir mi primer libro"))), pendientes.length > 0 && React.createElement("div", {
+    className: "bloque"
+  }, React.createElement("h2", null, "Esperando turno"), pendientes.map(l => React.createElement("button", {
+    key: l.id,
+    className: "fila",
+    onClick: () => onAbrir(l.id)
+  }, React.createElement("span", {
+    className: "canto",
+    style: {
+      background: l.color
+    }
+  }), React.createElement("span", {
+    className: "info"
+  }, React.createElement("strong", null, l.titulo), React.createElement("small", null, l.autor)), React.createElement("span", {
+    className: "pg"
+  }, "Empezar")))), terminados.length > 0 && React.createElement("div", {
+    className: "bloque"
+  }, React.createElement("h2", null, "Leídos"), terminados.map(l => React.createElement("button", {
+    key: l.id,
+    className: "fila",
+    onClick: () => onAbrir(l.id)
+  }, React.createElement("span", {
+    className: "canto",
+    style: {
+      background: l.color
+    }
+  }), React.createElement("span", {
+    className: "info"
+  }, React.createElement("strong", null, l.titulo), React.createElement("small", null, l.autor)), React.createElement("span", {
+    className: "pg"
+  }, l.total, " pág.")))), React.createElement(Libreria, {
+    datos: datos
+  }), React.createElement("div", {
+    className: "pie"
+  }, "Demo de ", React.createElement("a", {
+    href: "https://www.limonadaweb.com",
+    target: "_blank",
+    rel: "noopener"
+  }, "Limonada Web"), React.createElement("br", null), "Los datos se guardan solo en este navegador.", React.createElement("br", null), React.createElement("button", {
+    onClick: onReiniciar,
+    style: {
+      marginTop: 8
+    }
+  }, "Reiniciar la demo")));
 }
-
-function Libreria({ datos }){
+function Libreria({
+  datos
+}) {
   const lib = datos.libreria;
-  return (
-    <div className="libreria">
-      <h2>{lib.nombre}</h2>
-      <p>Tu marcapáginas es de esta librería. Estas son sus novedades de esta semana en {lib.ciudad}.</p>
-      {datos.novedades.map((n, i) => (
-        <div className="novedad" key={i}>
-          <span className="mini" style={{ background: n.color }}></span>
-          <span className="n-info">
-            <strong>{n.titulo}</strong>
-            <small>{n.autor}</small>
-          </span>
-          <a className="res" href={'https://wa.me/' + lib.whatsapp + '?text=' +
-             encodeURIComponent('Hola, quiero reservar «' + n.titulo + '»')}
-             target="_blank" rel="noopener">Reservar</a>
-        </div>
-      ))}
-    </div>
-  );
+  return React.createElement("div", {
+    className: "libreria"
+  }, React.createElement("h2", null, lib.nombre), React.createElement("p", null, "Tu marcapáginas es de esta librería. Estas son sus novedades de esta semana en ", lib.ciudad, "."), datos.novedades.map((n, i) => React.createElement("div", {
+    className: "novedad",
+    key: i
+  }, React.createElement("span", {
+    className: "mini",
+    style: {
+      background: n.color
+    }
+  }), React.createElement("span", {
+    className: "n-info"
+  }, React.createElement("strong", null, n.titulo), React.createElement("small", null, n.autor)), React.createElement("a", {
+    className: "res",
+    href: 'https://wa.me/' + lib.whatsapp + '?text=' + encodeURIComponent('Hola, quiero reservar «' + n.titulo + '»'),
+    target: "_blank",
+    rel: "noopener"
+  }, "Reservar"))));
 }
-
-function VistaLibro({ libro, onVolver, onMarcar, onEliminar }){
+function VistaLibro({
+  libro,
+  onVolver,
+  onMarcar,
+  onEliminar
+}) {
   const [entrada, setEntrada] = useState('');
   const pct = libro.total ? Math.min(libro.pagina / libro.total, 1) : 0;
   const r = BM.ritmo(libro);
   const fin = BM.finEstimado(libro);
   const restantes = libro.total ? Math.max(libro.total - libro.pagina, 0) : null;
-
-  function pulsar(d){
+  function pulsar(d) {
     if (entrada.length >= 4) return;
     setEntrada(entrada === '' && d === '0' ? '' : entrada + d);
   }
-  function borrar(){ setEntrada(entrada.slice(0, -1)); }
-  function sumar(n){
+  function borrar() {
+    setEntrada(entrada.slice(0, -1));
+  }
+  function sumar(n) {
     const destino = libro.total ? Math.min(libro.pagina + n, libro.total) : libro.pagina + n;
     onMarcar(libro.id, destino);
   }
-  function confirmar(){
+  function confirmar() {
     const n = parseInt(entrada, 10);
     if (isNaN(n)) return;
     onMarcar(libro.id, n);
     setEntrada('');
   }
-
   const excede = libro.total > 0 && parseInt(entrada, 10) > libro.total;
-
-  return (
-    <>
-      <button className="volver" onClick={onVolver}>← Mi estante</button>
-
-      <div className="libro-cab">
-        <div className="portada" style={{ background: libro.color }}></div>
-        <div>
-          <h1>{libro.titulo}</h1>
-          <p>{libro.autor}</p>
-        </div>
-      </div>
-
-      <div className="lector">
-        <p className="etq">{libro.pagina > 0 ? 'Vas por la página' : 'Todavía sin empezar'}</p>
-        <div className="pagina-num">{libro.pagina}</div>
-        {libro.total > 0 && <p className="de-total">de {libro.total} páginas</p>}
-        {libro.total > 0 && (
-          <>
-            <div className="barra"><i style={{ width: (pct * 100) + '%' }}></i></div>
-            <p className="pct">
-              {Math.round(pct * 100)}% leído
-              {restantes > 0 ? ` · te quedan ${restantes} páginas` : ' · libro terminado'}
-            </p>
-          </>
-        )}
-
-        <div className="rapidos">
-          <button onClick={() => sumar(1)}>+1</button>
-          <button onClick={() => sumar(10)}>+10</button>
-          <button onClick={() => sumar(25)}>+25</button>
-        </div>
-      </div>
-
-      {(r > 0 || fin) && (
-        <div className="ritmo">
-          <div><b>{r || '—'}</b><small>páginas por sesión</small></div>
-          <div><b>{(libro.sesiones || []).length}</b><small>veces retomado</small></div>
-          <div><b>{fin || '—'}</b><small>lo acabarías</small></div>
-        </div>
-      )}
-
-      <div className={'entrada' + (entrada ? '' : ' vacio')}>
-        {entrada || 'Escribe la página'}
-      </div>
-
-      <div className="teclado">
-        {['1','2','3','4','5','6','7','8','9'].map(d => (
-          <button key={d} onClick={() => pulsar(d)}>{d}</button>
-        ))}
-        <button className="aux" onClick={borrar}>Borrar</button>
-        <button onClick={() => pulsar('0')}>0</button>
-        <button className="aux" onClick={() => setEntrada('')}>Limpiar</button>
-      </div>
-
-      <button className="cta" disabled={!entrada || excede} onClick={confirmar}>
-        {excede ? `El libro solo tiene ${libro.total} páginas` : 'Guardar la página'}
-      </button>
-
-      <button className="cta sec" onClick={() => onEliminar(libro.id)}>
-        Quitar de mi estante
-      </button>
-
-      <div className="pie" />
-    </>
-  );
+  return React.createElement(React.Fragment, null, React.createElement("button", {
+    className: "volver",
+    onClick: onVolver
+  }, "← Mi estante"), React.createElement("div", {
+    className: "libro-cab"
+  }, React.createElement("div", {
+    className: "portada",
+    style: {
+      background: libro.color
+    }
+  }), React.createElement("div", null, React.createElement("h1", null, libro.titulo), React.createElement("p", null, libro.autor))), React.createElement("div", {
+    className: "lector"
+  }, React.createElement("p", {
+    className: "etq"
+  }, libro.pagina > 0 ? 'Vas por la página' : 'Todavía sin empezar'), React.createElement("div", {
+    className: "pagina-num"
+  }, libro.pagina), libro.total > 0 && React.createElement("p", {
+    className: "de-total"
+  }, "de ", libro.total, " páginas"), libro.total > 0 && React.createElement(React.Fragment, null, React.createElement("div", {
+    className: "barra"
+  }, React.createElement("i", {
+    style: {
+      width: pct * 100 + '%'
+    }
+  })), React.createElement("p", {
+    className: "pct"
+  }, Math.round(pct * 100), "% leído", restantes > 0 ? ` · te quedan ${restantes} páginas` : ' · libro terminado')), React.createElement("div", {
+    className: "rapidos"
+  }, React.createElement("button", {
+    onClick: () => sumar(1)
+  }, "+1"), React.createElement("button", {
+    onClick: () => sumar(10)
+  }, "+10"), React.createElement("button", {
+    onClick: () => sumar(25)
+  }, "+25"))), (r > 0 || fin) && React.createElement("div", {
+    className: "ritmo"
+  }, React.createElement("div", null, React.createElement("b", null, r || '—'), React.createElement("small", null, "páginas por sesión")), React.createElement("div", null, React.createElement("b", null, (libro.sesiones || []).length), React.createElement("small", null, "veces retomado")), React.createElement("div", null, React.createElement("b", null, fin || '—'), React.createElement("small", null, "lo acabarías"))), React.createElement("div", {
+    className: 'entrada' + (entrada ? '' : ' vacio')
+  }, entrada || 'Escribe la página'), React.createElement("div", {
+    className: "teclado"
+  }, ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(d => React.createElement("button", {
+    key: d,
+    onClick: () => pulsar(d)
+  }, d)), React.createElement("button", {
+    className: "aux",
+    onClick: borrar
+  }, "Borrar"), React.createElement("button", {
+    onClick: () => pulsar('0')
+  }, "0"), React.createElement("button", {
+    className: "aux",
+    onClick: () => setEntrada('')
+  }, "Limpiar")), React.createElement("button", {
+    className: "cta",
+    disabled: !entrada || excede,
+    onClick: confirmar
+  }, excede ? `El libro solo tiene ${libro.total} páginas` : 'Guardar la página'), React.createElement("button", {
+    className: "cta sec",
+    onClick: () => onEliminar(libro.id)
+  }, "Quitar de mi estante"), React.createElement("div", {
+    className: "pie"
+  }));
 }
-
-function Anadir({ onVolver, onGuardar }){
+function Anadir({
+  onVolver,
+  onGuardar
+}) {
   const [titulo, setTitulo] = useState('');
   const [autor, setAutor] = useState('');
   const [total, setTotal] = useState('');
   const [color, setColor] = useState(BM.COLORES[0]);
   const ref = useRef(null);
-
-  useEffect(() => { if (ref.current) ref.current.focus(); }, []);
-
-  return (
-    <>
-      <button className="volver" onClick={onVolver}>← Mi estante</button>
-      <h1 className="saludo" style={{ marginBottom: 18 }}>¿Qué estás leyendo?</h1>
-
-      <div className="campo">
-        <label htmlFor="t">Título</label>
-        <input id="t" ref={ref} value={titulo} onChange={e => setTitulo(e.target.value)}
-               placeholder="El infinito en un junco" />
-      </div>
-      <div className="campo">
-        <label htmlFor="a">Autor</label>
-        <input id="a" value={autor} onChange={e => setAutor(e.target.value)} placeholder="Irene Vallejo" />
-      </div>
-      <div className="campo">
-        <label htmlFor="p">Páginas (opcional)</label>
-        <input id="p" inputMode="numeric" value={total}
-               onChange={e => setTotal(e.target.value.replace(/\D/g, ''))} placeholder="452" />
-      </div>
-      <div className="campo">
-        <label>Color del lomo</label>
-        <div className="colores">
-          {BM.COLORES.map(c => (
-            <button key={c} style={{ background: c }} aria-pressed={color === c}
-                    aria-label={'Color ' + c} onClick={() => setColor(c)} />
-          ))}
-        </div>
-      </div>
-
-      <button className="cta" disabled={!titulo.trim()}
-              onClick={() => onGuardar({ titulo: titulo.trim(), autor: autor.trim(),
-                                         total: parseInt(total, 10) || 0, color })}>
-        Ponerlo en el estante
-      </button>
-      <div className="pie" />
-    </>
-  );
+  useEffect(() => {
+    if (ref.current) ref.current.focus();
+  }, []);
+  return React.createElement(React.Fragment, null, React.createElement("button", {
+    className: "volver",
+    onClick: onVolver
+  }, "← Mi estante"), React.createElement("h1", {
+    className: "saludo",
+    style: {
+      marginBottom: 18
+    }
+  }, "¿Qué estás leyendo?"), React.createElement("div", {
+    className: "campo"
+  }, React.createElement("label", {
+    htmlFor: "t"
+  }, "Título"), React.createElement("input", {
+    id: "t",
+    ref: ref,
+    value: titulo,
+    onChange: e => setTitulo(e.target.value),
+    placeholder: "El infinito en un junco"
+  })), React.createElement("div", {
+    className: "campo"
+  }, React.createElement("label", {
+    htmlFor: "a"
+  }, "Autor"), React.createElement("input", {
+    id: "a",
+    value: autor,
+    onChange: e => setAutor(e.target.value),
+    placeholder: "Irene Vallejo"
+  })), React.createElement("div", {
+    className: "campo"
+  }, React.createElement("label", {
+    htmlFor: "p"
+  }, "Páginas (opcional)"), React.createElement("input", {
+    id: "p",
+    inputMode: "numeric",
+    value: total,
+    onChange: e => setTotal(e.target.value.replace(/\D/g, '')),
+    placeholder: "452"
+  })), React.createElement("div", {
+    className: "campo"
+  }, React.createElement("label", null, "Color del lomo"), React.createElement("div", {
+    className: "colores"
+  }, BM.COLORES.map(c => React.createElement("button", {
+    key: c,
+    style: {
+      background: c
+    },
+    "aria-pressed": color === c,
+    "aria-label": 'Color ' + c,
+    onClick: () => setColor(c)
+  })))), React.createElement("button", {
+    className: "cta",
+    disabled: !titulo.trim(),
+    onClick: () => onGuardar({
+      titulo: titulo.trim(),
+      autor: autor.trim(),
+      total: parseInt(total, 10) || 0,
+      color
+    })
+  }, "Ponerlo en el estante"), React.createElement("div", {
+    className: "pie"
+  }));
 }
-
-function App(){
+function App() {
   const [datos, setDatos] = useState(() => BM.cargar());
-  const [vista, setVista] = useState({ p: 'inicio' });
+  const [vista, setVista] = useState({
+    p: 'inicio'
+  });
   const [aviso, setAviso] = useState('');
   const timer = useRef(null);
-
-  useEffect(() => { BM.guardar(datos); }, [datos]);
-  useEffect(() => { window.scrollTo(0, 0); }, [vista]);
-
-  function avisar(texto){
+  useEffect(() => {
+    BM.guardar(datos);
+  }, [datos]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [vista]);
+  function avisar(texto) {
     setAviso(texto);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setAviso(''), 2600);
   }
-
-  function marcar(id, pagina){
+  function marcar(id, pagina) {
     const libro = datos.libros.find(l => l.id === id);
     const siguiente = BM.marcar(datos, id, pagina);
     setDatos(siguiente);
     const ahora = siguiente.libros.find(l => l.id === id);
     if (ahora.estado === 'terminado' && libro.estado !== 'terminado') {
       avisar('Terminado. Enhorabuena.');
-      setVista({ p: 'inicio' });
+      setVista({
+        p: 'inicio'
+      });
     } else {
       avisar('Guardado en la página ' + pagina);
     }
   }
-
-  function guardarNuevo(libro){
+  function guardarNuevo(libro) {
     const siguiente = BM.anadir(datos, libro);
     setDatos(siguiente);
-    setVista({ p: 'inicio' });
+    setVista({
+      p: 'inicio'
+    });
     avisar('«' + libro.titulo + '» está en tu estante');
   }
-
-  function eliminar(id){
+  function eliminar(id) {
     setDatos(BM.eliminar(datos, id));
-    setVista({ p: 'inicio' });
+    setVista({
+      p: 'inicio'
+    });
     avisar('Quitado del estante');
   }
-
-  function reiniciar(){
+  function reiniciar() {
     BM.reiniciar();
     setDatos(BM.cargar());
-    setVista({ p: 'inicio' });
+    setVista({
+      p: 'inicio'
+    });
     avisar('Demo reiniciada');
   }
-
   const libro = vista.p === 'libro' ? datos.libros.find(l => l.id === vista.id) : null;
-
-  return (
-    <div className="app">
-      {vista.p === 'inicio' && (
-        <Inicio datos={datos}
-                onAbrir={id => setVista({ p: 'libro', id })}
-                onNuevo={() => setVista({ p: 'anadir' })}
-                onReiniciar={reiniciar} />
-      )}
-      {vista.p === 'libro' && libro && (
-        <VistaLibro libro={libro}
-                    onVolver={() => setVista({ p: 'inicio' })}
-                    onMarcar={marcar}
-                    onEliminar={eliminar} />
-      )}
-      {vista.p === 'anadir' && (
-        <Anadir onVolver={() => setVista({ p: 'inicio' })} onGuardar={guardarNuevo} />
-      )}
-      <Aviso texto={aviso} />
-    </div>
-  );
+  return React.createElement("div", {
+    className: "app"
+  }, vista.p === 'inicio' && React.createElement(Inicio, {
+    datos: datos,
+    onAbrir: id => setVista({
+      p: 'libro',
+      id
+    }),
+    onNuevo: () => setVista({
+      p: 'anadir'
+    }),
+    onReiniciar: reiniciar
+  }), vista.p === 'libro' && libro && React.createElement(VistaLibro, {
+    libro: libro,
+    onVolver: () => setVista({
+      p: 'inicio'
+    }),
+    onMarcar: marcar,
+    onEliminar: eliminar
+  }), vista.p === 'anadir' && React.createElement(Anadir, {
+    onVolver: () => setVista({
+      p: 'inicio'
+    }),
+    onGuardar: guardarNuevo
+  }), React.createElement(Aviso, {
+    texto: aviso
+  }));
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App, null));
 </script>
 </body>
 </html>
