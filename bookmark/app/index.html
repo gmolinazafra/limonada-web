@@ -9,6 +9,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../img/bookmark-icono-32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="../img/bookmark-icono-96.png">
 <link rel="apple-touch-icon" href="../img/bookmark-icono-180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="application-name" content="BookMark">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BookMark">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -895,6 +898,13 @@ function Ajustes({
     onClick: onSuscribir
   }, "Suscribirme por ", CONF.PRECIO, " al año"), React.createElement("button", {
     className: "cta sec",
+    id: "bm-instalar",
+    style: {
+      display: 'none'
+    },
+    onClick: () => window.BM_INSTALAR && window.BM_INSTALAR()
+  }, "Instalar BookMark en este dispositivo"), React.createElement("button", {
+    className: "cta sec",
     onClick: exportar
   }, "Descargar mi biblioteca"), React.createElement("button", {
     className: "cta sec",
@@ -1143,6 +1153,35 @@ function App() {
   }));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App, null));
+</script>
+<script>
+/* Instalación como aplicación */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function(){});
+  });
+}
+
+/* Botón propio de instalar: Chrome lo permite tras la interacción del usuario */
+(function(){
+  var evento = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    evento = e;
+    var b = document.getElementById('bm-instalar');
+    if (b) b.style.display = 'block';
+  });
+  window.BM_INSTALAR = function(){
+    if (!evento) return false;
+    evento.prompt();
+    evento.userChoice.then(function(){
+      evento = null;
+      var b = document.getElementById('bm-instalar');
+      if (b) b.style.display = 'none';
+    });
+    return true;
+  };
+})();
 </script>
 </body>
 </html>
