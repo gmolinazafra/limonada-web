@@ -188,6 +188,10 @@
         text-align:center;box-shadow:var(--sombra);position:relative;overflow:hidden}
   .tarjeta-nfc strong{font-family:'Literata',Georgia,serif;font-size:20px;display:block;margin:0 0 6px}
   .tarjeta-nfc span{font-size:14.5px;color:rgba(245,240,228,.72)}
+  .tarjeta-nfc .precio-pack{font-family:'Literata',Georgia,serif;font-size:30px;font-weight:700;
+        margin:16px 0 2px;letter-spacing:-.02em}
+  .tarjeta-nfc .envio{font-size:12.5px;color:rgba(245,240,228,.6);margin:0 0 16px}
+  .tarjeta-nfc .btn{width:100%;box-shadow:none}
   @media(max-width:880px){.nfc{grid-template-columns:1fr;gap:30px}}
 
   /* ---------- Precio ---------- */
@@ -514,12 +518,15 @@
       <div>
         <h2 class="tit">Y si quieres, sin abrir nada</h2>
         <p class="intro" style="margin-bottom:22px">Un marcapáginas con chip NFC dentro. Lo dejas en la mesilla o entre las páginas, acercas el móvil y tu estante se abre solo. Ni desbloquear, ni buscar el icono, ni escribir.</p>
-        <p style="color:var(--gris);font-size:15.5px;margin:0">Funciona en Android y en iPhone desde el XS. La app no lo necesita: es un atajo, no un requisito.</p>
+        <p style="color:var(--gris);font-size:15.5px;margin:0">Pega una etiqueta en el libro que empieces; cuando lo termines, usa la siguiente. Funciona en Android y en iPhone desde el XS. La app no lo necesita: es un atajo, no un requisito.</p>
       </div>
       <div class="tarjeta-nfc">
         <img src="img/bookmark-icono-180.png" alt="" width="180" height="180" style="width:92px;height:auto;margin:0 auto 14px;display:block">
-        <strong>Marcapáginas BookMark</strong>
-        <span>Acércalo y sigue leyendo</span>
+        <strong>Pack de etiquetas</strong>
+        <span>20 etiquetas NFC + 2 tarjetas</span>
+        <div class="precio-pack">16,99 €</div>
+        <p class="envio">Envío incluido a España peninsular</p>
+        <a class="btn verde" href="https://buy.stripe.com/7sY00b7kf8jX7cr3x94wM02">Comprar el pack</a>
       </div>
     </div>
   </section>
@@ -735,9 +742,13 @@ window.MARQUI = (function(){
     { claves:['prueb','gratis','gratuito','probar','14 dias','catorce','demo'],
       r:'Catorce días completos, sin tarjeta y sin cobros automáticos al terminar. '
       + 'Si no sigues, tus libros se quedan ahí para consultarlos. <a href="app/">Empezar ahora</a>.' },
+    { claves:['pack','comprar etiqueta','quiero etiquetas','donde compro','etiquetas sueltas','recambio'],
+      r:'El pack son <b>20 etiquetas NFC y 2 tarjetas por 16,99 €</b>, con envío incluido a España peninsular. '
+      + '<a href="https://buy.stripe.com/7sY00b7kf8jX7cr3x94wM02">Comprarlo aquí</a>.' },
     { claves:['nfc','marcapagina','tarjeta','chip','etiqueta','acercar','pegatina'],
-      r:'El marcapáginas lleva un chip NFC. Acercas el móvil y tu estante se abre solo: sin desbloquear, sin buscar el icono. '
-      + 'Pero es opcional, la app funciona igual sin él.' },
+      r:'Pegas una etiqueta en el libro que empiezas, acercas el móvil y tu estante se abre solo: sin desbloquear, sin buscar el icono. '
+      + 'Cuando terminas el libro, usas la siguiente. El pack de 20 etiquetas y 2 tarjetas cuesta 16,99 € con envío, '
+      + 'pero es opcional: la app funciona igual sin él.' },
     { claves:['iphone','ios','apple','android','movil','telefono','compatible','funciona en'],
       r:'Funciona en cualquier móvil con navegador, y puedes instalarla en la pantalla de inicio. '
       + 'Para leer la etiqueta NFC necesitas Android, o un iPhone XS o posterior con iOS 14.' },
@@ -876,6 +887,16 @@ window.MARQUI = (function(){
     }
     for (var cat in CLAVES_RECO) {
       if (coincide(t, CLAVES_RECO[cat]) && t.split(' ').length <= 4) return recomendar(cat);
+    }
+
+    /* El pack de etiquetas manda si lo nombran, aunque pregunten por precio */
+    if (t.indexOf('pack') >= 0 || t.indexOf('etiqueta') >= 0 || t.indexOf('pegatina') >= 0) {
+      if (t.indexOf('precio') >= 0 || t.indexOf('cuanto') >= 0 || t.indexOf('vale') >= 0 ||
+          t.indexOf('cuesta') >= 0 || t.indexOf('comprar') >= 0 || t.indexOf('quiero') >= 0 ||
+          t.indexOf('donde') >= 0 || t.indexOf('compro') >= 0) {
+        return 'El pack son <b>20 etiquetas NFC y 2 tarjetas por 16,99 €</b>, con envío incluido a España peninsular. '
+             + '<a href="https://buy.stripe.com/7sY00b7kf8jX7cr3x94wM02">Comprarlo aquí</a>.';
+      }
     }
 
     /* Temas de producto */
