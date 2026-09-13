@@ -171,11 +171,12 @@ function cambiarEstado(id,estado){
 }
 const ESTADOS_PEDIDO=[
   ["recibido","Recibido"],["confirmado","Confirmado"],["preparando","En preparación"],
-  ["listo","Listo para recoger"],["reparto","En reparto"],["entregado","Entregado"],["cancelado","Cancelado"]
+  ["listo","Listo para recoger"],["reparto","En reparto"],["servido","Servido en mesa"],["entregado","Entregado"],["cancelado","Cancelado"]
 ];
 const estadoNombre=e=>(ESTADOS_PEDIDO.find(x=>x[0]===e)||["",e])[1];
 const flujoEstados=tipo=>tipo==="domicilio"
   ?["recibido","confirmado","preparando","reparto","entregado"]
+  :tipo==="mesa"?["recibido","confirmado","preparando","servido"]
   :["recibido","confirmado","preparando","listo","entregado"];
 
 // ── Pedidos de demostración para el panel (se siembran una sola vez) ──
@@ -346,6 +347,11 @@ const ORDER_CSS=`
 .mb-row-bot .mb-msg-bot{max-width:100%;border-radius:16px 16px 16px 4px}
 .mb-row-bot .mb-typing{border-radius:16px 16px 16px 4px}
 .mb-chat .mb-msg-user{background:#111;color:#fff;border-radius:16px 16px 4px 16px}
+.lw-mesa-code{font-family:ui-monospace,Menlo,monospace;font-size:1.4rem;letter-spacing:.18em;font-weight:700;color:#2C4A3E;background:#EFF4F0;border:1px dashed #BFD2C5;border-radius:10px;padding:8px 14px;display:inline-block}
+.lw-mesa-card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:1px solid #E8E0D5;border-radius:12px;background:#fff;margin-bottom:8px;flex-wrap:wrap}
+.lw-mesa-card.cerrada{opacity:.55}
+.lw-auth{display:flex;gap:6px;margin-bottom:12px}.lw-auth button{flex:1}
+.lw-user{font-size:.8rem;color:#2C4A3E;background:#EFF4F0;border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 @media print{.novelty-pill-wrap,.ord-bar,.ord-overlay{display:none!important}}
 `;
 // ── Impresión de ticket (ventana aislada, compatible con impresora normal/térmica) ──
@@ -370,7 +376,7 @@ function imprimirTicket(order,data){
   <h1>${r.nombre||"Restaurante"}</h1><div class="c">${r.telefono||""}</div>
   <div class="hr"></div><h2>PEDIDO #${order.numero}</h2>
   <div class="c">${new Date(order.fecha).toLocaleDateString("es-ES")} · ${new Date(order.fecha).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}</div>
-  <div class="c b">${order.tipo==="domicilio"?"◈ ENTREGA A DOMICILIO ◈":"◈ RECOGIDA EN LOCAL ◈"}</div>
+  <div class="c b">${order.tipo==="mesa"?"◈ SERVICIO EN MESA · MESA "+(c.mesa||"")+" ◈":order.tipo==="domicilio"?"◈ ENTREGA A DOMICILIO ◈":"◈ RECOGIDA EN LOCAL ◈"}</div>
   <div class="hr"></div>
   <div>${c.nombre||""}</div><div>Tel: ${c.telefono||""}</div>
   ${order.tipo==="domicilio"?`<div>${c.direccion||""}${c.piso?", "+c.piso:""}</div><div>${c.cp||""} ${c.localidad||""}</div>${c.ref?`<div>Ref: ${c.ref}</div>`:""}`:""}
@@ -656,10 +662,53 @@ function aplicarTapasV6(data){
   return Object.assign({},data,{demoContentVersion:7,categorias:cats,platos:platos});
 }
 
+
+// ─── MESAS con código de sesión + CUENTAS de cliente (demo local) ────────────
+function mesasGet(){return ordLS("mesas",[]);}
+function mesasSet(v){ordLSset("mesas",v);window.dispatchEvent(new Event("lw-mesas"));}
+function mesaCodigo(){const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s;}
+function mesaAbrir(numero){
+  const n=String(numero||"").trim();if(!n)return null;
+  const mesas=mesasGet().map(m=>m.mesa===n&&m.estado==="abierta"?{...m,estado:"cerrada",cerrada:new Date().toISOString()}:m);
+  let code;do{code=mesaCodigo();}while(mesas.some(m=>m.codigo===code&&m.estado==="abierta"));
+  const s={id:"s"+Date.now(),mesa:n,codigo:code,estado:"abierta",abierta:new Date().toISOString(),pedidos:0};
+  mesasSet([s,...mesas]);return s;
+}
+function mesaValidar(codigo){
+  const c=String(codigo||"").trim().toUpperCase();
+  const s=mesasGet().find(m=>m.codigo===c);
+  if(!s)return{ok:false,motivo:"Código no válido. Pídeselo al camarero."};
+  if(s.estado!=="abierta")return{ok:false,motivo:"Esta mesa ya ha cerrado su cuenta. Pide un código nuevo al camarero."};
+  return{ok:true,sesion:s};
+}
+function mesaCerrar(id){mesasSet(mesasGet().map(m=>m.id===id?{...m,estado:"cerrada",cerrada:new Date().toISOString()}:m));}
+function mesaRegistrarPedido(codigo){const c=String(codigo||"").toUpperCase();mesasSet(mesasGet().map(m=>m.codigo===c&&m.estado==="abierta"?{...m,pedidos:(m.pedidos||0)+1}:m));}
+// Cuentas (demo: se guardan en el navegador; en producción, Supabase Auth)
+function usersGet(){return ordLS("users",[]);}
+function userGet(){return ordLS("user",null);}
+function userLogout(){ordLSset("user",null);window.dispatchEvent(new Event("lw-user"));}
+function userRegistrar({nombre,telefono,email,pin}){
+  const n=String(nombre||"").trim(),t=String(telefono||"").trim(),e=String(email||"").trim().toLowerCase(),p=String(pin||"").trim();
+  if(!n)return{ok:false,motivo:"Introduce tu nombre"};
+  if(!/^[+\d][\d\s]{7,14}$/.test(t))return{ok:false,motivo:"Introduce un teléfono válido"};
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))return{ok:false,motivo:"Introduce un email válido"};
+  if(!/^\d{4}$/.test(p))return{ok:false,motivo:"El PIN son 4 dígitos"};
+  const users=usersGet();if(users.some(u=>u.email===e))return{ok:false,motivo:"Ya existe una cuenta con ese email. Inicia sesión."};
+  const u={id:"u"+Date.now(),nombre:n,telefono:t,email:e,pin:p,alta:new Date().toISOString()};
+  ordLSset("users",[...users,u]);ordLSset("user",u);window.dispatchEvent(new Event("lw-user"));return{ok:true,user:u};
+}
+function userLogin({email,pin}){
+  const e=String(email||"").trim().toLowerCase(),p=String(pin||"").trim();
+  const u=usersGet().find(x=>x.email===e);
+  if(!u)return{ok:false,motivo:"No encontramos ninguna cuenta con ese email"};
+  if(u.pin!==p)return{ok:false,motivo:"PIN incorrecto"};
+  ordLSset("user",u);window.dispatchEvent(new Event("lw-user"));return{ok:true,user:u};
+}
+
 function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
 function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
 
-return{TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+return{mesasGet,mesasSet,mesaAbrir,mesaValidar,mesaCerrar,mesaRegistrarPedido,usersGet,userGet,userLogout,userRegistrar,userLogin,TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -2417,74 +2466,6 @@ Object.assign(ENGLISH,{"Lista de espera":"Waiting list","Cerrar lista de espera"
 function LanguageFlag({code}) {
   return code==="es"?<svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/></svg>:<svg width="30" height="20" viewBox="0 0 60 40" aria-hidden="true" focusable="false" style={{display:"block",borderRadius:2}}><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" strokeWidth="8"/><path d="M0 0L30 20M60 40L30 20M60 0L30 20M0 40L30 20" stroke="#C8102E" strokeWidth="3"/><path d="M30 0V40M0 20H60" stroke="#fff" strokeWidth="13"/><path d="M30 0V40M0 20H60" stroke="#C8102E" strokeWidth="8"/></svg>;
 }
-function NoveltyModal({onClose}){
-  return(
-    <div className="ord-overlay" role="dialog" aria-modal="true" aria-label="Novedades" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
-      <div className="novelty-modal">
-        <button type="button" className="novelty-close" aria-label="Cerrar" onClick={onClose}>×</button>
-        <h2>🍽️ ¿Y si tus clientes pudieran pedir directamente desde la mesa sin tener que esperar al camarero?</h2>
-        <p>Estamos incorporando una nueva función a nuestra Carta Digital con Maitre Bot. 📲✨</p>
-        <p>El cliente se sienta, escanea el QR o NFC de la mesa y consulta la carta como siempre.</p>
-        <ul className="novelty-steps">
-          <li>🛒 Añade platos y bebidas a su pedido.</li>
-          <li>🔐 El camarero autoriza la mesa al comenzar.</li>
-          <li>📲 El cliente pulsa "Enviar pedido".</li>
-          <li>🧾 Y el pedido llega directamente al restaurante y puede imprimirse automáticamente en cocina o barra.</li>
-        </ul>
-        <p>¿Quieren otra ronda de bebidas? 🍻<br/>¿Han decidido pedir postre? 🍰<br/>¿Un café después de comer? ☕</p>
-        <p>Pueden realizar nuevos pedidos desde su propio móvil sin tener que esperar a que vuelva el camarero.</p>
-        <p>Y el restaurante mantiene el control en todo momento: cada mesa tiene su propia sesión autorizada y los pedidos quedan registrados.</p>
-        <p>No se trata de sustituir al camarero. Se trata de quitarle desplazamientos innecesarios y permitirle dedicar más tiempo a atender al cliente.</p>
-        <p className="novelty-tagline"><strong>🤖 Carta Digital + Maitre Bot + Pedidos desde mesa</strong></p>
-        <p>Una carta digital que ya no solo enseña lo que tienes.<br/>Ahora también te ayuda a venderlo. 🍋</p>
-        <h3 className="novelty-packs-title">Elige tu pack</h3>
-        <p className="novelty-packs-intro">Empieza por lo que necesitas y crece cuando quieras.</p>
-        <div className="novelty-packs">
-          <div className="novelty-pack">
-            <h4>Carta Digital</h4>
-            <ul>
-              <li>Carta personalizada QR / NFC</li>
-              <li>Maitre Bot</li>
-              <li>Alérgenos</li>
-              <li>Idiomas y audio</li>
-              <li>Menús y reservas</li>
-              <li>Lista de espera</li>
-              <li>Panel de gestión</li>
-              <li>Sin publicidad</li>
-            </ul>
-          </div>
-          <div className="novelty-pack novelty-pack-featured">
-            <span className="novelty-pack-badge">Novedad</span>
-            <h4>Pedidos Directos</h4>
-            <ul>
-              <li>Sistema de pedidos propio</li>
-              <li>Domicilio y recogida</li>
-              <li>Carrito y extras</li>
-              <li>Zonas y tarifas de reparto</li>
-              <li>Gestión de pedidos</li>
-              <li>Flyers con QR de pedido incluidos</li>
-              <li>0 % comisión</li>
-            </ul>
-          </div>
-          <div className="novelty-pack">
-            <h4>Pedidos Pro</h4>
-            <ul>
-              <li>Todo lo de Pedidos Directos</li>
-              <li>Clientes e historial</li>
-              <li>Cupones y promociones</li>
-              <li>Combos y ofertas</li>
-              <li>Fidelización</li>
-              <li>Pack físico QR / NFC</li>
-              <li>0 % comisión</li>
-            </ul>
-          </div>
-        </div>
-        <p className="novelty-packs-note">Sigues usando tus plataformas de siempre para que te descubran: úsalas de escaparate y haz que tus clientes habituales te pidan directamente a ti.</p>
-        <div className="novelty-brand">🌐 Limonada Web<br/><small>Exprimimos Internet para tu negocio.</small></div>
-      </div>
-    </div>
-  );
-}
 function CartaPublica({ data, fotos, onAdmin }) {
   const [language,setLanguage]=useState(()=>{try{return localStorage.getItem("carta-language")==="en"?"en":"es";}catch{return "es";}});
   const locale=React.useMemo(()=>({code:language,words:translationWords(data)}),[language,data]);
@@ -2546,7 +2527,7 @@ function CartaPublica({ data, fotos, onAdmin }) {
         <div style={{fontSize:12,color:"#fff3de",marginBottom:10}}>Carta demo · platos, vinos y precios de ejemplo</div>
         <h1>{r.nombre}</h1><p>{r.subtitulo}</p>
         <div className="novelty-pill-wrap"><button type="button" className="novelty-pill" onClick={()=>setNoveltyOpen(true)}>🎉 Novedades</button></div>
-        {noveltyOpen&&<NoveltyModal onClose={()=>setNoveltyOpen(false)}/>}
+        {noveltyOpen&&window.LW_X&&<window.LW_X.NoveltyModal onClose={()=>setNoveltyOpen(false)}/>}
         <details className="restaurant-info"><summary>Horario y contacto</summary>
           <div>{r.horario}</div><div>{r.direccion}</div><a href={"tel:"+r.telefono}>{r.telefono}</a>
         </details>
@@ -3044,6 +3025,7 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
           <button className={`tab-btn${tab==="pedidos"?" act":""}`} onClick={()=>setTab("pedidos")}>🧾 Pedidos</button>
           <button className={`tab-btn${tab==="menus"?" act":""}`} onClick={()=>setTab("menus")}>Menús diarios y empresas</button>
           <button className={`tab-btn${tab==="clientes"?" act":""}`} onClick={()=>setTab("clientes")}>👥 Clientes</button>
+          <button className={`tab-btn${tab==="mesas"?" act":""}`} onClick={()=>setTab("mesas")}>🪑 Mesas</button>
           <button className={`tab-btn${tab==="espera"?" act":""}`} onClick={()=>setTab("espera")}>Lista de espera</button>
           <button className={`tab-btn${tab==="reservas"?" act":""}`} onClick={()=>setTab("reservas")}>📅 Reservas</button>
           <button className={`tab-btn${tab==="qr"?" act":""}`} onClick={()=>setTab("qr")}>📲 Códigos QR</button>
@@ -3052,6 +3034,7 @@ function PanelAdmin({ data, fotos, setData, setFotos, onLogout, onVerCarta, show
 
         {tab==="pedidos"&&<PedidosTab data={data} setData={setData} showToast={showToast}/>}
         {tab==="clientes"&&<ClientesManager/>}
+        {tab==="mesas"&&window.LW_X&&<window.LW_X.MesasTab showToast={showToast}/>}
         {tab==="menus"&&<SetMenuManager data={data} setData={setData} setFotos={setFotos} onPrint={requestPrint} showToast={showToast}/>}
         {tab==="espera"&&<WaitlistManager/>}
         {tab==="reservas"&&<ReservaManager/>}
@@ -3390,7 +3373,7 @@ Object.assign(ENGLISH,{
 "Subtotal":"Subtotal","Descuento":"Discount","Gastos de reparto":"Delivery fee","Reparto gratis":"Free delivery","Cupón":"Coupon","Aplicar":"Apply",
 "Cupón aplicado":"Coupon applied","Cupón no válido":"Invalid coupon","Cupón caducado o inactivo":"Coupon expired or inactive","Compra mínima no alcanzada":"Minimum spend not reached",
 "Tramitar pedido":"Checkout","Seguir mirando la carta":"Keep browsing the menu","Vaciar":"Empty",
-"¿Cómo quieres tu pedido?":"How would you like your order?","Recogida en local":"Pickup at the restaurant","Entrega a domicilio":"Home delivery",
+"¿Cómo quieres tu pedido?":"How would you like your order?","Recogida en local":"Pickup at the restaurant","Entrega a domicilio":"Home delivery","Servicio en mesa":"Table service","Crea una cuenta o inicia sesión para continuar":"Create an account or sign in to continue","Te lo servimos en tu mesa":"We serve it at your table","Número de mesa":"Table number","Mesa":"Table","Teléfono (opcional)":"Phone (optional)","Indica el número de mesa":"Enter your table number","Efectivo en mesa":"Cash at the table","Tarjeta en mesa":"Card at the table","Servido en mesa":"Served at the table",
 "Sin colas y sin gastos de envío":"No queues and no delivery fee","Te lo llevamos a casa":"We bring it to your door",
 "Tus datos":"Your details","Nombre":"Name","Teléfono":"Phone","Dirección":"Address","Número":"Number","Piso / puerta (opcional)":"Floor / door (optional)",
 "Código postal":"Postcode","Localidad":"Town","Referencia para el repartidor (opcional)":"Note for the courier (optional)",
@@ -3574,7 +3557,8 @@ function OrderCheckout({data,cfg,onClose,onDone}){
   const cart=useOrderCart();
   const [step,setStep]=useState(1);
   const [tipo,setTipo]=useState(cart.tipo||null);
-  const [f,setF]=useState(ordLS("checkout-datos",{nombre:"",telefono:"",direccion:"",piso:"",cp:"",localidad:"",ref:""}));
+  const [user,setUser]=useState(window.LW_ORD.userGet());
+  const [f,setF]=useState(()=>{const q=new URLSearchParams(window.location.search);const u=window.LW_ORD.userGet();return{mesa:q.get("mesa")||"",codigo:q.get("c")||"",...ordLS("checkout-datos",{nombre:"",telefono:"",direccion:"",piso:"",cp:"",localidad:"",ref:""}),...(u?{nombre:u.nombre,telefono:u.telefono}:{})};});
   const [hora,setHora]=useState({asap:true,valor:""});
   const [pago,setPago]=useState(null);
   const [alergias,setAlergias]=useState("");
@@ -3588,15 +3572,17 @@ function OrderCheckout({data,cfg,onClose,onDone}){
     setErr(null);
     if(step===1){if(!tipo){setErr("¿Cómo quieres tu pedido?");return;}OrderStore.set(s=>({...s,tipo,zonaId:null}));setStep(2);return;}
     if(step===2){
+      if(tipo==="mesa"){const r=window.LW_ORD.mesaValidar(f.codigo);if(!r.ok){setErr(r.motivo);return;}if(f.mesa!==r.sesion.mesa)setF(p=>({...p,mesa:r.sesion.mesa}));}
+      if(tipo!=="mesa"&&!user){setErr("Crea una cuenta o inicia sesión para continuar");return;}
       if(!f.nombre.trim()){setErr("Introduce un nombre");return;}
-      if(!/^[+\d][\d\s]{7,14}$/.test(f.telefono.trim())){setErr("Introduce un teléfono válido");return;}
+      if(!(tipo==="mesa"&&!f.telefono.trim())&&!/^[+\d][\d\s]{7,14}$/.test(f.telefono.trim())){setErr("Introduce un teléfono válido");return;}
       if(tipo==="domicilio"){
         if(!f.direccion.trim()||!f.cp.trim()||!f.localidad.trim()){setErr("Introduce la dirección completa");return;}
         if(!zona){setErr("No repartimos en ese código postal. Puedes elegir recogida en local.");return;}
         if(t.subtotal-t.descuento<+zona.minimo){setErr(["min",(+zona.minimo)-(t.subtotal-t.descuento)]);return;}
         OrderStore.set(s=>({...s,zonaId:zona.id}));
       }
-      ordLSset("checkout-datos",f);setStep(3);return;
+      ordLSset("checkout-datos",f);setStep(tipo==="mesa"?4:3);return;
     }
     if(step===3){
       if(!abierto&&hora.asap){
@@ -3614,13 +3600,15 @@ function OrderCheckout({data,cfg,onClose,onDone}){
   const confirmar=()=>{
     if(!cart.items.length){setErr("El carrito está vacío");return;}
     const order=crearPedido({state:{...cart,zonaId:zona?zona.id:null},cfg,tipo,
-      cliente:tipo==="domicilio"?{nombre:f.nombre.trim(),telefono:f.telefono.trim(),direccion:f.direccion.trim(),piso:f.piso.trim(),cp:f.cp.trim(),localidad:f.localidad.trim(),ref:f.ref.trim()}:{nombre:f.nombre.trim(),telefono:f.telefono.trim()},
-      hora,pago,obsGenerales:obsGen.trim(),alergiasNota:alergias.trim()});
+      cliente:tipo==="domicilio"?{nombre:f.nombre.trim(),telefono:f.telefono.trim(),direccion:f.direccion.trim(),piso:f.piso.trim(),cp:f.cp.trim(),localidad:f.localidad.trim(),ref:f.ref.trim()}:{nombre:f.nombre.trim(),telefono:f.telefono.trim(),mesa:tipo==="mesa"?String(f.mesa).trim():undefined,codigo:tipo==="mesa"?String(f.codigo).trim().toUpperCase():undefined,userId:user?user.id:undefined},
+      hora:tipo==="mesa"?{asap:true,valor:""}:hora,pago,obsGenerales:obsGen.trim(),alergiasNota:alergias.trim()});
+    if(tipo==="mesa")window.LW_ORD.mesaRegistrarPedido(f.codigo);
     OrderStore.set({items:[],tipo:null,zonaId:null,cupon:null});
     onDone(order);
   };
   const pagos=tipo==="domicilio"
     ?[["efectivo","Efectivo"],["tarjeta-repartidor","Tarjeta al repartidor"],["online-demo","Pago online"]]
+    :tipo==="mesa"?[["efectivo","Efectivo en mesa"],["tarjeta-local","Tarjeta en mesa"],["online-demo","Pago online"]]
     :[["efectivo","Efectivo"],["tarjeta-local","Tarjeta al recoger"],["online-demo","Pago online"]];
   return localizeTree(
     <div className="ord-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
@@ -3634,14 +3622,19 @@ function OrderCheckout({data,cfg,onClose,onDone}){
               <div className="ord-grp-t">¿Cómo quieres tu pedido?</div>
               <button className={tipo==="recogida"?"on":""} onClick={()=>{setTipo("recogida");setErr(null);}}><b>🏪 <span>Recogida en local</span></b><span>Sin colas y sin gastos de envío</span></button>
               <button className={tipo==="domicilio"?"on":""} onClick={()=>{setTipo("domicilio");setErr(null);}}><b>🛵 <span>Entrega a domicilio</span></b><span>Te lo llevamos a casa</span></button>
+              <button className={tipo==="mesa"?"on":""} onClick={()=>{setTipo("mesa");setErr(null);}}><b>🍽️ <span>Servicio en mesa</span></b><span>Te lo servimos en tu mesa</span></button>
             </div>
           )}
           {step===2&&(
             <div>
               <div className="ord-grp-t">Tus datos</div>
+              {tipo==="mesa"&&<><label className="ord-lbl">Código de mesa</label><input className="ord-inp" style={{textTransform:"uppercase",letterSpacing:".15em"}} maxLength={4} value={f.codigo} onChange={e=>set("codigo",e.target.value.toUpperCase())}/><div style={{fontSize:".72rem",color:"#8A8275",margin:"-6px 0 10px"}}>Te lo ha dado el camarero. Deja de valer al pagar la cuenta.</div></>}
+              {tipo!=="mesa"&&!user&&window.LW_X&&<window.LW_X.AuthGate onDone={u=>{setUser(u);setF(p=>({...p,nombre:u.nombre,telefono:u.telefono}));}}/>}
+              {tipo!=="mesa"&&user&&<div className="lw-user"><span><span>Sesión iniciada como</span> <b>{user.nombre}</b></span><button className="btn btn-sm btn-sec" onClick={()=>{window.LW_ORD.userLogout();setUser(null);}}>Cerrar sesión</button></div>}
+              {(tipo==="mesa"||user)&&<>
               <label className="ord-lbl">Nombre</label>
               <input className="ord-inp" value={f.nombre} onChange={e=>set("nombre",e.target.value)} autoComplete="name"/>
-              <label className="ord-lbl">Teléfono</label>
+              <label className="ord-lbl">{tipo==="mesa"?"Teléfono (opcional)":"Teléfono"}</label>
               <input className="ord-inp" type="tel" value={f.telefono} onChange={e=>set("telefono",e.target.value)} autoComplete="tel"/>
               {tipo==="domicilio"&&(
                 <>
@@ -3658,6 +3651,7 @@ function OrderCheckout({data,cfg,onClose,onDone}){
                   {zona&&<div className="ord-warn" style={{background:"#EFF4F0",borderColor:"#BFD2C5",color:"#2C4A3E"}}>📍 {zona.nombre} · <span>Gastos de reparto</span>: {fmt(zona.coste)}{zona.gratisDesde?<> · <span>Envío gratis desde</span> {fmt(zona.gratisDesde)}</>:null}</div>}
                 </>
               )}
+              </>}
             </div>
           )}
           {step===3&&(
@@ -3699,7 +3693,7 @@ function OrderCheckout({data,cfg,onClose,onDone}){
           {step<5
             ?<button className="ord-cta" onClick={next}>Continuar</button>
             :<button className="ord-cta" onClick={confirmar}><span>Confirmar pedido</span> · {fmt(t.total)}</button>}
-          {step>1&&<button className="ord-cta2" onClick={()=>{setErr(null);setStep(s=>s-1);}}>← <span>Volver</span></button>}
+          {step>1&&<button className="ord-cta2" onClick={()=>{setErr(null);setStep(s=>(tipo==="mesa"&&s===4)?2:s-1);}}>← <span>Volver</span></button>}
         </div>
       </div>
     </div>,locale);
@@ -3759,8 +3753,8 @@ function OrderView({order,data,cfg,onClose,onTrack,showToast,tracking}){
           {!tracking&&<div style={{textAlign:"center",fontSize:"2rem",marginBottom:6}}>✅</div>}
           <div style={{textAlign:"center",marginBottom:14}}>
             <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.5rem",fontWeight:700,color:"#2C4A3E"}}>#{order.numero}</div>
-            <div style={{fontSize:".74rem",color:"#8A8275"}}>{d.toLocaleDateString("es-ES")} · {d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})} · {order.tipo==="domicilio"?<span>Entrega a domicilio</span>:<span>Recogida en local</span>}</div>
-            {order.estado!=="entregado"&&order.estado!=="cancelado"&&order.hora&&order.hora.asap&&<div style={{fontSize:".8rem",color:"#9A7010",fontWeight:600,marginTop:6}}><span>Pedido listo aproximadamente en</span> {order.prep[0]}-{order.prep[1]} <span>minutos</span></div>}
+            <div style={{fontSize:".74rem",color:"#8A8275"}}>{d.toLocaleDateString("es-ES")} · {d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})} · {order.tipo==="mesa"?<span><span>Servicio en mesa</span> · <span>Mesa</span> {order.cliente.mesa}</span>:order.tipo==="domicilio"?<span>Entrega a domicilio</span>:<span>Recogida en local</span>}</div>
+            {order.estado!=="entregado"&&order.estado!=="servido"&&order.estado!=="cancelado"&&order.hora&&order.hora.asap&&<div style={{fontSize:".8rem",color:"#9A7010",fontWeight:600,marginTop:6}}><span>Pedido listo aproximadamente en</span> {order.prep[0]}-{order.prep[1]} <span>minutos</span></div>}
           </div>
           {tracking&&<OrderTimeline order={order}/>}
           {order.items.map(it=>(
@@ -3867,19 +3861,19 @@ function PedidosManager({data,showToast}){
     return()=>{window.removeEventListener("lw-orders",check);window.removeEventListener("storage",check);clearInterval(iv);};
   },[]);
   const orders=ordersGet();
-  const list=filtro==="todos"?orders:orders.filter(o=>o.estado===filtro);
+  const list=filtro==="todos"?orders:orders.filter(o=>o.estado===filtro||(filtro==="entregado"&&o.estado==="servido"));
   const nNuevos=orders.filter(o=>o.estado==="recibido").length;
   const accion=(o,estado,msg)=>{cambiarEstado(o.id,estado);showToast(msg);tick(x=>x+1);};
   const botones=o=>{
     switch(o.estado){
       case"recibido":return[["confirmado","✓ Aceptar","btn-pri"],["cancelado","✕ Rechazar","btn-sec"]];
       case"confirmado":return[["preparando","👨‍🍳 A cocina","btn-pri"],["cancelado","✕ Cancelar","btn-sec"]];
-      case"preparando":return o.tipo==="domicilio"?[["reparto","🛵 En reparto","btn-pri"]]:[["listo","✓ Marcar listo","btn-pri"]];
+      case"preparando":return o.tipo==="domicilio"?[["reparto","🛵 En reparto","btn-pri"]]:o.tipo==="mesa"?[["servido","🍽️ Servido en mesa","btn-pri"]]:[["listo","✓ Marcar listo","btn-pri"]];
       case"listo":case"reparto":return[["entregado","✓ Entregado","btn-pri"]];
       default:return[];
     }
   };
-  const colores={recibido:"#C8860A",confirmado:"#2C6BAF",preparando:"#8A5A9E",listo:"#2C4A3E",reparto:"#2C4A3E",entregado:"#888",cancelado:"#A33"};
+  const colores={recibido:"#C8860A",confirmado:"#2C6BAF",preparando:"#8A5A9E",listo:"#2C4A3E",reparto:"#2C4A3E",servido:"#888",entregado:"#888",cancelado:"#A33"};
   return(
     <div>
       <div className="cat-filters" style={{marginBottom:14}}>
@@ -3897,7 +3891,7 @@ function PedidosManager({data,showToast}){
               <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",cursor:"pointer"}} onClick={()=>setAbierto(abiertoEste?null:o.id)}>
                 <strong style={{fontFamily:"'Playfair Display',serif",fontSize:"1.05rem",color:"#2C4A3E"}}>#{o.numero}</strong>
                 <span style={{fontSize:".72rem",background:colores[o.estado]||"#888",color:"#fff",borderRadius:14,padding:"3px 10px",fontWeight:600}}>{estadoNombre(o.estado)}</span>
-                <span style={{fontSize:".75rem",color:"#6A6258"}}>{o.tipo==="domicilio"?"🛵 Domicilio":"🏪 Recogida"} · {d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}</span>
+                <span style={{fontSize:".75rem",color:"#6A6258"}}>{o.tipo==="mesa"?"🍽️ Mesa "+(o.cliente.mesa||""):o.tipo==="domicilio"?"🛵 Domicilio":"🏪 Recogida"} · {d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}</span>
                 <span style={{fontSize:".8rem"}}>{o.cliente&&o.cliente.nombre}</span>
                 <span style={{marginLeft:"auto",fontWeight:700,color:"#9A7010"}}>{fmt(o.total)}</span>
                 <span style={{fontSize:".8rem",color:"#AAA"}}>{abiertoEste?"▲":"▼"}</span>
@@ -4231,8 +4225,164 @@ function App() {
 }
 
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+window.LW_APP={localizeTree,MenuLanguage,useState,useEffect,ENGLISH};
+window.LW_BOOT=()=>{if(window.LW_BOOT.done)return;window.LW_BOOT.done=true;ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));};
+if(window.LW_X_INIT)window.LW_X_INIT();
+if(window.LW_X)window.LW_BOOT();
 
   </script>
+<script type="text/babel" data-type="module" data-lw="2">
+/* Carta Digital · módulo 2: cuentas de cliente y mesas con código (demo local) */
+function lwInit2(){
+const {localizeTree,MenuLanguage,useState,useEffect,ENGLISH}=window.LW_APP;
+const L=window.LW_ORD;
+Object.assign(ENGLISH,{
+  "Crear cuenta":"Create account","Iniciar sesión":"Sign in","Para pedidos a domicilio o para recoger necesitas una cuenta. Es un momento.":"For delivery or pickup orders you need an account. It only takes a moment.",
+  "Email":"Email","PIN (4 dígitos)":"PIN (4 digits)","Registrarme":"Sign up","Entrar":"Sign in","Cerrar sesión":"Sign out","Sesión iniciada como":"Signed in as",
+  "Código de mesa":"Table code","Te lo ha dado el camarero. Deja de valer al pagar la cuenta.":"The waiter gave it to you. It stops working once the bill is paid.",
+  "Mesas":"Tables","Número de mesa":"Table number","Abrir mesa y generar código":"Open table and generate code","Cuenta pagada · cerrar":"Bill paid · close",
+  "Abierta":"Open","Cerrada":"Closed","pedidos":"orders","Mostrar cerradas":"Show closed","Ocultar cerradas":"Hide closed","Mesa":"Table",
+  "Dale este código al cliente (o el enlace QR). Cuando cobres la cuenta, ciérrala: el código deja de valer.":"Give this code to the customer (or the QR link). When you charge the bill, close it: the code stops working.",
+  "No hay mesas abiertas.":"No open tables.","Enlace QR de la mesa":"Table QR link"
+});
+
+function AuthGate({onDone}){
+  const locale=React.useContext(MenuLanguage);
+  const [mode,setMode]=useState("registro");
+  const [f,setF]=useState({nombre:"",telefono:"",email:"",pin:""});
+  const [err,setErr]=useState(null);
+  const set=(k,v)=>{setErr(null);setF(p=>({...p,[k]:v}));};
+  const go=()=>{const r=mode==="registro"?L.userRegistrar(f):L.userLogin(f);if(!r.ok){setErr(r.motivo);return;}onDone(r.user);};
+  return localizeTree(
+    <div>
+      <div className="ord-grp-t">{mode==="registro"?"Crear cuenta":"Iniciar sesión"}</div>
+      <p style={{fontSize:".8rem",color:"#6A6258",margin:"0 0 10px"}}>Para pedidos a domicilio o para recoger necesitas una cuenta. Es un momento.</p>
+      <div className="lw-auth">
+        <button className={"btn btn-sm "+(mode==="registro"?"btn-pri":"btn-sec")} onClick={()=>{setMode("registro");setErr(null);}}>Crear cuenta</button>
+        <button className={"btn btn-sm "+(mode==="login"?"btn-pri":"btn-sec")} onClick={()=>{setMode("login");setErr(null);}}>Iniciar sesión</button>
+      </div>
+      {mode==="registro"&&<>
+        <label className="ord-lbl">Nombre</label><input className="ord-inp" value={f.nombre} onChange={e=>set("nombre",e.target.value)} autoComplete="name"/>
+        <label className="ord-lbl">Teléfono</label><input className="ord-inp" type="tel" value={f.telefono} onChange={e=>set("telefono",e.target.value)} autoComplete="tel"/>
+      </>}
+      <label className="ord-lbl">Email</label><input className="ord-inp" type="email" value={f.email} onChange={e=>set("email",e.target.value)} autoComplete="email"/>
+      <label className="ord-lbl">PIN (4 dígitos)</label><input className="ord-inp" type="password" inputMode="numeric" maxLength={4} value={f.pin} onChange={e=>set("pin",e.target.value.replace(/\D/g,""))}/>
+      {err&&<div className="ord-warn" role="alert">{err}</div>}
+      <button className="btn btn-pri" style={{width:"100%",marginTop:10}} onClick={go}>{mode==="registro"?"Registrarme":"Entrar"}</button>
+    </div>, locale);
+}
+
+function MesasTab({showToast}){
+  const [mesas,setMesas]=useState(L.mesasGet());
+  const [num,setNum]=useState("");
+  const [verCerradas,setVerCerradas]=useState(false);
+  useEffect(()=>{const f=()=>setMesas(L.mesasGet());window.addEventListener("lw-mesas",f);return()=>window.removeEventListener("lw-mesas",f);},[]);
+  const abrir=()=>{const s=L.mesaAbrir(num);if(!s){showToast("Indica el número de mesa");return;}setNum("");showToast("Mesa "+s.mesa+" abierta · código "+s.codigo);};
+  const base=window.location.origin+window.location.pathname;
+  const lista=mesas.filter(m=>verCerradas||m.estado==="abierta");
+  return(
+    <section>
+      <h2>🪑 Mesas</h2>
+      <p style={{fontSize:".85rem",color:"#6A6258"}}>Dale este código al cliente (o el enlace QR). Cuando cobres la cuenta, ciérrala: el código deja de valer.</p>
+      <div className="card" style={{display:"flex",gap:8,alignItems:"flex-end",flexWrap:"wrap"}}>
+        <div style={{flex:"1 1 140px"}}><label className="ord-lbl">Número de mesa</label><input className="ord-inp" inputMode="numeric" value={num} onChange={e=>setNum(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")abrir();}}/></div>
+        <button className="btn btn-pri" onClick={abrir}>Abrir mesa y generar código</button>
+      </div>
+      <div style={{margin:"10px 0"}}><button className="btn btn-sm btn-sec" onClick={()=>setVerCerradas(v=>!v)}>{verCerradas?"Ocultar cerradas":"Mostrar cerradas"}</button></div>
+      {!lista.length&&<div className="empty">No hay mesas abiertas.</div>}
+      {lista.map(m=>(
+        <div key={m.id} className={"lw-mesa-card"+(m.estado==="cerrada"?" cerrada":"")}>
+          <div>
+            <div style={{fontWeight:700}}>Mesa {m.mesa} <span style={{fontSize:".72rem",fontWeight:600,color:m.estado==="abierta"?"#2C4A3E":"#888"}}>· {m.estado==="abierta"?"Abierta":"Cerrada"} · {m.pedidos||0} pedidos</span></div>
+            <div style={{fontSize:".72rem",color:"#8A8275"}}>{new Date(m.abierta).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}{m.cerrada?" → "+new Date(m.cerrada).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}):""}</div>
+            {m.estado==="abierta"&&<div style={{fontSize:".72rem",color:"#8A8275",marginTop:4}}>Enlace QR de la mesa: <code style={{userSelect:"all"}}>{base+"?mesa="+m.mesa+"&c="+m.codigo}</code></div>}
+          </div>
+          <div style={{display:"flex",gap:10,alignItems:"center"}}>
+            <span className="lw-mesa-code">{m.codigo}</span>
+            {m.estado==="abierta"&&<button className="btn btn-sm btn-sec" onClick={()=>{L.mesaCerrar(m.id);showToast("Mesa "+m.mesa+" cerrada");}}>Cuenta pagada · cerrar</button>}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function NoveltyModal({onClose}){
+  return(
+    <div className="ord-overlay" role="dialog" aria-modal="true" aria-label="Novedades" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+      <div className="novelty-modal">
+        <button type="button" className="novelty-close" aria-label="Cerrar" onClick={onClose}>×</button>
+        <h2>🍽️ ¿Y si tus clientes pudieran pedir directamente desde la mesa sin tener que esperar al camarero?</h2>
+        <p>Estamos incorporando una nueva función a nuestra Carta Digital con Maitre Bot. 📲✨</p>
+        <p>El cliente se sienta, escanea el QR o NFC de la mesa y consulta la carta como siempre.</p>
+        <ul className="novelty-steps">
+          <li>🛒 Añade platos y bebidas a su pedido.</li>
+          <li>🔐 El camarero autoriza la mesa al comenzar.</li>
+          <li>📲 El cliente pulsa "Enviar pedido".</li>
+          <li>🧾 Y el pedido llega directamente al restaurante y puede imprimirse automáticamente en cocina o barra.</li>
+        </ul>
+        <p>¿Quieren otra ronda de bebidas? 🍻<br/>¿Han decidido pedir postre? 🍰<br/>¿Un café después de comer? ☕</p>
+        <p>Pueden realizar nuevos pedidos desde su propio móvil sin tener que esperar a que vuelva el camarero.</p>
+        <p>Y el restaurante mantiene el control en todo momento: cada mesa tiene su propia sesión autorizada y los pedidos quedan registrados.</p>
+        <p>No se trata de sustituir al camarero. Se trata de quitarle desplazamientos innecesarios y permitirle dedicar más tiempo a atender al cliente.</p>
+        <p className="novelty-tagline"><strong>🤖 Carta Digital + Maitre Bot + Pedidos desde mesa</strong></p>
+        <p>Una carta digital que ya no solo enseña lo que tienes.<br/>Ahora también te ayuda a venderlo. 🍋</p>
+        <h3 className="novelty-packs-title">Elige tu pack</h3>
+        <p className="novelty-packs-intro">Empieza por lo que necesitas y crece cuando quieras.</p>
+        <div className="novelty-packs">
+          <div className="novelty-pack">
+            <h4>Carta Digital</h4>
+            <ul>
+              <li>Carta personalizada QR / NFC</li>
+              <li>Maitre Bot</li>
+              <li>Alérgenos</li>
+              <li>Idiomas y audio</li>
+              <li>Menús y reservas</li>
+              <li>Lista de espera</li>
+              <li>Panel de gestión</li>
+              <li>Sin publicidad</li>
+            </ul>
+          </div>
+          <div className="novelty-pack novelty-pack-featured">
+            <span className="novelty-pack-badge">Novedad</span>
+            <h4>Pedidos Directos</h4>
+            <ul>
+              <li>Sistema de pedidos propio</li>
+              <li>Domicilio y recogida</li>
+              <li>Carrito y extras</li>
+              <li>Zonas y tarifas de reparto</li>
+              <li>Gestión de pedidos</li>
+              <li>Flyers con QR de pedido incluidos</li>
+              <li>0 % comisión</li>
+            </ul>
+          </div>
+          <div className="novelty-pack">
+            <h4>Pedidos Pro</h4>
+            <ul>
+              <li>Todo lo de Pedidos Directos</li>
+              <li>Clientes e historial</li>
+              <li>Cupones y promociones</li>
+              <li>Combos y ofertas</li>
+              <li>Fidelización</li>
+              <li>Pack físico QR / NFC</li>
+              <li>0 % comisión</li>
+            </ul>
+          </div>
+        </div>
+        <p className="novelty-packs-note">Sigues usando tus plataformas de siempre para que te descubran: úsalas de escaparate y haz que tus clientes habituales te pidan directamente a ti.</p>
+        <div className="novelty-brand">🌐 Limonada Web<br/><small>Exprimimos Internet para tu negocio.</small></div>
+      </div>
+    </div>
+  );
+}
+
+window.LW_X={AuthGate,MesasTab,NoveltyModal};
+}
+if(window.LW_APP){lwInit2();if(window.LW_BOOT)window.LW_BOOT();}else{window.LW_X_INIT=lwInit2;}
+
+</script>
+
+
+
 </body>
 </html>
