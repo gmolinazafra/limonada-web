@@ -352,6 +352,8 @@ const ORDER_CSS=`
 .lw-mesa-card.cerrada{opacity:.55}
 .lw-auth{display:flex;gap:6px;margin-bottom:12px}.lw-auth button{flex:1}
 .lw-user{font-size:.8rem;color:#2C4A3E;background:#EFF4F0;border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dish-art{cursor:default;background:transparent;border:0;padding:0}
+.dish-art img{width:100%;height:100%;object-fit:cover;display:block}
 .menu-sec-h{font:600 24px/1.2 'Playfair Display',Georgia,serif;color:#22372f;margin:38px 0 2px;padding-bottom:10px;border-bottom:2px solid #2C4A3E;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .menu-sec:first-of-type .menu-sec-h{margin-top:12px}
 .menu-sec-h>span{font:600 11px/1 'Inter',sans-serif;color:#8A8275;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -798,10 +800,219 @@ function aplicarVinosV8(data){
   return Object.assign({},data,{demoContentVersion:8,platos:platos});
 }
 
+// ─── ILUSTRACIONES SVG (embebidas, sin red) ─────────────────────────────────
+var LWART=(function(){
+  var G="#2C4A3E",O="#9A7010",D="#C8860A",CR="#F4EEE3",CR2="#E7DCC8",W="#FFFDF8";
+  function wrap(inner,bg){
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">'
+      +'<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+(bg||CR)+'"/><stop offset="1" stop-color="'+CR2+'"/></linearGradient>'
+      +'<radialGradient id="gl" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>'
+      +'<rect width="200" height="200" fill="url(#bg)"/><rect width="200" height="200" fill="url(#gl)"/>'
+      +inner+'</svg>';
+  }
+  function uri(s){return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);}
+  function plato(inner){ // plato blanco con sombra
+    return '<ellipse cx="100" cy="152" rx="62" ry="13" fill="#000" opacity=".08"/>'
+      +'<circle cx="100" cy="108" r="62" fill="'+W+'" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<circle cx="100" cy="108" r="49" fill="none" stroke="'+CR2+'" stroke-width="1.5"/>'+inner;
+  }
+  function botella(cuerpo,etiq){
+    return '<ellipse cx="100" cy="176" rx="34" ry="8" fill="#000" opacity=".1"/>'
+      +'<path d="M88 28h24v26c0 10 13 20 13 40v74c0 6-4 10-10 10H85c-6 0-10-4-10-10V94c0-20 13-30 13-40V28z" fill="'+cuerpo+'"/>'
+      +'<path d="M88 28h24v8H88z" fill="#3A3A3A"/><rect x="86" y="34" width="28" height="14" rx="2" fill="#4A4A4A"/>'
+      +'<rect x="76" y="108" width="48" height="42" rx="3" fill="'+(etiq||W)+'" opacity=".95"/>'
+      +'<rect x="82" y="116" width="36" height="3" rx="1.5" fill="'+G+'" opacity=".75"/>'
+      +'<rect x="82" y="124" width="26" height="3" rx="1.5" fill="'+G+'" opacity=".45"/>'
+      +'<rect x="82" y="136" width="30" height="6" rx="2" fill="'+D+'" opacity=".8"/>'
+      +'<path d="M92 60c0 14-9 22-9 36v44" stroke="#fff" stroke-width="4" opacity=".18" fill="none" stroke-linecap="round"/>';
+  }
+  function copa(vino,alto){
+    var y=alto||0;
+    return '<ellipse cx="100" cy="178" rx="30" ry="7" fill="#000" opacity=".1"/>'
+      +'<path d="M66 '+(46+y)+'h68c0 30-14 44-27 48v42h20v8H73v-8h20v-42c-13-4-27-18-27-48z" fill="#EDF2F0" opacity=".85"/>'
+      +'<path d="M69 '+(62+y)+'h62c-4 20-16 30-31 32-15-2-27-12-31-32z" fill="'+vino+'"/>'
+      +'<path d="M76 '+(52+y)+'c0 16 6 26 14 30" stroke="#fff" stroke-width="4" opacity=".45" fill="none" stroke-linecap="round"/>';
+  }
+  function flauta(vino){
+    return '<ellipse cx="100" cy="178" rx="26" ry="6" fill="#000" opacity=".1"/>'
+      +'<path d="M84 28h32l-4 78c0 8-4 12-12 14v44h16v6H84v-6h16v-44c-8-2-12-6-12-14z" fill="#EDF2F0" opacity=".85"/>'
+      +'<path d="M86 58h28l-2 48c0 6-4 10-12 11-8-1-12-5-12-11z" fill="'+vino+'"/>'
+      +'<circle cx="97" cy="96" r="3" fill="#fff" opacity=".7"/><circle cx="105" cy="78" r="2.4" fill="#fff" opacity=".7"/><circle cx="99" cy="66" r="2" fill="#fff" opacity=".6"/>';
+  }
+  var A={
+    "tinto-botella":function(){return wrap(botella("#3C1F24","#F6F1E6"));},
+    "tinto-copa":function(){return wrap(copa("#7B1E2B"));},
+    "blanco-botella":function(){return wrap(botella("#4E5B2E","#F8F4E8"));},
+    "blanco-copa":function(){return wrap(copa("#E4D68C"));},
+    "rosado-botella":function(){return wrap(botella("#C98B93","#FFF6F2"));},
+    "rosado-copa":function(){return wrap(copa("#E9A6A6"));},
+    "espumoso-botella":function(){return wrap(botella("#2E3B30","#F4EFDC"));},
+    "espumoso-copa":function(){return wrap(flauta("#EBD79A"));},
+    "generoso-copa":function(){return wrap(copa("#D7A24A",6));},
+    "generoso-botella":function(){return wrap(botella("#2F2A22","#F7F2E2"));},
+    "dulce-copa":function(){return wrap(copa("#6B3410",6));},
+    "dulce-botella":function(){return wrap(botella("#241A14","#F5EBD6"));},
+    cafe:function(){return wrap('<ellipse cx="100" cy="158" rx="46" ry="10" fill="#000" opacity=".1"/>'
+      +'<path d="M58 84h74v34c0 20-16 34-37 34S58 138 58 118z" fill="'+W+'" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<path d="M64 90h62v26c0 16-13 26-31 26s-31-10-31-26z" fill="#5A3820"/>'
+      +'<path d="M132 96h10c9 0 15 6 15 14s-6 14-15 14h-6" fill="none" stroke="'+W+'" stroke-width="7" stroke-linecap="round"/>'
+      +'<path d="M84 58c0-8 8-8 8-16M100 54c0-8 8-8 8-16M116 58c0-8 8-8 8-16" stroke="'+G+'" stroke-width="3" opacity=".35" fill="none" stroke-linecap="round"/>'
+      +'<ellipse cx="100" cy="160" rx="52" ry="8" fill="'+W+'" stroke="'+CR2+'" stroke-width="2"/>');},
+    infusion:function(){return wrap('<ellipse cx="100" cy="158" rx="44" ry="9" fill="#000" opacity=".1"/>'
+      +'<path d="M60 82h72v32c0 20-16 34-36 34s-36-14-36-34z" fill="'+W+'" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<path d="M66 88h60v24c0 16-13 26-30 26s-30-10-30-26z" fill="#C68A3A" opacity=".85"/>'
+      +'<path d="M132 94h9c9 0 14 6 14 13s-5 13-14 13h-5" fill="none" stroke="'+W+'" stroke-width="7" stroke-linecap="round"/>'
+      +'<path d="M104 66h16l-4 22h-8z" fill="#E8DFCB" stroke="'+CR2+'"/><path d="M112 88v18" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<path d="M86 58c0-8 8-8 8-16" stroke="'+G+'" stroke-width="3" opacity=".35" fill="none" stroke-linecap="round"/>');},
+    refresco:function(){return wrap('<ellipse cx="100" cy="172" rx="30" ry="7" fill="#000" opacity=".1"/>'
+      +'<path d="M70 52h60l-8 110c0 6-4 10-10 10H88c-6 0-10-4-10-10z" fill="#EDF2F0" opacity=".8"/>'
+      +'<path d="M74 76h52l-6 84c0 5-3 8-8 8H88c-5 0-8-3-8-8z" fill="'+D+'" opacity=".85"/>'
+      +'<rect x="96" y="30" width="9" height="50" rx="4" fill="'+G+'" transform="rotate(12 100 55)"/>'
+      +'<circle cx="92" cy="112" r="4" fill="#fff" opacity=".5"/><circle cx="108" cy="130" r="3" fill="#fff" opacity=".45"/><circle cx="100" cy="96" r="3" fill="#fff" opacity=".5"/>');},
+    cerveza:function(){return wrap('<ellipse cx="100" cy="174" rx="32" ry="7" fill="#000" opacity=".1"/>'
+      +'<path d="M70 62h60v96c0 7-5 12-12 12H82c-7 0-12-5-12-12z" fill="#EDD27A"/>'
+      +'<path d="M70 62h60v16H70z" fill="#FFFDF6"/><path d="M66 54c6-10 20-12 28-6 8-8 24-6 30 2 6 6 4 14-4 14H72c-8 0-10-6-6-10z" fill="#FFFDF6"/>'
+      +'<path d="M130 84h12c8 0 14 7 14 16v14c0 9-6 16-14 16h-12" fill="none" stroke="#EDD27A" stroke-width="10"/>'
+      +'<circle cx="88" cy="110" r="3.5" fill="#fff" opacity=".5"/><circle cx="110" cy="132" r="3" fill="#fff" opacity=".45"/>');},
+    agua:function(){return wrap(botella("#BFD6DD","#F3FAFB"));},
+    frito:function(){return wrap(plato('<ellipse cx="78" cy="100" rx="21" ry="14" fill="#D9A050" transform="rotate(-18 78 100)"/>'
+      +'<ellipse cx="112" cy="94" rx="21" ry="14" fill="#E2AE5E" transform="rotate(14 112 94)"/>'
+      +'<ellipse cx="96" cy="122" rx="22" ry="14" fill="#D59645" transform="rotate(-4 96 122)"/>'
+      +'<path d="M64 96c6-4 14-4 20 0M100 88c6-4 14-4 20 2M82 118c6-4 16-4 22 1" stroke="#B87A33" stroke-width="2" opacity=".55" fill="none" stroke-linecap="round"/>'
+      +'<path d="M132 132c8-6 12-2 16-10" stroke="'+G+'" stroke-width="3" opacity=".4" fill="none" stroke-linecap="round"/>'));},
+    aros:function(){return wrap(plato('<g fill="none" stroke="#DBA755" stroke-width="9">'
+      +'<circle cx="82" cy="98" r="15"/><circle cx="116" cy="92" r="13"/><circle cx="100" cy="126" r="14"/></g>'
+      +'<g fill="none" stroke="#C08C3C" stroke-width="2" opacity=".5"><circle cx="82" cy="98" r="19"/><circle cx="116" cy="92" r="17"/><circle cx="100" cy="126" r="18"/></g>'
+      +'<path d="M138 118a12 12 0 0 1 12 12" stroke="#EBD24F" stroke-width="5" fill="none" stroke-linecap="round"/>'));},
+    tosta:function(){return wrap(plato('<rect x="54" y="84" width="92" height="42" rx="8" fill="#E0B571"/>'
+      +'<rect x="54" y="84" width="92" height="12" rx="6" fill="#EBC98E"/>'
+      +'<path d="M60 106c10-6 22-6 32 0s22 6 32 0 16-4 20 0" stroke="#C9913F" stroke-width="3" fill="none" opacity=".5"/>'
+      +'<path d="M62 92c14 0 20 8 34 8s22-8 36-8" stroke="#B82F2F" stroke-width="0" fill="none"/>'
+      +'<ellipse cx="80" cy="96" rx="14" ry="8" fill="#C9423C" opacity=".85"/><ellipse cx="112" cy="99" rx="16" ry="8" fill="#C9423C" opacity=".8"/>'
+      +'<path d="M66 124c10 4 22 4 32 0" stroke="'+G+'" stroke-width="3" opacity=".35" fill="none" stroke-linecap="round"/>'));},
+    jamon:function(){return wrap(plato('<g opacity=".95">'
+      +'<path d="M62 92c14-10 30-8 40 2s26 12 38 4c4 12-8 20-22 20s-22 6-34 2-24-16-22-28z" fill="#C4645F"/>'
+      +'<path d="M70 100c10-4 20 0 28 6s20 8 30 4" stroke="#F2E2DA" stroke-width="4" fill="none" opacity=".8"/>'
+      +'<path d="M66 112c12-2 22 4 32 8s20 4 28 0" stroke="#F2E2DA" stroke-width="3" fill="none" opacity=".65"/></g>'
+      +'<path d="M74 134c14 6 34 6 48 0" stroke="'+O+'" stroke-width="3" opacity=".35" fill="none" stroke-linecap="round"/>'));},
+    tortilla:function(){return wrap(plato('<path d="M100 62a46 46 0 0 1 46 46H100z" fill="#E9BE55"/>'
+      +'<path d="M100 108h46a46 46 0 0 1-46 46z" fill="#DFAE41"/>'
+      +'<path d="M100 62v92" stroke="#F5E3AE" stroke-width="3"/>'
+      +'<circle cx="118" cy="92" r="5" fill="#F6E7B4" opacity=".9"/><circle cx="124" cy="120" r="4" fill="#F6E7B4" opacity=".85"/><circle cx="110" cy="132" r="3.5" fill="#F6E7B4" opacity=".8"/>'));},
+    sopa:function(){return wrap(plato('<circle cx="100" cy="108" r="44" fill="#E2703A"/>'
+      +'<circle cx="100" cy="108" r="44" fill="none" stroke="#C95C29" stroke-width="2"/>'
+      +'<ellipse cx="88" cy="96" rx="9" ry="7" fill="#FBF3E2"/><circle cx="88" cy="96" r="3.5" fill="#E9C25C"/>'
+      +'<path d="M104 112l9-4 5 7-9 4z" fill="#C4645F"/><path d="M116 100l8-3 4 6-8 3z" fill="#C4645F" opacity=".9"/>'
+      +'<path d="M78 118l7-3 4 6-7 3z" fill="#C4645F" opacity=".85"/>'
+      +'<path d="M120 88c6-2 10 2 12 6" stroke="'+G+'" stroke-width="3" opacity=".45" fill="none" stroke-linecap="round"/>'));},
+    pescado:function(){return wrap(plato('<path d="M56 108c14-20 44-30 64-16 8 6 12 12 18 12 8 0 12-8 12-8v24s-4-8-12-8c-6 0-10 6-18 12-20 14-50 4-64-16z" fill="#A8BFC6"/>'
+      +'<circle cx="78" cy="102" r="4" fill="'+G+'"/>'
+      +'<path d="M96 96c8 6 8 18 0 24M110 94c8 8 8 20 0 28" stroke="#8AA6AE" stroke-width="3" fill="none"/>'
+      +'<path d="M64 130c10 6 24 6 34 2" stroke="#E0C15A" stroke-width="3" opacity=".6" fill="none" stroke-linecap="round"/>'));},
+    verde:function(){return wrap(plato('<circle cx="88" cy="100" r="17" fill="#6E9455"/><circle cx="114" cy="94" r="14" fill="#83A860"/><circle cx="104" cy="124" r="16" fill="#5E8549"/>'
+      +'<circle cx="76" cy="122" r="9" fill="#C9423C"/><circle cx="126" cy="118" r="8" fill="#C9423C" opacity=".9"/>'
+      +'<path d="M88 88c6 6 6 18 0 24M112 86c6 6 6 16 0 22" stroke="#F3F7EE" stroke-width="2" opacity=".5" fill="none"/>'));},
+    carne:function(){return wrap(plato('<path d="M62 106c0-22 20-36 44-36 24 0 34 14 34 30 0 20-18 34-40 34-20 0-38-10-38-28z" fill="#8E4038"/>'
+      +'<path d="M70 92l56-6M70 106l60-6M72 120l56-6" stroke="#4A211D" stroke-width="6" opacity=".55" fill="none" stroke-linecap="round"/>'
+      +'<path d="M74 98l54-6M76 112l54-6" stroke="#C07D62" stroke-width="3" opacity=".5" fill="none" stroke-linecap="round"/>'
+      +'<path d="M126 134c8-4 12 0 16-6" stroke="'+G+'" stroke-width="3" opacity=".4" fill="none" stroke-linecap="round"/>'));},
+    guiso:function(){return wrap('<ellipse cx="100" cy="164" rx="52" ry="11" fill="#000" opacity=".1"/>'
+      +'<path d="M52 96h96v34c0 18-18 32-48 32s-48-14-48-32z" fill="#6B4A3A"/>'
+      +'<ellipse cx="100" cy="96" rx="48" ry="16" fill="#8A6350"/><ellipse cx="100" cy="94" rx="40" ry="12" fill="#B4763F"/>'
+      +'<circle cx="88" cy="92" r="5" fill="#E4C489"/><circle cx="108" cy="96" r="4.5" fill="#E4C489"/><circle cx="100" cy="88" r="3.5" fill="#7C9B55"/>'
+      +'<path d="M44 108h-8c-6 0-6 10 0 10h8M156 108h8c6 0 6 10 0 10h-8" fill="none" stroke="#6B4A3A" stroke-width="8" stroke-linecap="round"/>'
+      +'<path d="M86 66c0-8 8-8 8-16M108 62c0-8 8-8 8-16" stroke="'+G+'" stroke-width="3" opacity=".3" fill="none" stroke-linecap="round"/>');},
+    postre:function(){return wrap(plato('<path d="M64 118l12-40h48l12 40z" fill="#F0DCAE"/>'
+      +'<path d="M64 118h72v10c0 5-4 8-10 8H74c-6 0-10-3-10-8z" fill="#E4C98E"/>'
+      +'<path d="M76 78h48l-4 14H80z" fill="#B4703A"/>'
+      +'<circle cx="100" cy="70" r="7" fill="#C9423C"/><path d="M100 63c4-6 10-4 10-4" stroke="'+G+'" stroke-width="3" fill="none" stroke-linecap="round"/>'));},
+    churros:function(){return wrap(plato('<g stroke="#E0AC5C" stroke-width="9" stroke-linecap="round" fill="none">'
+      +'<path d="M74 134l14-52"/><path d="M92 136l14-54"/><path d="M110 134l14-50"/></g>'
+      +'<g stroke="#C98F3E" stroke-width="2" opacity=".5" fill="none"><path d="M74 134l14-52"/><path d="M92 136l14-54"/><path d="M110 134l14-50"/></g>'
+      +'<path d="M126 112c14 0 22 8 22 16s-8 14-22 14" fill="#5A3420"/>'));},
+    hamburguesa:function(){return wrap(plato('<path d="M56 96c0-20 20-34 44-34s44 14 44 34z" fill="#D79B4E"/>'
+      +'<path d="M56 96h88v10H56z" fill="#7C9B55"/><path d="M58 106h84v12H58z" fill="#8E4038"/>'
+      +'<path d="M58 118h84v8H58z" fill="#E8C45C"/>'
+      +'<path d="M56 126h88c0 14-16 20-44 20s-44-6-44-20z" fill="#D79B4E"/>'
+      +'<circle cx="80" cy="78" r="2.5" fill="#F6E4C0"/><circle cx="100" cy="72" r="2.5" fill="#F6E4C0"/><circle cx="118" cy="78" r="2.5" fill="#F6E4C0"/>'));},
+    pizza:function(){return wrap(plato('<circle cx="100" cy="108" r="46" fill="#E8C06A"/><circle cx="100" cy="108" r="38" fill="#D9584A"/>'
+      +'<circle cx="86" cy="96" r="7" fill="#B93F35"/><circle cx="114" cy="104" r="6" fill="#B93F35"/><circle cx="96" cy="124" r="6.5" fill="#B93F35"/>'
+      +'<circle cx="112" cy="86" r="4" fill="#F6EBC8"/><circle cx="82" cy="120" r="4" fill="#F6EBC8"/><circle cx="120" cy="122" r="3.5" fill="#F6EBC8"/>'
+      +'<path d="M76 110c4-4 10-4 14 0" stroke="#7C9B55" stroke-width="3" fill="none" stroke-linecap="round"/>'));},
+    huevos:function(){return wrap(plato('<ellipse cx="88" cy="104" rx="26" ry="19" fill="#FBF6E6"/><circle cx="88" cy="104" r="10" fill="#E9B23C"/>'
+      +'<ellipse cx="118" cy="118" rx="22" ry="16" fill="#FBF6E6"/><circle cx="118" cy="118" r="8" fill="#E9B23C"/>'
+      +'<path d="M60 128c8-8 18-8 26-2" stroke="#C96C4A" stroke-width="6" fill="none" stroke-linecap="round"/>'));},
+    yogur:function(){return wrap('<ellipse cx="100" cy="166" rx="40" ry="9" fill="#000" opacity=".1"/>'
+      +'<path d="M68 74h64l-8 84c0 6-5 10-12 10H88c-7 0-12-4-12-10z" fill="'+W+'" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<path d="M70 90h60l-2 26H72z" fill="#F3EEE0"/>'
+      +'<ellipse cx="100" cy="76" rx="32" ry="9" fill="#F7F2E6" stroke="'+CR2+'" stroke-width="2"/>'
+      +'<circle cx="88" cy="74" r="5" fill="#B8384E"/><circle cx="106" cy="77" r="4.5" fill="#8E3B63"/><circle cx="98" cy="70" r="4" fill="#C2564F"/>'
+      +'<circle cx="114" cy="72" r="3.5" fill="#B8384E" opacity=".9"/>');},
+    zumo:function(){return wrap('<ellipse cx="100" cy="172" rx="28" ry="7" fill="#000" opacity=".1"/>'
+      +'<path d="M72 58h56l-7 104c0 6-4 10-10 10H89c-6 0-10-4-10-10z" fill="#EDF2F0" opacity=".8"/>'
+      +'<path d="M75 80h50l-6 82c0 5-3 8-8 8H89c-5 0-8-3-8-8z" fill="#E99A2C"/>'
+      +'<circle cx="132" cy="66" r="16" fill="#F0A93A"/><path d="M132 50v32M116 66h32" stroke="#FBD89A" stroke-width="2.5"/>'
+      +'<path d="M86 100c6 4 6 16 0 22" stroke="#fff" stroke-width="3" opacity=".4" fill="none"/>');},
+    croissant:function(){return wrap(plato('<path d="M56 118c4-24 24-40 44-40s40 16 44 40c-10-6-18 2-28-2s-12-10-16-10-6 6-16 10-18-4-28 2z" fill="#E0AC5C"/>'
+      +'<path d="M74 106c6-8 14-12 26-12s20 4 26 12" stroke="#C9913F" stroke-width="3" fill="none" opacity=".6"/>'
+      +'<path d="M66 116c4-6 10-8 14-6M120 110c4-2 10 0 14 6" stroke="#F0D3A0" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"/>'));},
+    generica:function(){return wrap(plato('<path d="M74 96c0-10 12-16 26-16s26 6 26 16-12 18-26 18-26-8-26-18z" fill="#C79A5A" opacity=".9"/>'
+      +'<circle cx="84" cy="124" r="8" fill="#7C9B55" opacity=".85"/><circle cx="106" cy="126" r="7" fill="#C9423C" opacity=".8"/><circle cx="122" cy="120" r="6" fill="#E0B45A" opacity=".85"/>'
+      +'<path d="M78 92c10-6 26-6 36 2" stroke="#E3C08A" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"/>'));}
+  };
+  var cache={};
+  function art(kind){
+    var k=A[kind]?kind:"generica";
+    if(!cache[k])cache[k]=uri(A[k]());
+    return cache[k];
+  }
+  // Mapa por id de plato (demo) y reglas por palabra
+  var BYID={
+    t1:"frito",t2:"generica",t3:"aros",t4:"frito",t5:"pescado",t6:"pescado",t7:"tosta",t8:"frito",t9:"tortilla",t10:"jamon",t11:"pescado",t12:"sopa",
+    d1:"tosta",d2:"tosta",d3:"croissant",d4:"huevos",d5:"yogur",d6:"cafe",d7:"huevos",d8:"zumo",d9:"tosta",d10:"churros",
+    "demo2-cafe":"cafe","demo2-cafe-leche":"cafe","demo2-infusion":"infusion","demo2-refresco":"refresco","demo2-agua-gas":"agua",
+    p15:"cerveza",p16:"agua",bb1:"refresco",pt1:"frito",hb1:"hamburguesa",pz1:"pizza",cb1:"hamburguesa"
+  };
+  var RULES=[
+    [/cafe|colacao|capuchino/,"cafe"],[/infusion|te |manzanilla|poleo|tila/,"infusion"],
+    [/cerveza/,"cerveza"],[/agua/,"agua"],[/refresco|cola|fanta|mosto|tonica|nestea|aquarius/,"refresco"],[/zumo/,"zumo"],
+    [/croissant|bolleria/,"croissant"],[/churros/,"churros"],[/yogur/,"yogur"],[/tortilla|huevo/,"huevos"],
+    [/tosta|montadito|pan con|bocadillo|molde/,"tosta"],[/jamon|iberico de bellota/,"jamon"],
+    [/croqueta|patatas|bravas|berenjena|frito|rebozad/,"frito"],[/calamar|aros/,"aros"],
+    [/sopa|salmorejo|gazpacho|crema|puchero|potaje|lenteja|fabada|garbanzo|guiso|estofad/,"guiso"],
+    [/pulpo|gamba|merluza|dorada|lubina|bacalao|boqueron|marisco|pescado|atun|ensaladilla/,"pescado"],
+    [/ensalada|verdura|burrata|tomate|espinaca|calabaza|paella de verduras/,"verde"],
+    [/hamburguesa|menu hamburguesa/,"hamburguesa"],[/pizza/,"pizza"],
+    [/chuleton|solomillo|entrecot|secreto|carrillada|cordero|rabo|pollo|albondiga|ternera|carne/,"carne"],
+    [/tarta|coulant|crema catalana|sorbete|postre|helado|flan/,"postre"],
+    [/risotto|arroz|paella/,"guiso"]
+  ];
+  function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+  function artFor(p,seccion,vino){
+    if(BYID[p.id])return art(BYID[p.id]);
+    if(seccion==="vinos"||p.vinoTipo){
+      var tipo=(vino&&vino.tipo)||p.vinoTipo||"tinto";
+      var fmt=((vino&&vino.formato)||p.vinoFormato)==="botella"?"botella":"copa";
+      if(tipo==="generoso"&&fmt==="botella")return art("generoso-botella");
+      return art(tipo+"-"+fmt);
+    }
+    var n=norm(p.nombre+" "+(p.descripcion||""));
+    for(var i=0;i<RULES.length;i++)if(RULES[i][0].test(n))return art(RULES[i][1]);
+    if(seccion==="postres")return art("postre");
+    if(seccion==="bebidas")return art("refresco");
+    if(seccion==="carnes")return art("carne");
+    if(seccion==="cuchareo")return art("guiso");
+    if(seccion==="pescados"||seccion==="mariscos")return art("pescado");
+    if(seccion==="verde")return art("verde");
+    return art("generica");
+  }
+  return{art:art,artFor:artFor};
+})();
+
 function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
 function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
 
-return{VINOS_V8,aplicarVinosV8,agruparCarta,mesasGet,mesasSet,mesaAbrir,mesaValidar,mesaCerrar,mesaRegistrarPedido,usersGet,userGet,userLogout,userRegistrar,userLogin,TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+return{art:LWART.art,artFor:LWART.artFor,VINOS_V8,aplicarVinosV8,agruparCarta,mesasGet,mesasSet,mesaAbrir,mesaValidar,mesaCerrar,mesaRegistrarPedido,usersGet,userGet,userLogout,userRegistrar,userLogin,TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -813,7 +1024,7 @@ const PHOTO_SOURCES = {"d1":"https://unsplash.com/s/photos/pan-tomate","d2":"htt
 function getDishPhoto(p, fotos = {}) {
   if(fotos[p.id]) return fotos[p.id];
   const original = [...DATOS_DEMO.platos,...DAILY_SPECIALS].find(d=>d.id===p.id);
-  return (original?.nombre===p.nombre && DEMO_PHOTOS[p.id]?.src) || p.fotoDemo || null;
+  return (original?.nombre===p.nombre && DEMO_PHOTOS[p.id]?.src) || p.fotoDemo || (window.LW_ORD?window.LW_ORD.artFor(p,menuSection(p),wineProfile(p)):null);
 }
 
 
@@ -2655,7 +2866,9 @@ function CartaPublica({ data, fotos, onAdmin }) {
           {g.platos.map(p => {
             const foto = getDishPhoto(p,fotos);
             return <React.Fragment key={p.id}>{wineHeadings[p.id]&&<h3 style={{gridColumn:"1 / -1",fontSize:"1.15rem",paddingTop:20,borderBottom:"1px solid #d7d4c8",paddingBottom:12}}>{wineHeadings[p.id]}</h3>}<article id={"plato-"+p.id} className={"dish"+(highlight===p.id?" dish-highlight":"")}>
-              {foto && <button className={"dish-photo"+(["vinos","bebidas"].includes(menuSection(p))?" drink-photo":"")} aria-label={"Ampliar foto de "+p.nombre} onClick={() => setLb({src:foto,alt:p.nombre})}><img src={foto} alt={p.nombre} loading="lazy" /></button>}
+              {foto && (foto.startsWith("data:image/svg")
+                ? <div className="dish-photo dish-art" aria-hidden="true"><img src={foto} alt="" loading="lazy" /></div>
+                : <button className={"dish-photo"+(["vinos","bebidas"].includes(menuSection(p))?" drink-photo":"")} aria-label={"Ampliar foto de "+p.nombre} onClick={() => setLb({src:foto,alt:p.nombre})}><img src={foto} alt={p.nombre} loading="lazy" /></button>)}
               <div className="dish-content">
                 <div className="dish-labels">{p.sugerenciaChef ? <span className="chef-label">✦ Sugerencia del chef</span> : p.destacado ? <span>Recomendado</span> : g.label?null:<span>{filter === "daily" ? "Fuera de carta" : MENU_FILTERS.find(([id])=>id===menuSection(p))?.[1] || categorias.find(c=>c.id===p.categoriaId)?.nombre}</span>}</div>
                 <h3>{p.nombre}</h3><p className="dish-description">{p.descripcion}</p>
