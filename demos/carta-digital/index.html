@@ -482,10 +482,137 @@ function aplicarDesayunosV4(data){
   return Object.assign({},data,{demoContentVersion:5,platos:platos});
 }
 
+// ─── MAITRE FLOW: flujo guiado de camarero por franja horaria ───────────────
+const MF=(function(){
+  let S=null; // sesión: {momento, items:[], stage, pend:{...}}
+  const H=()=>new Date().getHours();
+  const momento=()=>{const h=H();return h<12?"desayuno":h<16.5?"almuerzo":h<20?"merienda":"cena";};
+  const find=(platos,id)=>platos.find(p=>p.id===id&&p.activo!==false);
+  const C=(emoji,label,value)=>({emoji,label,value:"mf:"+value});
+  const bot=text=>({type:"bot",text});
+  const chips=arr=>({type:"chips",chips:arr});
+  const uid=()=>"i"+Date.now()+Math.random().toString(36).slice(2,5);
+  // construye item de carrito; opts = ["Nombre opción",...] buscados en plato.grupos; obs texto libre
+  const mk=(platos,id,opts,obs,nombreAlt)=>{
+    const p=find(platos,id);if(!p)return null;
+    const opciones=[];
+    (opts||[]).forEach(n=>{(p.grupos||[]).forEach(g=>{const o=(g.opciones||[]).find(x=>x.nombre.toLowerCase().startsWith(n.toLowerCase()));if(o)opciones.push({grupoId:g.id,grupo:g.nombre,id:o.id,nombre:o.nombre,precio:+o.precio||0});});});
+    return{uid:uid(),platoId:p.id,nombre:nombreAlt||p.nombre,precioBase:precioPlato(p),opciones,sin:[],obs:obs||"",qty:1};
+  };
+  const add=(platos,id,opts,obs,alt)=>{const it=mk(platos,id,opts,obs,alt);if(it)S.items.push(it);return it;};
+  const lineTxt=it=>"• "+it.nombre+(it.opciones.length?" ("+it.opciones.map(o=>o.nombre).join(", ")+")":"")+(it.obs?" · "+it.obs:"")+" — "+fmt(itemUnit(it));
+  const total=()=>S.items.reduce((s,it)=>s+itemUnit(it)*it.qty,0);
+
+  // ── Pantallas reutilizables ──
+  const resumen=()=>{
+    if(!S.items.length)return[bot("Aún no tienes nada elegido. ¿Empezamos?"),chips([C("👋","Sí, ayúdame","si"),C("📖","Ver la carta","menu")])];
+    return[bot("Perfecto, esto es lo que llevas:\n"+S.items.map(lineTxt).join("\n")+"\n\nTotal: "+fmt(total())+"\n\n¿Te lo añado al carrito?"),
+      chips([C("🛒","Sí, añádelo al carrito","cart"),C("➕","Quiero algo más","mas"),C("🔄","Empezar de nuevo","reset")])];
+  };
+  const bebidaMesa=()=>[bot("Empecemos por la bebida 🥂 ¿Qué os pongo?"),chips([C("💧","Agua","b_agua"),C("🥤","Refresco","b_refresco"),C("🍺","Cerveza","b_cerveza"),C("🍷","Vino","b_vino")])];
+  const vino=()=>[bot("Buena elección. ¿Tinto, blanco, rosado o un cava?"),chips([C("🍷","Tinto","v_tinto"),C("🥂","Blanco","v_blanco"),C("🌸","Rosado","v_rosado"),C("🍾","Cava","v_cava")])];
+  const entrante=()=>[bot("¿Empezamos con algo para compartir? 🥘 Las croquetas de ibérico y el pulpo salen mucho."),
+    chips([C("🥔","Croquetas","e_p2"),C("🍞","Pan, tomate y jamón","e_p1"),C("🐙","Pulpo a la gallega","e_p3"),C("🍅","Gazpacho","e_p4"),C("🥗","Tomate y burrata","e_demo2-ensalada"),C("🍆","Berenjenas con miel","e_demo2-berenjena"),C("➡️","Sin entrante","e_no")])];
+  const principal=()=>[bot("¿Y de principal? 🍽️"),chips([C("🥩","Carne","m_carne"),C("🐟","Pescado y marisco","m_pescado"),C("🥣","Cuchara y guisos","m_cuchara"),C("🍚","Arroz o risotto","m_arroz")])];
+  const postre=()=>[bot("¿Un postre para terminar? 🍰 La tarta de queso es nuestra estrella."),chips([C("🍰","Tarta de queso","d_p11"),C("🍫","Coulant de chocolate","d_p12"),C("🍮","Crema catalana","d_p13"),C("🍋","Sorbete de limón","d_demo2-sorbete"),C("➡️","Sin postre","d_no")])];
+  const cafeFinal=()=>[bot("¿Y un café o infusión para cerrar? ☕"),chips([C("☕","Café solo","c_solo"),C("🥛","Café con leche","c_leche"),C("☕","Cortado","c_cortado"),C("🍵","Infusión","c_inf"),C("➡️","No, gracias","c_no")])];
+  const cafeDes=()=>[bot("¿Cómo lo tomas?"),chips([C("🥛","Con leche","cd_leche"),C("☕","Solo","cd_solo"),C("☕","Cortado","cd_cortado"),C("🌙","Descafeinado","cd_desc")])];
+  const infusion=(pref)=>[bot("¿Cuál te preparo? 🍵"),chips([C("🍵","Té negro","i_Té negro"),C("🌿","Té verde","i_Té verde"),C("🌼","Manzanilla","i_Manzanilla"),C("🌱","Poleo menta","i_Poleo menta"),C("🌸","Tila","i_Tila")])];
+  const comidaDes=()=>[bot("¿Y para comer? 🥐"),chips([C("🍞","Tostada","f_tostada"),C("🥐","Croissant","f_d3"),C("🍳","Huevos","f_huevos"),C("🍩","Churros con chocolate","f_d10"),C("🥣","Yogur con granola","f_d5"),C("➡️","Nada más","f_no")])];
+  const tostadaCon=()=>[bot("¿Con qué te la preparo?"),chips([C("🍅","Tomate","t_d1"),C("🐖","Jamón ibérico","t_d2"),C("🥑","Aguacate y huevo poché","t_d9")])];
+  const pan=()=>[bot("¿Qué pan prefieres?"),chips([C("🥖","Pan de cristal","pan_Pan de cristal"),C("🫓","Mollete","pan_Mollete"),C("🌾","Integral","pan_Integral")])];
+  const punto=()=>[bot("¿Cómo te lo hago? 🔥"),chips([C("🔴","Vuelta y vuelta","pt_Vuelta y vuelta"),C("🟠","Poco hecho","pt_Poco hecho"),C("🟡","Al punto","pt_Al punto"),C("🟤","Hecho","pt_Hecho"),C("⚫","Muy hecho","pt_Muy hecho")])];
+  const tapas=()=>[bot(S.pend.tapas?"¿Otra tapa? 🍢":"Te propongo unas tapas para picar 🍢 Elige y sigo apuntando."),
+    chips([C("🥔","Croquetas","ta_p2"),C("🍞","Pan, tomate y jamón","ta_p1"),C("🍆","Berenjenas con miel","ta_demo2-berenjena"),C("🥗","Ensaladilla","ta_demo2-ensaladilla"),C("🦑","Calamares","ta_demo2-calamares"),C("🧀","Tabla de quesos","ta_demo2-quesos"),C("🐙","Pulpo","ta_p3"),C("✅","Ya está","ta_fin")])];
+  const rapido=()=>[bot("¿Hamburguesa, pizza o nuestro menú hamburguesa (con patatas y bebida)? 🍔"),chips([C("🍔","Hamburguesa","r_hb"),C("🍕","Pizza","r_pz"),C("🍟","Menú hamburguesa","r_cb")])];
+  const inicio=()=>{
+    const m=S.momento;
+    if(m==="desayuno")return[bot("Empecemos por la bebida ☕ ¿Qué te apetece?"),chips([C("☕","Café","db_cafe"),C("🍫","ColaCao","db_colacao"),C("🍵","Infusión","db_inf"),C("🍊","Zumo natural","db_zumo"),C("🍽️","Combinado: zumo + café + tostada","db_combi")])];
+    if(m==="merienda")return[bot("Para la merienda, ¿qué te apetece beber? ☕"),chips([C("☕","Café","db_cafe"),C("🍫","ColaCao","db_colacao"),C("🍵","Infusión","db_inf"),C("🍊","Zumo natural","db_zumo")])];
+    return[bot(m==="almuerzo"?"¿Qué preferís: una comida completa, unas tapas para picar o algo rápido?":"¿Qué preferís: una cena completa, unas tapas o algo rápido?"),chips([C("🍽️",m==="almuerzo"?"Comida completa":"Cena completa","tipo_completa"),C("🍢","Tapas","tipo_tapas"),C("🍔","Algo rápido","tipo_rapido")])];
+  };
+
+  function start(){
+    S={momento:momento(),items:[],pend:{}};
+    const m=S.momento;
+    const q={desayuno:"¿Quieres que te ayude con tu desayuno? 🥐",almuerzo:"¿Quieres que te ayude con tu almuerzo? 🍽️",merienda:"¿Quieres que te ayude con tu merienda? ☕",cena:"¿Quieres que te ayude con tu cena? 🌙"}[m];
+    return[bot(q),chips([C("👋","Sí, ayúdame","si"),C("📖","Prefiero ver la carta","menu")])];
+  }
+
+  function step(value,platos){
+    if(!S)S={momento:momento(),items:[],pend:{}};
+    const v=value.replace(/^mf:/,"");
+    const [key,arg]=[v.split("_")[0],v.slice(v.indexOf("_")+1)];
+    const P=S.pend;
+    if(v==="si"||v==="mas")return inicio();
+    if(v==="reset"){S={momento:momento(),items:[],pend:{}};return start();}
+    if(v==="menu")return{menu:true};
+    if(v==="cart"){const items=S.items.slice();S={momento:S.momento,items:[],pend:{}};return{items,msgs:[bot("¡Hecho! 🛒 Ya está todo en tu carrito. Pulsa «Ver pedido» arriba a la derecha para revisarlo y enviarlo. ¿Algo más?"),chips([C("➕","Pedir algo más","mas"),C("📖","Ver la carta","menu")])]};}
+
+    // ── Desayuno / merienda: bebida ──
+    if(v==="db_cafe")return cafeDes();
+    if(key==="cd"){const map={leche:["demo2-cafe-leche",null,null],solo:["demo2-cafe",null,null],cortado:["demo2-cafe",null,"Cortado"],desc:["demo2-cafe-leche",null,"Descafeinado"]};const [id,,obs]=map[arg];add(platos,id,null,null,obs?"Café "+obs.toLowerCase():null);return P.combi?tostadaCon():S.momento==="merienda"?dulce():comidaDes();}
+    if(v==="db_colacao"){add(platos,"demo2-cafe-leche",null,"ColaCao en vez de café","ColaCao");return S.momento==="merienda"?dulce():comidaDes();}
+    if(v==="db_inf")return infusion();
+    if(key==="i"){add(platos,"demo2-infusion",null,null,"Infusión · "+arg);return P.cafeFinal?resumen():S.momento==="merienda"?dulce():comidaDes();}
+    if(v==="db_zumo")return[bot("¿Normal o grande? 🍊"),chips([C("🥤","Normal (25 cl)","z_Normal"),C("🧃","Grande (40 cl)","z_Grande")])];
+    if(key==="z"){add(platos,"d8",[arg]);return S.momento==="merienda"?dulce():comidaDes();}
+    if(v==="db_combi"){P.combi=true;add(platos,"d8",["Normal"]);return[bot("Nuestro combinado lleva zumo de naranja natural, café y tostada 🍊☕🍞 ¿Cómo quieres el café?"),cafeDes()[1]];}
+    // ── Desayuno: comida ──
+    if(v==="f_tostada")return tostadaCon();
+    if(key==="t"){P.tostada=arg;return arg==="d9"?(add(platos,"d9"),P.combi?(P.combi=false,resumen()):resumen()):pan();}
+    if(key==="pan"){add(platos,P.tostada,[arg]);P.combi=false;return resumen();}
+    if(v==="f_huevos")return[bot("¿Revueltos con bacon o una tortilla francesa con tostada? 🍳"),chips([C("🥓","Revueltos con bacon","h_d4"),C("🍳","Tortilla francesa","h_d7")])];
+    if(key==="h"){P.huevo=arg;return arg==="d4"?[bot("¿Le añado algo?"),chips([C("🧀","Queso fundido","hx_Queso"),C("🥑","Aguacate","hx_Aguacate"),C("➡️","Así está bien","hx_no")])]:[bot("¿Le añado algo a la tortilla?"),chips([C("🐖","Jamón york","hx_Jamón"),C("🧀","Queso","hx_Queso"),C("➡️","Así está bien","hx_no")])];}
+    if(key==="hx"){add(platos,P.huevo,arg==="no"?[]:[arg]);return resumen();}
+    if(key==="f"){if(arg!=="no")add(platos,arg);return resumen();}
+    // ── Merienda dulce ──
+    if(key==="du"){if(arg!=="no")add(platos,arg);return resumen();}
+
+    // ── Almuerzo / cena ──
+    if(v==="tipo_completa")return bebidaMesa();
+    if(v==="tipo_tapas"){P.modo="tapas";return bebidaMesa();}
+    if(v==="tipo_rapido"){P.modo="rapido";return bebidaMesa();}
+    const despuesBebida=()=>P.modo==="tapas"?tapas():P.modo==="rapido"?rapido():entrante();
+    if(v==="b_agua"){add(platos,"p16");return despuesBebida();}
+    if(v==="b_refresco"){add(platos,"demo2-refresco");return despuesBebida();}
+    if(v==="b_cerveza"){add(platos,"p15");return despuesBebida();}
+    if(v==="b_vino")return vino();
+    if(key==="v"){const m={tinto:["demo2-joven","demo2-ribera"],blanco:["demo2-verdejo","demo2-albarino"],rosado:["demo2-rosado",null],cava:[null,"demo2-cava"]}[arg];P.vino=m;
+      if(m[0]&&m[1])return[bot("¿Por copas o una botella? 🍾"),chips([C("🍷","Copa","vc_copa"),C("🍾","Botella","vc_botella")])];
+      add(platos,m[0]||m[1]);return despuesBebida();}
+    if(key==="vc"){add(platos,arg==="copa"?P.vino[0]:P.vino[1]);return despuesBebida();}
+    if(key==="e"){if(arg!=="no")add(platos,arg);return principal();}
+    if(v==="m_carne")return[bot("Tenemos carne de la buena 🥩 El chuletón es de vaca madurada, 500 g, ideal para compartir."),chips([C("🥩","Chuletón de vaca madurada","k_p25"),C("🥩","Solomillo al Pedro Ximénez","k_p24"),C("🥩","Entrecot a la pimienta","k_p29"),C("🔥","Entrecot a la brasa","k_demo2-entrecot"),C("🐖","Secreto ibérico","k_p6"),C("🐑","Cordero lechal","k_p27"),C("🍖","Rabo de toro","k_p23"),C("🍷","Carrillada al vino","k_p5"),C("🍗","Pollo al ajillo","k_p26")])];
+    if(key==="k"){P.carne=arg;return["p25","p24","p29","demo2-entrecot","p6"].includes(arg)?punto():(add(platos,arg),postre());}
+    if(key==="pt"){add(platos,P.carne,null,"Punto: "+arg.toLowerCase());return postre();}
+    if(v==="m_pescado")return[bot("Del mar 🐟 hoy la merluza y la dorada están espectaculares."),chips([C("🐟","Merluza a la vasca","x_p8"),C("🧂","Dorada a la sal","x_p10"),C("🐟","Lubina a la plancha","x_demo2-lubina"),C("🦐","Gambas al ajillo","x_p9"),C("🦑","Calamares a la andaluza","x_demo2-calamares")])];
+    if(v==="m_cuchara")return[bot("Guisos de cuchara como en casa 🥣"),chips([C("🥣","Lentejas con chorizo","x_p17"),C("🍲","Puchero andaluz","x_p18"),C("🫘","Fabada asturiana","x_p19"),C("🦐","Sopa de marisco","x_p20"),C("🥬","Garbanzos con bacalao","x_p21"),C("🎃","Crema de calabaza","x_p22")])];
+    if(v==="m_arroz")return[bot("Arroces y risottos 🍚"),chips([C("🍄","Risotto de setas y trufa","x_p7"),C("🍲","Mejor un guiso","m_cuchara"),C("🥩","Mejor carne","m_carne")])];
+    if(key==="x"){add(platos,arg);return postre();}
+    if(key==="d"){if(arg!=="no")add(platos,arg);return cafeFinal();}
+    if(key==="c"){P.cafeFinal=true;if(arg==="inf")return infusion();if(arg!=="no"){const m={solo:["demo2-cafe",null],leche:["demo2-cafe-leche",null],cortado:["demo2-cafe","Cortado"]}[arg];add(platos,m[0],null,null,m[1]?"Café cortado":null);}return resumen();}
+    // ── Tapas ──
+    if(key==="ta"){if(arg==="fin")return resumen();add(platos,arg);P.tapas=true;return tapas();}
+    // ── Rápido ──
+    if(v==="r_hb")return[bot("¿Normal o doble? 🍔"),chips([C("🍔","Normal","hb_Normal"),C("🍔🍔","Doble","hb_Doble")])];
+    if(key==="hb"){P.hb=[arg];return[bot("¿Le ponemos algún extra?"),chips([C("🧀","Queso","hbx_Queso"),C("🥓","Bacon","hbx_Bacon"),C("🍳","Huevo","hbx_Huevo"),C("🧅","Cebolla caramelizada","hbx_Cebolla"),C("➡️","Sin extras","hbx_no")])];}
+    if(key==="hbx"){add(platos,"hb1",arg==="no"?P.hb:P.hb.concat([arg]));return[bot("¿Unas patatas caseras para acompañar? 🍟"),chips([C("🍟","Sí, patatas","pt1_si"),C("➡️","No, gracias","pt1_no")])];}
+    if(key==="pt1"){if(arg==="si")add(platos,"pt1");return resumen();}
+    if(v==="r_pz")return[bot("¿Mediana o familiar? 🍕"),chips([C("🍕","Mediana","pz_Mediana"),C("🍕🍕","Familiar","pz_Familiar")])];
+    if(key==="pz"){P.pz=[arg];return[bot("¿Algún extra?"),chips([C("🧀","Queso extra","pzx_Queso"),C("🐖","Jamón","pzx_Jamón"),C("🍄","Champiñones","pzx_Champi"),C("🌶️","Pepperoni","pzx_Pepperoni"),C("➡️","Sin extras","pzx_no")])];}
+    if(key==="pzx"){add(platos,"pz1",arg==="no"?P.pz:P.pz.concat([arg]));return resumen();}
+    if(v==="r_cb"){add(platos,"cb1",["La Limonada","Caseras","Refresco"]);return[bot("Te apunto el menú con hamburguesa La Limonada, patatas caseras y refresco. Si quieres cambiar algo lo podrás hacer en el carrito."),...resumen()];}
+    return[bot("No te he entendido bien 😅 ¿Seguimos?"),...resumen().slice(1)];
+  }
+  function dulce(){return[bot("¿Y algo dulce? 🍩"),chips([C("🍩","Churros con chocolate","du_d10"),C("🥐","Croissant a la plancha","du_d3"),C("🍰","Tarta de queso","du_p11"),C("🍫","Coulant","du_p12"),C("➡️","Nada más","du_no")])];}
+  return{start,step,momento};
+})();
+
 function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
 function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
 
-return{mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+return{MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -1562,7 +1689,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
       setTimeout(() => botRespond(() => {
         addMsg({ type:"bot", text: window.LW_ORD.mbSaludo() });
         addMsg({ type:"bot", text: "Soy Maitre, tu asistente de mesa. Conozco nuestra carta y puedo ayudarte a elegir según lo que te apetezca, tu presupuesto o tus intolerancias.\n\n¿Qué te apetece hoy?" });
-        addMsg({ type:"chips", chips: INITIAL_CHIPS });
+        window.LW_ORD.MF.start().forEach(addMsg);
       }), 250);
     }
     requestAnimationFrame(()=>closeRef.current?.focus({preventScroll:true}));
@@ -1570,10 +1697,15 @@ function MaitreBot({ data, fotos, onVerPlato }) {
 
   // Auto-scroll al último mensaje
   useEffect(() => {
-    if (chatRef.current) chatRef.current.scrollTop = pinTop.current ? 0 : chatRef.current.scrollHeight;
+    const c=chatRef.current;if(!c)return;
+    if(pinTop.current){c.scrollTop=0;return;}
+    if(isTyping||anchor.current==null){c.scrollTop=c.scrollHeight;return;}
+    const el=c.children[anchor.current];anchor.current=null;
+    c.scrollTop=el?el.getBoundingClientRect().top-c.getBoundingClientRect().top+c.scrollTop-6:c.scrollHeight;
   }, [msgs, isTyping]);
 
   const pinTop = useRef(true);
+  const anchor = useRef(null);
   const addRef = useRef(null);
   addRef.current = msg => setMsgs(prev => [...prev, { id: Date.now() + Math.random(), ...msg }]);
   const addMsg = msg => addRef.current(msg);
@@ -1584,7 +1716,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
     cb(); addRef.current = prev;
     const len = buf.reduce((a,m)=>a+(m.type==="bot"?(m.text||"").length:0),0);
     setIsTyping(true);
-    setTimeout(() => { setIsTyping(false); setMsgs(p => [...p, ...buf]); }, delay||window.LW_ORD.mbDelay(len));
+    setTimeout(() => { setIsTyping(false); setMsgs(p => { anchor.current=p.length; return [...p, ...buf]; }); }, delay||window.LW_ORD.mbDelay(len));
   };
 
   const handleReset = () => {
@@ -1592,8 +1724,8 @@ function MaitreBot({ data, fotos, onVerPlato }) {
     setMsgs([]); setInputVal(""); setIsTyping(false); setBudget(null); setWineContext("");
     inited.current = true;
     botRespond(() => {
-      addMsg({ type:"bot",   text:"¡Empecemos de nuevo! 😊 ¿En qué puedo ayudarte?" });
-      addMsg({ type:"chips", chips: INITIAL_CHIPS });
+      addMsg({ type:"bot",   text:"¡Empecemos de nuevo! 😊" });
+      window.LW_ORD.MF.start().forEach(addMsg);
     });
   };
 
@@ -1615,6 +1747,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
   const handleChip = (value, label) => {
     pinTop.current = false;
     addMsg({ type:"user", text: label });
+    if(value.startsWith("mf:")){const r=window.LW_ORD.MF.step(value,data.platos);if(r.menu){botRespond(()=>{addMsg({type:"bot",text:"Claro, aquí tienes la carta. ¿En qué puedo ayudarte?"});addMsg({type:"chips",chips:INITIAL_CHIPS});});return;}if(r.items){OrderStore.set(s=>({...s,items:[...s.items,...r.items]}));window.LW_TRACK("maitre_carrito",{n:r.items.length});}botRespond(()=>(r.msgs||r).forEach(addMsg));return;}
     if(value.startsWith("wine:")){answerWine(value==="wine:start"?"vino":value.slice(5),value==="wine:start");return;}
     setWineContext("");
     switch(value) {
