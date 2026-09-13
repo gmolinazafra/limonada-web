@@ -944,19 +944,19 @@ function wineProfile(p) {
   return {tipo:p.vinoTipo || (demoRioja?"tinto":""), cuerpo:p.vinoCuerpo || (demoRioja?"intenso":""), formato:p.vinoFormato || (demoRioja?"copa":""), maridaje:p.vinoMaridaje || (demoRioja?"Carnes, carrillada, secreto ibérico":"")};
 }
 function recommendWine(raw, platos) {
-  const t=wineText(raw), wines=platos.filter(p=>p.activo && menuSection(p)==="vinos");
+  const t=wineText(raw).replace(/\b(fino|manzanilla|amontillado|oloroso|palo cortado|jerez|generoso|generosos)\b/g,"generoso").replace(/\b(cava|champan|champagne|burbujas?)\b/g,"espumoso").replace(/\b(pedro ximenez|px|moscatel|cream)\b/g,"dulce"), wines=platos.filter(p=>p.activo && menuSection(p)==="vinos");
   if (/alerg|intoleran|sin sulfit|sin alcohol|embaraz|menor/.test(t)) return {message:"Para esta petición, consulta con nuestro personal antes de elegir. No puedo confirmar trazas, ausencia de alcohol ni compatibilidad con alergias a partir de la carta.",platos:[]};
   if (!wines.length) return {message:"Ahora mismo no hay vinos disponibles registrados en la carta. Nuestro personal puede indicarte la selección de hoy.",platos:[]};
-  const types=[...t.matchAll(/tinto|blanco|rosado|espumoso/g)];
-  const preference=types.length?types[types.length-1][0]:null;
+  const types=[...t.matchAll(/tinto|blanco|rosado|espumoso|generoso|dulce/g)];
+  const preference=types.length?types[types.length-1][0]:(/rioja|ribera|tempranillo|garnacha|crianza|reserva/.test(t)?"tinto":/albarino|verdejo|rueda|rias baixas|sauvignon/.test(t)?"blanco":null);
   const forms=[...t.matchAll(/botella|copa/g)];const format=forms.length?forms[forms.length-1][0]:null;
   const amounts=[...t.matchAll(/(?:hasta|menos de|maximo|presupuesto(?: de)?)\s*(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s*(?:€|euros?)/g)];
   const last=amounts[amounts.length-1];const budget=last?Number((last[1]||last[2]).replace(",",".")):null;
   const light=/suave|ligero/.test(t), intense=/intenso|con cuerpo/.test(t), sweet=/dulce/.test(t)&&!/no (?:muy )?dulce|sin dulce|seco/.test(t);
-  const sea=/pescado|merluza|dorada|bacalao|marisco|gamba|pulpo|bogavante/.test(t);
-  const meat=/carne|carrillada|secreto|iberico|ternera/.test(t);
+  const sea=/pescado|merluza|dorada|bacalao|marisco|gamba|pulpo|bogavante|lubina|calamar|boqueron|sopa de marisco/.test(t);
+  const meat=/carne|carrillada|secreto|iberico|ternera|chuleton|solomillo|entrecot|cordero|rabo de toro|albondiga|pollo|hamburguesa|jamon/.test(t);
   const veg=/verdura|vegetal|risotto|setas|gazpacho/.test(t);
-  const dessert=/postre|chocolate|tarta/.test(t);
+  const dessert=/postre|chocolate|tarta|coulant|crema catalana|sorbete|helado|churros/.test(t);
   if (!preference&&!sea&&!meat&&!veg&&!dessert&&!format&&!budget&&!light&&!intense&&!sweet) return {message:"Te ayudo a elegir. ¿Qué vas a comer y prefieres tinto, blanco, rosado o espumoso? También puedes decirme si lo quieres suave o con cuerpo, por copa o botella, y cuánto quieres gastar.",platos:[],ask:true};
   const style=preference || (sweet||dessert?"dulce":sea||veg?"blanco":meat?"tinto":null);
   let candidates=wines.filter(p=>{
@@ -965,7 +965,7 @@ function recommendWine(raw, platos) {
   });
   const reason=sea?"Con pescado o marisco, un blanco fresco suele ser un buen punto de partida.":meat?"Para carnes con sabor, un tinto con cuerpo puede acompañar bien el plato.":veg?"Para verduras, empezaría por un blanco fresco; la salsa y la preparación pueden cambiar la elección.":dessert?"Con postres conviene ajustar el dulzor del vino al del plato. Te muestro los vinos dulces registrados para acompañarlo.":"La elección depende de tu gusto y de lo que vayas a comer.";
   const foodWords = t.split(/[^a-z]+/).filter(w=>w.length>3&&!['quiero','gustaria','recomiendas','recomienda','tomar','vino','vinos','para','comer','botella','copa'].includes(w));
-  const pairScore = p => foodWords.filter(w=>wineText(wineProfile(p).maridaje).includes(w)).length;
+  const pairScore = p => foodWords.filter(w=>wineText(wineProfile(p).maridaje).includes(w)).length+2*foodWords.filter(w=>w.length>4&&wineText((p.vinoDenominacion||"")+" "+(p.vinoUva||"")+" "+p.nombre).includes(w)).length;
   candidates.sort((a,b)=>pairScore(b)-pairScore(a)||a.precio-b.precio);
   const known=candidates.filter(p=>wineProfile(p).tipo).map(p=>({...p,descripcion:p.descripcion+(wineProfile(p).maridaje?" Maridaje de la casa: "+wineProfile(p).maridaje+".":"")}));
   return {message:reason+"\n\n"+(known.length?"En nuestra carta encaja"+(known.length===1?" esta opción":"n estas opciones")+". El precio corresponde al formato indicado; no calculo precios de botella a partir de una copa.":"No tengo un vino registrado que cumpla esa combinación"+(budget?" dentro de "+budget+" €":"")+". Consulta al personal por otras opciones; no puedo confirmar que estén disponibles.")+(known.length&&!sea&&!meat&&!veg?" ¿Con qué plato lo vas a tomar?":""),platos:known.slice(0,3)};
@@ -2048,7 +2048,7 @@ function MaitreBot({ data, fotos, onVerPlato }) {
     setInputVal("");
     addMsg({ type:"user", text });
     const normalized=wineText(guestInput(text));
-    const explicitWine=/\b(vino|vinos|tinto|blanco|rosado|espumoso|maridaje|maridar|rioja)\b/.test(normalized);
+    const explicitWine=/\b(vino|vinos|tinto|blanco|rosado|espumoso|maridaje|maridar|rioja|ribera|rueda|rias baixas|navarra|jerez|montilla|cava|champan|fino|manzanilla|amontillado|oloroso|palo cortado|generoso|albarino|verdejo|garnacha|tempranillo|moscatel|pedro ximenez|sommelier|bodega|crianza|reserva)\b/.test(normalized);
     const leavesWine=/chef|plato del dia|presupuesto por persona|recomiendame comida|dejar el vino/.test(normalized);
     if(explicitWine || (wineContext&&!leavesWine)) {answerWine(guestInput(text));return;}
     setWineContext("");
