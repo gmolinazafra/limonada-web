@@ -730,10 +730,68 @@ function agruparCarta(platos,secFn,filters,cats){
   Object.keys(map).filter(k=>!order.includes(k)).forEach(k=>{const c=(cats||[]).find(x=>x.id===k);out.push({id:k,label:c?c.nombre:k.charAt(0).toUpperCase()+k.slice(1),platos:map[k],compact:false});});
   return out;
 }
+
+// ─── VINOS v8: carta de vinos ampliada por denominación ──────────────────────
+var VINOS_V8=(function(){
+  // [id, tipo, D.O., nombre, uva, añada, bodega, cuerpo, formato, precio, maridaje, descripción]
+  var R=[
+    ["v-cava-1","espumoso","D.O. Cava","Cava brut nature reserva · botella","Macabeo, Xarel·lo y Parellada","2021","Celler Vall de Roures","suave","botella",26,"Marisco, entrantes, tapas","Burbuja fina, seco y elegante. 18 meses de crianza."],
+    ["v-cava-2","espumoso","D.O. Cava","Cava brut rosado · botella","Trepat y Garnacha","2022","Celler Vall de Roures","suave","botella",24,"Aperitivo, arroces, postres de fruta","Fruta roja fresca y burbuja cremosa."],
+    ["v-cava-3","espumoso","D.O. Cava","Cava brut · copa","Macabeo, Xarel·lo y Parellada","Sin añada","Celler Vall de Roures","suave","copa",4.5,"Aperitivo, tapas","Copa de cava seco y fresco para empezar."],
+    ["v-cava-4","espumoso","D.O. Cava","Cava gran reserva · botella","Xarel·lo","2019","Finca Montserra","intenso","botella",38,"Pescado al horno, arroces, quesos","Más de 30 meses en rima. Notas de brioche y fruta madura."],
+    ["v-cava-5","espumoso","D.O. Cava","Cava semi seco · botella","Macabeo y Parellada","Sin añada","Finca Montserra","suave","botella",21,"Postres, tarta de queso","Ligeramente dulce, ideal para acompañar el postre."],
+    ["v-rb-1","blanco","D.O. Rías Baixas","Albariño · copa","Albariño","2024","Pazo de Lourido","suave","copa",5,"Marisco, gambas, pulpo","Cítrico, salino y fresco. Un clásico gallego."],
+    ["v-rb-2","blanco","D.O. Rías Baixas","Albariño sobre lías · botella","Albariño","2023","Pazo de Lourido","intenso","botella",29,"Merluza, lubina, arroces de marisco","Crianza sobre lías: más cuerpo y untuosidad."],
+    ["v-rb-3","blanco","D.O. Rías Baixas","Albariño Val do Salnés · botella","Albariño","2024","Adega Miradoiro","suave","botella",22,"Ostras, calamares, ensaladas","Fruta blanca, flor de acacia y final mineral."],
+    ["v-rb-4","blanco","D.O. Rías Baixas","Condado do Tea · botella","Albariño y Treixadura","2023","Adega Miradoiro","suave","botella",25,"Pescado a la plancha, verduras","Más aromático y redondo, con notas de melocotón."],
+    ["v-rb-5","blanco","D.O. Rías Baixas","Albariño fermentado en barrica · botella","Albariño","2022","Pazo de Lourido","intenso","botella",34,"Dorada a la sal, bacalao","Complejo, con toques de vainilla bien integrados."],
+    ["v-ru-1","blanco","D.O. Rueda","Verdejo · botella","Verdejo","2024","Bodegas Cerro Blanco","suave","botella",18,"Ensaladas, gazpacho, pescado","Hierba fresca, hinojo y un final amargo muy típico."],
+    ["v-ru-2","blanco","D.O. Rueda","Verdejo viñas viejas · botella","Verdejo","2023","Bodegas Cerro Blanco","intenso","botella",27,"Merluza, risotto, quesos suaves","Viñedo prefiloxérico. Volumen y largura en boca."],
+    ["v-ru-3","blanco","D.O. Rueda","Sauvignon blanc · copa","Sauvignon Blanc","2024","Bodegas Cerro Blanco","suave","copa",4.5,"Entrantes, ensaladas","Aromático, cítrico y muy fresco."],
+    ["v-ru-4","blanco","D.O. Rueda","Verdejo fermentado en barrica · botella","Verdejo","2022","Pago de la Encina","intenso","botella",30,"Pescados con salsa, aves","Cremoso, con tostados finos y fruta madura."],
+    ["v-ru-5","blanco","D.O. Rueda","Rueda espumoso brut · botella","Verdejo","Sin añada","Pago de la Encina","suave","botella",23,"Aperitivo, tapas","Método tradicional con la frescura del verdejo."],
+    ["v-na-1","rosado","D.O. Navarra","Rosado de Garnacha · botella","Garnacha","2024","Bodegas Valdemonte","suave","botella",16,"Arroces, ensaladas, pizzas","Sangrado tradicional. Fresa, frambuesa y frescura."],
+    ["v-na-2","rosado","D.O. Navarra","Rosado pálido · copa","Garnacha y Tempranillo","2024","Bodegas Valdemonte","suave","copa",4.2,"Aperitivo, verduras","Estilo provenzal: pálido, seco y delicado."],
+    ["v-na-3","rosado","D.O. Navarra","Rosado pálido · botella","Garnacha y Tempranillo","2024","Bodegas Valdemonte","suave","botella",19,"Entrantes, pescado, tapas","Muy versátil en la mesa, servir bien frío."],
+    ["v-na-4","rosado","D.O. Navarra","Rosado fermentado en barrica · botella","Garnacha","2023","Viña Arga","intenso","botella",24,"Pollo, secreto, pastas","Rosado gastronómico con estructura y un punto especiado."],
+    ["v-na-5","rosado","D.O. Navarra","Rosado ecológico · botella","Garnacha","2024","Viña Arga","suave","botella",18,"Ensaladas, pescado azul","De cultivo ecológico, fruta fresca y ligereza."],
+    ["v-ri-1","tinto","D.O.Ca. Rioja","Rioja crianza · botella","Tempranillo","2021","Bodegas Monte Aldea","intenso","botella",24,"Carnes a la brasa, carrillada","12 meses en barrica. Fruta roja, vainilla y taninos pulidos."],
+    ["v-ri-2","tinto","D.O.Ca. Rioja","Rioja reserva · botella","Tempranillo y Graciano","2019","Bodegas Monte Aldea","intenso","botella",32,"Cordero, rabo de toro, chuletón","Crianza larga. Cuero, tabaco, fruta madura y elegancia."],
+    ["v-ri-3","tinto","D.O.Ca. Rioja","Rioja gran reserva · botella","Tempranillo","2016","Bodegas Monte Aldea","intenso","botella",48,"Chuletón, caza, quesos curados","Para las grandes ocasiones: complejo, sedoso y muy largo."],
+    ["v-ri-4","tinto","D.O.Ca. Rioja","Rioja joven maceración carbónica · botella","Tempranillo","2024","Viñedos de Sonsierra","suave","botella",16,"Tapas, embutidos, pizza","Alegre y frutal, para beber fresco."],
+    ["v-ri-5","tinto","D.O.Ca. Rioja","Rioja crianza · copa","Tempranillo","2021","Bodegas Monte Aldea","intenso","copa",4.5,"Carnes, guisos","La copa de siempre para acompañar la carne."],
+    ["v-rd-1","tinto","D.O. Ribera del Duero","Ribera roble · botella","Tempranillo","2023","Dominio de Valcabado","intenso","botella",20,"Carnes, hamburguesas, quesos","Fruta negra intensa con un paso ligero por barrica."],
+    ["v-rd-2","tinto","D.O. Ribera del Duero","Ribera crianza · botella","Tempranillo","2021","Dominio de Valcabado","intenso","botella",30,"Cordero lechal, chuletón","Potente y estructurado, taninos maduros."],
+    ["v-rd-3","tinto","D.O. Ribera del Duero","Ribera reserva · botella","Tempranillo","2019","Dominio de Valcabado","intenso","botella",42,"Chuletón, rabo de toro","Profundo y elegante. Mineral, especiado y largo."],
+    ["v-rd-4","tinto","D.O. Ribera del Duero","Ribera crianza · copa","Tempranillo","2021","Dominio de Valcabado","intenso","copa",5,"Carnes rojas","Nuestra copa de Ribera."],
+    ["v-rd-5","tinto","D.O. Ribera del Duero","Ribera de autor · botella","Tempranillo y Cabernet Sauvignon","2020","Pago de Traslarriba","intenso","botella",55,"Solomillo, cordero","Producción limitada. Concentración y finura a partes iguales."],
+    ["v-je-1","generoso","D.O. Jerez-Xérès-Sherry","Fino · copa","Palomino","Sin añada","Bodegas Sanlúcar Vieja","suave","copa",3.5,"Jamón, aceitunas, boquerones","Seco, punzante y salino. El aperitivo andaluz."],
+    ["v-je-2","generoso","D.O. Jerez-Xérès-Sherry","Manzanilla · copa","Palomino","Sin añada","Bodegas Sanlúcar Vieja","suave","copa",3.5,"Marisco, tapas, pescaíto","Crianza junto al mar: ligera y con recuerdo salino."],
+    ["v-je-3","generoso","D.O. Jerez-Xérès-Sherry","Amontillado · copa","Palomino","Sin añada","Bodegas Sanlúcar Vieja","intenso","copa",4.5,"Quesos curados, guisos, setas","Frutos secos, madera noble y un final seco."],
+    ["v-je-4","generoso","D.O. Jerez-Xérès-Sherry","Oloroso · copa","Palomino","Sin añada","Bodegas Sanlúcar Vieja","intenso","copa",4.5,"Rabo de toro, caza, quesos","Potente, seco y aromático. Nuez y caramelo."],
+    ["v-je-5","generoso","D.O. Jerez-Xérès-Sherry","Palo cortado · copa","Palomino","Sin añada","Bodegas Sanlúcar Vieja","intenso","copa",6,"Carnes, quesos, jamón","La rareza de Jerez: nariz de amontillado, boca de oloroso."],
+    ["v-je-6","generoso","D.O. Jerez-Xérès-Sherry","Fino en rama · botella","Palomino","Sin añada","Bodegas Sanlúcar Vieja","suave","botella",22,"Aperitivo, marisco, jamón","Sin filtrar, con toda su expresión. Beber muy frío."],
+    ["v-mm-1","dulce","D.O. Montilla-Moriles","Pedro Ximénez · botella","Pedro Ximénez","Sin añada","Bodegas Lagar de Alvear","dulce","botella",28,"Postres, chocolate, quesos azules","Denso, dulce y con pasas, higos y café."],
+    ["v-mm-2","dulce","D.O. Montilla-Moriles","Moscatel · copa","Moscatel","Sin añada","Bodegas Lagar de Alvear","dulce","copa",4.5,"Tarta de queso, crema catalana","Dulce floral y ligero, con uva fresca."],
+    ["v-mm-3","dulce","D.O. Montilla-Moriles","Cream · copa","Palomino y Pedro Ximénez","Sin añada","Bodegas Lagar de Alvear","dulce","copa",4,"Postres, frutos secos","Semidulce y suave, muy fácil de beber."],
+    ["v-mm-4","dulce","D.O. Montilla-Moriles","PX de añada vieja · copa","Pedro Ximénez","2008","Bodegas Lagar de Alvear","dulce","copa",7.5,"Coulant, quesos azules","Vejez larga: complejidad, chocolate y regaliz."],
+    ["v-mm-5","dulce","D.O. Montilla-Moriles","Moscatel · botella","Moscatel","Sin añada","Bodegas Lagar de Alvear","dulce","botella",20,"Postres, fruta","Para compartir en la sobremesa."],
+    ["v-sd-1","tinto","Sin D.O.","Tinto de la casa · botella","Tempranillo y Syrah","2024","Viñedos de Sonsierra","suave","botella",12,"Tapas, pizza, hamburguesas","Nuestro tinto de diario: fácil, frutal y a buen precio."],
+    ["v-sd-2","tinto","Sin D.O.","Tinto de verano · copa","Tempranillo","Sin añada","Elaboración propia","suave","copa",3,"Tapas, terraza","Tinto con gaseosa y limón, muy frío."]
+  ];
+  return R.map(function(r){return{id:r[0],categoriaId:"bebidas",seccionCarta:"vinos",nombre:r[3],descripcion:r[11],precio:r[9],alergenos:["sulfitos"],destacado:false,activo:true,vinoTipo:r[1],vinoDenominacion:r[2],vinoUva:r[4],vinoAnada:r[5],vinoBodega:r[6],vinoCuerpo:r[7],vinoFormato:r[8],vinoMaridaje:r[10]};});
+})();
+function aplicarVinosV8(data){
+  var ids={};data.platos.forEach(function(p){ids[p.id]=1;});
+  var platos=data.platos.slice();
+  VINOS_V8.forEach(function(p){if(!ids[p.id])platos.push(p);});
+  return Object.assign({},data,{demoContentVersion:8,platos:platos});
+}
+
 function mbSaludo(){var h=new Date().getHours();return h<13?"Buenos días 👋":h<21?"Buenas tardes 👋":"Buenas noches 👋";}
 function mbDelay(len){return Math.min(3000,Math.max(650,500+(len||0)*16));}
 
-return{agruparCarta,mesasGet,mesasSet,mesaAbrir,mesaValidar,mesaCerrar,mesaRegistrarPedido,usersGet,userGet,userLogout,userRegistrar,userLogin,TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
+return{VINOS_V8,aplicarVinosV8,agruparCarta,mesasGet,mesasSet,mesaAbrir,mesaValidar,mesaCerrar,mesaRegistrarPedido,usersGet,userGet,userLogout,userRegistrar,userLogin,TAPAS_V6:TAPAS_V6,aplicarTapasV6:aplicarTapasV6,MF:MF,mbSaludo:mbSaludo,mbDelay:mbDelay,DES_V4:DES_V4,aplicarDesayunosV4:aplicarDesayunosV4,ordLS,ordLSset,ordCfgGet,ordCfgSet,ordersGet,ordersSet,timeToMin,isOpenNow,horarioTexto,precioPlato,itemUnit,cuponDescuento,cartTotals,zonaPorCP,OrderStore,crearPedido,cambiarEstado,ESTADOS_PEDIDO,estadoNombre,flujoEstados,seedDemoOrders,PEDIDOS_DEMO_CAT,PEDIDOS_DEMO_PLATOS,ORDER_CSS,imprimirTicket,pingPedido,
 PHOTO_ADD:{hb1:'https://unsplash.com/photos/-YHSwy6uqvk',pz1:'https://unsplash.com/photos/ZOKndDGWpxg',pt1:'https://unsplash.com/photos/vJgKmfyCWpw',cb1:'https://unsplash.com/photos/mGZX2MOPl-s'},
 SECT_ADD:{hb1:'carnes',pz1:'carnes',pt1:'entrantes',bb1:'bebidas',cb1:'carnes'}};
 })();
@@ -4183,6 +4241,10 @@ function App() {
           cartaData = window.LW_ORD.aplicarTapasV6(cartaData);
           await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
         }
+        if ((cartaData.demoContentVersion || 0) < 8 && window.LW_ORD?.aplicarVinosV8) {
+          cartaData = window.LW_ORD.aplicarVinosV8(cartaData);
+          await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
+        }
         if(!cartaData.wineDetailsVersion){
           cartaData=enrichWineDemo(cartaData);
           await window.storage.set("carta-lw-v1",JSON.stringify(cartaData));
@@ -4408,6 +4470,7 @@ window.LW_X={AuthGate,MesasTab,NoveltyModal};
 if(window.LW_APP){lwInit2();if(window.LW_BOOT)window.LW_BOOT();}else{window.LW_X_INIT=lwInit2;}
 
 </script>
+
 
 
 
