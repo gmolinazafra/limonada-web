@@ -63,6 +63,10 @@
   .etq.suscrito{background:rgba(74,139,59,.15);color:#2F6B22}
   .etq.prueba{background:rgba(232,169,59,.2);color:#8A5E06}
   .etq.caducado{background:rgba(192,69,60,.14);color:#8E332C}
+  .etq.suscripcion{background:rgba(74,139,59,.15);color:#2F6B22}
+  .etq.fisico{background:rgba(58,110,155,.15);color:#2A5379}
+  .etq.mixto{background:rgba(232,169,59,.2);color:#8A5E06}
+  .etq.manual{background:rgba(14,59,50,.1);color:var(--tinta-suave)}
 
   .caja{background:var(--papel-alto);border:1px solid var(--linea);border-radius:15px;padding:20px;
         max-width:520px}
@@ -205,10 +209,11 @@
         + '<td>' + fecha(p.creado_en) + '</td>'
         + '<td>' + esc(p.email || '—') + '</td>'
         + '<td class="num">' + eur(p.importe_centimos) + '</td>'
+        + '<td><span class="etq ' + esc(p.tipo || 'suscripcion') + '">' + esc(p.tipo || 'suscripcion') + '</span></td>'
         + '<td>' + fecha(p.periodo_hasta) + '</td>'
         + '<td style="color:var(--gris);font-size:12.5px">' + esc((p.stripe_session_id||'').slice(0,22)) + '</td>'
         + '</tr>';
-    }).join('') || '<tr><td colspan="5" style="color:var(--gris)">Ningún cobro registrado todavía.</td></tr>';
+    }).join('') || '<tr><td colspan="6" style="color:var(--gris)">Ningún cobro registrado todavía.</td></tr>';
 
     app.innerHTML =
       '<header><div class="wrap barra">' +
@@ -248,7 +253,7 @@
 
         '<h2>Cobros</h2>' +
         '<div class="tabla-scroll"><table><thead><tr>' +
-          '<th>Fecha</th><th>Email</th><th>Importe</th><th>Cubre hasta</th><th>Referencia</th>' +
+          '<th>Fecha</th><th>Email</th><th>Importe</th><th>Tipo</th><th>Cubre hasta</th><th>Referencia</th>' +
         '</tr></thead><tbody>' + filasP + '</tbody></table></div>' +
 
         '<h2>Conceder suscripción a mano</h2>' +
