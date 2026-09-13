@@ -70,6 +70,12 @@
   .caja input,.caja select{width:100%;background:var(--papel);border:1px solid var(--linea);
         border-radius:10px;padding:11px 13px;margin:0 0 12px}
   .caja input:focus,.caja select:focus{outline:none;border-color:var(--hoja);box-shadow:0 0 0 3px rgba(74,139,59,.15)}
+  .clave{position:relative}
+  .clave input{padding-right:50px}
+  .ojo{position:absolute;right:5px;top:27px;width:38px;height:38px;display:flex;align-items:center;
+       justify-content:center;color:var(--gris);border-radius:9px}
+  .ojo:hover{color:var(--tinta);background:rgba(14,59,50,.06)}
+  .ojo svg{width:20px;height:20px;display:block}
   .btn{background:var(--tinta);color:var(--papel-alto);border-radius:11px;padding:12px 20px;font-weight:600}
   .btn.claro{background:transparent;color:var(--tinta-suave);border:1px solid var(--linea);font-weight:500}
 
@@ -109,12 +115,25 @@
         (error ? '<div class="aviso mal">' + esc(error) + '</div>' : '') +
         '<div class="caja">' +
           '<label for="e">Email de administrador</label><input id="e" type="email" autocomplete="email">' +
-          '<label for="p">Contraseña</label><input id="p" type="password" autocomplete="current-password">' +
+          '<div class="clave"><label for="p">Contraseña</label>' +
+            '<input id="p" type="password" autocomplete="current-password">' +
+            '<button type="button" class="ojo" id="ojo" aria-label="Mostrar contraseña" title="Mostrar contraseña">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12s3.6-7 9-7 9 7 9 7-3.6 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="2.6"/></svg>' +
+            '</button></div>' +
           '<button class="btn" id="entrar" style="width:100%">Entrar al panel</button>' +
         '</div>' +
         '<footer style="text-align:center">Panel privado de BookMark</footer>' +
       '</div>';
     document.getElementById('entrar').addEventListener('click', entrar);
+    document.getElementById('ojo').addEventListener('click', function(){
+      var campo = document.getElementById('p');
+      var ver = campo.type === 'password';
+      campo.type = ver ? 'text' : 'password';
+      this.innerHTML = ver ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.2A9.5 9.5 0 0112 5c5 0 9 4.5 9 7 0 .9-.6 2.1-1.6 3.3"/><path d="M6.2 6.8C3.9 8.3 3 10.3 3 12c0 2.5 4 7 9 7 1.4 0 2.7-.3 3.8-.9"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12s3.6-7 9-7 9 7 9 7-3.6 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="2.6"/></svg>';
+      this.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      this.setAttribute('title', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      campo.focus();
+    });
     document.getElementById('p').addEventListener('keydown', function(ev){ if(ev.key==='Enter') entrar(); });
   }
 

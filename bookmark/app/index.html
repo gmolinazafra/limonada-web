@@ -128,6 +128,12 @@
   .campo input{width:100%;background:var(--papel-alto);border:1px solid var(--linea);border-radius:11px;
         padding:13px 14px;font-size:16px}
   .campo input:focus{outline:none;border-color:var(--hoja);box-shadow:0 0 0 3px rgba(74,139,59,.16)}
+  .campo.clave{position:relative}
+  .campo.clave input{padding-right:52px}
+  .ojo{position:absolute;right:6px;bottom:6px;width:40px;height:40px;display:flex;align-items:center;
+       justify-content:center;color:var(--gris);border-radius:9px}
+  .ojo:hover{color:var(--tinta);background:rgba(14,59,50,.06)}
+  .ojo svg{width:21px;height:21px;display:block}
   .colores{display:flex;gap:9px;flex-wrap:wrap}
   .colores button{width:36px;height:36px;border-radius:9px;border:2.5px solid transparent}
   .colores button[aria-pressed="true"]{border-color:var(--tinta);transform:scale(1.06)}
@@ -285,6 +291,7 @@ function Acceso({
   const [modo, setModo] = useState('entrar');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [verClave, setVerClave] = useState(false);
   const [nombre, setNombre] = useState('');
   const [error, setError] = useState('');
   const [ok, setOk] = useState('');
@@ -387,17 +394,51 @@ function Acceso({
     onChange: e => setEmail(e.target.value),
     placeholder: "tu@email.com"
   })), React.createElement("div", {
-    className: "campo"
+    className: "campo clave"
   }, React.createElement("label", {
     htmlFor: "p"
   }, "Contraseña"), React.createElement("input", {
     id: "p",
-    type: "password",
+    type: verClave ? 'text' : 'password',
     autoComplete: modo === 'entrar' ? 'current-password' : 'new-password',
     value: pass,
     onChange: e => setPass(e.target.value),
     placeholder: "Mínimo 6 caracteres"
-  })), React.createElement("button", {
+  }), React.createElement("button", {
+    type: "button",
+    className: "ojo",
+    onClick: () => setVerClave(!verClave),
+    "aria-label": verClave ? 'Ocultar contraseña' : 'Mostrar contraseña',
+    title: verClave ? 'Ocultar contraseña' : 'Mostrar contraseña'
+  }, verClave ? React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.9",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, React.createElement("path", {
+    d: "M3 3l18 18"
+  }), React.createElement("path", {
+    d: "M10.6 10.6a2 2 0 002.8 2.8"
+  }), React.createElement("path", {
+    d: "M9.4 5.2A9.5 9.5 0 0112 5c5 0 9 4.5 9 7 0 .9-.6 2.1-1.6 3.3"
+  }), React.createElement("path", {
+    d: "M6.2 6.8C3.9 8.3 3 10.3 3 12c0 2.5 4 7 9 7 1.4 0 2.7-.3 3.8-.9"
+  })) : React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.9",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, React.createElement("path", {
+    d: "M3 12s3.6-7 9-7 9 7 9 7-3.6 7-9 7-9-7-9-7z"
+  }), React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "2.6"
+  })))), React.createElement("button", {
     className: "cta",
     disabled: cargando || !email || !pass,
     onClick: enviar
