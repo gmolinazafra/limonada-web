@@ -2,7 +2,7 @@
    Objetivo: que la app se pueda instalar y abra rápido.
    Nunca cachea las llamadas a Supabase: los datos siempre vienen frescos. */
 
-const CACHE = 'bookmark-v1';
+const CACHE = 'bookmark-v2';
 const BASE  = '/bookmark/';
 
 const ESENCIALES = [
