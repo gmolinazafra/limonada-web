@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>AutoPass · Panel</title>
+<style>
+:root{
+  --marca:#4B5563;--tinta:#14202E;--tinta-suave:#5C6672;
+  --papel:#F7F7F4;--linea:#E4E2DC;--verde:#1E6E4A;--rojo:#9E2B25;--ambar:#B4690E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--papel);color:var(--tinta);min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* ── Login ── */
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-caja{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:32px;width:100%;max-width:360px;text-align:center}
+.login-caja h1{font-size:22px;margin-bottom:6px}
+.login-caja p{color:var(--tinta-suave);font-size:14px;margin-bottom:24px}
+.login-caja input{width:100%;padding:12px;border:1px solid var(--linea);border-radius:10px;
+  font:15px/1 inherit;margin-bottom:12px;text-align:center;letter-spacing:.1em}
+.login-caja input:focus{outline:2px solid var(--marca);border-color:var(--marca)}
+
+/* ── App ── */
+#app{display:none;min-height:100vh}
+.topbar{background:var(--marca);color:#fff;padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:17px;font-weight:600}
+.topbar button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:#fff;border-radius:8px;padding:6px 14px;font:14px/1 inherit;cursor:pointer}
+
+.nav{display:flex;gap:2px;background:#fff;border-bottom:1px solid var(--linea);padding:0 24px}
+.nav button{padding:14px 18px;border:0;background:none;font:15px/1 inherit;
+  color:var(--tinta-suave);border-bottom:2px solid transparent;cursor:pointer}
+.nav button.act{color:var(--tinta);border-bottom-color:var(--marca);font-weight:600}
+
+.contenido{max-width:900px;margin:0 auto;padding:28px 24px 80px}
+
+/* ── Formularios ── */
+.tarjeta{background:#fff;border:1px solid var(--linea);border-radius:14px;
+  padding:22px;margin-bottom:16px}
+.tarjeta h2{font-size:16px;margin-bottom:16px;color:var(--tinta-suave);font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+label{display:block;font-size:13px;color:var(--tinta-suave);margin-bottom:14px}
+label span{display:block;margin-bottom:5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--linea);
+  border-radius:9px;font:15px/1.3 inherit;color:var(--tinta);background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--marca);border-color:var(--marca)}
+input[type=color]{padding:4px 6px;height:40px;cursor:pointer}
+.hint{font-size:12px;color:var(--tinta-suave);margin-top:4px}
+
+/* ── Botones ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:10px;
+  font:500 15px/1 inherit;cursor:pointer;border:0;background:var(--marca);color:#fff}
+.btn:hover{opacity:.9}.btn:disabled{opacity:.45}
+.btn.sec{background:#fff;color:var(--tinta);border:1px solid var(--linea)}
+.btn.peligro{background:#fff;color:var(--rojo);border:1px solid var(--rojo)}
+.btn.sm{padding:7px 14px;font-size:13px}
+.acciones{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+
+/* ── Alertas ── */
+.alerta{padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:16px}
+.alerta.ok{background:#D1FAE5;color:#065F46;border:1px solid #6EE7B7}
+.alerta.err{background:#FEE2E2;color:#991B1B;border:1px solid #FCA5A5}
+.alerta.info{background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE}
+.alerta{display:none}.alerta.vis{display:block}
+
+/* ── Lista de talleres ── */
+.taller-item{background:#fff;border:1px solid var(--linea);border-radius:12px;
+  padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:border-color .15s}
+.taller-item:hover{border-color:var(--marca)}
+.taller-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;
+  background:var(--papel);border:1px solid var(--linea);flex:0 0 auto}
+.taller-logo.vacio{display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--tinta-suave)}
+.taller-info{flex:1;min-width:0}
+.taller-nombre{font-weight:600;font-size:15px}
+.taller-meta{font-size:13px;color:var(--tinta-suave);margin-top:2px}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;
+  font-weight:600;margin-left:6px}
+.badge.activas{background:#D1FAE5;color:#065F46}
+.badge.virgenes{background:#EFF6FF;color:#1E40AF}
+
+/* ── Tokens ── */
+.tokens-caja{background:var(--papel);border:1px solid var(--linea);border-radius:10px;
+  padding:14px;font:12px/1.8 ui-monospace,monospace;max-height:200px;overflow-y:auto;
+  word-break:break-all;margin-top:12px}
+.tokens-caja.grande{max-height:320px}
+
+/* ── Búsqueda ── */
+.busqueda{display:flex;gap:10px;margin-bottom:20px}
+.busqueda input{flex:1}
+
+/* ── Color preview ── */
+.color-fila{display:flex;align-items:center;gap:10px}
+.color-preview{width:36px;height:36px;border-radius:8px;border:1px solid var(--linea);flex:0 0 auto}
+
+/* ── Spinner ── */
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;border-radius:50%;animation:giro .7s linear infinite}
+@keyframes giro{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════ LOGIN -->
+<div id="login">
+  <div class="login-caja">
+    <h1>AutoPass</h1>
+    <p>Panel de administración</p>
+    <input type="password" id="login-secret" placeholder="Clave de acceso" autocomplete="current-password">
+    <p id="login-err" style="color:var(--rojo);font-size:13px;min-height:18px"></p>
+    <button class="btn" style="width:100%;justify-content:center;margin-top:4px" onclick="entrar()">Entrar</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ APP -->
+<div id="app">
+  <div class="topbar">
+    <h1>AutoPass · Panel</h1>
+    <button onclick="salir()">Salir</button>
+  </div>
+  <nav class="nav">
+    <button class="act" onclick="tab(this,'talleres')">Talleres</button>
+    <button onclick="tab(this,'lotes')">Lotes</button>
+    <button onclick="tab(this,'tarjetas')">Tarjetas</button>
+  </nav>
+
+  <!-- ── TALLERES ── -->
+  <div id="tab-talleres" class="contenido">
+    <div id="al-talleres" class="alerta"></div>
+
+    <!-- Lista -->
+    <div id="lista-talleres"></div>
+    <button class="btn" onclick="abrirNuevoTaller()">+ Nuevo taller</button>
+
+    <!-- Formulario alta / edición -->
+    <div id="form-taller" style="display:none;margin-top:24px">
+      <div class="tarjeta">
+        <h2 id="form-taller-titulo">Nuevo taller</h2>
+        <input type="hidden" id="t-id">
+        <div class="grid2">
+          <label><span>Nombre</span><input id="t-nombre" placeholder="Talleres García"></label>
+          <label><span>Dirección</span><input id="t-dir" placeholder="Avda. Velázquez 120, Málaga"></label>
+          <label><span>Teléfono</span><input id="t-tel" type="tel" placeholder="952 000 000"></label>
+          <label><span>WhatsApp (móvil sin espacios)</span><input id="t-wa" type="tel" placeholder="600112233"></label>
+          <label><span>Email</span><input id="t-email" type="email" placeholder="citas@taller.es"></label>
+          <label><span>Web</span><input id="t-web" placeholder="taller.es"></label>
+        </div>
+        <div class="grid2" style="margin-top:4px">
+          <label>
+            <span>Color corporativo</span>
+            <div class="color-fila">
+              <input type="color" id="t-color" value="#4B5563" oninput="actualizarColor()">
+              <input id="t-color-hex" value="#4B5563" maxlength="7" placeholder="#4B5563"
+                oninput="sincronizarColor()" style="flex:1;font:13px/1 ui-monospace,monospace">
+              <div class="color-preview" id="color-prev" style="background:#4B5563"></div>
+            </div>
+          </label>
+          <label><span>Logo URL (PNG en el repo)</span>
+            <input id="t-logo" placeholder="https://www.limonadaweb.com/autopass/talleres/logo.png">
+            <p class="hint">Sube el PNG al repo → git push → pega la URL aquí</p>
+          </label>
+          <label><span>Foto de fondo URL (JPG en el repo)</span>
+            <input id="t-fondo" placeholder="https://www.limonadaweb.com/autopass/talleres/fondo.jpg">
+            <p class="hint">1200×522 px · máx 150 KB · sin desenfoque</p>
+          </label>
+        </div>
+        <div class="acciones">
+          <button class="btn" id="btn-guardar-taller" onclick="guardarTaller()">Guardar taller</button>
+          <button class="btn sec" onclick="cerrarFormTaller()">Cancelar</button>
+          <button class="btn peligro sm" id="btn-pin" style="margin-left:auto" onclick="regenerarPin()">Regenerar PIN</button>
+        </div>
+        <div id="pin-resultado" style="display:none;margin-top:16px" class="alerta info vis">
+          PIN generado: <strong id="pin-valor" style="font-size:18px;letter-spacing:.15em"></strong>
+          — Cópialo ahora, no se vuelve a mostrar.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOTES ── -->
+  <div id="tab-lotes" class="contenido" style="display:none">
+    <div id="al-lotes" class="alerta"></div>
+    <div class="tarjeta">
+      <h2>Crear lote de tarjetas</h2>
+      <div class="grid3">
+        <label><span>Taller</span>
+          <select id="l-taller"><option value="">— selecciona —</option></select>
+        </label>
+        <label><span>Cantidad</span>
+          <input type="number" id="l-cantidad" value="50" min="1" max="500">
+        </label>
+        <label><span>Años de servicio</span>
+          <input type="number" id="l-anios" value="5" min="1" max="10">
+        </label>
+        <label><span>Referencia interna</span>
+          <input id="l-ref" placeholder="Lote 001 — septiembre 2026">
+        </label>
+      </div>
+      <div class="acciones">
+        <button class="btn" id="btn-crear-lote" onclick="crearLote()">Crear lote y generar URLs</button>
+      </div>
+    </div>
+
+    <div id="lote-resultado" style="display:none">
+      <div class="tarjeta">
+        <h2>URLs generadas — <span id="lote-cant"></span> tarjetas</h2>
+        <p style="font-size:14px;color:var(--tinta-suave);margin-bottom:10px">
+          Graba cada URL en un chip NFC y bloquéalo en solo lectura.<br>
+          Guarda este archivo, no se puede recuperar después.
+        </p>
+        <div class="tokens-caja grande" id="lote-tokens"></div>
+        <div class="acciones">
+          <button class="btn sec" onclick="descargarTokens()">Descargar TXT</button>
+          <button class="btn sec" onclick="copiarTokens()">Copiar al portapapeles</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta" style="margin-top:8px">
+      <h2>Historial de lotes</h2>
+      <div id="historial-lotes"><p style="color:var(--tinta-suave);font-size:14px">Cargando…</p></div>
+    </div>
+  </div>
+
+  <!-- ── TARJETAS ── -->
+  <div id="tab-tarjetas" class="contenido" style="display:none">
+    <div id="al-tarjetas" class="alerta"></div>
+    <div class="busqueda">
+      <input id="busq-input" placeholder="Buscar por matrícula o bastidor…" onkeydown="if(event.key==='Enter')buscarTarjeta()">
+      <button class="btn" onclick="buscarTarjeta()">Buscar</button>
+    </div>
+    <div id="busq-resultado"></div>
+
+    <!-- Sustitución por pérdida -->
+    <div class="tarjeta" style="margin-top:8px">
+      <h2>Sustituir tarjeta perdida</h2>
+      <p style="font-size:14px;color:var(--tinta-suave);margin-bottom:14px">
+        El historial del vehículo pasa a la tarjeta nueva. La perdida queda en baja.
+        Pide siempre el permiso de circulación antes de hacer esto.
+      </p>
+      <div class="grid2">
+        <label><span>Token de la tarjeta perdida</span>
+          <input id="s-antigua" placeholder="Token de 22 caracteres">
+        </label>
+        <label><span>Token de la tarjeta nueva (virgen)</span>
+          <input id="s-nueva" placeholder="Token de 22 caracteres">
+        </label>
+      </div>
+      <div class="acciones">
+        <button class="btn peligro" onclick="sustituirTarjeta()">Sustituir</button>
+      </div>
+    </div>
+
+    <!-- Corrección de datos bloqueados -->
+    <div class="tarjeta" style="margin-top:8px">
+      <h2>Corregir dato bloqueado</h2>
+      <p style="font-size:14px;color:var(--tinta-suave);margin-bottom:14px">
+        Solo si hubo un error de tecleo en la activación. Queda registrado en auditoría.
+      </p>
+      <div class="grid2">
+        <label><span>ID del vehículo</span><input id="c-vid" placeholder="UUID del vehículo"></label>
+        <label><span>Campo a corregir</span>
+          <select id="c-campo">
+            <option value="matricula">Matrícula</option>
+            <option value="bastidor">Bastidor</option>
+            <option value="marca">Marca</option>
+            <option value="modelo">Modelo</option>
+            <option value="fecha_matriculacion">Fecha de matriculación</option>
+            <option value="combustible">Combustible</option>
+            <option value="itv_proxima">ITV próxima</option>
+            <option value="seguro_vence">Seguro vence</option>
+          </select>
+        </label>
+        <label><span>Valor nuevo</span><input id="c-valor" placeholder="Valor correcto"></label>
+        <label><span>Motivo (para el registro)</span><input id="c-motivo" placeholder="Error de tecleo en la activación"></label>
+      </div>
+      <div class="acciones">
+        <button class="btn peligro" onclick="corregirDato()">Aplicar corrección</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════ CONFIG ════════════════════════════════ */
+const WORKER = 'https://autopass.gmolinazafra.workers.dev';
+let SECRET = '';
+let talleresList = [];
+let tokensActuales = [];
+
+/* ════════════════════════════════ AUTH ══════════════════════════════════ */
+function entrar() {
+  const v = document.getElementById('login-secret').value.trim();
+  if (!v) return;
+  SECRET = v;
+  sessionStorage.setItem('ap_secret', v);
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  cargarTalleres();
+  cargarHistorialLotes();
+}
+
+function salir() {
+  sessionStorage.removeItem('ap_secret');
+  SECRET = '';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-secret').value = '';
+}
+
+window.addEventListener('load', () => {
+  const s = sessionStorage.getItem('ap_secret');
+  if (s) { document.getElementById('login-secret').value = s; entrar(); }
+  document.getElementById('login-secret').addEventListener('keydown', e => {
+    if (e.key === 'Enter') entrar();
+  });
+});
+
+/* ════════════════════════════════ API ═══════════════════════════════════ */
+async function api(ruta, cuerpo) {
+  const r = await fetch(WORKER + ruta, {
+    method: 'POST',
+    headers: { 'X-Autopass-Admin': SECRET, 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify(cuerpo),
+  });
+  const d = await r.json().catch(() => ({ error: 'Respuesta inesperada del servidor.' }));
+  if (!r.ok) throw new Error(d.error || `Error ${r.status}`);
+  return d;
+}
+
+/* ════════════════════════════════ NAV ═══════════════════════════════════ */
+function tab(btn, nombre) {
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  ['talleres','lotes','tarjetas'].forEach(t =>
+    document.getElementById('tab-'+t).style.display = t === nombre ? 'block' : 'none'
+  );
+  if (nombre === 'lotes') rellenarSelectTalleres();
+}
+
+/* ════════════════════════════════ TALLERES ══════════════════════════════ */
+async function cargarTalleres() {
+  try {
+    const r = await fetch(WORKER + '/admin/talleres', {
+      method: 'POST',
+      headers: { 'X-Autopass-Admin': SECRET, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    if (r.status === 401) { mostrarAlerta('al-talleres','err','Clave incorrecta.'); salir(); return; }
+    const d = await r.json();
+    talleresList = d.talleres || [];
+    renderListaTalleres();
+  } catch(e) { mostrarAlerta('al-talleres','err', e.message); }
+}
+
+function renderListaTalleres() {
+  const c = document.getElementById('lista-talleres');
+  if (!talleresList.length) { c.innerHTML = '<p style="color:var(--tinta-suave);margin-bottom:16px">Todavía no hay talleres. Crea el primero.</p>'; return; }
+  c.innerHTML = talleresList.map(t => `
+    <div class="taller-item" onclick='editarTaller(${JSON.stringify(JSON.stringify(t))})'>
+      ${t.logo_url
+        ? `<img class="taller-logo" src="${t.logo_url}" alt="">`
+        : `<div class="taller-logo vacio">🔧</div>`}
+      <div class="taller-info">
+        <div class="taller-nombre">${t.nombre}
+          <span class="badge activas">${t.activas ?? '—'} activas</span>
+          <span class="badge virgenes">${t.virgenes ?? '—'} vírgenes</span>
+        </div>
+        <div class="taller-meta">${[t.telefono, t.email, t.direccion].filter(Boolean).join(' · ')}</div>
+      </div>
+      <span style="color:var(--tinta-suave);font-size:20px">›</span>
+    </div>`).join('');
+}
+
+function abrirNuevoTaller() {
+  limpiarFormTaller();
+  document.getElementById('form-taller-titulo').textContent = 'Nuevo taller';
+  document.getElementById('btn-pin').style.display = 'none';
+  document.getElementById('pin-resultado').style.display = 'none';
+  document.getElementById('form-taller').style.display = 'block';
+  document.getElementById('form-taller').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editarTaller(json) {
+  const t = JSON.parse(json);
+  document.getElementById('form-taller-titulo').textContent = 'Editar taller';
+  document.getElementById('t-id').value = t.id;
+  document.getElementById('t-nombre').value = t.nombre || '';
+  document.getElementById('t-dir').value = t.direccion || '';
+  document.getElementById('t-tel').value = t.telefono || '';
+  document.getElementById('t-wa').value = t.whatsapp || '';
+  document.getElementById('t-email').value = t.email || '';
+  document.getElementById('t-web').value = t.web || '';
+  document.getElementById('t-logo').value = t.logo_url || '';
+  document.getElementById('t-fondo').value = t.foto_fondo || '';
+  const col = t.color || '#4B5563';
+  document.getElementById('t-color').value = col;
+  document.getElementById('t-color-hex').value = col;
+  document.getElementById('color-prev').style.background = col;
+  document.getElementById('btn-pin').style.display = 'inline-flex';
+  document.getElementById('pin-resultado').style.display = 'none';
+  document.getElementById('form-taller').style.display = 'block';
+  document.getElementById('form-taller').scrollIntoView({ behavior: 'smooth' });
+}
+
+function limpiarFormTaller() {
+  ['t-id','t-nombre','t-dir','t-tel','t-wa','t-email','t-web','t-logo','t-fondo'].forEach(id =>
+    document.getElementById(id).value = '');
+  document.getElementById('t-color').value = '#4B5563';
+  document.getElementById('t-color-hex').value = '#4B5563';
+  document.getElementById('color-prev').style.background = '#4B5563';
+}
+
+function cerrarFormTaller() {
+  document.getElementById('form-taller').style.display = 'none';
+  document.getElementById('pin-resultado').style.display = 'none';
+}
+
+function actualizarColor() {
+  const v = document.getElementById('t-color').value;
+  document.getElementById('t-color-hex').value = v;
+  document.getElementById('color-prev').style.background = v;
+}
+function sincronizarColor() {
+  const v = document.getElementById('t-color-hex').value;
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+    document.getElementById('t-color').value = v;
+    document.getElementById('color-prev').style.background = v;
+  }
+}
+
+async function guardarTaller() {
+  const btn = document.getElementById('btn-guardar-taller');
+  const id = document.getElementById('t-id').value;
+  const datos = {
+    nombre: document.getElementById('t-nombre').value.trim(),
+    direccion: document.getElementById('t-dir').value.trim(),
+    telefono: document.getElementById('t-tel').value.trim(),
+    whatsapp: document.getElementById('t-wa').value.trim(),
+    email: document.getElementById('t-email').value.trim(),
+    web: document.getElementById('t-web').value.trim(),
+    color: document.getElementById('t-color-hex').value.trim() || '#4B5563',
+    logo_url: document.getElementById('t-logo').value.trim(),
+    foto_fondo: document.getElementById('t-fondo').value.trim(),
+  };
+  if (!datos.nombre) { mostrarAlerta('al-talleres','err','El nombre es obligatorio.'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Guardando…';
+  try {
+    let res;
+    if (id) {
+      res = await api('/admin/taller-editar', { taller_id: id, ...datos });
+      mostrarAlerta('al-talleres','ok','Taller actualizado correctamente.');
+    } else {
+      res = await api('/admin/taller', datos);
+      mostrarAlerta('al-talleres','ok',`Taller creado. PIN: ${res.pin} — Cópialo ahora.`);
+      document.getElementById('pin-valor').textContent = res.pin;
+      document.getElementById('pin-resultado').style.display = 'block';
+    }
+    await cargarTalleres();
+    if (!id) limpiarFormTaller();
+  } catch(e) {
+    mostrarAlerta('al-talleres','err', e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Guardar taller';
+  }
+}
+
+async function regenerarPin() {
+  const id = document.getElementById('t-id').value;
+  if (!id) return;
+  if (!confirm('Se generará un PIN nuevo. El anterior deja de funcionar inmediatamente.\n\n¿Continuar?')) return;
+  try {
+    const r = await api('/admin/taller-pin', { taller_id: id });
+    document.getElementById('pin-valor').textContent = r.pin;
+    document.getElementById('pin-resultado').style.display = 'block';
+    mostrarAlerta('al-talleres','info','PIN regenerado. Entrégalo al taller ahora.');
+  } catch(e) { mostrarAlerta('al-talleres','err', e.message); }
+}
+
+/* ════════════════════════════════ LOTES ════════════════════════════════ */
+function rellenarSelectTalleres() {
+  const sel = document.getElementById('l-taller');
+  const actual = sel.value;
+  sel.innerHTML = '<option value="">— selecciona —</option>' +
+    talleresList.map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
+  sel.value = actual;
+}
+
+async function crearLote() {
+  const btn = document.getElementById('btn-crear-lote');
+  const tallerId = document.getElementById('l-taller').value;
+  const cantidad = Number(document.getElementById('l-cantidad').value);
+  const anios = Number(document.getElementById('l-anios').value);
+  const ref = document.getElementById('l-ref').value.trim();
+  if (!tallerId) { mostrarAlerta('al-lotes','err','Selecciona un taller.'); return; }
+  if (!cantidad || cantidad < 1) { mostrarAlerta('al-lotes','err','Indica una cantidad válida.'); return; }
+  if (!confirm(`Vas a crear ${cantidad} tarjetas para este taller.\n¿Continuar?`)) return;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Creando…';
+  try {
+    const r = await api('/admin/lote', { taller_id: tallerId, cantidad, anios, referencia: ref });
+    tokensActuales = r.tokens.map(t => `https://www.limonadaweb.com/t/${t}`);
+    document.getElementById('lote-cant').textContent = r.cantidad;
+    document.getElementById('lote-tokens').innerHTML = tokensActuales.join('<br>');
+    document.getElementById('lote-resultado').style.display = 'block';
+    document.getElementById('lote-resultado').scrollIntoView({ behavior: 'smooth' });
+    mostrarAlerta('al-lotes','ok',`Lote creado: ${r.cantidad} tarjetas.`);
+    await cargarHistorialLotes();
+  } catch(e) {
+    mostrarAlerta('al-lotes','err', e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Crear lote y generar URLs';
+  }
+}
+
+function descargarTokens() {
+  const blob = new Blob([tokensActuales.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `autopass-lote-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+async function copiarTokens() {
+  await navigator.clipboard.writeText(tokensActuales.join('\n'));
+  mostrarAlerta('al-lotes','ok','URLs copiadas al portapapeles.');
+}
+
+async function cargarHistorialLotes() {
+  try {
+    const r = await fetch(WORKER + '/admin/lotes', {
+      method: 'POST',
+      headers: { 'X-Autopass-Admin': SECRET, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    const d = await r.json().catch(() => ({ lotes: [] }));
+    const lotes = d.lotes || [];
+    const c = document.getElementById('historial-lotes');
+    if (!lotes.length) { c.innerHTML = '<p style="color:var(--tinta-suave);font-size:14px">Sin lotes todavía.</p>'; return; }
+    c.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:14px">
+      <thead><tr style="border-bottom:2px solid var(--linea);text-align:left">
+        <th style="padding:8px 4px">Taller</th>
+        <th style="padding:8px 4px">Referencia</th>
+        <th style="padding:8px 4px;text-align:right">Uds.</th>
+        <th style="padding:8px 4px;text-align:right">Años</th>
+        <th style="padding:8px 4px">Fecha</th>
+      </tr></thead>
+      <tbody>${lotes.map(l=>`<tr style="border-bottom:1px solid var(--linea)">
+        <td style="padding:9px 4px">${l.taller_nombre||'—'}</td>
+        <td style="padding:9px 4px;color:var(--tinta-suave)">${l.referencia||'—'}</td>
+        <td style="padding:9px 4px;text-align:right">${l.cantidad}</td>
+        <td style="padding:9px 4px;text-align:right">${l.anios}</td>
+        <td style="padding:9px 4px;color:var(--tinta-suave)">${l.creado_en?.slice(0,10)||'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) { /* silencioso */ }
+}
+
+/* ════════════════════════════════ TARJETAS ══════════════════════════════ */
+async function buscarTarjeta() {
+  const q = document.getElementById('busq-input').value.trim().toUpperCase();
+  if (!q) return;
+  const c = document.getElementById('busq-resultado');
+  c.innerHTML = '<p style="color:var(--tinta-suave);font-size:14px">Buscando…</p>';
+  try {
+    const r = await api('/admin/buscar', { q });
+    const items = r.tarjetas || [];
+    if (!items.length) { c.innerHTML = '<p style="color:var(--tinta-suave);font-size:14px">Sin resultados.</p>'; return; }
+    c.innerHTML = items.map(i => `
+      <div class="tarjeta" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-weight:600;font-size:16px">${i.matricula||'—'}</div>
+            <div style="font-size:13px;color:var(--tinta-suave);margin-top:3px">
+              ${[i.marca,i.modelo].filter(Boolean).join(' ')} · VIN ${i.bastidor||'—'}
+            </div>
+            <div style="font-size:13px;color:var(--tinta-suave);margin-top:2px">
+              Taller: ${i.taller_nombre||'—'} · Token: <code style="font-size:11px">${i.token}</code>
+            </div>
+          </div>
+          <span style="padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;
+            background:${i.estado==='activa'?'#D1FAE5':i.estado==='baja'?'#FEE2E2':'#EFF6FF'};
+            color:${i.estado==='activa'?'#065F46':i.estado==='baja'?'#991B1B':'#1E40AF'}">
+            ${i.estado}
+          </span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <a class="btn sec sm" href="https://www.limonadaweb.com/t/${i.token}" target="_blank">Abrir tarjeta</a>
+          <button class="btn sm" onclick="preRellenarSustitucion('${i.token}')">Sustituir</button>
+        </div>
+      </div>`).join('');
+  } catch(e) { c.innerHTML = `<p style="color:var(--rojo);font-size:14px">${e.message}</p>`; }
+}
+
+function preRellenarSustitucion(token) {
+  document.getElementById('s-antigua').value = token;
+  tab(document.querySelector('.nav button:nth-child(3)'), 'tarjetas');
+  document.getElementById('s-antigua').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function sustituirTarjeta() {
+  const antigua = document.getElementById('s-antigua').value.trim();
+  const nueva   = document.getElementById('s-nueva').value.trim();
+  if (!antigua || !nueva) { mostrarAlerta('al-tarjetas','err','Rellena los dos tokens.'); return; }
+  if (!confirm('El historial pasará a la tarjeta nueva y la perdida quedará en baja.\n\n¿Has comprobado el permiso de circulación?')) return;
+  try {
+    await api('/admin/sustituir', { token_antiguo: antigua, token_nuevo: nueva });
+    mostrarAlerta('al-tarjetas','ok','Sustitución completada correctamente.');
+    document.getElementById('s-antigua').value = '';
+    document.getElementById('s-nueva').value = '';
+  } catch(e) { mostrarAlerta('al-tarjetas','err', e.message); }
+}
+
+async function corregirDato() {
+  const vid    = document.getElementById('c-vid').value.trim();
+  const campo  = document.getElementById('c-campo').value;
+  const valor  = document.getElementById('c-valor').value.trim();
+  const motivo = document.getElementById('c-motivo').value.trim();
+  if (!vid || !valor) { mostrarAlerta('al-tarjetas','err','Rellena todos los campos.'); return; }
+  if (!confirm(`Vas a cambiar "${campo}" a "${valor}".\n\nQueda registrado en auditoría. ¿Continuar?`)) return;
+  try {
+    await api('/admin/corregir', { vehiculo_id: vid, campo, valor, motivo });
+    mostrarAlerta('al-tarjetas','ok','Corrección aplicada y registrada en auditoría.');
+  } catch(e) { mostrarAlerta('al-tarjetas','err', e.message); }
+}
+
+/* ════════════════════════════════ UTILIDADES ════════════════════════════ */
+function mostrarAlerta(id, tipo, msg) {
+  const el = document.getElementById(id);
+  el.className = `alerta ${tipo} vis`;
+  el.textContent = msg;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(() => el.classList.remove('vis'), 8000);
+}
+</script>
+</body>
+</html>
