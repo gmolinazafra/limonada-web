@@ -309,7 +309,8 @@ input[type=color]{padding:4px 6px;height:40px;cursor:pointer}
 
 <script>
 /* ════════════════════════════════ CONFIG ════════════════════════════════ */
-const WORKER = 'https://autopass.gmolinazafra.workers.dev';
+// Dominio propio: evita problemas de certificado con workers.dev
+const WORKER = 'https://autopass.limonadaweb.com';
 let SECRET = '';
 let talleresList = [];
 let tokensActuales = [];
