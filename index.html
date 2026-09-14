@@ -25,7 +25,8 @@
       --max:1180px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:auto}
+    html{scroll-behavior:auto;overflow-x:hidden}
+    body{overflow-x:hidden}
     body{
       margin:0;background:var(--bg);color:var(--ink);
       font-family:"Inter",system-ui,sans-serif;
@@ -944,13 +945,16 @@
 </section>
 
 <style>
-  .ap{padding:96px 0;background:linear-gradient(180deg,#0b1220 0%,#111c2e 100%);color:#fff}
+  .ap{padding:96px 0;background:linear-gradient(180deg,#0b1220 0%,#111c2e 100%);color:#fff;
+    overflow:hidden;max-width:100%}
+  .ap *{min-width:0;max-width:100%}
+  .ap .wrap{overflow:hidden}
   .ap .kicker{color:#4ade9a}
   .ap .kicker:before{background:#22c98a}
-  .ap h2{color:#fff;max-width:14ch}
+  .ap h2{color:#fff;max-width:min(14ch,100%);overflow-wrap:break-word}
   .ap h2 em{font-style:normal;color:#22c98a}
   .ap p{color:#a9b4c4}
-  .ap-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;margin-bottom:64px}
+  .ap-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:60px;align-items:center;margin-bottom:64px}
   .ap-lead{font-size:19px;margin:22px 0 26px;max-width:540px}
   .ap-cred{display:inline-block;font-size:13px;font-weight:700;color:#4ade9a;
     border:1px solid rgba(74,222,154,.35);border-radius:999px;padding:8px 16px;margin-bottom:26px}
@@ -962,14 +966,14 @@
   .ap-btn-ghost{border-color:rgba(255,255,255,.28);color:#fff;background:transparent}
   .ap-btn-ghost:hover{border-color:rgba(255,255,255,.6)}
   .ap-visual{border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-  .ap-visual img{width:100%;height:auto;display:block}
-  .ap-como{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:60px}
+  .ap-visual img{width:100%;height:auto;display:block;max-width:100%}
+  .ap-como{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-bottom:60px}
   .ap-paso{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:26px}
   .ap-paso-num{width:34px;height:34px;border-radius:50%;background:#22c98a;color:#08131f;
     display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:16px}
   .ap-paso h3{color:#fff;font-size:19px;margin-bottom:8px}
   .ap-paso p{font-size:15px;line-height:1.6}
-  .ap-bloques{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:60px}
+  .ap-bloques{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-bottom:60px}
   .ap-bloque{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px}
   .ap-bloque-ico{font-size:26px;margin-bottom:14px}
   .ap-bloque h3{color:#fff;font-size:19px;margin-bottom:10px}
@@ -978,7 +982,7 @@
   .ap-taller{background:rgba(34,201,138,.08);border:1px solid rgba(34,201,138,.25);
     border-radius:20px;padding:40px;margin-bottom:56px}
   .ap-taller h3{color:#fff;font-size:26px;margin:10px 0 14px;max-width:22ch}
-  .ap-taller-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:30px}
+  .ap-taller-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:30px}
   .ap-taller-item h4{font-family:"Manrope";font-size:17px;margin:0 0 6px;color:#fff}
   .ap-taller-item p{font-size:14.5px;line-height:1.6}
   .ap-cta{text-align:center;padding-top:10px}
@@ -986,7 +990,7 @@
   @media(max-width:980px){
     .ap-hero{grid-template-columns:1fr;gap:38px}
     .ap-como,.ap-bloques{grid-template-columns:1fr}
-    .ap-taller-grid{grid-template-columns:1fr 1fr}
+    .ap-taller-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media(max-width:600px){
     .ap{padding:70px 0}
