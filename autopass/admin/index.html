@@ -153,6 +153,10 @@ input[type=color]{padding:4px 6px;height:40px;cursor:pointer}
           <label><span>WhatsApp (móvil sin espacios)</span><input id="t-wa" type="tel" placeholder="600112233"></label>
           <label><span>Email</span><input id="t-email" type="email" placeholder="citas@taller.es"></label>
           <label><span>Web</span><input id="t-web" placeholder="taller.es"></label>
+          <label><span>Teléfono de asistencia en carretera</span>
+            <input id="t-asist" type="tel" placeholder="900 000 000">
+            <p class="hint">Aparece como píldora destacada y en MotorBot</p>
+          </label>
           <label><span>Web de cita online</span>
             <input id="t-webcitas" placeholder="taller.es/pedir-cita">
             <p class="hint">Aparece en MotorBot al pedir cita</p>
@@ -414,6 +418,7 @@ function editarTaller(json) {
   document.getElementById('t-email').value = t.email || '';
   document.getElementById('t-web').value = t.web || '';
   document.getElementById('t-webcitas').value = t.web_citas || '';
+  document.getElementById('t-asist').value = t.telefono_asistencia || '';
   document.getElementById('t-logo').value = t.logo_url || '';
   document.getElementById('t-fondo').value = t.foto_fondo || '';
   document.getElementById('t-msgbot').value = t.mensaje_bot || '';
@@ -429,7 +434,7 @@ function editarTaller(json) {
 }
 
 function limpiarFormTaller() {
-  ['t-id','t-nombre','t-dir','t-tel','t-wa','t-email','t-web','t-logo','t-fondo','t-msgbot','t-recom','t-webcitas'].forEach(id =>
+  ['t-id','t-nombre','t-dir','t-tel','t-wa','t-email','t-web','t-logo','t-fondo','t-msgbot','t-recom','t-webcitas','t-asist'].forEach(id =>
     document.getElementById(id).value = '');
   document.getElementById('t-color').value = '#4B5563';
   document.getElementById('t-color-hex').value = '#4B5563';
@@ -465,6 +470,7 @@ async function guardarTaller() {
     email: document.getElementById('t-email').value.trim(),
     web: document.getElementById('t-web').value.trim(),
     web_citas: document.getElementById('t-webcitas').value.trim(),
+    telefono_asistencia: document.getElementById('t-asist').value.trim(),
     color: document.getElementById('t-color-hex').value.trim() || '#4B5563',
     logo_url: document.getElementById('t-logo').value.trim(),
     foto_fondo: document.getElementById('t-fondo').value.trim(),
