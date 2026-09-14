@@ -173,6 +173,15 @@ input[type=color]{padding:4px 6px;height:40px;cursor:pointer}
             <p class="hint">1200×522 px · máx 150 KB · sin desenfoque</p>
           </label>
         </div>
+        <h2 style="margin-top:20px">MotorBot</h2>
+        <label><span>Mensaje del taller en el saludo del bot</span>
+          <textarea id="t-msgbot" rows="2" placeholder="En Caetano Benet revisamos tu vehículo sin cita previa de lunes a viernes."></textarea>
+          <p class="hint">Aparece al abrir MotorBot, debajo del resumen del vehículo</p>
+        </label>
+        <label><span>Recomendaciones propias (una por línea)</span>
+          <textarea id="t-recom" rows="4" placeholder="Revisa el nivel de aceite cada 3 repostajes&#10;Comprueba presiones una vez al mes"></textarea>
+          <p class="hint">Sustituyen a los consejos genéricos cuando el cliente pregunta</p>
+        </label>
         <div class="acciones">
           <button class="btn" id="btn-guardar-taller" onclick="guardarTaller()">Guardar taller</button>
           <button class="btn sec" onclick="cerrarFormTaller()">Cancelar</button>
@@ -402,6 +411,8 @@ function editarTaller(json) {
   document.getElementById('t-web').value = t.web || '';
   document.getElementById('t-logo').value = t.logo_url || '';
   document.getElementById('t-fondo').value = t.foto_fondo || '';
+  document.getElementById('t-msgbot').value = t.mensaje_bot || '';
+  document.getElementById('t-recom').value = t.recomendaciones || '';
   const col = t.color || '#4B5563';
   document.getElementById('t-color').value = col;
   document.getElementById('t-color-hex').value = col;
@@ -413,7 +424,7 @@ function editarTaller(json) {
 }
 
 function limpiarFormTaller() {
-  ['t-id','t-nombre','t-dir','t-tel','t-wa','t-email','t-web','t-logo','t-fondo'].forEach(id =>
+  ['t-id','t-nombre','t-dir','t-tel','t-wa','t-email','t-web','t-logo','t-fondo','t-msgbot','t-recom'].forEach(id =>
     document.getElementById(id).value = '');
   document.getElementById('t-color').value = '#4B5563';
   document.getElementById('t-color-hex').value = '#4B5563';
@@ -451,6 +462,8 @@ async function guardarTaller() {
     color: document.getElementById('t-color-hex').value.trim() || '#4B5563',
     logo_url: document.getElementById('t-logo').value.trim(),
     foto_fondo: document.getElementById('t-fondo').value.trim(),
+    mensaje_bot: document.getElementById('t-msgbot').value.trim(),
+    recomendaciones: document.getElementById('t-recom').value.trim(),
   };
   if (!datos.nombre) { mostrarAlerta('al-talleres','err','El nombre es obligatorio.'); return; }
   btn.disabled = true;
