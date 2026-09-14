@@ -406,6 +406,7 @@
       <a href="#rgpd">RGPD</a>
       <a href="#precios">Precios</a>
       <a href="#reciclacat-gest">Gestión CATs</a>
+      <a href="#autopass">AutoPass</a>
     </nav>
     <a class="btn btn-dark" href="#contacto">Cuéntame tu proyecto</a>
     <button class="menu-btn" aria-label="Menú" id="menu-toggle">☰</button>
@@ -419,6 +420,7 @@
       <a href="#rgpd">RGPD</a>
       <a href="#precios">Precios</a>
       <a href="#reciclacat-gest">Gestión CATs</a>
+      <a href="#autopass">AutoPass</a>
       <a href="#contacto">Contacto</a>
     </div>
   </div>
@@ -938,6 +940,163 @@
       </a>
       <div class="rcg-cta-sub">Sin cuotas abusivas · Sin funciones que no usas · Hecho por y para el sector</div>
     </div>
+  </div>
+</section>
+
+<style>
+  .ap{padding:96px 0;background:linear-gradient(180deg,#0b1220 0%,#111c2e 100%);color:#fff}
+  .ap .kicker{color:#4ade9a}
+  .ap .kicker:before{background:#22c98a}
+  .ap h2{color:#fff;max-width:14ch}
+  .ap h2 em{font-style:normal;color:#22c98a}
+  .ap p{color:#a9b4c4}
+  .ap-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;margin-bottom:64px}
+  .ap-lead{font-size:19px;margin:22px 0 26px;max-width:540px}
+  .ap-cred{display:inline-block;font-size:13px;font-weight:700;color:#4ade9a;
+    border:1px solid rgba(74,222,154,.35);border-radius:999px;padding:8px 16px;margin-bottom:26px}
+  .ap-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .ap-btn{min-height:50px;padding:0 26px;border-radius:10px;display:inline-flex;align-items:center;
+    justify-content:center;gap:8px;font-weight:700;font-size:15px;border:1px solid transparent;transition:.2s}
+  .ap-btn-primary{background:#22c98a;color:#08131f}
+  .ap-btn-primary:hover{background:#1bb178;transform:translateY(-1px)}
+  .ap-btn-ghost{border-color:rgba(255,255,255,.28);color:#fff;background:transparent}
+  .ap-btn-ghost:hover{border-color:rgba(255,255,255,.6)}
+  .ap-visual{border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .ap-visual img{width:100%;height:auto;display:block}
+  .ap-como{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:60px}
+  .ap-paso{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:26px}
+  .ap-paso-num{width:34px;height:34px;border-radius:50%;background:#22c98a;color:#08131f;
+    display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:16px}
+  .ap-paso h3{color:#fff;font-size:19px;margin-bottom:8px}
+  .ap-paso p{font-size:15px;line-height:1.6}
+  .ap-bloques{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:60px}
+  .ap-bloque{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px}
+  .ap-bloque-ico{font-size:26px;margin-bottom:14px}
+  .ap-bloque h3{color:#fff;font-size:19px;margin-bottom:10px}
+  .ap-bloque p{font-size:15px;line-height:1.6}
+  .ap-bloque ul{margin:12px 0 0;padding-left:18px;color:#a9b4c4;font-size:14.5px;line-height:1.8}
+  .ap-taller{background:rgba(34,201,138,.08);border:1px solid rgba(34,201,138,.25);
+    border-radius:20px;padding:40px;margin-bottom:56px}
+  .ap-taller h3{color:#fff;font-size:26px;margin:10px 0 14px;max-width:22ch}
+  .ap-taller-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:30px}
+  .ap-taller-item h4{font-family:"Manrope";font-size:17px;margin:0 0 6px;color:#fff}
+  .ap-taller-item p{font-size:14.5px;line-height:1.6}
+  .ap-cta{text-align:center;padding-top:10px}
+  .ap-cta-sub{margin-top:16px;font-size:14px;color:#8494a8}
+  @media(max-width:980px){
+    .ap-hero{grid-template-columns:1fr;gap:38px}
+    .ap-como,.ap-bloques{grid-template-columns:1fr}
+    .ap-taller-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .ap{padding:70px 0}
+    .ap-taller{padding:26px}
+    .ap-taller-grid{grid-template-columns:1fr}
+  }
+</style>
+
+<section class="ap" id="autopass">
+  <div class="wrap">
+
+    <div class="ap-hero">
+      <div>
+        <div class="kicker">Fidelización para talleres y concesionarios</div>
+        <h2>Su taller, en la <em>guantera</em> de cada cliente</h2>
+        <p class="ap-lead">AutoPass es una tarjeta NFC que el taller entrega a su cliente. El conductor acerca el móvil y accede al historial de su vehículo, a las fechas de la ITV y del seguro, y a un asistente que le dice qué le toca. Todo con la imagen del taller en pantalla.</p>
+        <div class="ap-cred">Sin aplicaciones &middot; Sin registros &middot; Sin contraseñas</div>
+        <div class="ap-btns">
+          <a class="ap-btn ap-btn-primary" href="#autopass-info">Pedir información &rarr;</a>
+          <a class="ap-btn ap-btn-ghost" href="#autopass-taller">Qué gana el taller</a>
+        </div>
+      </div>
+      <div class="ap-visual">
+        <img src="/autopass/autopass-banner.jpg" alt="AutoPass, tarjeta NFC con el historial digital del vehículo" loading="lazy">
+      </div>
+    </div>
+
+    <div class="ap-como">
+      <div class="ap-paso">
+        <div class="ap-paso-num">1</div>
+        <h3>El taller la activa</h3>
+        <p>En treinta segúndos: matrícula, bastidor, marca, modelo y kilómetros. Los datos quedan grabados de forma permanente y la tarjeta se liga a ese vehículo para siempre.</p>
+      </div>
+      <div class="ap-paso">
+        <div class="ap-paso-num">2</div>
+        <h3>El cliente acerca el móvil</h3>
+        <p>Se abre la ficha de su coche con la cabecera del taller. Sin descargar nada y sin crear cuenta. Puede instalarla en la pantalla de inicio como si fuera una aplicación.</p>
+      </div>
+      <div class="ap-paso">
+        <div class="ap-paso-num">3</div>
+        <h3>Cada visita queda anotada</h3>
+        <p>El taller registra lo que se ha hecho y el sistema calcula solo la siguiente revisión, por tiempo y por kilómetros. El historial crece con el coche.</p>
+      </div>
+    </div>
+
+    <div class="ap-bloques">
+      <div class="ap-bloque">
+        <div class="ap-bloque-ico">&#128663;</div>
+        <h3>Datos del vehículo</h3>
+        <p>Matrícula, bastidor, fecha de matrículacion y combustible siempre a mano, sin rebuscar en la guantera.</p>
+        <ul>
+          <li>Kilometraje actualizable</li>
+          <li>Datos bloqueados tras la activación</li>
+          <li>Útil para la ITV, el seguro o un parte</li>
+        </ul>
+      </div>
+      <div class="ap-bloque">
+        <div class="ap-bloque-ico">&#128197;</div>
+        <h3>Caducidades legales</h3>
+        <p>ITV y seguro con semáforo de estado, calculados según la antigüedad del vehículo.</p>
+        <ul>
+          <li>Aviso por correo 30 días antes</li>
+          <li>Exportación al calendario del móvil</li>
+          <li>Fechas editables por el propietario</li>
+        </ul>
+      </div>
+      <div class="ap-bloque">
+        <div class="ap-bloque-ico">&#128295;</div>
+        <h3>Mantenimientos</h3>
+        <p>Historial completo de intervenciones y cálculo automático de la próxima por tiempo y kilómetros.</p>
+        <ul>
+          <li>Más de 20 tipos de mantenimiento</li>
+          <li>Sello del taller en cada anotación</li>
+          <li>Filtro por año</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ap-taller" id="autopass-taller">
+      <div class="kicker">MotorBot incluido</div>
+      <h3>Un asistente que conoce ese coche en concreto</h3>
+      <p style="max-width:70ch">Dentro de cada tarjeta hay un asistente al que el conductor puede preguntar en lenguaje normal. Reconoce síntomas de taller, explica los testigos del cuadro, resuelve dudas de ITV y normativa, y siempre termina ofreciendo cita en el taller que entregó la tarjeta.</p>
+      <div class="ap-taller-grid">
+        <div class="ap-taller-item">
+          <h4>Su marca, cinco años</h4>
+          <p>Logo, foto y colores del taller en la pantalla que el cliente abre cada vez que piensa en su coche.</p>
+        </div>
+        <div class="ap-taller-item">
+          <h4>Cada aviso es una cita</h4>
+          <p>El recordatorio de la ITV o de la revisión llega con el nombre y el teléfono del taller delante.</p>
+        </div>
+        <div class="ap-taller-item">
+          <h4>Contacto a un toque</h4>
+          <p>Cita online, WhatsApp, teléfono y asistencia en carretera, siempre visibles en la cabecera.</p>
+        </div>
+        <div class="ap-taller-item">
+          <h4>Valor en la reventa</h4>
+          <p>El historial viaja con el vehículo y demuestra al comprador cómo se ha cuidado, y quién lo cuidó.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-cta" id="autopass-info">
+      <a class="ap-btn ap-btn-primary" style="min-height:54px;padding:0 34px;font-size:16px"
+         href="mailto:info@limonadaweb.com?subject=Información%20AutoPass&body=Hola%2C%20me%20interesa%20AutoPass%20para%20mi%20taller.%0A%0ANombre%3A%0ATaller%3A%0ATeléfono%3A%0ANúmero%20de%20tarjetas%20apróximado%3A">
+        Pedir información sin compromiso &rarr;
+      </a>
+      <div class="ap-cta-sub">Tarjetas por lotes &middot; Personalización incluida &middot; Cinco años de servicio</div>
+    </div>
+
   </div>
 </section>
 
