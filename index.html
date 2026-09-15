@@ -373,19 +373,30 @@
     /* Offset scroll para header sticky */
     [id]{scroll-margin-top:72px}
   
-    /* ── Capturas completas en movil (va al final para ganar en cascada) ── */
+    /* ── Capturas completas, sin recortes, en cualquier pantalla ──────────
+       Proporcion fija para que todas las tarjetas midan igual, y la imagen
+       dentro sin recortar. Va al final para ganar en la cascada. */
+    .web-preview,
+    .browser-static{
+      height:auto !important;
+      min-height:0 !important;
+      aspect-ratio:16/10;
+    }
+    .project-preview-img,
+    .browser-static-img{
+      flex:1 1 auto !important;
+      height:auto !important;
+      min-height:0 !important;
+      width:100% !important;
+      object-fit:contain !important;
+      object-position:top center !important;
+      background:#f5f3ee !important;
+    }
     @media(max-width:768px){
       .web-preview,
-      .browser-static{height:auto !important;min-height:0 !important}
+      .browser-static{aspect-ratio:auto}
       .project-preview-img,
-      .browser-static-img{
-        flex:none !important;
-        height:auto !important;
-        width:100% !important;
-        object-fit:contain !important;
-        object-position:top center !important;
-        background:#f5f3ee !important;
-      }
+      .browser-static-img{flex:none !important}
     }
 </style>
   <meta property="og:title" content="Limonada Web · Diseño web, apps y automatizaciones en Málaga">
