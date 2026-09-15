@@ -333,20 +333,6 @@
       .step:nth-child(2n){border-right:0}
       .whylist{grid-template-columns:1fr 1fr}
     }
-    /* En pantallas estrechas la captura se muestra completa, no recortada */
-    @media(max-width:768px){
-      .web-preview{height:auto;min-height:0}
-      .project-preview-img{
-        flex:none;height:auto;width:100%;
-        object-fit:contain;object-position:top center;
-        background:#f5f3ee;
-      }
-      .browser-static{height:auto}
-      .browser-static-img{
-        flex:none;height:auto;width:100%;
-        object-fit:contain;object-position:top center;
-      }
-    }
     @media(max-width:580px){
       .wrap{width:min(calc(100% - 28px),var(--max))}
       .rgpd-client-preview{height:150px}
@@ -386,7 +372,22 @@
     .project-preview-img{width:100%;flex:1;object-fit:cover;object-position:top;display:block;border:0;min-height:0}
     /* Offset scroll para header sticky */
     [id]{scroll-margin-top:72px}
-  </style>
+  
+    /* ── Capturas completas en movil (va al final para ganar en cascada) ── */
+    @media(max-width:768px){
+      .web-preview,
+      .browser-static{height:auto !important;min-height:0 !important}
+      .project-preview-img,
+      .browser-static-img{
+        flex:none !important;
+        height:auto !important;
+        width:100% !important;
+        object-fit:contain !important;
+        object-position:top center !important;
+        background:#f5f3ee !important;
+      }
+    }
+</style>
   <meta property="og:title" content="Limonada Web · Diseño web, apps y automatizaciones en Málaga">
   <meta property="og:description" content="Creamos webs, aplicaciones, automatizaciones e implantaciones RGPD que ayudan a vender mejor, trabajar con más orden y reducir riesgos y tareas manuales.">
   <meta property="og:url" content="https://limonadaweb.com/">
