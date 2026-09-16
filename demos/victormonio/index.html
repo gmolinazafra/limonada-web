@@ -1832,6 +1832,7 @@ function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment
 
 function AdminApts({appointments,onOpen,onAddAppointment}){
   const [showNew,setShowNew]=useState(false);
+  const [repeatTarget,setRepeatTarget]=useState(null);
   const [query,setQuery]=useState("");
   const allApts=appointments.slice().sort((a,b)=>b.date.localeCompare(a.date)||a.time.localeCompare(b.time));
   const filtered=query.trim()?allApts.filter(a=>{const q=norm(query);const prof=professionals.find(p=>p.id===a.professionalId);const svc=services.find(s=>s.id===a.serviceId);return norm(a.clientName).includes(q)||(prof&&norm(prof.name).includes(q))||(svc&&norm(svc.name).includes(q))||a.date.includes(q)||a.time.includes(q);}):allApts;
@@ -1842,6 +1843,7 @@ function AdminApts({appointments,onOpen,onAddAppointment}){
         <button onClick={()=>setShowNew(true)} style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva</button>
       </div>
       {showNew&&<NuevaCitaModal onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>}
+      {repeatTarget&&<NuevaCitaModal prefill={repeatTarget} defaultDate={todayStr} onClose={()=>setRepeatTarget(null)} onSave={a=>{onAddAppointment&&onAddAppointment(a);setRepeatTarget(null);}}/> }
       <div style={{position:"relative",marginBottom:14}}><span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",fontSize:14,color:T.ink3}}>🔍</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar por cliente, barbero, servicio o fecha…" style={{width:"100%",padding:"10px 12px 10px 36px",border:"1px solid rgba(0,0,0,0.1)",borderRadius:12,fontSize:13,fontFamily:"inherit",background:T.bgCard,color:T.ink,boxSizing:"border-box"}}/></div>
       {filtered.slice(0,query?999:20).map(a=>{
         const prof=professionals.find(p=>p.id===a.professionalId);
