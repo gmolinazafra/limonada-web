@@ -1851,7 +1851,7 @@ function AdminApts({appointments,onOpen,onAddAppointment}){
           <Card key={a.id} onClick={()=>onOpen&&onOpen(a)} style={{marginBottom:10,cursor:"pointer"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
               <div><p style={{margin:"0 0 2px",fontSize:14,fontWeight:800}}>{a.clientName}</p><p style={{margin:0,fontSize:12,color:"#888"}}>{svc?.name} · {prof?.name}</p><p style={{margin:"4px 0 0",fontSize:12,color:"#aaa"}}>{formatDateLabel(a.date)} a las {a.time}</p></div>
-              <div style={{textAlign:"right"}}><span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c,display:"block",marginBottom:4}}>{{confirmed:"Confirmada",completed:"Completada",cancelled:"Cancelada"}[a.status]}</span><span style={{fontSize:14,fontWeight:800,color:"#B89A5A"}}>{a.price} €</span></div>
+              <div style={{textAlign:"right",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5}}><span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c,display:"block"}}>{{confirmed:"Confirmada",completed:"Completada",cancelled:"Cancelada"}[a.status]}</span><span style={{fontSize:14,fontWeight:800,color:"#B89A5A"}}>{a.price} €</span>{a.status!=="cancelled"&&<button onClick={e=>{e.stopPropagation();setRepeatTarget(a);}} style={{background:"#EFF8F0",color:"#2F8F57",border:"1.5px solid rgba(47,143,87,0.25)",borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>↺ Repetir</button>}</div>
             </div>
           </Card>
         );
