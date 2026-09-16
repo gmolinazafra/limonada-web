@@ -1406,7 +1406,8 @@ function AppointmentsView({appointments}){
 
 // BIZ
 
-function AdminView({appointments,onAddAppointment}){
+function AdminView({appointments,onAddAppointment,onUpdateAppointment,onCancelAppointment}){
+  const [detail,setDetail]=useState(null);
   const [sec,setSec]=useState("dashboard");
   const [profFilter,setProfFilter]=useState(null);
   const todayCitas=appointments.filter(a=>a.date===todayStr&&a.status!=="cancelled");
@@ -1426,45 +1427,178 @@ function AdminView({appointments,onAddAppointment}){
         ))}
       </div>
       <div style={{flex:1,background:T.bg,minHeight:"60vh"}} {...swipeHandlers_}>
-        {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos}/>}
-        {sec==="agenda"&&<AdminAgenda appointments={appointments} initialProf={profFilter} onClearProf={()=>setProfFilter(null)} onAddAppointment={onAddAppointment}/>}
-        {sec==="appointments"&&<AdminApts appointments={appointments}/>}
+        {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos} onOpen={setDetail} onAddAppointment={onAddAppointment}/>}
+        {sec==="agenda"&&<AdminAgenda appointments={appointments} initialProf={profFilter} onClearProf={()=>setProfFilter(null)} onAddAppointment={onAddAppointment} onOpen={setDetail}/>}
+        {sec==="appointments"&&<AdminApts appointments={appointments} onOpen={setDetail} onAddAppointment={onAddAppointment}/>}
         {sec==="clients"&&<AdminClients/>}
         {sec==="professionals"&&<AdminProfs onNavAgenda={(profId)=>{setProfFilter(profId);setSec("agenda");}}/>}
         {sec==="products"&&<AdminProducts/>}
         {sec==="stats"&&<AdminStats appointments={appointments}/>}
         {sec==="settings"&&<AdminSettings/>}
       </div>
+      {detail&&<CitaDetalleModal apt={detail} onClose={()=>setDetail(null)} onUpdate={a=>{onUpdateAppointment&&onUpdateAppointment(a);setDetail(null);}} onCancel={id=>{onCancelAppointment&&onCancelAppointment(id);setDetail(null);}}/>}
     </div>
   );
 }
 
-function AdminDash({appointments,todayCitas,ingresos}){
-  const stats=[{l:"Citas hoy",v:todayCitas.length,u:"",c:"#1a1a1a"},{l:"Ingresos previstos",v:ingresos,u:"€",c:"#B89A5A"},{l:"Ocupación",v:Math.round((todayCitas.length/12)*100),u:"%",c:"#4CAF50"},{l:"Cancelaciones",v:0,u:"",c:"#E74C3C"}];
+function AdminDash({appointments,todayCitas,ingresos,onOpen,onAddAppointment}){
+  const [showNew,setShowNew]=useState(false);
+  const cancelled=appointments.filter(a=>a.date===todayStr&&a.status==="cancelled").length;
+  const stats=[{l:"Citas hoy",v:todayCitas.length,u:"",c:"#1a1a1a"},{l:"Ingresos previstos",v:ingresos,u:"€",c:"#B89A5A"},{l:"Ocupación",v:Math.round((todayCitas.length/12)*100),u:"%",c:"#4CAF50"},{l:"Cancelaciones",v:cancelled,u:"",c:"#E74C3C"}];
+  const ROW=32;const START=9*60;const END=21*60;const totalRows=(END-START)/30;
+  const colors=["#B9924C","#5B8DEF","#2F8F57","#D34B3F","#8B5CF6"];
+  const profColorMap={};professionals.forEach((p,i)=>{profColorMap[p.id]=colors[i%colors.length];});
+  function toMin(t){const [h,m]=t.split(":").map(Number);return h*60+m;}
+  // Solo profesionales con cita hoy, para que quepa en móvil
+  const activeProfs=professionals.filter(p=>todayCitas.some(a=>a.professionalId===p.id));
+  const profs=activeProfs.length?activeProfs:professionals;
+  const stop={onTouchStart:e=>e.stopPropagation(),onTouchMove:e=>e.stopPropagation(),onTouchEnd:e=>e.stopPropagation()};
+  // Rango horario compacto: desde la primera cita hasta la última
+  const mins=todayCitas.map(a=>toMin(a.time));
+  const maxEnd=todayCitas.length?Math.max(...todayCitas.map(a=>{const s=services.find(x=>x.id===a.serviceId);return toMin(a.time)+(s?s.duration:30);})):END;
+  const firstRow=todayCitas.length?Math.max(0,Math.floor((Math.min(...mins)-START)/30)-1):0;
+  const lastRow=todayCitas.length?Math.min(totalRows,Math.ceil((maxEnd-START)/30)+1):totalRows;
+  const rows=lastRow-firstRow;
   return(
     <div style={{padding:20}}>
+      {showNew&&<NuevaCitaModal onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>}
       <p style={{margin:"0 0 16px",fontSize:13,color:"#888"}}>{new Date().toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"})}</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
         {stats.map(s=><Card key={s.l} style={{textAlign:"center"}}><p style={{margin:"0 0 4px",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:1}}>{s.l}</p><p style={{margin:0,fontSize:28,fontWeight:800,color:s.c}}>{s.v}<span style={{fontSize:14}}>{s.u}</span></p></Card>)}
       </div>
-      <Card>
-        <p style={{margin:"0 0 14px",fontSize:13,fontWeight:800}}>Agenda de hoy</p>
-        {todayCitas.map((a,i)=>{
-          const prof=professionals.find(p=>p.id===a.professionalId);
-          const svc=services.find(s=>s.id===a.serviceId);
-          return(
-            <div key={a.id} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<todayCitas.length-1?"1px solid #F5F5F5":"none"}}>
-              <span style={{fontSize:13,fontWeight:800,color:"#B89A5A",minWidth:42}}>{a.time}</span>
-              <Avatar initials={prof?.avatar||"?"} size={32}/>
-              <div style={{flex:1}}>
-                <p style={{margin:0,fontSize:13,fontWeight:700}}>{a.clientName}</p>
-                <p style={{margin:0,fontSize:11,color:"#888"}}>{svc?.name} · {prof?.name}</p>
-              </div>
-              <span style={{fontSize:12,fontWeight:700}}>{a.price} €</span>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <p style={{margin:0,fontSize:13,fontWeight:800}}>Agenda de hoy</p>
+        <button onClick={()=>setShowNew(true)} style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"6px 12px",fontSize:11,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva</button>
+      </div>
+      {todayCitas.length===0?<Card><p style={{margin:0,textAlign:"center",color:T.ink3,fontSize:13,padding:"20px 0"}}>Sin citas hoy</p></Card>:(
+      <div style={{background:T.bgCard,borderRadius:T.radius,border:"1px solid rgba(0,0,0,0.07)",overflow:"hidden"}}>
+        <div {...stop} style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
+          <div style={{minWidth:profs.length>3?`${44+profs.length*104}px`:"auto"}}>
+            <div style={{display:"grid",gridTemplateColumns:`44px repeat(${profs.length},${profs.length>3?"104px":"1fr"})`,borderBottom:"1px solid rgba(0,0,0,0.08)",background:T.bg}}>
+              <div style={{position:"sticky",left:0,background:T.bg,zIndex:4}}/>
+              {profs.map(p=>(<div key={p.id} style={{padding:"6px 4px",textAlign:"center",borderLeft:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}><Avatar initials={p.avatar} size={24}/><span style={{fontSize:10,fontWeight:700,color:T.ink,whiteSpace:"nowrap"}}>{p.name}</span></div></div>))}
             </div>
-          );
-        })}
-      </Card>
+            <div style={{display:"grid",gridTemplateColumns:`44px repeat(${profs.length},${profs.length>3?"104px":"1fr"})`,position:"relative",height:rows*ROW}}>
+              <div style={{position:"sticky",left:0,background:T.bgCard,zIndex:2}}>
+                {Array.from({length:rows},(_,k)=>{const i=firstRow+k;return(<div key={i} style={{position:"absolute",top:k*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",display:"flex",alignItems:"flex-start",justifyContent:"flex-end",paddingRight:5,paddingTop:1,fontSize:9,fontWeight:i%2===0?700:400,color:i%2===0?T.ink2:"transparent"}}>{i%2===0?`${String(9+Math.floor(i/2)).padStart(2,"0")}:00`:""}</div>);})}
+              </div>
+              {profs.map(p=>{
+                const col=profColorMap[p.id]||colors[0];
+                return(
+                  <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)",overflow:"hidden"}}>
+                    {Array.from({length:rows},(_,k)=>{const i=firstRow+k;return(<div key={i} style={{position:"absolute",top:k*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",pointerEvents:"none"}}/>);})}
+                    {todayCitas.filter(a=>a.professionalId===p.id).map(a=>{
+                      const svc=services.find(s=>s.id===a.serviceId);
+                      const dur=svc?svc.duration:30;
+                      const top=((toMin(a.time)-START)/30-firstRow)*ROW;
+                      const h=(dur/30)*ROW-3;
+                      return(
+                        <div key={a.id} onClick={()=>onOpen&&onOpen(a)} style={{position:"absolute",top:top+1,left:2,right:2,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:6,padding:"2px 5px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:2,cursor:"pointer"}}>
+                          <p style={{margin:0,fontSize:10,fontWeight:700,color:T.ink,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.clientName}</p>
+                          {h>28&&<p style={{margin:0,fontSize:9,color:T.ink2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.time} · {a.price}€</p>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>)}
+      <p style={{margin:"8px 0 0",fontSize:11,color:T.ink3,textAlign:"center"}}>Toca una cita para ver el detalle, editarla o cancelarla</p>
+    </div>
+  );
+}
+
+function CitaDetalleModal({apt,onClose,onUpdate,onCancel}){
+  const [edit,setEdit]=useState(false);
+  const [svcId,setSvcId]=useState(apt.serviceId);
+  const [profId,setProfId]=useState(apt.professionalId);
+  const [date,setDate]=useState(apt.date);
+  const [time,setTime]=useState(apt.time);
+  const [notes,setNotes]=useState(apt.notes||"");
+  const [name,setName]=useState(apt.clientName);
+  const [phone,setPhone]=useState(apt.clientPhone||"");
+  const [confirmCancel,setConfirmCancel]=useState(false);
+  const svc=services.find(s=>s.id===svcId);
+  const prof=professionals.find(p=>p.id===profId);
+  const times=[];for(let h=10;h<21;h++){times.push(`${String(h).padStart(2,"0")}:00`);times.push(`${String(h).padStart(2,"0")}:30`);}
+  const sc={confirmed:{bg:"#EFF8F0",c:"#2E7D32",t:"Confirmada"},completed:{bg:"#F0EDE8",c:"#888",t:"Completada"},cancelled:{bg:"#FFF0EE",c:"#C0392B",t:"Cancelada"}}[apt.status]||{bg:"#F0EDE8",c:"#888",t:apt.status};
+  const inp={width:"100%",padding:"10px 12px",border:"1px solid rgba(0,0,0,0.12)",borderRadius:10,fontSize:14,fontFamily:"inherit",background:T.bgCard,color:T.ink,boxSizing:"border-box"};
+  const lbl={display:"block",fontSize:11,fontWeight:700,color:T.ink3,textTransform:"uppercase",letterSpacing:1,marginBottom:6,marginTop:12};
+  function save(){
+    onUpdate({...apt,serviceId:svcId,professionalId:profId,date,time,notes,clientName:name.trim()||apt.clientName,clientPhone:phone,duration:svc?svc.duration:apt.duration,price:svc?svc.price:apt.price});
+  }
+  const row=(l,v)=>(<div style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid rgba(0,0,0,0.06)"}}><span style={{fontSize:12,color:T.ink3}}>{l}</span><span style={{fontSize:13,fontWeight:700,color:T.ink,textAlign:"right"}}>{v}</span></div>);
+  return(
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.5)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:T.bg,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",borderRadius:"20px 20px 0 0",padding:"20px 20px 30px",boxSizing:"border-box"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+          <div>
+            <h3 style={{margin:0,fontSize:18,fontWeight:800,color:T.ink}}>{edit?"Editar cita":"Detalle de la cita"}</h3>
+            <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c,display:"inline-block",marginTop:6}}>{sc.t}{apt.recurring?" · Recurrente":""}</span>
+          </div>
+          <button onClick={onClose} style={{background:"none",border:"none",fontSize:24,cursor:"pointer",color:T.ink3,lineHeight:1}}>×</button>
+        </div>
+
+        {!edit&&(<>
+          <div style={{display:"flex",alignItems:"center",gap:12,background:T.bgCard,borderRadius:12,padding:"14px 16px",margin:"14px 0"}}>
+            <Avatar initials={apt.clientName.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()} size={44}/>
+            <div style={{flex:1}}>
+              <p style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>{apt.clientName}</p>
+              {apt.clientPhone&&<a href={`tel:${apt.clientPhone}`} style={{fontSize:13,color:T.gold,textDecoration:"none",fontWeight:600}}>📞 {apt.clientPhone}</a>}
+            </div>
+            {apt.clientPhone&&<a href={`https://wa.me/34${apt.clientPhone.replace(/\D/g,"")}`} target="_blank" rel="noopener" style={{background:"#25D366",color:"#fff",borderRadius:10,padding:"8px 12px",fontSize:12,fontWeight:700,textDecoration:"none"}}>WhatsApp</a>}
+          </div>
+          <div style={{background:T.bgCard,borderRadius:12,padding:"4px 16px"}}>
+            {row("Servicio",svc?svc.name:apt.serviceId)}
+            {row("Profesional",prof?prof.name:"—")}
+            {row("Fecha",formatDateLabel(apt.date))}
+            {row("Hora",`${apt.time} · ${apt.duration||(svc?svc.duration:30)} min`)}
+            {row("Precio",`${apt.price} €`)}
+            {row("Código",apt.code||"—")}
+            {apt.notes&&<div style={{padding:"10px 0"}}><span style={{fontSize:12,color:T.ink3,display:"block",marginBottom:4}}>Notas</span><span style={{fontSize:13,color:T.ink}}>{apt.notes}</span></div>}
+          </div>
+          {apt.status!=="cancelled"&&(<>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:16}}>
+              <button onClick={()=>setEdit(true)} style={{background:T.ink,color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>✎ Editar</button>
+              <button onClick={()=>setConfirmCancel(true)} style={{background:"#FFF0EE",color:"#C0392B",border:"1.5px solid rgba(192,57,43,0.25)",borderRadius:12,padding:"13px",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>Cancelar cita</button>
+            </div>
+            {confirmCancel&&(
+              <div style={{marginTop:12,background:"#FFF0EE",border:"1px solid rgba(192,57,43,0.25)",borderRadius:12,padding:14}}>
+                <p style={{margin:"0 0 10px",fontSize:13,color:"#C0392B",fontWeight:700}}>¿Seguro que quieres cancelar la cita de {apt.clientName}?</p>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                  <button onClick={()=>setConfirmCancel(false)} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:10,padding:"10px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>No, volver</button>
+                  <button onClick={()=>onCancel(apt.id)} style={{background:"#C0392B",color:"#fff",border:"none",borderRadius:10,padding:"10px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>Sí, cancelar</button>
+                </div>
+              </div>
+            )}
+          </>)}
+        </>)}
+
+        {edit&&(<>
+          <label style={lbl}>Cliente</label>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            <input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Nombre"/>
+            <input style={inp} value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Teléfono" inputMode="tel"/>
+          </div>
+          <label style={lbl}>Servicio</label>
+          <select style={inp} value={svcId} onChange={e=>setSvcId(e.target.value)}>{services.map(s=>(<option key={s.id} value={s.id}>{s.name} · {s.duration} min · {s.price}€</option>))}</select>
+          <label style={lbl}>Profesional</label>
+          <select style={inp} value={profId} onChange={e=>setProfId(e.target.value)}>{professionals.map(p=>(<option key={p.id} value={p.id}>{p.name} — {p.role}</option>))}</select>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            <div><label style={lbl}>Fecha</label><input type="date" style={inp} value={date} onChange={e=>setDate(e.target.value)}/></div>
+            <div><label style={lbl}>Hora</label><select style={inp} value={time} onChange={e=>setTime(e.target.value)}>{times.map(t=>(<option key={t} value={t}>{t}</option>))}</select></div>
+          </div>
+          <label style={lbl}>Notas</label>
+          <textarea style={{...inp,minHeight:60,resize:"vertical"}} value={notes} onChange={e=>setNotes(e.target.value)}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:16}}>
+            <button onClick={()=>setEdit(false)} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.12)",borderRadius:12,padding:"13px",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Descartar</button>
+            <button onClick={save} style={{background:T.gold,color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>Guardar cambios</button>
+          </div>
+        </>)}
+      </div>
     </div>
   );
 }
@@ -1582,7 +1716,7 @@ function NuevaCitaModal({onClose,onSave,defaultDate}){
   );
 }
 
-function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment}){
+function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment,onOpen}){
   const [showNew,setShowNew]=useState(false);
   const [viewDate,setViewDate]=useState(todayStr);
   const [isDesktop,setIsDesktop]=useState(window.innerWidth>=768);
@@ -1658,7 +1792,7 @@ function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment
                       const top=((toMin(a.time)-START)/30)*ROW;
                       const h=(dur/30)*ROW-4;
                       return(
-                        <div key={a.id} style={{position:"absolute",top:top+2,left:3,right:3,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:8,padding:"3px 6px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:2}}>
+                        <div key={a.id} onClick={()=>onOpen&&onOpen(a)} style={{position:"absolute",top:top+2,left:3,right:3,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:8,padding:"3px 6px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:2,cursor:"pointer"}}>
                           <p style={{margin:0,fontSize:isDesktop?11:10,fontWeight:700,color:T.ink,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.clientName}</p>
                           {h>36&&<p style={{margin:"1px 0 0",fontSize:isDesktop?10:9,color:T.ink2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{svc?svc.name:""} · {a.price}€</p>}
                           {h>58&&<p style={{margin:"1px 0 0",fontSize:9,color:col,fontWeight:700}}>{a.time} · {dur}′</p>}
@@ -1677,19 +1811,21 @@ function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment
   );
 }
 
-function AdminApts({appointments}){
+function AdminApts({appointments,onOpen,onAddAppointment}){
+  const [showNew,setShowNew]=useState(false);
   return(
     <div style={{padding:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
         <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Reservas</h3>
-        <button style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button>
+        <button onClick={()=>setShowNew(true)} style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button>
       </div>
+      {showNew&&<NuevaCitaModal onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>}
       {appointments.slice(0,15).map(a=>{
         const prof=professionals.find(p=>p.id===a.professionalId);
         const svc=services.find(s=>s.id===a.serviceId);
         const sc={confirmed:{bg:"#EFF8F0",c:"#2E7D32"},completed:{bg:"#F0EDE8",c:"#888"},cancelled:{bg:"#FFF0EE",c:"#C0392B"}}[a.status]||{bg:"#F0EDE8",c:"#888"};
         return(
-          <Card key={a.id} style={{marginBottom:10}}>
+          <Card key={a.id} onClick={()=>onOpen&&onOpen(a)} style={{marginBottom:10,cursor:"pointer"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
               <div><p style={{margin:"0 0 2px",fontSize:14,fontWeight:800}}>{a.clientName}</p><p style={{margin:0,fontSize:12,color:"#888"}}>{svc?.name} · {prof?.name}</p><p style={{margin:"4px 0 0",fontSize:12,color:"#aaa"}}>{formatDateLabel(a.date)} a las {a.time}</p></div>
               <div style={{textAlign:"right"}}><span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:sc.bg,color:sc.c,display:"block",marginBottom:4}}>{{confirmed:"Confirmada",completed:"Completada",cancelled:"Cancelada"}[a.status]}</span><span style={{fontSize:14,fontWeight:800,color:"#B89A5A"}}>{a.price} €</span></div>
@@ -1973,13 +2109,13 @@ function ClientApp({ appointments, onAppointmentCreated, demoMode=false, onExitD
 
 // BIZAPP
 
-function BusinessApp({ appointments, onAppointmentCreated, demoMode=false, onExitDemo, onReset }){
+function BusinessApp({ appointments, onAppointmentCreated, onAppointmentUpdated, onAppointmentCancelled, demoMode=false, onExitDemo, onReset }){
   
   return(
     <div style={{fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:"760px",margin:"0 auto",minHeight:"100vh",display:"flex",flexDirection:"column",background:"#F8F7F5"}}>
       
       <div style={{flex:1}}>
-        <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated}/>
+        <AdminView appointments={appointments} onAddAppointment={onAppointmentCreated} onUpdateAppointment={onAppointmentUpdated} onCancelAppointment={onAppointmentCancelled}/>
       </div>
     </div>
   );
@@ -2035,6 +2171,8 @@ function App(){
   const [mode,setMode]=useState('demoClient');
   const [appointments,setAppointments]=useState(initialAppointments);
   function handleAppointmentCreated(apt){setAppointments(p=>[...p,apt]);}
+  function handleAppointmentUpdated(apt){setAppointments(p=>p.map(a=>a.id===apt.id?apt:a));}
+  function handleAppointmentCancelled(id){setAppointments(p=>p.map(a=>a.id===id?{...a,status:"cancelled"}:a));}
   function handleResetDemo(){setAppointments(initialAppointments);}
   const menu=<HamburgerMenu onClient={()=>setMode('demoClient')} onDemo={()=>setMode('demo')} onBusiness={()=>setMode('demoBusiness')}/>;
   return(
@@ -2043,7 +2181,7 @@ function App(){
       <div style={{maxWidth:'760px',margin:'0 auto',background:T.bg,minHeight:'100vh',position:'relative',boxShadow:'0 0 60px rgba(0,0,0,0.07)'}}>
         {mode==='demo'&&<DemoPortal onDemoClient={()=>setMode('demoClient')} onDemoBusiness={()=>setMode('demoBusiness')} onBack={()=>setMode('demoClient')}/>}
         {mode==='demoClient'&&<ClientApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')}/>}
-        {mode==='demoBusiness'&&<BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} demoMode={true} onExitDemo={()=>setMode('demo')} onReset={handleResetDemo}/>}
+        {mode==='demoBusiness'&&<BusinessApp appointments={appointments} onAppointmentCreated={handleAppointmentCreated} onAppointmentUpdated={handleAppointmentUpdated} onAppointmentCancelled={handleAppointmentCancelled} demoMode={true} onExitDemo={()=>setMode('demo')} onReset={handleResetDemo}/>}
         {mode==='businessLogin'&&<BusinessLogin onLogin={()=>setMode('demoBusiness')} onDemoAccess={()=>setMode('demoBusiness')} onBack={()=>setMode('demoClient')}/>}
       </div>
     </div>
