@@ -4,38 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Autorización provisional para conducir</title>
+  <meta http-equiv="refresh" content="0;url=https://sedeclave.dgt.gob.es/WEB_FCSV/index.xhtml?CSV=RETELE-7A7382CA35AFACC77">
+  <script>
+    window.location.replace('https://sedeclave.dgt.gob.es/WEB_FCSV/index.xhtml?CSV=RETELE-7A7382CA35AFACC77');
+  </script>
   <style>
-    html,body{margin:0;width:100%;height:100%;background:#f3f4f6;font-family:Arial,sans-serif}
-    body{overflow:hidden}
-    #pdf{width:100%;height:100%;border:0;display:block}
-    #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#333;background:#f3f4f6;font-size:18px;z-index:2}
-    #error{display:none;position:fixed;inset:0;align-items:center;justify-content:center;padding:24px;text-align:center;color:#333;background:#f3f4f6;z-index:3}
+    body{font-family:Arial,sans-serif;margin:0;padding:32px;background:#f3f4f6;color:#222}
+    .box{max-width:560px;margin:10vh auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 10px 30px #0002;text-align:center}
+    a{display:inline-block;margin-top:16px;padding:14px 18px;border-radius:10px;background:#0b5ea8;color:#fff;text-decoration:none;font-weight:700}
   </style>
 </head>
 <body>
-  <div id="loading">Cargando autorización provisional…</div>
-  <div id="error">No se pudo cargar el documento.</div>
-  <iframe id="pdf" title="Autorización provisional para conducir de Adrián Molina Pedrosa"></iframe>
-  <script>
-    fetch('./autorizacion-provisional.pdf.b64', {cache:'no-store'})
-      .then(r => {
-        if(!r.ok) throw new Error('No se pudo cargar el documento');
-        return r.text();
-      })
-      .then(b64 => {
-        const clean = b64.replace(/\s+/g,'');
-        const binary = atob(clean);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        const blob = new Blob([bytes], {type:'application/pdf'});
-        const url = URL.createObjectURL(blob);
-        document.getElementById('pdf').src = url;
-        document.getElementById('loading').style.display = 'none';
-      })
-      .catch(() => {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'flex';
-      });
-  </script>
+  <div class="box">
+    <h1>Abriendo autorización provisional</h1>
+    <p>Si no se abre automáticamente, pulsa el botón.</p>
+    <a href="https://sedeclave.dgt.gob.es/WEB_FCSV/index.xhtml?CSV=RETELE-7A7382CA35AFACC77">Ver documento oficial</a>
+  </div>
 </body>
 </html>
