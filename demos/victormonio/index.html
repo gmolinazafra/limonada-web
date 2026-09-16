@@ -297,6 +297,7 @@ function timeToMinutes(t) { const [h,m] = t.split(":").map(Number); return h*60+
 function minutesToTime(m) { return `${Math.floor(m/60).toString().padStart(2,"0")}:${(m%60).toString().padStart(2,"0")}`; }
 function getDayOfWeek(dateStr) { return new Date(dateStr+"T12:00:00").getDay(); }
 const todayNow = new Date();
+function norm(s){return s?s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''):'';}  
 function isToday(d) { return d===todayStr; }
 function isTomorrow(d) { return d===tomorrowStr; }
 function formatDateLabel(d) {
@@ -1432,13 +1433,13 @@ function AdminView({appointments,onAddAppointment,onUpdateAppointment,onCancelAp
         {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos} onOpen={setDetail} onAddAppointment={onAddAppointment}/>}
         {sec==="agenda"&&<AdminAgenda appointments={appointments} initialProf={profFilter} onClearProf={()=>setProfFilter(null)} onAddAppointment={onAddAppointment} onOpen={setDetail}/>}
         {sec==="appointments"&&<AdminApts appointments={appointments} onOpen={setDetail} onAddAppointment={onAddAppointment}/>}
-        {sec==="clients"&&<AdminClients appointments={appointments} onOpen={setDetail}/>}
+        {sec==="clients"&&<AdminClients appointments={appointments} onAddAppointment={onAddAppointment} onOpen={setDetail}/>}
         {sec==="professionals"&&<AdminProfs onNavAgenda={(profId)=>{setProfFilter(profId);setSec("agenda");}}/>}
         {sec==="products"&&<AdminProducts/>}
         {sec==="stats"&&<AdminStats appointments={appointments}/>}
         {sec==="settings"&&<AdminSettings/>}
       </div>
-      {detail&&<CitaDetalleModal apt={detail} onClose={()=>setDetail(null)} onUpdate={a=>{onUpdateAppointment&&onUpdateAppointment(a);setDetail(null);}} onCancel={id=>{onCancelAppointment&&onCancelAppointment(id);setDetail(null);}} onRepeat={a=>{setRepeatApt(a);setDetail(null);}}/>}
+      {detail&&<CitaDetalleModal apt={detail} onClose={()=>setDetail(null)} onUpdate={a=>{onUpdateAppointment&&onUpdateAppointment(a);setDetail(null);}} onRepeat={a=>{setRepeatApt(a);setDetail(null);}} onCancel={id=>{onCancelAppointment&&onCancelAppointment(id);setDetail(null);}} onRepeat={a=>{setRepeatApt(a);setDetail(null);}}/>}
       {repeatApt&&<NuevaCitaModal prefill={repeatApt} defaultDate={todayStr} onClose={()=>setRepeatApt(null)} onSave={a=>{onAddAppointment&&onAddAppointment(a);setRepeatApt(null);}}/>}
     </div>
   );
@@ -1833,7 +1834,7 @@ function AdminApts({appointments,onOpen,onAddAppointment}){
   const [showNew,setShowNew]=useState(false);
   const [query,setQuery]=useState("");
   const allApts=appointments.slice().sort((a,b)=>b.date.localeCompare(a.date)||a.time.localeCompare(b.time));
-  const filtered=query.trim()?allApts.filter(a=>{const q=query.toLowerCase();const prof=professionals.find(p=>p.id===a.professionalId);const svc=services.find(s=>s.id===a.serviceId);return a.clientName.toLowerCase().includes(q)||(prof&&prof.name.toLowerCase().includes(q))||(svc&&svc.name.toLowerCase().includes(q))||a.date.includes(q)||a.time.includes(q);}):allApts;
+  const filtered=query.trim()?allApts.filter(a=>{const q=norm(query);const prof=professionals.find(p=>p.id===a.professionalId);const svc=services.find(s=>s.id===a.serviceId);return norm(a.clientName).includes(q)||(prof&&norm(prof.name).includes(q))||(svc&&norm(svc.name).includes(q))||a.date.includes(q)||a.time.includes(q);}):allApts;
   return(
     <div style={{padding:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
@@ -1867,9 +1868,10 @@ const clientsDemo=[
   {id:5,name:"Diego Vera",phone:"666111007",visits:9,total:180,lastVisit:"Hoy",notes:"Corte clásico. Degradado suave al 2. Nuca cuadrada.",professional:"Álex"},
 ];
 
-function AdminClients({appointments,onOpen}){
+function AdminClients({appointments,onOpen,onAddAppointment}){
   const [sel,setSel]=useState(null);
   const [query2,setQuery2]=useState("");
+  const [repeatTarget,setRepeatTarget]=useState(null);
   // Construir lista de clientes únicos desde las citas reales
   const clientMap={};
   appointments.forEach(a=>{
@@ -1884,10 +1886,11 @@ function AdminClients({appointments,onOpen}){
     }
   });
   const allClients=Object.values(clientMap).sort((a,b)=>b.last.localeCompare(a.last));
-  const filtered2=query2.trim()?allClients.filter(c=>c.name.toLowerCase().includes(query2.toLowerCase())||c.phone.includes(query2)):allClients;
+  const filtered2=query2.trim()?allClients.filter(c=>norm(c.name).includes(norm(query2))||c.phone.includes(query2)):allClients;
   const clientApts=sel?appointments.filter(a=>a.clientName===sel.name).sort((a,b)=>b.date.localeCompare(a.date)||a.time.localeCompare(b.time)):[];
   return(
     <div style={{padding:20}}>
+      {repeatTarget&&<NuevaCitaModal prefill={repeatTarget} defaultDate={todayStr} onClose={()=>setRepeatTarget(null)} onSave={a=>{onAddAppointment&&onAddAppointment(a);setRepeatTarget(null);}}/> }
       {sel?(
         <div>
           <button onClick={()=>setSel(null)} style={{background:"none",border:"none",color:T.ink3,fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:12,display:"flex",alignItems:"center",gap:4}}>← Volver a clientes</button>
@@ -1928,9 +1931,10 @@ function AdminClients({appointments,onOpen}){
                     <p style={{margin:0,fontSize:13,fontWeight:700,color:T.ink}}>{svc?svc.name:a.serviceId}</p>
                     <p style={{margin:"2px 0 0",fontSize:11,color:T.ink3}}>con {prof?prof.name:"—"}</p>
                   </div>
-                  <div style={{textAlign:"right",flexShrink:0}}>
-                    <p style={{margin:"0 0 4px",fontSize:14,fontWeight:800,color:T.ink}}>{a.price}€</p>
+                  <div style={{textAlign:"right",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5}}>
+                    <p style={{margin:0,fontSize:14,fontWeight:800,color:T.ink}}>{a.price}€</p>
                     <span style={{fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:20,background:sc.bg,color:sc.c}}>{sc.t}</span>
+                    {a.status!=="cancelled"&&<button onClick={e=>{e.stopPropagation();setRepeatTarget(a);}} style={{background:"#EFF8F0",color:"#2F8F57",border:"1.5px solid rgba(47,143,87,0.25)",borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>↺ Repetir</button>}
                   </div>
                 </div>
               </Card>
