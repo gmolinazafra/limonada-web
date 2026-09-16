@@ -1427,7 +1427,7 @@ function AdminView({appointments,onAddAppointment}){
       </div>
       <div style={{flex:1,background:T.bg,minHeight:"60vh"}} {...swipeHandlers_}>
         {sec==="dashboard"&&<AdminDash appointments={appointments} todayCitas={todayCitas} ingresos={ingresos}/>}
-        {sec==="agenda"&&<AdminAgenda appointments={appointments} initialProf={profFilter} onClearProf={()=>setProfFilter(null)}/>}
+        {sec==="agenda"&&<AdminAgenda appointments={appointments} initialProf={profFilter} onClearProf={()=>setProfFilter(null)} onAddAppointment={onAddAppointment}/>}
         {sec==="appointments"&&<AdminApts appointments={appointments}/>}
         {sec==="clients"&&<AdminClients/>}
         {sec==="professionals"&&<AdminProfs onNavAgenda={(profId)=>{setProfFilter(profId);setSec("agenda");}}/>}
@@ -1469,7 +1469,121 @@ function AdminDash({appointments,todayCitas,ingresos}){
   );
 }
 
-function AdminAgenda({appointments,initialProf=null,onClearProf}){
+function NuevaCitaModal({onClose,onSave,defaultDate}){
+  const [name,setName]=useState("");
+  const [phone,setPhone]=useState("");
+  const [svcId,setSvcId]=useState(services[0]?services[0].id:"");
+  const [profId,setProfId]=useState(professionals[0]?professionals[0].id:"");
+  const [date,setDate]=useState(defaultDate||todayStr);
+  const [time,setTime]=useState("10:00");
+  const [recur,setRecur]=useState("none");
+  const [count,setCount]=useState(4);
+  const [notes,setNotes]=useState("");
+  const [picking,setPicking]=useState(false);
+  const [contactOk,setContactOk]=useState(false);
+  const hasPicker=typeof navigator!=="undefined"&&"contacts"in navigator&&"select"in navigator.contacts;
+
+  async function pickContact(){
+    if(!hasPicker){alert("Tu navegador no permite acceder a contactos. Escribe el nombre y teléfono manualmente.");return;}
+    try{
+      setPicking(true);
+      const res=await navigator.contacts.select(["name","tel"],{multiple:false});
+      if(res&&res.length){
+        const c=res[0];
+        setName(c.name&&c.name[0]?c.name[0]:"");
+        setPhone(c.tel&&c.tel[0]?c.tel[0].replace(/\s+/g,""):"");
+        setContactOk(true);
+      }
+    }catch(e){/* cancelado */}
+    setPicking(false);
+  }
+
+  const svc=services.find(s=>s.id===svcId);
+  const times=[];for(let h=10;h<21;h++){times.push(`${String(h).padStart(2,"0")}:00`);times.push(`${String(h).padStart(2,"0")}:30`);}
+
+  function addDays(d,n){const x=new Date(d+"T12:00:00");x.setDate(x.getDate()+n);return x.toISOString().split("T")[0];}
+  function addMonths(d,n){const x=new Date(d+"T12:00:00");x.setMonth(x.getMonth()+n);return x.toISOString().split("T")[0];}
+
+  function save(){
+    if(!name.trim()){alert("Falta el nombre del cliente");return;}
+    const base={professionalId:profId,serviceId:svcId,clientName:name.trim(),clientPhone:phone,clientEmail:"",notes,status:"confirmed",duration:svc?svc.duration:30,price:svc?svc.price:0,time};
+    const list=[];
+    const n=recur==="none"?1:Math.max(1,Math.min(52,Number(count)||1));
+    for(let i=0;i<n;i++){
+      let d=date;
+      if(recur==="weekly")d=addDays(date,7*i);
+      else if(recur==="biweekly")d=addDays(date,14*i);
+      else if(recur==="monthly")d=addMonths(date,i);
+      list.push({...base,id:"apt"+Date.now()+"_"+i,date:d,code:generateBookingCode(),recurring:recur!=="none"?recur:undefined});
+    }
+    list.forEach(a=>onSave(a));
+    onClose();
+  }
+
+  const inp={width:"100%",padding:"10px 12px",border:"1px solid rgba(0,0,0,0.12)",borderRadius:10,fontSize:14,fontFamily:"inherit",background:T.bgCard,color:T.ink,boxSizing:"border-box"};
+  const lbl={display:"block",fontSize:11,fontWeight:700,color:T.ink3,textTransform:"uppercase",letterSpacing:1,marginBottom:6,marginTop:12};
+
+  return(
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.5)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:T.bg,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",borderRadius:"20px 20px 0 0",padding:"20px 20px 30px",boxSizing:"border-box"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+          <h3 style={{margin:0,fontSize:18,fontWeight:800,color:T.ink}}>Nueva cita</h3>
+          <button onClick={onClose} style={{background:"none",border:"none",fontSize:24,cursor:"pointer",color:T.ink3,lineHeight:1}}>×</button>
+        </div>
+
+        <label style={lbl}>Cliente</label>
+        <button onClick={pickContact} disabled={picking} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:8,background:contactOk?"#EFF8F0":T.ink,color:contactOk?"#2F8F57":"#fff",border:contactOk?"1.5px solid #2F8F57":"none",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
+          <span style={{fontSize:18}}>{contactOk?"✓":"👤"}</span>
+          {picking?"Abriendo contactos…":contactOk?`${name} seleccionado`:"Elegir de mis contactos"}
+        </button>
+        {!hasPicker&&<p style={{margin:"0 0 8px",fontSize:11,color:T.ink3}}>En este navegador no se puede acceder a contactos. Funciona en Chrome Android y Safari iOS.</p>}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          <input style={inp} placeholder="Nombre" value={name} onChange={e=>{setName(e.target.value);setContactOk(false);}}/>
+          <input style={inp} placeholder="Teléfono" value={phone} onChange={e=>setPhone(e.target.value)} inputMode="tel"/>
+        </div>
+
+        <label style={lbl}>Servicio</label>
+        <select style={inp} value={svcId} onChange={e=>setSvcId(e.target.value)}>
+          {services.map(s=>(<option key={s.id} value={s.id}>{s.name} · {s.duration} min · {s.price}€</option>))}
+        </select>
+
+        <label style={lbl}>Profesional</label>
+        <select style={inp} value={profId} onChange={e=>setProfId(e.target.value)}>
+          {professionals.map(p=>(<option key={p.id} value={p.id}>{p.name} — {p.role}</option>))}
+        </select>
+
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          <div><label style={lbl}>Fecha</label><input type="date" style={inp} value={date} onChange={e=>setDate(e.target.value)}/></div>
+          <div><label style={lbl}>Hora</label><select style={inp} value={time} onChange={e=>setTime(e.target.value)}>{times.map(t=>(<option key={t} value={t}>{t}</option>))}</select></div>
+        </div>
+
+        <label style={lbl}>Repetir</label>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
+          {[["none","No"],["weekly","Semanal"],["biweekly","Quincenal"],["monthly","Mensual"]].map(([v,l])=>(
+            <button key={v} onClick={()=>setRecur(v)} style={{padding:"9px 4px",borderRadius:10,border:`1.5px solid ${recur===v?T.gold:"rgba(0,0,0,0.1)"}`,background:recur===v?T.gold:T.bgCard,color:recur===v?"#fff":T.ink,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{l}</button>
+          ))}
+        </div>
+        {recur!=="none"&&(
+          <div style={{marginTop:10,display:"flex",alignItems:"center",gap:10,background:T.bgCard,border:"1px solid rgba(0,0,0,0.08)",borderRadius:10,padding:"10px 12px"}}>
+            <span style={{fontSize:13,color:T.ink2,flex:1}}>Número de citas a crear</span>
+            <input type="number" min="1" max="52" value={count} onChange={e=>setCount(e.target.value)} style={{width:64,padding:"6px 8px",border:"1px solid rgba(0,0,0,0.12)",borderRadius:8,fontSize:14,fontFamily:"inherit",textAlign:"center"}}/>
+          </div>
+        )}
+        {recur!=="none"&&<p style={{margin:"8px 0 0",fontSize:12,color:T.ink3}}>Se crearán {count} citas {recur==="weekly"?"cada semana":recur==="biweekly"?"cada dos semanas":"cada mes"} a las {time} con {professionals.find(p=>p.id===profId)?.name}.</p>}
+
+        <label style={lbl}>Notas (opcional)</label>
+        <textarea style={{...inp,minHeight:60,resize:"vertical"}} placeholder="Alergias, preferencias, recordatorios…" value={notes} onChange={e=>setNotes(e.target.value)}/>
+
+        <button onClick={save} style={{width:"100%",marginTop:16,background:T.gold,color:"#fff",border:"none",borderRadius:12,padding:"14px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",letterSpacing:.5}}>
+          {recur==="none"?"CREAR CITA":`CREAR ${count} CITAS`}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment}){
+  const [showNew,setShowNew]=useState(false);
   const [viewDate,setViewDate]=useState(todayStr);
   const [isDesktop,setIsDesktop]=useState(window.innerWidth>=768);
   const [filterProf,setFilterProf]=useState(initialProf);
@@ -1487,9 +1601,10 @@ function AdminAgenda({appointments,initialProf=null,onClearProf}){
   function toMin(t){const [h,m]=t.split(":").map(Number);return h*60+m;}
   const colors=["#B9924C","#5B8DEF","#2F8F57","#D34B3F","#8B5CF6"];
   const profColorMap={};professionals.forEach((p,i)=>{profColorMap[p.id]=colors[i%colors.length];});
+  const modal=showNew?<NuevaCitaModal defaultDate={viewDate} onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>:null;
   const nav=(
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,flexWrap:"wrap",gap:8}}>
-      <h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Agenda</h3>
+      <div style={{display:"flex",alignItems:"center",gap:10}}><h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Agenda</h3><button onClick={()=>setShowNew(true)} style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"7px 14px",fontSize:12,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button></div>
       <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
         {/* Filtro por profesional */}
         <select value={filterProf||""} onChange={e=>{setFilterProf(e.target.value||null);if(!e.target.value&&onClearProf)onClearProf();}}
@@ -1506,6 +1621,7 @@ function AdminAgenda({appointments,initialProf=null,onClearProf}){
   if(!isDesktop){
     return(
       <div style={{padding:20}}>
+        {modal}
         {nav}
         {dayApts.length===0?<p style={{textAlign:"center",color:T.ink3,padding:"40px 0"}}>Sin citas este dia</p>
           :<div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -1520,6 +1636,7 @@ function AdminAgenda({appointments,initialProf=null,onClearProf}){
   }
   return(
     <div style={{padding:20}}>
+      {modal}
       {nav}
       <div style={{background:T.bgCard,borderRadius:T.radius,border:"1px solid rgba(0,0,0,0.07)",overflow:"hidden"}}>
         <div style={{display:"grid",gridTemplateColumns:`60px repeat(${profs.length},1fr)`,borderBottom:"1px solid rgba(0,0,0,0.08)",background:T.bg}}>
