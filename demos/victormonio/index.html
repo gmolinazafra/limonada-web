@@ -1590,90 +1590,89 @@ function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment
   useEffect(()=>{setFilterProf(initialProf);},[initialProf]);
   useEffect(()=>{const h=()=>setIsDesktop(window.innerWidth>=768);window.addEventListener("resize",h);return()=>window.removeEventListener("resize",h);},[]);
   const allApts=appointments.filter(a=>a.date===viewDate&&a.status!=="cancelled").sort((a,b)=>a.time.localeCompare(b.time));
-  const dayApts=filterProf?allApts.filter(a=>a.professionalId===filterProf):allApts;
-  const ROW=40;
+  const ROW=isDesktop?40:36;
   const START=9*60;
   const END=21*60;
   const totalRows=(END-START)/30;
   const profs=filterProf?professionals.filter(p=>p.id===filterProf):professionals;
+  const COL_W=isDesktop?"1fr":(profs.length===1?"1fr":"118px");
+  const TIME_W=isDesktop?60:46;
   function prevDay(){const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()-1);setViewDate(d.toISOString().split("T")[0]);}
   function nextDay(){const d=new Date(viewDate+"T12:00:00");d.setDate(d.getDate()+1);setViewDate(d.toISOString().split("T")[0]);}
   function toMin(t){const [h,m]=t.split(":").map(Number);return h*60+m;}
   const colors=["#B9924C","#5B8DEF","#2F8F57","#D34B3F","#8B5CF6"];
   const profColorMap={};professionals.forEach((p,i)=>{profColorMap[p.id]=colors[i%colors.length];});
+  // Bloquea el swipe de pestañas mientras se hace scroll horizontal dentro del calendario
+  const stop={onTouchStart:e=>e.stopPropagation(),onTouchMove:e=>e.stopPropagation(),onTouchEnd:e=>e.stopPropagation()};
   const modal=showNew?<NuevaCitaModal defaultDate={viewDate} onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>:null;
   const nav=(
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,flexWrap:"wrap",gap:8}}>
-      <div style={{display:"flex",alignItems:"center",gap:10}}><h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Agenda</h3><button onClick={()=>setShowNew(true)} style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"7px 14px",fontSize:12,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button></div>
-      <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-        {/* Filtro por profesional */}
-        <select value={filterProf||""} onChange={e=>{setFilterProf(e.target.value||null);if(!e.target.value&&onClearProf)onClearProf();}}
-          style={{border:"1px solid rgba(0,0,0,0.12)",borderRadius:8,padding:"6px 10px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit",background:T.bgCard,color:T.ink,minWidth:130}}>
-          <option value="">Todos los profesionales</option>
-          {professionals.map(p=>(<option key={p.id} value={p.id}>{p.name}</option>))}
-        </select>
-        <button onClick={prevDay} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>Ant</button>
-        <span style={{fontSize:13,fontWeight:700,color:T.ink,minWidth:140,textAlign:"center"}}>{formatDateLabel(viewDate)}</span>
-        <button onClick={nextDay} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>Sig</button>
+    <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <h3 style={{margin:0,fontSize:16,fontWeight:800,color:T.ink}}>Agenda</h3>
+          <button onClick={()=>setShowNew(true)} style={{background:T.gold,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"7px 12px",fontSize:12,fontWeight:800,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>+ Nueva</button>
+        </div>
+        <div style={{display:"flex",gap:6,alignItems:"center"}}>
+          <button onClick={prevDay} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"6px 10px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>‹</button>
+          <span style={{fontSize:12,fontWeight:700,color:T.ink,minWidth:isDesktop?140:96,textAlign:"center"}}>{formatDateLabel(viewDate)}</span>
+          <button onClick={nextDay} style={{background:T.bgCard,border:"1px solid rgba(0,0,0,0.1)",borderRadius:8,padding:"6px 10px",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>›</button>
+        </div>
       </div>
+      <select value={filterProf||""} onChange={e=>{setFilterProf(e.target.value||null);if(!e.target.value&&onClearProf)onClearProf();}}
+        style={{border:"1px solid rgba(0,0,0,0.12)",borderRadius:8,padding:"8px 10px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",background:T.bgCard,color:T.ink,width:"100%"}}>
+        <option value="">Todos los profesionales</option>
+        {professionals.map(p=>(<option key={p.id} value={p.id}>{p.name}</option>))}
+      </select>
     </div>
   );
-  if(!isDesktop){
-    return(
-      <div style={{padding:20}}>
-        {modal}
-        {nav}
-        {dayApts.length===0?<p style={{textAlign:"center",color:T.ink3,padding:"40px 0"}}>Sin citas este dia</p>
-          :<div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {dayApts.map(a=>{
-              const prof=professionals.find(p=>p.id===a.professionalId);
-              const svc=services.find(s=>s.id===a.serviceId);
-              return(<Card key={a.id} style={{padding:"14px 16px"}}><div style={{display:"flex",alignItems:"center",gap:12}}><span style={{fontSize:15,fontWeight:800,color:T.gold,minWidth:44}}>{a.time}</span><Avatar initials={prof?prof.avatar:"?"} size={34}/><div style={{flex:1,minWidth:0}}><p style={{margin:0,fontSize:13,fontWeight:700,color:T.ink}}>{a.clientName}</p><p style={{margin:"2px 0 0",fontSize:11,color:T.ink2}}>{svc?svc.name:a.serviceId}</p></div><span style={{fontSize:13,fontWeight:800,color:T.ink}}>{a.price}EUR</span></div></Card>);
-            })}
-          </div>}
-      </div>
-    );
-  }
+  const gridCols=`${TIME_W}px repeat(${profs.length},${COL_W})`;
   return(
-    <div style={{padding:20}}>
+    <div style={{padding:isDesktop?20:"16px 12px"}}>
       {modal}
       {nav}
       <div style={{background:T.bgCard,borderRadius:T.radius,border:"1px solid rgba(0,0,0,0.07)",overflow:"hidden"}}>
-        <div style={{display:"grid",gridTemplateColumns:`60px repeat(${profs.length},1fr)`,borderBottom:"1px solid rgba(0,0,0,0.08)",background:T.bg}}>
-          <div/>
-          {profs.map((p,i)=>(<div key={p.id} style={{padding:"10px 6px",textAlign:"center",borderLeft:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}><Avatar initials={p.avatar} size={28}/><span style={{fontSize:11,fontWeight:700,color:T.ink}}>{p.name}</span></div></div>))}
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:`60px repeat(${profs.length},1fr)`,position:"relative",height:totalRows*ROW}}>
-          <div style={{position:"relative"}}>
-            {Array.from({length:totalRows},(_,i)=>(
-              <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",display:"flex",alignItems:"flex-start",justifyContent:"flex-end",paddingRight:8,paddingTop:2,fontSize:11,fontWeight:i%2===0?700:400,color:i%2===0?T.ink2:"transparent"}}>
-                {i%2===0?`${String(9+Math.floor(i/2)).padStart(2,"0")}:00`:""}
+        <div {...stop} style={{overflowX:"auto",overflowY:"hidden",WebkitOverflowScrolling:"touch"}}>
+          <div style={{minWidth:isDesktop?"auto":`${TIME_W+profs.length*(profs.length===1?0:118)}px`}}>
+            {/* Cabecera */}
+            <div style={{display:"grid",gridTemplateColumns:gridCols,borderBottom:"1px solid rgba(0,0,0,0.08)",background:T.bg,position:"sticky",top:0,zIndex:3}}>
+              <div style={{position:"sticky",left:0,background:T.bg,zIndex:4}}/>
+              {profs.map(p=>(<div key={p.id} style={{padding:"8px 4px",textAlign:"center",borderLeft:"1px solid rgba(0,0,0,0.06)"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}><Avatar initials={p.avatar} size={isDesktop?28:26}/><span style={{fontSize:11,fontWeight:700,color:T.ink,whiteSpace:"nowrap"}}>{p.name}</span></div></div>))}
+            </div>
+            {/* Cuerpo */}
+            <div style={{display:"grid",gridTemplateColumns:gridCols,position:"relative",height:totalRows*ROW}}>
+              <div style={{position:"sticky",left:0,background:T.bgCard,zIndex:2}}>
+                {Array.from({length:totalRows},(_,i)=>(
+                  <div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",display:"flex",alignItems:"flex-start",justifyContent:"flex-end",paddingRight:6,paddingTop:2,fontSize:10,fontWeight:i%2===0?700:400,color:i%2===0?T.ink2:"transparent"}}>
+                    {i%2===0?`${String(9+Math.floor(i/2)).padStart(2,"0")}:00`:""}
+                  </div>
+                ))}
               </div>
-            ))}
+              {profs.map(p=>{
+                const col=profColorMap[p.id]||colors[0];
+                return(
+                  <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)",overflow:"hidden"}}>
+                    {Array.from({length:totalRows},(_,i)=>(<div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",pointerEvents:"none"}}/>))}
+                    {allApts.filter(a=>a.professionalId===p.id).map(a=>{
+                      const svc=services.find(s=>s.id===a.serviceId);
+                      const dur=svc?svc.duration:30;
+                      const top=((toMin(a.time)-START)/30)*ROW;
+                      const h=(dur/30)*ROW-4;
+                      return(
+                        <div key={a.id} style={{position:"absolute",top:top+2,left:3,right:3,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:8,padding:"3px 6px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:2}}>
+                          <p style={{margin:0,fontSize:isDesktop?11:10,fontWeight:700,color:T.ink,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.clientName}</p>
+                          {h>36&&<p style={{margin:"1px 0 0",fontSize:isDesktop?10:9,color:T.ink2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{svc?svc.name:""} · {a.price}€</p>}
+                          {h>58&&<p style={{margin:"1px 0 0",fontSize:9,color:col,fontWeight:700}}>{a.time} · {dur}′</p>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          {profs.map((p,pi)=>{
-            const col=profColorMap[p.id]||colors[0];
-            return(
-              <div key={p.id} style={{position:"relative",borderLeft:"1px solid rgba(0,0,0,0.06)",overflow:"hidden"}}>
-                {Array.from({length:totalRows},(_,i)=>(<div key={i} style={{position:"absolute",top:i*ROW,left:0,right:0,height:ROW,borderBottom:i%2===1?"1px solid rgba(0,0,0,0.08)":"1px dashed rgba(0,0,0,0.04)",pointerEvents:"none"}}/>))}
-                {allApts.filter(a=>a.professionalId===p.id).map(a=>{
-                  const svc=services.find(s=>s.id===a.serviceId);
-                  const dur=svc?svc.duration:30;
-                  const top=((toMin(a.time)-START)/30)*ROW;
-                  const h=(dur/30)*ROW-4;
-                  return(
-                    <div key={a.id} style={{position:"absolute",top:top+2,left:4,right:4,height:h,background:col+"22",border:`1.5px solid ${col}`,borderRadius:8,padding:"4px 8px",overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:2}}>
-                      <p style={{margin:0,fontSize:11,fontWeight:700,color:T.ink,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.clientName}</p>
-                      {h>40&&<p style={{margin:"2px 0 0",fontSize:10,color:T.ink2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{svc?svc.name:""} · {a.price}€</p>}
-                      {h>60&&<p style={{margin:"2px 0 0",fontSize:10,color:col,fontWeight:700}}>{a.time} · {dur} min</p>}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
         </div>
       </div>
+      {!isDesktop&&profs.length>1&&<p style={{margin:"8px 0 0",fontSize:11,color:T.ink3,textAlign:"center"}}>Desliza el calendario para ver más barberos, o filtra uno arriba</p>}
     </div>
   );
 }
