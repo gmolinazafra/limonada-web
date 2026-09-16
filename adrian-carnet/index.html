@@ -3,17 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Carnet conmemorativo de Adrián</title>
+  <title>Autorización provisional para conducir</title>
   <style>
-    html,body{margin:0;min-height:100%;background:#eef2f4}
-    body{display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
-    .wrap{width:min(100%,1536px)}
-    img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 12px 34px #0002}
+    html,body{margin:0;width:100%;height:100%;background:#f3f4f6;font-family:Arial,sans-serif}
+    body{overflow:hidden}
+    #pdf{width:100%;height:100%;border:0;display:block}
+    #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#333;background:#f3f4f6;font-size:18px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <img src="./carnet-conmemorativo.png" alt="Carnet conmemorativo de Adrián Molina Pedrosa">
-  </div>
+  <div id="loading">Cargando autorización provisional…</div>
+  <iframe id="pdf" title="Autorización provisional para conducir de Adrián Molina Pedrosa"></iframe>
+  <script>
+    fetch('./autorizacion-provisional.pdf.b64', {cache:'no-store'})
+      .then(r => {
+        if(!r.ok) throw new Error('No se pudo cargar el documento');
+        return r.text();
+      })
+      .then(b64 => {
+        const clean = b64.replace(/\s+/g,'');
+        document.getElementById('pdf').src = 'data:application/pdf;base64,' + clean;
+        document.getElementById('loading').style.display = 'none';
+      })
+      .catch(() => {
+        document.getElementById('loading').textContent = 'No se pudo cargar el documento.';
+      });
+  </script>
 </body>
 </html>
