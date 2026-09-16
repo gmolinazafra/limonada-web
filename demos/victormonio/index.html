@@ -1409,6 +1409,7 @@ function AppointmentsView({appointments}){
 
 function AdminView({appointments,onAddAppointment,onUpdateAppointment,onCancelAppointment}){
   const [detail,setDetail]=useState(null);
+  const [repeatApt,setRepeatApt]=useState(null);
   const [sec,setSec]=useState("dashboard");
   const [profFilter,setProfFilter]=useState(null);
   const todayCitas=appointments.filter(a=>a.date===todayStr&&a.status!=="cancelled");
@@ -1437,7 +1438,8 @@ function AdminView({appointments,onAddAppointment,onUpdateAppointment,onCancelAp
         {sec==="stats"&&<AdminStats appointments={appointments}/>}
         {sec==="settings"&&<AdminSettings/>}
       </div>
-      {detail&&<CitaDetalleModal apt={detail} onClose={()=>setDetail(null)} onUpdate={a=>{onUpdateAppointment&&onUpdateAppointment(a);setDetail(null);}} onCancel={id=>{onCancelAppointment&&onCancelAppointment(id);setDetail(null);}}/>}
+      {detail&&<CitaDetalleModal apt={detail} onClose={()=>setDetail(null)} onUpdate={a=>{onUpdateAppointment&&onUpdateAppointment(a);setDetail(null);}} onCancel={id=>{onCancelAppointment&&onCancelAppointment(id);setDetail(null);}} onRepeat={a=>{setRepeatApt(a);setDetail(null);}}/>}
+      {repeatApt&&<NuevaCitaModal prefill={repeatApt} defaultDate={todayStr} onClose={()=>setRepeatApt(null)} onSave={a=>{onAddAppointment&&onAddAppointment(a);setRepeatApt(null);}}/>}
     </div>
   );
 }
@@ -1463,6 +1465,7 @@ function AdminDash({appointments,todayCitas,ingresos,onOpen,onAddAppointment}){
   return(
     <div style={{padding:20}}>
       {showNew&&<NuevaCitaModal onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>}
+      <div style={{position:"relative",marginBottom:14}}><span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",fontSize:14,color:T.ink3}}>🔍</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar por cliente, barbero, servicio o fecha…" style={{width:"100%",padding:"10px 12px 10px 36px",border:"1px solid rgba(0,0,0,0.1)",borderRadius:12,fontSize:13,fontFamily:"inherit",background:T.bgCard,color:T.ink,boxSizing:"border-box"}}/></div>
       <p style={{margin:"0 0 16px",fontSize:13,color:"#888"}}>{new Date().toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"})}</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
         {stats.map(s=><Card key={s.l} style={{textAlign:"center"}}><p style={{margin:"0 0 4px",fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:1}}>{s.l}</p><p style={{margin:0,fontSize:28,fontWeight:800,color:s.c}}>{s.v}<span style={{fontSize:14}}>{s.u}</span></p></Card>)}
@@ -1512,7 +1515,7 @@ function AdminDash({appointments,todayCitas,ingresos,onOpen,onAddAppointment}){
   );
 }
 
-function CitaDetalleModal({apt,onClose,onUpdate,onCancel}){
+function CitaDetalleModal({apt,onClose,onUpdate,onCancel,onRepeat}){
   const [edit,setEdit]=useState(false);
   const [svcId,setSvcId]=useState(apt.serviceId);
   const [profId,setProfId]=useState(apt.professionalId);
@@ -1604,13 +1607,13 @@ function CitaDetalleModal({apt,onClose,onUpdate,onCancel}){
   );
 }
 
-function NuevaCitaModal({onClose,onSave,defaultDate}){
-  const [name,setName]=useState("");
-  const [phone,setPhone]=useState("");
-  const [svcId,setSvcId]=useState(services[0]?services[0].id:"");
-  const [profId,setProfId]=useState(professionals[0]?professionals[0].id:"");
+function NuevaCitaModal({onClose,onSave,defaultDate,prefill}){
+  const [name,setName]=useState(prefill?prefill.clientName:"");
+  const [phone,setPhone]=useState(prefill?prefill.clientPhone||"":"");
+  const [svcId,setSvcId]=useState(prefill?prefill.serviceId:services[0]?services[0].id:"");
+  const [profId,setProfId]=useState(prefill?prefill.professionalId:professionals[0]?professionals[0].id:"");
   const [date,setDate]=useState(defaultDate||todayStr);
-  const [time,setTime]=useState("10:00");
+  const [time,setTime]=useState(prefill?prefill.time:"10:00");
   const [recur,setRecur]=useState("none");
   const [endMode,setEndMode]=useState("never");
   const [endDate,setEndDate]=useState("");
@@ -1829,11 +1832,14 @@ function AdminAgenda({appointments,initialProf=null,onClearProf,onAddAppointment
 
 function AdminApts({appointments,onOpen,onAddAppointment}){
   const [showNew,setShowNew]=useState(false);
+  const [query,setQuery]=useState("");
+  const allApts=appointments.slice().sort((a,b)=>b.date.localeCompare(a.date)||a.time.localeCompare(b.time));
+  const filtered=query.trim()?allApts.filter(a=>{const q=query.toLowerCase();const prof=professionals.find(p=>p.id===a.professionalId);const svc=services.find(s=>s.id===a.serviceId);return a.clientName.toLowerCase().includes(q)||(prof&&prof.name.toLowerCase().includes(q))||(svc&&svc.name.toLowerCase().includes(q))||a.date.includes(q)||a.time.includes(q);}):[...allApts.filter(a=>a.status!=="cancelled"),...allApts.filter(a=>a.status==="cancelled")];
   return(
     <div style={{padding:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
         <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Reservas</h3>
-        <button onClick={()=>setShowNew(true)} style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva cita</button>
+        <button onClick={()=>setShowNew(true)} style={{background:"#1a1a1a",color:"#fff",border:"none",borderRadius:10,padding:"8px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nueva</button>
       </div>
       {showNew&&<NuevaCitaModal onClose={()=>setShowNew(false)} onSave={a=>onAddAppointment&&onAddAppointment(a)}/>}
       {appointments.slice(0,15).map(a=>{
@@ -1863,11 +1869,13 @@ const clientsDemo=[
 
 function AdminClients(){
   const [sel,setSel]=useState(null);
+  const [query,setQuery]=useState("");
+  const filtered2=query.trim()?clientsDemo.filter(c=>c.name.toLowerCase().includes(query.toLowerCase())||c.phone.includes(query)):clientsDemo;
   return(
     <div style={{padding:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
         <h3 style={{margin:0,fontSize:16,fontWeight:800}}>Clientes</h3>
-        <div style={{background:"#F8F7F5",borderRadius:20,padding:"4px 12px",fontSize:12,color:"#888"}}>{clientsDemo.length} clientes</div>
+        <div style={{background:"#F8F7F5",borderRadius:20,padding:"4px 12px",fontSize:12,color:"#888"}}>{filtered2.length} clientes</div>
       </div>
       {sel?(
         <div>
@@ -1903,9 +1911,89 @@ function AdminClients(){
   );
 }
 
+function DisponibilidadModal({prof,onClose}){
+  const DAYS=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+  const DAYS_FULL=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  const defaultSchedule={0:{on:true,start:"10:00",end:"21:00"},1:{on:true,start:"10:00",end:"21:00"},2:{on:true,start:"10:00",end:"21:00"},3:{on:true,start:"10:00",end:"21:00"},4:{on:true,start:"10:00",end:"21:00"},5:{on:false,start:"10:00",end:"14:00"},6:{on:false,start:"10:00",end:"14:00"}};
+  const [sched,setSched]=useState(prof.schedule||defaultSchedule);
+  const [blocked,setBlocked]=useState(prof.blocked||[]);
+  const [newFrom,setNewFrom]=useState("");
+  const [newTo,setNewTo]=useState("");
+  const [newNote,setNewNote]=useState("");
+  const inp={width:"100%",padding:"8px 10px",border:"1px solid rgba(0,0,0,0.12)",borderRadius:8,fontSize:13,fontFamily:"inherit",background:T.bgCard,color:T.ink,boxSizing:"border-box"};
+  function toggleDay(d){setSched(s=>({...s,[d]:{...s[d],on:!s[d].on}}));}
+  function setHour(d,field,val){setSched(s=>({...s,[d]:{...s[d],[field]:val}}));}
+  function addBlock(){if(!newFrom)return;setBlocked(b=>[...b,{from:newFrom,to:newTo||newFrom,note:newNote||"Ausencia"}]);setNewFrom("");setNewTo("");setNewNote("");}
+  function removeBlock(i){setBlocked(b=>b.filter((_,k)=>k!==i));}
+  function save(){prof.schedule=sched;prof.blocked=blocked;onClose();}
+  const times=[];for(let h=8;h<22;h++){times.push(`${String(h).padStart(2,"0")}:00`);times.push(`${String(h).padStart(2,"0")}:30`);}
+  return(
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:T.bg,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",borderRadius:"20px 20px 0 0",padding:"20px 20px 30px",boxSizing:"border-box"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <Avatar initials={prof.avatar} size={36}/>
+            <div><h3 style={{margin:0,fontSize:17,fontWeight:800,color:T.ink}}>{prof.name}</h3><p style={{margin:0,fontSize:12,color:T.ink3}}>Disponibilidad</p></div>
+          </div>
+          <button onClick={onClose} style={{background:"none",border:"none",fontSize:24,cursor:"pointer",color:T.ink3}}>×</button>
+        </div>
+
+        {/* Días y horas */}
+        <p style={{margin:"0 0 8px",fontSize:12,fontWeight:700,color:T.ink3,textTransform:"uppercase",letterSpacing:1}}>Horario semanal</p>
+        <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:18}}>
+          {DAYS.map((d,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:8,background:T.bgCard,borderRadius:10,padding:"8px 12px"}}>
+              <button onClick={()=>toggleDay(i)} style={{width:38,height:22,borderRadius:11,background:sched[i].on?T.gold:"rgba(0,0,0,0.1)",border:"none",cursor:"pointer",position:"relative",flexShrink:0,transition:"background .2s"}}>
+                <span style={{position:"absolute",top:2,left:sched[i].on?18:2,width:18,height:18,borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 3px rgba(0,0,0,0.2)"}}/>
+              </button>
+              <span style={{fontSize:13,fontWeight:700,color:sched[i].on?T.ink:T.ink3,width:30,flexShrink:0}}>{d}</span>
+              {sched[i].on?(
+                <div style={{display:"flex",gap:6,flex:1,alignItems:"center"}}>
+                  <select value={sched[i].start} onChange={e=>setHour(i,"start",e.target.value)} style={{...inp,flex:1,padding:"5px 6px"}}>
+                    {times.map(t=><option key={t} value={t}>{t}</option>)}
+                  </select>
+                  <span style={{fontSize:12,color:T.ink3}}>–</span>
+                  <select value={sched[i].end} onChange={e=>setHour(i,"end",e.target.value)} style={{...inp,flex:1,padding:"5px 6px"}}>
+                    {times.map(t=><option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+              ):<span style={{fontSize:12,color:T.ink3,flex:1}}>No trabaja</span>}
+            </div>
+          ))}
+        </div>
+
+        {/* Ausencias y fechas bloqueadas */}
+        <p style={{margin:"0 0 8px",fontSize:12,fontWeight:700,color:T.ink3,textTransform:"uppercase",letterSpacing:1}}>Ausencias y vacaciones</p>
+        {blocked.map((b,i)=>(
+          <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"#FFF0EE",border:"1px solid rgba(192,57,43,0.15)",borderRadius:10,padding:"8px 12px",marginBottom:6}}>
+            <div>
+              <p style={{margin:0,fontSize:13,fontWeight:700,color:T.ink}}>{b.from===b.to?formatDateLabel(b.from):`${formatDateLabel(b.from)} → ${formatDateLabel(b.to)}`}</p>
+              <p style={{margin:0,fontSize:11,color:"#C0392B"}}>{b.note}</p>
+            </div>
+            <button onClick={()=>removeBlock(i)} style={{background:"none",border:"none",color:"#C0392B",fontSize:18,cursor:"pointer",lineHeight:1,padding:"0 4px"}}>×</button>
+          </div>
+        ))}
+        <div style={{background:T.bgCard,borderRadius:12,padding:"12px",border:"1px solid rgba(0,0,0,0.07)",marginBottom:18}}>
+          <p style={{margin:"0 0 8px",fontSize:12,fontWeight:700,color:T.ink2}}>Añadir ausencia</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:6}}>
+            <div><p style={{margin:"0 0 4px",fontSize:11,color:T.ink3}}>Desde</p><input type="date" style={inp} value={newFrom} onChange={e=>setNewFrom(e.target.value)}/></div>
+            <div><p style={{margin:"0 0 4px",fontSize:11,color:T.ink3}}>Hasta</p><input type="date" style={inp} value={newTo} min={newFrom} onChange={e=>setNewTo(e.target.value)}/></div>
+          </div>
+          <input style={{...inp,marginBottom:8}} placeholder="Motivo (vacaciones, formación…)" value={newNote} onChange={e=>setNewNote(e.target.value)}/>
+          <button onClick={addBlock} style={{width:"100%",background:T.ink,color:"#fff",border:"none",borderRadius:10,padding:"10px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Añadir ausencia</button>
+        </div>
+
+        <button onClick={save} style={{width:"100%",background:T.gold,color:"#fff",border:"none",borderRadius:12,padding:"14px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>Guardar disponibilidad</button>
+      </div>
+    </div>
+  );
+}
+
 function AdminProfs({onNavAgenda}){
+  const [dispProf,setDispProf]=useState(null);
   return(
     <div style={{padding:20}}>
+      {dispProf&&<DisponibilidadModal prof={dispProf} onClose={()=>setDispProf(null)}/>}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}><h3 style={{margin:0,fontSize:16,fontWeight:800}}>Equipo</h3><button style={{background:T.ink,color:"#fff",border:"none",borderRadius:T.radiusSm,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>+ Nuevo</button></div>
       {professionals.map(p=>(
         <Card key={p.id} style={{marginBottom:12}}>
@@ -1921,6 +2009,7 @@ function AdminProfs({onNavAgenda}){
           <Divider/>
           <div style={{display:"flex",gap:8}}>
             <button onClick={()=>onNavAgenda&&onNavAgenda(p.id)} style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Ver agenda</button>
+              <button onClick={()=>setDispProf(p)} style={{flex:1,background:"#F6F3EE",border:"1.5px solid #EDE9E2",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700,color:T.gold}}>🗓 Disponibilidad</button>
             <button style={{flex:1,background:"#F8F7F5",border:"1.5px solid #F0EDE8",borderRadius:10,padding:10,fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Editar</button>
           </div>
         </Card>
