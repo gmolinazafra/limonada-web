@@ -1,0 +1,806 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>María Aragón Galiano | Reciclados Mijas</title>
+<meta name="description" content="Tarjeta de visita digital de María Aragón Galiano, responsable del Departamento de Contabilidad de Reciclados Mijas, S.L.">
+<link rel="canonical" href="https://www.limonadaweb.com/mariaaragon">
+<meta name="theme-color" content="#0f4d23">
+<meta name="format-detection" content="telephone=no">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="María Aragón Galiano | Reciclados Mijas">
+<meta property="og:description" content="Tarjeta de visita digital de María Aragón Galiano, responsable del Departamento de Contabilidad de Reciclados Mijas, S.L.">
+<meta property="og:url" content="https://www.limonadaweb.com/mariaaragon">
+<meta property="og:image" content="https://www.limonadaweb.com/mariaaragon/img/maria-aragon.webp">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" as="image" href="img/maria-aragon.webp">
+
+<style>
+/* ==========================================================
+   Tarjeta digital NFC · María Aragón Galiano
+   Reciclados Mijas, S.L. · Limonada Web
+   Página independiente: CSS propio, sin dependencias.
+   ========================================================== */
+
+:root{
+  --verde-oscuro:#0f4d23;
+  --verde:#2f8f34;
+  --verde-vivo:#43a839;
+  --lima:#8cc63f;
+  --lima-claro:#c7e59a;
+  --antracita:#3f4547;
+  --gris:#6b7573;
+  --linea:#e3ece1;
+  --papel:#ffffff;
+  --fondo:#eef4ea;
+  --sombra:0 10px 30px rgba(15,77,35,.12);
+  --radio:20px;
+
+  /* Encuadre del rostro dentro del hero.
+     1er valor horizontal, 2o vertical. Ajusta solo esta linea. */
+  --encuadre:38% 12%;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--fondo);
+  font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color:var(--antracita);
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+  line-height:1.45;
+  overflow-x:hidden;
+}
+
+img{max-width:100%;display:block}
+
+a{color:inherit;text-decoration:none}
+
+/* --------- contenedor tipo app --------- */
+.tarjeta{
+  width:100%;
+  max-width:480px;
+  margin:0 auto;
+  background:var(--papel);
+  min-height:100dvh;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(15,77,35,.10);
+}
+
+@media (min-width:520px){
+  body{padding:28px 16px}
+  .tarjeta{
+    min-height:0;
+    border-radius:28px;
+    border:1px solid var(--linea);
+  }
+}
+
+/* ==========================================================
+   HERO
+   ========================================================== */
+.hero{
+  position:relative;
+  background:#dfe7d9;
+}
+
+.hero .foto{
+  width:100%;
+  aspect-ratio:1/1;
+  max-height:52vh;
+  object-fit:cover;
+  object-position:var(--encuadre);
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:68%;
+  background:linear-gradient(180deg,
+    rgba(15,77,35,0) 0%,
+    rgba(15,77,35,.32) 42%,
+    rgba(15,77,35,.82) 76%,
+    rgba(11,60,27,.96) 100%);
+  pointer-events:none;
+}
+
+.marca{
+  position:absolute;
+  top:14px; right:14px;
+  z-index:2;
+  background:rgba(255,255,255,.93);
+  border-radius:14px;
+  padding:9px 13px;
+  box-shadow:0 6px 18px rgba(15,77,35,.18);
+  backdrop-filter:saturate(1.2) blur(2px);
+}
+
+.marca img{width:118px;height:auto}
+
+.hero .datos{
+  position:absolute;
+  z-index:2;
+  left:20px; right:20px; bottom:18px;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.35);
+}
+
+.hero .nombre{
+  font-size:clamp(30px,9.4vw,40px);
+  font-weight:800;
+  letter-spacing:.5px;
+  line-height:1;
+}
+
+.hero .apellidos{
+  font-size:clamp(19px,5.6vw,24px);
+  font-weight:600;
+  letter-spacing:.4px;
+  line-height:1.15;
+  margin-top:2px;
+  color:#e8f6d9;
+}
+
+.hero .raya{
+  width:64px; height:4px;
+  border-radius:2px;
+  background:var(--lima);
+  margin:11px 0 9px;
+}
+
+.hero .cargo{
+  font-size:15px;
+  font-weight:600;
+}
+
+.hero .empresa{
+  font-size:14px;
+  color:#d5ebbf;
+  font-weight:500;
+}
+
+/* --------- franja de conceptos del logo --------- */
+.conceptos{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  background:linear-gradient(90deg,var(--verde-oscuro),var(--verde));
+  color:#fff;
+}
+
+.conceptos div{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  padding:12px 6px 13px;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.7px;
+  text-align:center;
+}
+
+.conceptos div + div{border-left:1px solid rgba(255,255,255,.18)}
+.conceptos svg{width:24px;height:24px;color:var(--lima)}
+
+/* ==========================================================
+   CONTENIDO
+   ========================================================== */
+.cuerpo{padding:20px 16px 28px}
+
+.bloque + .bloque{margin-top:22px}
+
+.titulo{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.6px;
+  color:var(--verde-oscuro);
+  text-transform:uppercase;
+  margin-bottom:11px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.titulo::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--linea);
+}
+
+/* --------- boton protagonista --------- */
+.principal{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  padding:16px 18px;
+  border:0;
+  border-radius:var(--radio);
+  background:linear-gradient(135deg,var(--verde-oscuro) 0%,var(--verde) 78%,var(--verde-vivo) 100%);
+  color:#fff;
+  box-shadow:var(--sombra);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+
+.principal:active{transform:scale(.985)}
+
+.principal .ico{
+  width:44px;height:44px;
+  flex:0 0 auto;
+  border-radius:13px;
+  background:rgba(255,255,255,.16);
+  display:flex;align-items:center;justify-content:center;
+}
+
+.principal .ico svg{width:24px;height:24px}
+
+.principal strong{display:block;font-size:17px;font-weight:800;line-height:1.2}
+.principal span{display:block;font-size:13px;color:#d9eec6}
+.principal .chevron{margin-left:auto;width:20px;height:20px;opacity:.9;flex:0 0 auto}
+
+.compartir{
+  margin-top:10px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:13px;
+  border:1.5px solid var(--linea);
+  border-radius:16px;
+  background:#fff;
+  color:var(--verde-oscuro);
+  font:inherit;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.compartir svg{width:19px;height:19px}
+
+/* --------- rejilla de acciones --------- */
+.acciones{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.accion{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:16px 8px;
+  border-radius:18px;
+  background:#f6faf4;
+  border:1px solid var(--linea);
+  font-size:14px;
+  font-weight:700;
+  color:var(--verde-oscuro);
+  min-height:92px;
+  transition:transform .15s ease,background .15s ease;
+}
+
+.accion:active{transform:scale(.97)}
+.accion svg{width:28px;height:28px}
+
+.accion.tel{background:linear-gradient(140deg,#14612b,#2f8f34);border-color:transparent;color:#fff}
+.accion.wa{background:linear-gradient(140deg,#1faa4e,#25d366);border-color:transparent;color:#fff}
+.accion.mail{background:linear-gradient(140deg,#2f8f34,#43a839);border-color:transparent;color:#fff}
+.accion.map{background:linear-gradient(140deg,#6fae2c,#8cc63f);border-color:transparent;color:#fff}
+
+.secundarias{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.sec{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:13px 8px;
+  border-radius:16px;
+  border:1.5px solid var(--linea);
+  background:#fff;
+  font-size:14px;
+  font-weight:700;
+  color:var(--verde-oscuro);
+}
+
+.sec svg{width:20px;height:20px;flex:0 0 auto}
+
+/* --------- datos --------- */
+.dato{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  padding:12px 2px;
+}
+
+.dato + .dato{border-top:1px solid var(--linea)}
+
+.dato .b{
+  width:36px;height:36px;
+  flex:0 0 auto;
+  border-radius:11px;
+  background:#eef6e7;
+  color:var(--verde);
+  display:flex;align-items:center;justify-content:center;
+}
+
+.dato .b svg{width:18px;height:18px}
+
+.dato > span:last-child{flex:1;min-width:0}
+.dato .k{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--gris);text-transform:uppercase}
+.dato .v{display:block;font-size:15px;font-weight:600;color:var(--antracita);word-break:break-word}
+
+/* --------- servicios --------- */
+.servicios{display:grid;gap:9px}
+
+.serv{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 14px;
+  border-radius:16px;
+  border:1px solid var(--linea);
+  background:#fbfdfa;
+}
+
+.serv .si{
+  width:38px;height:38px;
+  flex:0 0 auto;
+  border-radius:12px;
+  background:linear-gradient(140deg,var(--verde-oscuro),var(--verde-vivo));
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.serv .si svg{width:20px;height:20px}
+.serv > span:nth-child(2){flex:1;min-width:0}
+.serv .st{display:block;font-size:15px;font-weight:700;color:var(--verde-oscuro);line-height:1.2}
+.serv .sd{display:block;font-size:12.5px;color:var(--gris)}
+.serv .flecha{margin-left:auto;width:17px;height:17px;color:var(--lima);flex:0 0 auto}
+
+/* --------- lema --------- */
+.lema{
+  margin-top:22px;
+  border-radius:var(--radio);
+  background:linear-gradient(135deg,var(--verde-oscuro),var(--verde) 70%,var(--verde-vivo));
+  color:#fff;
+  padding:20px 18px;
+  text-align:center;
+}
+
+.lema strong{display:block;font-size:19px;font-weight:800;line-height:1.25}
+.lema span{display:block;margin-top:6px;font-size:12px;letter-spacing:1.6px;color:#d7edbe;font-weight:600}
+
+/* --------- footer --------- */
+.pie{
+  margin-top:24px;
+  text-align:center;
+  padding-top:18px;
+  border-top:1px solid var(--linea);
+}
+
+.pie .nfc{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:11px;
+  letter-spacing:1.3px;
+  font-weight:700;
+  color:var(--gris);
+  text-transform:uppercase;
+}
+
+.pie .nfc svg{width:16px;height:16px;color:var(--verde)}
+
+.pie p{margin-top:11px;font-size:12.5px;color:var(--gris)}
+.pie a{color:var(--verde-oscuro);font-weight:700}
+.pie em{display:block;font-style:normal;font-size:11.5px;color:var(--gris);margin-top:2px}
+
+/* --------- aviso de copia (fallback de compartir) --------- */
+.aviso{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(14px);
+  background:var(--verde-oscuro);
+  color:#fff;
+  padding:11px 18px;
+  border-radius:30px;
+  font-size:13.5px;
+  font-weight:600;
+  box-shadow:0 10px 26px rgba(0,0,0,.25);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease;
+  z-index:50;
+}
+
+.aviso.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* --------- animación de entrada --------- */
+.anim{opacity:0;transform:translateY(14px);animation:sube .55s ease forwards}
+.anim:nth-of-type(1){animation-delay:.05s}
+.anim:nth-of-type(2){animation-delay:.12s}
+.anim:nth-of-type(3){animation-delay:.19s}
+.anim:nth-of-type(4){animation-delay:.26s}
+.anim:nth-of-type(5){animation-delay:.33s}
+
+@keyframes sube{to{opacity:1;transform:translateY(0)}}
+
+@media (prefers-reduced-motion:reduce){
+  .anim{animation:none;opacity:1;transform:none}
+  *{transition:none!important}
+}
+
+:focus-visible{outline:3px solid var(--lima);outline-offset:3px;border-radius:12px}
+
+@media (max-width:340px){
+  .cuerpo{padding:18px 12px 24px}
+  .accion{min-height:86px;font-size:13px}
+  .sec{font-size:13px}
+  .marca img{width:98px}
+}
+</style>
+</head>
+
+<body>
+
+<main class="tarjeta">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <img class="foto" src="img/maria-aragon.webp" width="900" height="1200"
+         alt="María Aragón Galiano, responsable del Departamento de Contabilidad de Reciclados Mijas" fetchpriority="high">
+
+    <div class="marca">
+      <img src="img/reciclados-mijas-logo.webp" width="760" height="489"
+           alt="Reciclados Mijas · Áridos, compost y economía circular" loading="eager">
+    </div>
+
+    <div class="datos">
+      <p class="nombre">MARÍA</p>
+      <p class="apellidos">ARAGÓN GALIANO</p>
+      <div class="raya"></div>
+      <p class="cargo">Resp. Dpto. Contabilidad</p>
+      <p class="empresa">Reciclados Mijas, S.L.</p>
+    </div>
+  </header>
+
+  <div class="conceptos">
+    <div>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 4.6 21 19H3l9-14.4Z" opacity=".55"/>
+        <path d="M8.2 11.2 13.6 19H3l5.2-7.8Z"/>
+      </svg>
+      ÁRIDOS
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/>
+        <path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>
+      </svg>
+      COMPOST
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 19H4.8a1.8 1.8 0 0 1-1.55-2.66L7.2 9.5"/>
+        <path d="M11 19h8.2a1.8 1.8 0 0 0 1.55-2.66l-1.23-2.12"/>
+        <path d="m14 16-3 3 3 3"/>
+        <path d="M8.29 13.6 7.2 9.5 3.1 10.6"/>
+        <path d="m9.34 5.81 1.1-1.89a1.8 1.8 0 0 1 3.09 0l3.95 6.84"/>
+        <path d="m13.38 9.63 4.1 1.1 1.09-4.1"/>
+      </svg>
+      ECONOMÍA CIRCULAR
+    </div>
+  </div>
+
+  <!-- ===================== CUERPO ===================== -->
+  <div class="cuerpo">
+
+    <!-- Guardar contacto + compartir -->
+    <section class="bloque anim">
+      <a class="principal" href="maria-aragon-galiano.vcf" download="Maria-Aragon-Galiano.vcf"
+         aria-label="Guardar el contacto de María Aragón Galiano en la agenda">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="3"/>
+            <circle cx="9" cy="10.5" r="2.4"/>
+            <path d="M5.4 16.3c.5-1.9 1.9-2.9 3.6-2.9s3.1 1 3.6 2.9"/>
+            <path d="M15.4 9.6H19M15.4 13.4H19"/>
+          </svg>
+        </span>
+        <span>
+          <strong>Guardar contacto</strong>
+          <span>Añadir a la agenda del móvil</span>
+        </span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 4v12M6.5 11.5 12 17l5.5-5.5M5 20h14"/>
+        </svg>
+      </a>
+
+      <button class="compartir" type="button" id="btn-compartir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <path d="M8.6 10.6 15.4 6.4M8.6 13.4l6.8 4.2"/>
+        </svg>
+        Compartir esta tarjeta
+      </button>
+    </section>
+
+    <!-- Acciones directas -->
+    <section class="bloque anim">
+      <h2 class="titulo">Contacto directo</h2>
+
+      <div class="acciones">
+        <a class="accion tel" href="tel:+34952119505" aria-label="Llamar al 952 11 95 05">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.3 0 .7-.2 1l-2.3 2.1Z"/>
+          </svg>
+          Llamar
+        </a>
+
+        <a class="accion wa" href="https://wa.me/34696673575" target="_blank" rel="noopener"
+           aria-label="Escribir por WhatsApp al 696 67 35 75">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.2-.4-4.5-1.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.2 0-.4 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 5 4.2 1.9.7 2.6.7 3.5.6.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.3Z"/>
+          </svg>
+          WhatsApp
+        </a>
+
+        <a class="accion mail" href="mailto:info@recicladosmijas.com" aria-label="Enviar un email a info@recicladosmijas.com">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 5.5h18c.6 0 1 .4 1 1v11c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1v-11c0-.6.4-1 1-1Zm9 7.1 8-4.6H4l8 4.6Z"/>
+          </svg>
+          Email
+        </a>
+
+        <a class="accion map" href="https://maps.google.com/?q=Reciclados+Mijas+S.L." target="_blank" rel="noopener"
+           aria-label="Abrir la ubicación de Reciclados Mijas en Google Maps">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2Z"/>
+          </svg>
+          Ubicación
+        </a>
+      </div>
+
+      <div class="secundarias">
+        <a class="sec" href="https://recicladosmijas.com/" target="_blank" rel="noopener"
+           aria-label="Visitar recicladosmijas.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.2"/>
+            <ellipse cx="12" cy="12" rx="4.1" ry="9.2"/>
+            <path d="M2.8 12h18.4M4.3 6.8h15.4M4.3 17.2h15.4"/>
+          </svg>
+          Web
+        </a>
+
+        <a class="sec" href="https://www.facebook.com/profile.php?id=100087486564786" target="_blank" rel="noopener"
+           aria-label="Ver el perfil de Reciclados Mijas en Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12Z"/>
+          </svg>
+          Facebook
+        </a>
+      </div>
+    </section>
+
+    <!-- Datos -->
+    <section class="bloque anim">
+      <h2 class="titulo">Datos de contacto</h2>
+
+      <a class="dato" href="tel:+34952119505">
+        <span class="b">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.3 0 .7-.2 1l-2.3 2.1Z"/></svg>
+        </span>
+        <span>
+          <span class="k">Teléfono</span>
+          <span class="v">952 11 95 05</span>
+        </span>
+      </a>
+
+      <a class="dato" href="https://wa.me/34696673575" target="_blank" rel="noopener">
+        <span class="b">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.6 12.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.2 0-.4 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 5 4.2 1.9.7 2.6.7 3.5.6.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.3Z"/></svg>
+        </span>
+        <span>
+          <span class="k">WhatsApp</span>
+          <span class="v">696 67 35 75</span>
+        </span>
+      </a>
+
+      <a class="dato" href="mailto:info@recicladosmijas.com">
+        <span class="b">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5h18c.6 0 1 .4 1 1v11c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1v-11c0-.6.4-1 1-1Zm9 7.1 8-4.6H4l8 4.6Z"/></svg>
+        </span>
+        <span>
+          <span class="k">Email</span>
+          <span class="v">info@recicladosmijas.com</span>
+        </span>
+      </a>
+
+      <a class="dato" href="https://maps.google.com/?q=Reciclados+Mijas+S.L." target="_blank" rel="noopener">
+        <span class="b">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2Z"/></svg>
+        </span>
+        <span>
+          <span class="k">Dirección</span>
+          <span class="v">Diseminado Arroyo de la Cala, 68<br>29649 La Cala de Mijas · Mijas (Málaga)</span>
+        </span>
+      </a>
+    </section>
+
+    <!-- Servicios -->
+    <section class="bloque anim">
+      <h2 class="titulo">¿En qué podemos ayudarte?</h2>
+
+      <div class="servicios">
+
+        <a class="serv" href="https://recicladosmijas.com/reciclados-mijas" target="_blank" rel="noopener">
+          <span class="si">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 4.6 21 19H3l9-14.4Z" opacity=".5"/><path d="M8.2 11.2 13.6 19H3l5.2-7.8Z"/>
+            </svg>
+          </span>
+          <span>
+            <span class="st">Áridos</span>
+            <span class="sd">Material reciclado para obra</span>
+          </span>
+          <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </a>
+
+        <a class="serv" href="https://recicladosmijas.com/reciclados-mijas" target="_blank" rel="noopener">
+          <span class="si">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/>
+              <path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>
+            </svg>
+          </span>
+          <span>
+            <span class="st">Compost</span>
+            <span class="sd">Enmienda orgánica de calidad</span>
+          </span>
+          <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </a>
+
+        <a class="serv" href="https://recicladosmijas.com/gestion-residuos" target="_blank" rel="noopener">
+          <span class="si">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/>
+              <circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>
+            </svg>
+          </span>
+          <span>
+            <span class="st">Gestión de residuos</span>
+            <span class="sd">Retirada, transporte y tratamiento</span>
+          </span>
+          <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </a>
+
+        <a class="serv" href="https://recicladosmijas.com/planta-reciclaje" target="_blank" rel="noopener">
+          <span class="si">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 20V10l5 3V10l5 3V10l5 3v7z"/><path d="M3 20h18"/><path d="M18 10V4h3v6"/>
+            </svg>
+          </span>
+          <span>
+            <span class="st">Planta de reciclaje</span>
+            <span class="sd">Instalación autorizada en Mijas</span>
+          </span>
+          <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </a>
+
+        <a class="serv" href="https://recicladosmijas.com/equipo-humano" target="_blank" rel="noopener">
+          <span class="si">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="8.2" r="3.1"/><circle cx="5" cy="9.6" r="2.5"/><circle cx="19" cy="9.6" r="2.5"/>
+              <path d="M12 12.6c-3.1 0-5.4 1.7-5.4 3.9V19h10.8v-2.5c0-2.2-2.3-3.9-5.4-3.9Z"/>
+              <path d="M5 13c-2.4 0-4.2 1.3-4.2 3V19h4.1v-2.5c0-1.3.5-2.5 1.4-3.4A6.9 6.9 0 0 0 5 13Z"/>
+              <path d="M19 13c-.5 0-1 .04-1.3.1.9.9 1.4 2.1 1.4 3.4V19h4.1v-3c0-1.7-1.8-3-4.2-3Z"/>
+            </svg>
+          </span>
+          <span>
+            <span class="st">Equipo humano</span>
+            <span class="sd">Las personas de Reciclados Mijas</span>
+          </span>
+          <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Lema -->
+    <section class="lema anim">
+      <strong>Juntos por un entorno mejor</strong>
+      <span>COMPROMETIDOS CON UN FUTURO MÁS LIMPIO</span>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pie">
+      <span class="nfc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M8 7a8 8 0 0 1 0 10"/><path d="M12 4.6a12 12 0 0 1 0 14.8"/><path d="M16 2.4a16 16 0 0 1 0 19.2"/>
+        </svg>
+        Tarjeta digital NFC
+      </span>
+      <p>
+        Creada por <a href="https://www.limonadaweb.com/" target="_blank" rel="noopener">Limonada Web</a>
+        <em>Exprimimos Internet para tu negocio</em>
+      </p>
+    </footer>
+
+  </div>
+</main>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite">Enlace copiado</div>
+
+<script>
+(function(){
+  var btn = document.getElementById('btn-compartir');
+  var aviso = document.getElementById('aviso');
+  var url = 'https://www.limonadaweb.com/mariaaragon';
+
+  function decir(t){
+    aviso.textContent = t;
+    aviso.classList.add('ver');
+    setTimeout(function(){ aviso.classList.remove('ver'); }, 2600);
+  }
+
+  btn.addEventListener('click', function(){
+    var datos = {
+      title: 'María Aragón Galiano · Reciclados Mijas, S.L.',
+      text: 'María Aragón Galiano\nReciclados Mijas, S.L.',
+      url: url
+    };
+
+    if (navigator.share) {
+      navigator.share(datos).catch(function(){});
+      return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function(){
+        decir('Enlace copiado');
+      }).catch(function(){ copiaManual(); });
+      return;
+    }
+
+    copiaManual();
+  });
+
+  function copiaManual(){
+    var t = document.createElement('textarea');
+    t.value = url;
+    t.setAttribute('readonly','');
+    t.style.position = 'absolute';
+    t.style.left = '-9999px';
+    document.body.appendChild(t);
+    t.select();
+    try { document.execCommand('copy'); decir('Enlace copiado'); }
+    catch(e){ decir(url); }
+    t.remove();
+  }
+})();
+</script>
+
+</body>
+</html>

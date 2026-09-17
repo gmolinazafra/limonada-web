@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Aragón Galiano;María;;;
+FN:María Aragón Galiano
+ORG:Reciclados Mijas, S.L.
+TITLE:Resp. Dpto. Contabilidad
+TEL;TYPE=WORK,VOICE:+34952119505
+TEL;TYPE=CELL,VOICE:+34696673575
+EMAIL;TYPE=INTERNET,WORK:info@recicladosmijas.com
+URL:https://recicladosmijas.com/
+ADR;TYPE=WORK:;;Diseminado Arroyo de la Cala, 68;La Cala de Mijas;Málaga;29649;España
+item1.URL:https://www.facebook.com/profile.php?id=100087486564786
+item1.X-ABLabel:Facebook
+NOTE:Tarjeta digital: https://www.limonadaweb.com/mariaaragon
+END:VCARD
