@@ -220,9 +220,9 @@ a{color:inherit;text-decoration:none}
 .principal{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:12px;
   width:100%;
-  padding:16px 18px;
+  padding:12px 16px;
   border:0;
   border-radius:var(--radio);
   background:linear-gradient(135deg,var(--verde-oscuro) 0%,var(--verde) 78%,var(--verde-vivo) 100%);
@@ -237,27 +237,27 @@ a{color:inherit;text-decoration:none}
 .principal:active{transform:scale(.985)}
 
 .principal .ico{
-  width:44px;height:44px;
+  width:38px;height:38px;
   flex:0 0 auto;
-  border-radius:13px;
+  border-radius:11px;
   background:rgba(255,255,255,.16);
   display:flex;align-items:center;justify-content:center;
 }
 
-.principal .ico svg{width:24px;height:24px}
+.principal .ico svg{width:21px;height:21px}
 
-.principal strong{display:block;font-size:17px;font-weight:800;line-height:1.2}
-.principal span{display:block;font-size:13px;color:#d9eec6}
-.principal .chevron{margin-left:auto;width:20px;height:20px;opacity:.9;flex:0 0 auto}
+.principal strong{display:block;font-size:16px;font-weight:800;line-height:1.2}
+.principal span{display:block;font-size:12.5px;color:#d9eec6}
+.principal .chevron{margin-left:auto;width:18px;height:18px;opacity:.9;flex:0 0 auto}
 
 .compartir{
-  margin-top:10px;
+  margin-top:9px;
   width:100%;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:9px;
-  padding:13px;
+  padding:11px;
   border:1.5px solid var(--linea);
   border-radius:16px;
   background:#fff;
@@ -282,20 +282,20 @@ a{color:inherit;text-decoration:none}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  padding:16px 8px;
-  border-radius:18px;
+  gap:6px;
+  padding:11px 8px;
+  border-radius:16px;
   background:#f6faf4;
   border:1px solid var(--linea);
   font-size:14px;
   font-weight:700;
   color:var(--verde-oscuro);
-  min-height:92px;
+  min-height:70px;
   transition:transform .15s ease,background .15s ease;
 }
 
 .accion:active{transform:scale(.97)}
-.accion svg{width:28px;height:28px}
+.accion svg{width:23px;height:23px}
 
 .accion.tel{background:linear-gradient(140deg,#14612b,#2f8f34);border-color:transparent;color:#fff}
 .accion.wa{background:linear-gradient(140deg,#1faa4e,#25d366);border-color:transparent;color:#fff}
@@ -314,13 +314,22 @@ a{color:inherit;text-decoration:none}
   align-items:center;
   justify-content:center;
   gap:9px;
-  padding:13px 8px;
+  padding:11px 8px;
   border-radius:16px;
-  border:1.5px solid var(--linea);
-  background:#fff;
+  border:1.5px solid transparent;
   font-size:14px;
   font-weight:700;
-  color:var(--verde-oscuro);
+}
+
+.sec.web{
+  background:#eef1f0;
+  border-color:#e0e6e3;
+  color:var(--antracita);
+}
+
+.sec.fb{
+  background:#1877f2;
+  color:#fff;
 }
 
 .sec svg{width:20px;height:20px;flex:0 0 auto}
@@ -456,7 +465,7 @@ a{color:inherit;text-decoration:none}
 
 @media (max-width:340px){
   .cuerpo{padding:18px 12px 24px}
-  .accion{min-height:86px;font-size:13px}
+  .accion{min-height:66px;font-size:13px}
   .sec{font-size:13px}
   .marca img{width:98px}
 }
@@ -584,7 +593,7 @@ a{color:inherit;text-decoration:none}
       </div>
 
       <div class="secundarias">
-        <a class="sec" href="https://recicladosmijas.com/" target="_blank" rel="noopener"
+        <a class="sec web" href="https://recicladosmijas.com/" target="_blank" rel="noopener"
            aria-label="Visitar recicladosmijas.com">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <circle cx="12" cy="12" r="9.2"/>
@@ -594,7 +603,7 @@ a{color:inherit;text-decoration:none}
           Web
         </a>
 
-        <a class="sec" href="https://www.facebook.com/profile.php?id=100087486564786" target="_blank" rel="noopener"
+        <a class="sec fb" href="https://www.facebook.com/profile.php?id=100087486564786" target="_blank" rel="noopener"
            aria-label="Ver el perfil de Reciclados Mijas en Facebook">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12Z"/>
