@@ -195,9 +195,9 @@ a{color:inherit;text-decoration:none}
 /* ==========================================================
    CONTENIDO
    ========================================================== */
-.cuerpo{padding:10px 16px 22px}
+.cuerpo{padding:14px 16px 26px}
 
-.bloque + .bloque{margin-top:10px}
+.bloque + .bloque{margin-top:14px}
 
 .titulo{
   font-size:12px;
@@ -205,7 +205,7 @@ a{color:inherit;text-decoration:none}
   letter-spacing:1.6px;
   color:var(--verde-oscuro);
   text-transform:uppercase;
-  margin-bottom:6px;
+  margin-bottom:8px;
   display:flex;
   align-items:center;
   gap:9px;
@@ -222,9 +222,9 @@ a{color:inherit;text-decoration:none}
 .principal{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:11px;
   width:100%;
-  padding:8px 14px;
+  padding:10px 14px;
   border:0;
   border-radius:var(--radio);
   background:linear-gradient(135deg,var(--verde-oscuro) 0%,var(--verde) 78%,var(--verde-vivo) 100%);
@@ -253,13 +253,13 @@ a{color:inherit;text-decoration:none}
 .principal .chevron{margin-left:auto;width:18px;height:18px;opacity:.9;flex:0 0 auto}
 
 .compartir{
-  margin-top:8px;
+  margin-top:10px;
   width:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  padding:10px;
+  gap:9px;
+  padding:11px;
   border:1.5px solid #e0e6e3;
   border-radius:16px;
   background:#eef1f0;
@@ -276,7 +276,7 @@ a{color:inherit;text-decoration:none}
 .acciones{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:7px;
+  gap:8px;
 }
 
 .accion{
@@ -284,15 +284,15 @@ a{color:inherit;text-decoration:none}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:5px;
-  padding:8px 8px;
+  gap:6px;
+  padding:10px 8px;
   border-radius:15px;
   background:#f6faf4;
   border:1px solid var(--linea);
   font-size:14px;
   font-weight:700;
   color:var(--verde-oscuro);
-  min-height:58px;
+  min-height:66px;
   transition:transform .15s ease,background .15s ease;
 }
 
@@ -307,8 +307,8 @@ a{color:inherit;text-decoration:none}
 .secundarias{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:7px;
-  margin-top:7px;
+  gap:8px;
+  margin-top:8px;
 }
 
 .sec{
@@ -316,8 +316,8 @@ a{color:inherit;text-decoration:none}
   align-items:center;
   justify-content:center;
   gap:9px;
-  padding:9px 8px;
-  border-radius:15px;
+  padding:11px 8px;
+  border-radius:16px;
   border:1.5px solid transparent;
   font-size:14px;
   font-weight:700;
@@ -504,19 +504,10 @@ a{color:inherit;text-decoration:none}
 
 @media (max-width:340px){
   .cuerpo{padding:18px 12px 24px}
-  .accion{min-height:52px;font-size:13px}
+  .accion{min-height:58px;font-size:13px}
   .sec{font-size:13px}
   .marca img{width:98px}
 }
-@media (max-width:340px){
-  .cuerpo{padding:8px 12px 20px}
-  .accion{min-height:48px;font-size:12.5px}
-  .accion svg{width:20px;height:20px}
-  .principal{padding:7px 12px}
-  .sec,.compartir{padding:8px}
-  .bloque + .bloque{margin-top:8px}
-}
-
 </style>
 </head>
 
