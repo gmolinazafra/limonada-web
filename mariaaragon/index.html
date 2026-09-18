@@ -80,11 +80,6 @@ a{color:inherit;text-decoration:none}
     min-height:0;
     border-radius:28px;
     border:1px solid var(--linea);
-    overflow:clip;
-  }
-  .hero{
-    clip-path:inset(0 0 0 0 round 28px 28px 0 0);
-    background:var(--verde-oscuro);
   }
 }
 
@@ -514,18 +509,37 @@ a{color:inherit;text-decoration:none}
   .marca img{width:98px}
 }
 
-/* ---- escritorio: foto más alta, encuadre y botones compactos ---- */
+/* ================================================================
+   ESCRITORIO (min-width: 520px) — ajustes visuales solo en PC/tablet
+   No tocar para cambiar el movil.
+   ================================================================ */
 @media (min-width:520px){
+
+  /* Tarjeta: recorte fiable de esquinas */
+  .tarjeta{
+    overflow:clip;
+  }
+
+  /* Hero: clip-path recorta el contenedor entero incluido el fondo */
+  .hero{
+    clip-path:inset(0 0 0 0 round 28px 28px 0 0);
+    background:var(--verde-oscuro);
+  }
+
+  /* Foto: aspect-ratio mas vertical, encuadre subido para ver cara */
   .hero .foto{
     aspect-ratio:9/10;
     max-height:50vh;
     object-position:40% -4%;
-    clip-path:inset(0 0 0 0 round 28px 28px 0 0);
   }
+
+  /* Logo: separado del filo para que no lo tape el radio */
   .marca{
     top:18px;
     right:18px;
   }
+
+  /* Botones compactos */
   .cuerpo{padding:8px 16px 22px}
   .bloque + .bloque{margin-top:10px}
   .titulo{margin-bottom:6px}
